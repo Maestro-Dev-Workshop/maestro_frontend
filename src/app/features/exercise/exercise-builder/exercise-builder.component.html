@@ -1,0 +1,33 @@
+<div class="min-h-screen grid grid-cols-2">
+  <div class="flex flex-col justify-center p-12 bg-white space-y-6">
+    <h1 class="text-2xl font-semibold">Generate Exercises</h1>
+
+    <form [formGroup]="form" (ngSubmit)="onGenerate()" class="space-y-4 max-w-md">
+      <input formControlName="preference" placeholder="Preference"
+             class="w-full p-3 border border-secondary rounded focus:ring-primary focus:ring-2" />
+
+      <select formControlName="questionType"
+              class="w-full p-3 border border-secondary rounded focus:ring-primary focus:ring-2">
+        <option value="multiple_choice">Multiple Choice</option>
+        <option value="multiple_selection">Multiple Selection</option>
+        <option value="essay">Essay</option>
+      </select>
+
+      <button type="submit"
+              class="w-full bg-primary text-white py-3 rounded hover:bg-primary/90">
+        Generate
+      </button>
+    </form>
+  </div>
+
+  <div class="p-12 bg-white space-y-6 overflow-auto">
+    <h2 class="text-xl font-semibold mb-4">Exercises</h2>
+
+    <div *ngFor="let ex of exercises" class="mb-4">
+      <p class="font-medium">{{ ex.question }}</p>
+      <ul *ngIf="ex.options" class="list-disc list-inside">
+        <li *ngFor="let opt of ex.options">{{ opt }}</li>
+      </ul>
+    </div>
+  </div>
+</div>

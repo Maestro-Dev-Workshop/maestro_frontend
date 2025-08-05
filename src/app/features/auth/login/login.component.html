@@ -1,105 +1,66 @@
-<div class="min-h-screen grid md:grid-cols-2">
-  <!-- LEFT: Login Form -->
-  <div class="flex flex-col justify-center p-8 bg-white">
-    <!-- Header: icon + MAESTRO -->
-    <div class="flex items-center justify-center space-x-2 mb-4">
-      <img src="assets/images/logo1.png" alt="Maestro Icon" class="h-8" />
-      <span class="text-2xl font-bold text-gray-800">MAESTRO</span>
+<div class="min-h-screen grid grid-cols-2">
+  <!-- Left Form Panel -->
+  <div class="flex flex-col justify-center p-12 bg-white relative">
+    <!-- Top Logo -->
+    <div class="absolute top-80 left-7 flex items-center space-x-2">
+      <img src="assets/images/logo1.png" class="h-8" alt="Maestro icon" />
+      <span class="text-xl font-bold text-text">MAESTRO</span>
     </div>
 
-    <h1 class="text-3xl font-bold text-gray-800 mb-2 text-center">
-      Meet Maestro
-    </h1>
-    <p class="text-gray-600 mb-8 text-center">
-      Your AI-powered assistant for mastering complex subjects, simplified
+    <h1 class="text-3xl font-bold mb-2 text-text mt-12">Welcome Back!</h1>
+    <p class="text-sm text-text/70 mb-6">
+      Access your personalized lessons and materials.
     </p>
 
-    <form (ngSubmit)="onLogin()" class="space-y-4 max-w-md mx-auto">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-4 max-w-md">
       <input
+        formControlName="email"
         type="email"
-        [(ngModel)]="email"
-        name="email"
         placeholder="Email Address"
-        class="w-full p-3 border border-gray-300 rounded 
-               focus:outline-none focus:ring-2 focus:ring-blue-500"
-        required
+        class="w-full p-3 border border-secondary rounded focus:ring-primary focus:ring-2"
       />
 
       <div class="relative">
         <input
           [type]="showPassword ? 'text' : 'password'"
-          [(ngModel)]="password"
-          name="password"
+          formControlName="password"
           placeholder="Password"
-          class="w-full p-3 border border-gray-300 rounded 
-                 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          required
+          class="w-full p-3 border border-secondary rounded focus:ring-primary focus:ring-2"
         />
         <button
           type="button"
-          (click)="togglePassword()"
-          class="absolute inset-y-0 right-3 flex items-center text-gray-600"
+          (click)="showPassword = !showPassword"
+          class="absolute inset-y-0 right-3 flex items-center text-sm text-gray-500"
         >
-          <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg"
-               class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-               stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            <path stroke-linecap="round" stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M2.458 12C3.732 7.943 7.523 5 
-                     12 5c4.478 0 8.268 2.943 9.542 7
-                     -1.274 4.057-5.064 7-9.542 7
-                     -4.477 0-8.268-2.943-9.542-7z" />
-          </svg>
-          <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg"
-               class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-               stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M13.875 18.825A10.05 10.05 
-                     0 0112 19c-4.478 0-8.268-2.943-9.542-7
-                     a10.05 10.05 0 011.666-3.041M6.22 
-                     6.22A9.953 9.953 0 0112 5c4.478 0 
-                     8.268 2.943 9.542 7a9.955 9.955 
-                     0 01-4.283 5.398M15 12a3 3 0 
-                     11-6 0 3 3 0 016 0z" />
-            <path stroke-linecap="round" stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M3 3l18 18" />
-          </svg>
+          {{ showPassword ? 'Hide' : 'Show' }}
         </button>
       </div>
 
       <button
         type="submit"
-        class="w-full bg-blue-600 text-white py-3 rounded
-               hover:bg-blue-700 transition"
+        class="w-full bg-primary text-white py-3 rounded hover:bg-primary/90"
       >
         Next
       </button>
     </form>
 
-    <p class="mt-6 text-sm text-gray-600 text-center">
-      Don’t have an account?
-      <a routerLink="/signup" class="text-blue-600 hover:underline">
-        Create one
-      </a>
+    <p class="mt-6 text-sm text-text/70">
+      New to Maestro?
+      <button (click)="goToSignUp()">Sign Up</button>
     </p>
   </div>
 
-  <!-- RIGHT: Boy Reading Image + Footer Logo -->
-  <div class="hidden md:block relative h-screen w-full overflow-hidden">
+  <!-- Right Image Panel -->
+  <div class="relative h-screen overflow-hidden">
     <img
       src="assets/images/boy-reading.png"
-      alt="Boy Reading"
-      class="object-cover object-center w-full h-full"
+      alt="Study room"
+      class="w-full h-full "
     />
     <img
       src="assets/images/logo2.png"
-      alt="Maestro Footer Logo"
-      class="absolute bottom-14 right-55 h-8"
+      alt="Maestro logo"
+      class=""
     />
   </div>
 </div>

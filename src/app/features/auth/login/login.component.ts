@@ -1,39 +1,48 @@
-import { Component } from '@angular/core';
-import { Router, RouterModule} from '@angular/router';
-import { AuthGuard } from '../../../core/auth/auth.guard';
-import { AuthService } from '../../../core/auth/auth.service';
+import { Component, inject, OnInit } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../../core/auth/auth.service';
+import { Router } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   standalone: true,
+  imports: [ReactiveFormsModule, CommonModule, HttpClientModule],
   selector: 'app-login',
-  imports: [CommonModule, FormsModule, RouterModule],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  templateUrl: './login.component.html'
 })
-export class LoginComponent {
-  email = '';
-  password = '';
-  showPassword = false;
+export class LoginComponent implements OnInit {
+  loginForm!: FormGroup;
+  showPassword: boolean = false;
+  private fb = inject(FormBuilder);
+  private auth = inject(AuthService);
+  private router = inject(Router);
 
-  constructor(private auth: AuthService, private router: Router) {
+
+  form = this.fb.group({
+    email:    ['', [Validators.required, Validators.email]],
+    password: ['', Validators.required]
+  });
+
+  ngOnInit() {
     if (this.auth.isAuthenticated()) {
       this.router.navigate(['/dashboard']);
     }
   }
 
-  togglePassword()  {
+  togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
-  } 
+  }
 
-  onLogin() {
-    this.auth.login({ email: this.email, password: this.password }).subscribe({
-      next: (res) => {
-        localStorage.setItem('token', res.token);
-        this.router.navigate(['/dashboard']);
-      },
-      error: (err) => alert('Login failed.')
+  onSubmit() {
+    if (this.form.invalid) return;
+    this.auth.login(this.form.value as { email: string; password: string }).subscribe(() => {
+      this.router.navigate(['/dashboard']);
     });
   }
+  goToSignUp() {
+    this.router.navigate(['/auth/signup']);
+  }
+  get email() { return this.form.get('email'); }
+  get password() { return this.form.get('password'); }
 }
