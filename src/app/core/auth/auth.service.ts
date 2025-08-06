@@ -1,26 +1,27 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { CookieService } from './cookie.service';
+import { tap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private baseUrl = 'http://localhost:3000/api'; // Replace with your backend URL
+  private http = inject(HttpClient);
+  private cookies = inject(CookieService);
 
-  constructor(private http: HttpClient) {}
-
-  login(data: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/login`, data);
+  signup(data: { firstName: string; lastName: string; email: string; password: string }) {
+    return this.http.post('/api/auth/signup', data);
   }
 
-  signup(data: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/signup`, data);
+  login(credentials: { email: string; password: string }) {
+    return this.http.post<{ token: string }>('/api/auth/login', credentials)
+      .pipe(tap(res => this.cookies.set('auth_token', res.token)));
+  }
+
+  logout() {
+    this.cookies.delete('auth_token');
   }
 
   isAuthenticated(): boolean {
-    return !!localStorage.getItem('token');
-  }
-
-  logout(): void {
-    localStorage.removeItem('token');
+    return !!this.cookies.get('auth_token');
   }
 }

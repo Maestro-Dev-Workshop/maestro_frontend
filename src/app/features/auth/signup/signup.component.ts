@@ -1,44 +1,41 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule }  from '@angular/forms';
-import { RouterModule, Router } from '@angular/router';
-import { AuthService }  from '../../../core/auth/auth.service';
+import { Component, inject, OnInit } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AuthService } from '../../../core/auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   standalone: true,
+  imports: [ReactiveFormsModule],
   selector: 'app-signup',
-  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './signup.component.html'
 })
-export class SignupComponent {
-  firstName = '';
-  lastName  = '';
-  email     = '';
-  password  = '';
+export class SignupComponent implements OnInit {
+  private fb = inject(FormBuilder);
+  private auth = inject(AuthService);
+  private router = inject(Router);
+
   showPassword = false;
 
-  constructor(
-    private auth: AuthService,
-    private router: Router
-  ) {
+  form = this.fb.group({
+    firstName: ['', Validators.required],
+    lastName:  ['', Validators.required],
+    email:     ['', [Validators.required, Validators.email]],
+    password:  ['', [Validators.required, Validators.minLength(6)]]
+  });
+
+  ngOnInit() {
     if (this.auth.isAuthenticated()) {
       this.router.navigate(['/dashboard']);
     }
   }
 
-  togglePassword() {
-    this.showPassword = !this.showPassword;
+  goToLogin() {
+    this.router.navigate(['/auth/login']);
   }
-
-  onNext() {
-    this.auth.signup({
-      firstName: this.firstName,
-      lastName:  this.lastName,
-      email:     this.email,
-      password:  this.password
-    }).subscribe({
-      next: () => this.router.navigate(['/login']),
-      error: () => alert('Signup failed. Please try again.')
+  onSubmit() {
+    if (this.form.invalid) return;
+    this.auth.signup(this.form.value as { firstName: string; lastName: string; email: string; password: string }).subscribe(() => {
+      this.router.navigate(['/auth/login']);
     });
   }
 }

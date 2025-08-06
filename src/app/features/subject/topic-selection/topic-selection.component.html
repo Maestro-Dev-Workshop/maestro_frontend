@@ -1,0 +1,31 @@
+<div class="min-h-screen grid grid-cols-2">
+  <div class="flex flex-col justify-center p-12 bg-white space-y-6">
+    <h1 class="text-2xl font-semibold">Select Topics & Style</h1>
+
+    <form [formGroup]="form" (ngSubmit)="onNext()" class="space-y-4 max-w-md">
+      <div class="flex flex-wrap gap-2">
+        <label *ngFor="let t of topics" class="cursor-pointer">
+          <input type="checkbox" [value]="t" formControlName="selected" class="hidden" />
+          <span class="px-4 py-2 border rounded hover:bg-primary/10">
+            {{ t }}
+          </span>
+        </label>
+      </div>
+
+      <textarea formControlName="style" rows="3"
+                placeholder="How you learn best"
+                class="w-full p-3 border border-secondary rounded
+                       focus:ring-primary focus:ring-2"></textarea>
+
+      <button type="submit"
+              class="w-full bg-primary text-white py-3 rounded hover:bg-primary/90">
+        Generate Lesson
+      </button>
+    </form>
+  </div>
+
+  <div class="relative h-screen overflow-hidden">
+    <img src="assets/images/boy-reading.png"
+         class="w-full h-full object-cover" />
+  </div>
+</div>
