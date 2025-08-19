@@ -4,7 +4,11 @@ module.exports = {
     "./src/**/*.{html,ts}",   // Scan Angular templates + components
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['Satoshi', 'ui-sans-serif', 'system-ui']
+      }
+    },
   },
   plugins: [],
 }
