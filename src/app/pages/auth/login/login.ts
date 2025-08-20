@@ -11,6 +11,7 @@ export class Login {
   email = '';
   password = '';
   passwordVisible = "password";
+  loading = false;
 
   @ViewChild('emailCtrl') emailCtrl!: NgModel;
   @ViewChild('passwordCtrl') passwordCtrl!: NgModel;
@@ -26,6 +27,7 @@ export class Login {
   }
 
   onSubmit() {
+    this.loading = true;
     // Later: replace with real API call
     if (this.emailCtrl.invalid || this.passwordCtrl.invalid) {
       alert("Valid email and password required");
@@ -38,5 +40,6 @@ export class Login {
         alert('Invalid email or password');
       }
     }
+    this.loading = false;
   }
 }
