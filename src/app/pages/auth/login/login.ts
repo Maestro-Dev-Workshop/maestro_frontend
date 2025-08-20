@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, ViewChild } from '@angular/core';
+import { FormsModule, NgModel } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,17 +10,36 @@ import { Router } from '@angular/router';
 export class Login {
   email = '';
   password = '';
+  passwordVisible = "password";
+  loading = false;
+
+  @ViewChild('emailCtrl') emailCtrl!: NgModel;
+  @ViewChild('passwordCtrl') passwordCtrl!: NgModel;
 
   constructor(private router: Router) {}
 
-  onSubmit() {
-    // Later: replace with real API call
-    if (this.email === 'test@example.com' && this.password === 'password') {
-      console.log('Login successful');
-      this.router.navigate(['/dashboard']);
+  togglePasswordVisibility() {
+    if (this.passwordVisible === "password") {
+      this.passwordVisible = "text"
     } else {
-      console.log('Invalid credentials');
-      alert('Invalid email or password');
+      this.passwordVisible = "password"
     }
+  }
+
+  onSubmit() {
+    this.loading = true;
+    // Later: replace with real API call
+    if (this.emailCtrl.invalid || this.passwordCtrl.invalid) {
+      alert("Valid email and password required");
+    } else {
+      if (this.email === 'test@example.com' && this.password === 'password') {
+        console.log('Login successful');
+        this.router.navigate(['/dashboard']);
+      } else {
+        console.log('Invalid credentials');
+        alert('Invalid email or password');
+      }
+    }
+    this.loading = false;
   }
 }

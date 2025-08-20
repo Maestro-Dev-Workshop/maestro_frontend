@@ -1,32 +1,78 @@
 <div class="flex flex-row w-screen h-screen justify-between">
   <!-- left panel -->
   <div class="w-6/12 h-full flex flex-col p-12">
-    <div class="flex flex-row mt-16 mb-8 items-center">
-      <img src="images/logo-coloured.svg" alt="Maestro Logo" class="w-16 mr-2">
-      <span class="font-bold text-4xl h-max" style="color: #002D4B;">Maestro</span>
+    <div class="flex flex-row my-8 items-center">
+      <img src="images/logo-coloured.svg" alt="Maestro Logo" class="w-12 mr-2">
+      <span class="font-bold text-3xl h-max text-prussian-blue-500">Maestro</span>
     </div>
-    <h1 class="font-bold text-2xl text-gray-700 my-2">Welcome!</h1>
+    <h1 class="font-bold text-2xl text-gray-700 my-2">Welcome Back!</h1>
     <p class="">Access your personalized lessons and materials.</p>
-    <form action="" class="mt-2">
+    <form class="mt-2" #form="ngForm">
+      <!-- Email Input -->
       <div class="flex flex-col my-6 font-medium">
-        <label for="" class="text-gray-400">Email Address</label>
-        <input type="email" name="" id="" placeholder="Email Address" class="bg-gray-100 p-4 rounded-md">
+        <label class="text-gray-400">Email Address</label>
+        <input
+          type="email"
+          name="email"
+          placeholder="Email Address"
+          class="bg-gray-100 p-4 rounded-md"
+          [(ngModel)]="email"
+          required
+          email
+          #emailCtrl="ngModel"
+        />
+        <!-- Error messages -->
+        @if (emailCtrl.invalid && emailCtrl.touched) {
+          <div class="text-red-500 text-sm mt-1">
+            @if (emailCtrl.errors?.['required']) {<span>Email is required</span>}
+            @if (emailCtrl.errors?.['email']) {<span>Invalid email format</span>}
+          </div>
+        }
       </div>
+
+      <!-- Password Input -->
       <div class="flex flex-col my-6 font-medium relative">
-        <label for="" class="text-gray-400">Password</label>
-        <input type="password" name="" id="" placeholder="Password" class="bg-gray-100 p-4 rounded-md">
-        <button class="absolute m-4 right-0 bottom-0">
+        <label class="text-gray-400">Password</label>
+        <input 
+          [type]="passwordVisible" 
+          name="password" 
+          placeholder="Password" 
+          class="bg-gray-100 p-4 rounded-md" 
+          [(ngModel)]="password"
+          required
+          password
+          #passwordCtrl="ngModel"
+        />
+        <!-- Error messages -->
+        @if (passwordCtrl.invalid && passwordCtrl.touched) {
+          <div class="text-red-500 text-sm mt-1">
+            <span>Password is required</span>
+          </div>
+        }
+        <button class="absolute m-4 right-0 bottom-0" (click)="togglePasswordVisibility()">
           <img src="images/eye-icon.svg" alt="" class="w-6">
         </button>
       </div>
-      <button type="submit" class="w-full rounded-md p-4 text-white font-bold" style="background-color: #002d4b80;">Next</button>
+
+      <button 
+        type="submit" 
+        class="w-full rounded-md p-4 text-white font-bold bg-prussian-blue-500 hover:bg-prussian-blue-100 disabled:bg-prussian-blue-100" 
+        (click)="onSubmit()" 
+        [disabled]="loading"
+      >
+        Next
+      </button>
     </form>
     <div class="self-center m-4">
-      New to Maestro? <a href="/signup" style="color: #002D4B;" class="font-medium">Sign Up!</a>
+      New to Maestro? <a href="/signup" class="font-medium text-prussian-blue-500 hover:text-prussian-blue-100">Sign Up!</a>
     </div>
   </div>
   <!-- right panel -->
-  <div class="w-6/12 h-full">
-    <img src="images/person-studying-1.png" alt="Maestro Logo" class="h-full w-full">
+  <div class="w-6/12 h-full relative">
+    <img src="images/person-studying-1.png" alt="Maestro Logo" class="h-full w-full object-cover">
+    <div class="flex flex-row m-8 items-center absolute left-0 bottom-0">
+      <img src="images/logo-white.svg" alt="Maestro Logo" class="w-12 mr-2">
+      <span class="font-bold text-3xl h-max text-white">Maestro</span>
+    </div>
   </div>
 </div>
