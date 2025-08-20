@@ -72,6 +72,14 @@
   font-style: italic;
 }
 
+@font-face {
+  font-family: 'Obadiah-Pro';
+  src: url('/fonts/ObadiahPro-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
 html, body {
   @apply font-sans;
+  height: 100%;
 }

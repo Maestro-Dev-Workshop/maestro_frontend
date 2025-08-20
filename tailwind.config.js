@@ -6,11 +6,14 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Satoshi', 'ui-sans-serif', 'system-ui']
+        sans: ['Satoshi', 'ui-sans-serif', 'system-ui'],
+        serif: ['Obadiah-Pro', 'ui-serif', 'Georgia']
       },
       colors: {
         "prussian-blue": {
           100: "#002D4B80",
+          300: "#002D4BB0",
+          400: "#002D4BD0",
           500: "#002D4B"
         }
       }
