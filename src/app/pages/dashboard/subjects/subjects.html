@@ -1,1 +1,16 @@
-<p>subjects works!</p>
+<app-header></app-header>
+@if (subjects.length == 0) {
+  <div class="flex flex-col w-full h-full items-center justify-center">
+    <h1 class="m-2 text-3xl font-medium">Start Your Learning Journey</h1>
+    <p class="w-6/12 text-center">Create subjects to keep your study materials neatly categorized and easy to find.</p>
+    <button 
+      routerLink="/subject-create/naming-upload"
+      class="w-max rounded-md m-8 px-5 py-3 text-white bg-prussian-blue-400 hover:bg-prussian-blue-100 disabled:bg-prussian-blue-100 flex flex-row" 
+    >
+      Create New Subject
+      <img src="images/create-subject-icon.svg" alt="" class="w-4 ml-2">
+    </button>
+  </div>
+} @else {
+  <p>jdsndknskdnaksndnaskdnasdn</p>
+}
