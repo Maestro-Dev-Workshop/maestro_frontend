@@ -1,1 +1,23 @@
-<p>naming-upload works!</p>
+<app-header></app-header>
+<div class="flex flex-col w-full px-32">
+  <div class="flex flex-row">
+    <app-creation-step-tab
+      [text]="'My Subject and Materials'"
+      [icon]="'images/subject-icon.svg'"
+      [active]="true"
+      class="w-2/6"
+    />
+    <app-creation-step-tab
+      [text]="'Lesson Content Generation'"
+      [icon]="'images/lesson-generation-icon.svg'"
+      [active]="false"
+      class="w-2/6"
+    />
+    <app-creation-step-tab
+      [text]="'Practice Question Generation'"
+      [icon]="'images/question-generation-icon.svg'"
+      [active]="false"
+      class="w-2/6"
+    />
+  </div>
+</div>
