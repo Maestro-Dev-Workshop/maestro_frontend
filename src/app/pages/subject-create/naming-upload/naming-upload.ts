@@ -14,6 +14,7 @@ export class NamingUpload {
   subjectName = '';
   files: File[] = [];
   isDragging = false;
+  loading = false;
 
   constructor(private router: Router) {}
 
@@ -50,12 +51,15 @@ export class NamingUpload {
   }
 
   onSubmit() {
+    this.loading = true;
     if (this.subjectName.trim() === '') {
       alert('Subject name is required');
+      this.loading = false;
       return;
     }
     if (this.files.length === 0) {
       alert('At least one file must be uploaded');
+      this.loading = false;
       return;
     }
 
@@ -63,7 +67,7 @@ export class NamingUpload {
     console.log('Subject Name:', this.subjectName);
     console.log('Files:', this.files);
 
-    // Navigate to the next step or show success message
     this.router.navigate(['/subject-create/topic-preferences']);
+    this.loading = false;
   }
 }
