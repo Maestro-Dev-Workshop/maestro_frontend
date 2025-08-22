@@ -1,1 +1,122 @@
-<p>question-settings works!</p>
+<app-header></app-header>
+<div class="flex flex-col w-full px-32">
+  <!-- Creation Tab Header -->
+  <div class="flex flex-row mb-8">
+    <app-creation-step-tab
+      [text]="'My Subject and Materials'"
+      [icon]="'images/subject-icon.svg'"
+      [active]="true"
+      class="w-2/6"
+    />
+    <app-creation-step-tab
+      [text]="'Lesson Content Generation'"
+      [icon]="'images/lesson-generation-icon.svg'"
+      [active]="true"
+      class="w-2/6"
+    />
+    <app-creation-step-tab
+      [text]="'Practice Question Generation'"
+      [icon]="'images/question-generation-icon.svg'"
+      [active]="true"
+      class="w-2/6"
+    />
+  </div>
+
+  <h1 class="text-2xl mb-2 font-medium">Set Practice Questions</h1>
+  <p class="mb-4 text-gray-600">
+    You can choose to generate practice exercises as well as an exam alongside the lesson.
+  </p>
+
+  <form #form="ngForm" class="flex flex-row justify-between w-full my-4">
+    <!-- Exercise Form -->
+    <div class="flex flex-col w-2/4">
+      <h1 class="text-2xl">Exercises</h1>
+      <!-- Include Exercises -->
+      <label class="my-2">Do you want to include exercises for each topic?</label>
+      <div>
+        <input type="radio" name="include-exercise" id="exercise-yes" class="m-2" [value]="true" [(ngModel)]="exerciseSettings.include">
+        <label for="exercise-yes">Yes</label>
+      </div>
+      <div>
+        <input type="radio" name="include-exercise" id="exercise-no" class="m-2" [value]="false" [(ngModel)]="exerciseSettings.include">
+        <label for="exercise-no">No</label>
+      </div>
+
+      <!-- Exercise Question Types -->
+      <label class="my-2">What question types do you want for the exercise?</label>
+      <div>
+        <input type="checkbox" id="exercise-mc" class="m-2" [disabled]="!exerciseSettings.include" value="multiple choice" (change)="toggleExerciseType($event)">
+        <label for="exercise-mc">Multiple Choice</label>
+      </div>
+      <div>
+        <input type="checkbox" id="exercise-ms" class="m-2" [disabled]="!exerciseSettings.include" value="multiple selection" (change)="toggleExerciseType($event)">
+        <label for="exercise-ms">Multiple Selection</label>
+      </div>
+      <div>
+        <input type="checkbox" id="exercise-ess" class="m-2" [disabled]="!exerciseSettings.include" value="essay" (change)="toggleExerciseType($event)">
+        <label for="exercise-ess">Essay</label>
+      </div>
+      
+      <!-- Exercise Preference -->
+      <label class="my-2">How would you like the exercises to be?</label>
+      <textarea
+        type="text" 
+        name="exercisePreference" 
+        placeholder="Input your custom instructions for exercise generation here." 
+        class="bg-gray-50 p-4 rounded-lg border border-2 h-32 text-sm w-11/12" 
+        [(ngModel)]="exerciseSettings.preference"
+        [disabled]="!exerciseSettings.include"
+      ></textarea>
+    </div>
+    
+    <!-- Exam Form -->
+    <div class="flex flex-col w-2/4">
+      <h1 class="text-2xl">Exam</h1>
+      <!-- Include Exam -->
+      <label class="my-2">Do you want to include an exam for the lesson?</label>
+      <div>
+        <input type="radio" name="include-exam" id="exam-yes" class="m-2" [value]="true" [(ngModel)]="examSettings.include">
+        <label for="exam-yes">Yes</label>
+      </div>
+      <div>
+        <input type="radio" name="include-exam" id="exam-no" class="m-2" [value]="false" [(ngModel)]="examSettings.include">
+        <label for="exam-no">No</label>
+      </div>
+
+      <!-- Exam Question Types -->
+      <label class="my-2">What question types do you want for the exam?</label>
+      <div>
+        <input type="checkbox" id="exam-mc" class="m-2" [disabled]="!examSettings.include" value="multiple choice" (change)="toggleExamType($event)">
+        <label for="exam-mc">Multiple Choice</label>
+      </div>
+      <div>
+        <input type="checkbox" id="exam-ms" class="m-2" [disabled]="!examSettings.include" value="multiple selection" (change)="toggleExamType($event)">
+        <label for="exam-ms">Multiple Selection</label>
+      </div>
+      <div>
+        <input type="checkbox" id="exam-ess" class="m-2" [disabled]="!examSettings.include" value="essay" (change)="toggleExamType($event)">
+        <label for="exam-ess">Essay</label>
+      </div>
+      
+      <!-- Exam Preference -->
+      <label class="my-2">How would you like the exam to be?</label>
+      <textarea
+        type="text" 
+        name="examPreference" 
+        placeholder="Input your custom instructions for exam generation here." 
+        class="bg-gray-50 p-4 rounded-lg border border-2 h-32 text-sm w-11/12" 
+        [(ngModel)]="examSettings.preference"
+        [disabled]="!examSettings.include"
+      ></textarea>
+    </div>
+  </form>
+  <button
+    type="submit" 
+    class="w-max bg-prussian-blue-800 hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500 text-white flex flex-row items-center px-5 py-3 rounded-md text-sm my-4" 
+    (click)="onSubmit()"
+    [disabled]="loading"
+  >
+    Next
+    <img src="images/next-icon.svg" alt="" class="w-3 ml-2">
+  </button>
+</div>

@@ -1,1 +1,76 @@
-<p>topic-preferences works!</p>
+<app-header></app-header>
+<div class="flex flex-col w-full px-32">
+  <!-- Creation Tab Header -->
+  <div class="flex flex-row mb-8">
+    <app-creation-step-tab
+      [text]="'My Subject and Materials'"
+      [icon]="'images/subject-icon.svg'"
+      [active]="true"
+      class="w-2/6"
+    />
+    <app-creation-step-tab
+      [text]="'Lesson Content Generation'"
+      [icon]="'images/lesson-generation-icon.svg'"
+      [active]="true"
+      class="w-2/6"
+    />
+    <app-creation-step-tab
+      [text]="'Practice Question Generation'"
+      [icon]="'images/question-generation-icon.svg'"
+      [active]="false"
+      class="w-2/6"
+    />
+  </div>
+
+  <h1 class="text-2xl mb-2 font-medium">Create Your Personalized Lesson</h1>
+  <p class="mb-4 text-gray-600">
+    Select the specific topics from your document that you want Maestro to focus on for your lesson.
+  </p>
+
+  <!-- Topic List -->
+  <div class="flex flex-row flex-wrap mb-16">
+    @for (topic of topics; track topic.id) {
+      <button
+        [class]="'flex flex-row rounded-full py-4 px-6 text-sm text-white mx-2 my-1 transition duration-300 ease-in-out ' + ( topic.selected? 'bg-prussian-blue-900' : 'bg-gray-500')"
+        (click)="toggleTopicSelection(topic.id)"
+      >
+        @if (topic.selected) {
+          <!-- Replace with X icon -->
+          <img src="images/x-icon.svg" alt="X" class="mr-2 w-3">
+        }
+        {{topic.name}}
+      </button>
+    }
+  </div>
+
+  <!-- Learning Preferences Form -->
+  <h1 class="text-2xl font-medium">Learning Style</h1>
+  <form #form="ngForm" class="flex flex-col w-2/4">
+    <label class="text-gray-700 my-2">How would you like this lesson to be?</label>
+    <textarea
+      type="text" 
+      name="learningStyle" 
+      placeholder="This helps Maestro tailor the content delivery to your unique style, you can provide your custom instructions here." 
+      class="bg-gray-50 p-4 rounded-lg border border-2 h-48 text-sm" 
+      [(ngModel)]="learningStyle"
+      required
+      learningStyle
+      #learningStyleCtrl="ngModel"
+    ></textarea>
+    <!-- Error messages -->
+    @if (learningStyleCtrl.invalid && learningStyleCtrl.touched) {
+      <div class="text-red-500 text-sm mt-1">
+        <span>Learning Style is required</span>
+      </div>
+    }
+    <button
+      type="submit" 
+      class="w-max bg-prussian-blue-800 hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500 text-white flex flex-row items-center px-5 py-3 rounded-md text-sm my-4" 
+      (click)="onSubmit()"
+      [disabled]="loading"
+    >
+      Next
+      <img src="images/next-icon.svg" alt="" class="w-3 ml-2">
+    </button>
+  </form>
+</div>
