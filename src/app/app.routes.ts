@@ -19,7 +19,7 @@ export const routes: Routes = [
   { path: 'subject-create/question-settings', loadComponent: () => import('./pages/subject-create/question-settings/question-settings').then(m => m.QuestionSettings) },
 
   // Lesson
-  { path: 'lesson/:subjectId', loadComponent: () => import('./pages/lesson/subtopic/subtopic').then(m => m.Subtopic) },
+  { path: 'lesson/:subjectId', loadComponent: () => import('./pages/lesson/lesson-page/lesson-page').then(m => m.LessonPage) },
 
   // Catch-all
   { path: '**', redirectTo: '' }

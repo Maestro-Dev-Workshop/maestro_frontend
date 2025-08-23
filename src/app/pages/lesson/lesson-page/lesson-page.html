@@ -1,0 +1,10 @@
+<app-header/>
+<div class="w-full flex flex-row justify-between">
+  <app-sidebar [content]="subjectContent" [currentView]="currentView" (updateView)="updateCurrentView($event)" class="w-1/5"></app-sidebar>
+  <div>
+    <app-subtopic></app-subtopic>
+    <app-exercise></app-exercise>
+    <app-exam></app-exam>
+  </div>
+  <app-chatbot></app-chatbot>
+</div>
