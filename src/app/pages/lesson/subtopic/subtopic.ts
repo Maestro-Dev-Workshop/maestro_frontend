@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 
 @Component({
   selector: 'app-subtopic',
@@ -7,5 +7,15 @@ import { Component } from '@angular/core';
   styleUrl: './subtopic.css'
 })
 export class Subtopic {
+  currentTopic = input<any>();
+  currentView = input<any>();
+  cycleSubtopic = output<any>();
 
+  prevSubtopic() {
+    this.cycleSubtopic.emit({ topic_id: this.currentTopic().topic_id, direction: 'prev' });
+  }
+
+  nextSubtopic() {
+    this.cycleSubtopic.emit({ topic_id: this.currentTopic().topic_id, direction: 'next' });
+  }
 }

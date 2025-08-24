@@ -151,16 +151,39 @@ export class LessonPage {
 
     if (event.type === 'subtopic') {
       this.currentView.content = this.subjectContent.topics
-        .flatMap((topic: any) => topic.subtopics)
-        .find((subtopic: any)=> subtopic.subtopic_id === event.id) || {};
+      .flatMap((topic: any) => topic.subtopics)
+      .find((subtopic: any)=> subtopic.subtopic_id === event.id) || {};
     } else if (event.type === 'exercise') {
       this.currentView.content = this.subjectContent.topics
-        .flatMap((topic: any) => topic.exercise)
-        .find((exercise: any) => exercise.exercise_id === event.id) || {};
+      .flatMap((topic: any) => topic.exercise)
+      .find((exercise: any) => exercise.exercise_id === event.id) || {};
     } else if (event.type === 'exam') {
       this.currentView.content = this.subjectContent.exam
     }
-
     console.log(this.currentView)
+  }
+  
+  getTopicData() {
+    const topicData = this.subjectContent.topics.find((topic: any) => topic.subtopics.some((subtopic: any) => subtopic.subtopic_id === this.currentView.id));
+    return { topic_id: topicData?.topic_id, topic_name: topicData?.topic_name};
+  }
+
+  // Updates the current view to the previous or next subtopic
+  changeSubtopic(event: any) {
+    const topic_id = event.topic_id
+    const direction = event.direction;
+
+    const topic = this.subjectContent.topics.find((t: any) => t.topic_id === topic_id);
+    if (!topic) return;
+    const subtopics = topic.subtopics;
+    const currentIndex = subtopics.findIndex((s: any) => s.subtopic_id === this.currentView.id);
+    if (currentIndex === -1) return;
+    let newIndex = currentIndex + (direction === 'next' ? 1 : -1);
+    if (newIndex < 0) newIndex = 0; // Caps previus subtopic at first subtopic
+    if (newIndex >= subtopics.length) subtopics.length - 1; // Caps next subtopic at last subtopic
+    this.currentView.id = subtopics[newIndex].subtopic_id;
+    this.currentView.content = subtopics[newIndex];
+    this.currentView.type = 'subtopic';
+
   }
 }
