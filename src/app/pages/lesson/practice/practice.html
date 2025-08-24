@@ -1,0 +1,38 @@
+<div class="p-4 w-full flex flex-col">
+  @for (question of currentView().content.questions; track $index) {
+    <div class="w-full p-4">
+      <h2 class="mb-2 text-gray-800">
+        {{$index + 1}}. {{question.question_text}}
+      </h2>
+      @if (question.question_type === 'essay') {
+        <textarea
+          class="w-full p-2 text-gray-600 border-b-2 border-gray-300 resize-none overflow-hidden focus:outline-none focus:border-b-2 focus:border-prussian-blue-800"
+          rows="1"
+          placeholder="Type your answer here..."
+          [(ngModel)]="question.answer"
+          (input)="autoResize($event)"
+          [disabled]="currentView().content.score"
+        ></textarea>
+      } @else {
+        @for (option of question.options; track option.option_id) {
+          <div>
+            <input 
+              [type]="`${question.question_type === 'multiple choice' ? 'radio' : 'checkbox'}`" 
+              [name]="question.question_id" 
+              [id]="option.option_id" 
+              class="m-2 accent-blue-900 cursor-pointer" 
+              [value]="option.option_id"
+              [checked]="option.selected"
+              (change)="toggleSelectOption(question, option.option_id)"
+              [disabled]="currentView().content.score"
+            >
+            <label [for]="option.option_id" class="text-gray-600 cursor-pointer">{{option.option_text}}</label>
+          </div>
+        }
+      }
+    </div>
+  }
+  <button class="self-start w-max text-sm text-white bg-prussian-blue-800 m-4 px-12 py-3 rounded-lg hover:bg-prussian-blue-500 transition duration-100" (click)="submitAnswers()">
+    Submit
+  </button>
+</div>

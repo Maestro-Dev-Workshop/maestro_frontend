@@ -1,0 +1,39 @@
+<app-header/>
+
+<!-- Practice (Exercise/Exam) Header -->
+@if (currentView.type === 'exercise' || currentView.type === 'exam') {
+  <div class="w-full bg-gray-100 flex flex-row items-center justify-between px-12 py-6">
+    <div class="">
+      <h1 class="text-3xl font-medium text-prussian-blue-900">
+        Practice {{currentView.type.capitalize}} for {{(currentView.type === 'exercise') ? getTopicDataFromExercise().topic_name : subjectContent.subject_name}}
+      </h1>
+      <h2 class="text-xl font-medium text-prussian-blue-500">
+        {{ currentView.content.questions.length }} Question{{(currentView.content.questions.length > 1) ? 's' : '' }}
+      </h2>
+      <span class="block mt-4 text-gray-600">These questions will help reinforce your understanding. Take your time to choose the correct answers.</span>
+    </div>
+    <div class="text-3xl flex flex-col text-gray-800 text-right tracking-wider font-medium">
+      <span>Score:</span>
+      <span>
+        @if (currentView.content.score) {
+          {{currentView.content.score}} / {{currentView.content.questions.length}}
+        } @else {
+          Not Graded
+        }
+      </span>
+    </div>
+  </div>
+}
+
+<div class="w-full flex flex-row">
+  <app-sidebar [content]="subjectContent" [currentView]="currentView" (updateView)="updateCurrentView($event)" class="w-1/5"></app-sidebar>
+  <div class="flex w-4/5">
+    @if (currentView.type === 'subtopic') {
+      <app-subtopic [currentTopic]="getTopicDataFromSubtopic()" [currentView]="currentView" (cycleSubtopic)="changeSubtopic($event)" class="w-full mr-6 ml-12"></app-subtopic>
+    }
+    @if (currentView.type === 'exercise' || currentView.type === 'exam') {
+      <app-practice [currentView]="currentView" class="w-full mr-6 ml-12"></app-practice>
+    }
+  </div>
+  <app-chatbot class="hidden w-1/5"></app-chatbot>
+</div>
