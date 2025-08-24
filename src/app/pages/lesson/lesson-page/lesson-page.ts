@@ -3,12 +3,11 @@ import { Header } from '../../../shared/components/header/header';
 import { Sidebar } from '../sidebar/sidebar';
 import { Chatbot } from '../chatbot/chatbot';
 import { Subtopic } from '../subtopic/subtopic';
-import { Exercise } from '../exercise/exercise';
-import { Exam } from '../exam/exam';
+import { Practice } from "../practice/practice";
 
 @Component({
   selector: 'app-lesson-page',
-  imports: [Header, Sidebar, Chatbot, Subtopic, Exercise, Exam],
+  imports: [Header, Sidebar, Chatbot, Subtopic, Practice],
   templateUrl: './lesson-page.html',
   styleUrl: './lesson-page.css'
 })
@@ -40,27 +39,28 @@ export class LessonPage {
         ],
         exercise: {
           exercise_id: 'et1',
+          score: null,
           questions: [
             {
               question_id: 'q1-et1',
               question_text: 'What is the capital of France?',
-              question_type: 'multiple_choice',
+              question_type: 'multiple choice',
               options: [
-                { option_id: '1', option_text: 'Paris', is_correct: true },
-                { option_id: '2', option_text: 'London', is_correct: false },
-                { option_id: '3', option_text: 'Berlin', is_correct: false },
-                { option_id: '4', option_text: 'Madrid', is_correct: false }
+                { option_id: '1', option_text: 'Paris', is_correct: true, selected: false },
+                { option_id: '2', option_text: 'London', is_correct: false, selected: false },
+                { option_id: '3', option_text: 'Berlin', is_correct: false, selected: false },
+                { option_id: '4', option_text: 'Madrid', is_correct: false, selected: false }
               ]
             },
             {
               question_id: 'q2-et2',
               question_text: 'Which of these are oceans on earth?',
-              question_type: 'multiple_selection',
+              question_type: 'multiple selection',
               options: [
-                { option_id: '1', option_text: 'Atlantic Ocean', is_correct: true },
-                { option_id: '2', option_text: 'Pacific Ocean', is_correct: true },
-                { option_id: '3', option_text: 'Amazon River', is_correct: false },
-                { option_id: '4', option_text: 'Nile River', is_correct: false }
+                { option_id: '1', option_text: 'Atlantic Ocean', is_correct: true, selected: false },
+                { option_id: '2', option_text: 'Pacific Ocean', is_correct: true, selected: false },
+                { option_id: '3', option_text: 'Amazon River', is_correct: false, selected: false },
+                { option_id: '4', option_text: 'Nile River', is_correct: false, selected: false }
               ]
             },
             {
@@ -89,22 +89,24 @@ export class LessonPage {
         ],
         exercise: {
           exercise_id: 'et2',
+          score: 2,
           questions: [
             {
               question_id: 'q1-et2',
               question_text: 'What are the main climate zones of the world?',
-              question_type: 'multiple_choice',
+              question_type: 'multiple selection',
               options: [
-                { option_id: '1', option_text: 'Tropical', is_correct: true },
-                { option_id: '2', option_text: 'Arctic', is_correct: true },
-                { option_id: '3', option_text: 'Desert', is_correct: true },
-                { option_id: '4', option_text: 'Mountainous', is_correct: false }
+                { option_id: '1', option_text: 'Tropical', is_correct: true, selected: true },
+                { option_id: '2', option_text: 'Arctic', is_correct: true, selected: true },
+                { option_id: '3', option_text: 'Desert', is_correct: true, selected: true },
+                { option_id: '4', option_text: 'Mountainous', is_correct: false, selected: false }
               ]
             },
             {
               question_id: 'q2-et2',
               question_text: 'Explain how human activities impact the environment.',
               question_type: 'essay',
+              answer: 'Human activities such as deforestation, pollution, and urbanization significantly impact the environment by altering ecosystems, contributing to climate change, and reducing biodiversity.'
             }
           ]
         }
@@ -112,27 +114,29 @@ export class LessonPage {
     ],
     exam: {
       exam_id: 'e1',
+      score: null,
       questions: [
         {
           question_id: 'q1-e1',
           question_text: 'What is the largest continent on Earth?',
-          question_type: 'multiple_choice',
+          question_type: 'multiple choice',
           options: [
-            { option_id: '1', option_text: 'Asia', is_correct: true },
-            { option_id: '2', option_text: 'Africa', is_correct: false },
-            { option_id: '3', option_text: 'North America', is_correct: false },
-            { option_id: '4', option_text: 'Europe', is_correct: false }
+            { option_id: '1', option_text: 'Asia', is_correct: true, selected: false },
+            { option_id: '2', option_text: 'Africa', is_correct: false, selected: false },
+            { option_id: '3', option_text: 'North America', is_correct: false, selected: false },
+            { option_id: '4', option_text: 'Europe', is_correct: false, selected: false }
           ]
         },
         {
           question_id: 'q2-e1',
           question_text: 'Describe the water cycle and its significance in geography.',
           question_type: 'essay',
+          answer: null
         }
       ]
     }
   }
-  currentView = {
+  currentView: any = {
     type: 'subtopic', // 'subtopic', 'exercise', or 'exam'
     id: '', // ID of the current subtopic, exercise question, or exam question
     content: {} // Content to display based on the current view
@@ -163,8 +167,13 @@ export class LessonPage {
     console.log(this.currentView)
   }
   
-  getTopicData() {
+  getTopicDataFromSubtopic() {
     const topicData = this.subjectContent.topics.find((topic: any) => topic.subtopics.some((subtopic: any) => subtopic.subtopic_id === this.currentView.id));
+    return { topic_id: topicData?.topic_id, topic_name: topicData?.topic_name};
+  }
+
+  getTopicDataFromExercise() {
+    const topicData = this.subjectContent.topics.find((topic: any) => topic.exercise && topic.exercise.exercise_id === this.currentView.id);
     return { topic_id: topicData?.topic_id, topic_name: topicData?.topic_name};
   }
 

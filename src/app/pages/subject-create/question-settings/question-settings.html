@@ -34,26 +34,26 @@
       <!-- Include Exercises -->
       <label class="my-2">Do you want to include exercises for each topic?</label>
       <div>
-        <input type="radio" name="include-exercise" id="exercise-yes" class="m-2" [value]="true" [(ngModel)]="exerciseSettings.include">
+        <input type="radio" name="include-exercise" id="exercise-yes" class="m-2 accent-blue-900" [value]="true" [(ngModel)]="exerciseSettings.include">
         <label for="exercise-yes">Yes</label>
       </div>
       <div>
-        <input type="radio" name="include-exercise" id="exercise-no" class="m-2" [value]="false" [(ngModel)]="exerciseSettings.include">
+        <input type="radio" name="include-exercise" id="exercise-no" class="m-2 accent-blue-900" [value]="false" [(ngModel)]="exerciseSettings.include">
         <label for="exercise-no">No</label>
       </div>
 
       <!-- Exercise Question Types -->
       <label class="my-2">What question types do you want for the exercise?</label>
       <div>
-        <input type="checkbox" id="exercise-mc" class="m-2" [disabled]="!exerciseSettings.include" value="multiple choice" (change)="toggleExerciseType($event)">
+        <input type="checkbox" id="exercise-mc" class="m-2 accent-blue-900" [disabled]="!exerciseSettings.include" value="multiple choice" (change)="toggleExerciseType($event)">
         <label for="exercise-mc">Multiple Choice</label>
       </div>
       <div>
-        <input type="checkbox" id="exercise-ms" class="m-2" [disabled]="!exerciseSettings.include" value="multiple selection" (change)="toggleExerciseType($event)">
+        <input type="checkbox" id="exercise-ms" class="m-2 accent-blue-900" [disabled]="!exerciseSettings.include" value="multiple selection" (change)="toggleExerciseType($event)">
         <label for="exercise-ms">Multiple Selection</label>
       </div>
       <div>
-        <input type="checkbox" id="exercise-ess" class="m-2" [disabled]="!exerciseSettings.include" value="essay" (change)="toggleExerciseType($event)">
+        <input type="checkbox" id="exercise-ess" class="m-2 accent-blue-900" [disabled]="!exerciseSettings.include" value="essay" (change)="toggleExerciseType($event)">
         <label for="exercise-ess">Essay</label>
       </div>
       
@@ -75,26 +75,26 @@
       <!-- Include Exam -->
       <label class="my-2">Do you want to include an exam for the lesson?</label>
       <div>
-        <input type="radio" name="include-exam" id="exam-yes" class="m-2" [value]="true" [(ngModel)]="examSettings.include">
+        <input type="radio" name="include-exam" id="exam-yes" class="m-2 accent-blue-900" [value]="true" [(ngModel)]="examSettings.include">
         <label for="exam-yes">Yes</label>
       </div>
       <div>
-        <input type="radio" name="include-exam" id="exam-no" class="m-2" [value]="false" [(ngModel)]="examSettings.include">
+        <input type="radio" name="include-exam" id="exam-no" class="m-2 accent-blue-900" [value]="false" [(ngModel)]="examSettings.include">
         <label for="exam-no">No</label>
       </div>
 
       <!-- Exam Question Types -->
       <label class="my-2">What question types do you want for the exam?</label>
       <div>
-        <input type="checkbox" id="exam-mc" class="m-2" [disabled]="!examSettings.include" value="multiple choice" (change)="toggleExamType($event)">
+        <input type="checkbox" id="exam-mc" class="m-2 accent-blue-900" [disabled]="!examSettings.include" value="multiple choice" (change)="toggleExamType($event)">
         <label for="exam-mc">Multiple Choice</label>
       </div>
       <div>
-        <input type="checkbox" id="exam-ms" class="m-2" [disabled]="!examSettings.include" value="multiple selection" (change)="toggleExamType($event)">
+        <input type="checkbox" id="exam-ms" class="m-2 accent-blue-900" [disabled]="!examSettings.include" value="multiple selection" (change)="toggleExamType($event)">
         <label for="exam-ms">Multiple Selection</label>
       </div>
       <div>
-        <input type="checkbox" id="exam-ess" class="m-2" [disabled]="!examSettings.include" value="essay" (change)="toggleExamType($event)">
+        <input type="checkbox" id="exam-ess" class="m-2 accent-blue-900" [disabled]="!examSettings.include" value="essay" (change)="toggleExamType($event)">
         <label for="exam-ess">Essay</label>
       </div>
       
