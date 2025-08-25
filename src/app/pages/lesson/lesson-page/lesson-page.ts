@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { Header } from '../../../shared/components/header/header';
 import { Sidebar } from '../sidebar/sidebar';
 import { Chatbot } from '../chatbot/chatbot';
@@ -53,7 +53,7 @@ export class LessonPage {
               ]
             },
             {
-              question_id: 'q2-et2',
+              question_id: 'q2-et1',
               question_text: 'Which of these are oceans on earth?',
               question_type: 'multiple selection',
               options: [
@@ -64,7 +64,7 @@ export class LessonPage {
               ]
             },
             {
-              question_id: 'q3-et3',
+              question_id: 'q3-et1',
               question_text: 'Describe the importance of studying geography in understanding global issues.',
               question_type: 'essay',
             }
@@ -141,6 +141,28 @@ export class LessonPage {
     id: '', // ID of the current subtopic, exercise question, or exam question
     content: {} // Content to display based on the current view
   }
+  chatOpen = false;
+  chatHistory = [
+    {
+      sender: "user",
+      message: "Hello",
+      timestamp: ""
+    },
+    {
+      sender: "assistant",
+      message: "Hi there, how can I help you?",
+      timestamp: ""
+    },
+  ]
+  chatMetadata: any = {
+    topic_name: null,
+    topic_id: null,
+    sub_topic_name: null,
+    sub_topic_id: null,
+    exercise_id: null,
+    exam_id: null,
+    question_id: null
+  }
 
   constructor() {
     // Extract subjectId from the route parameters
@@ -149,21 +171,27 @@ export class LessonPage {
     this.subjectId = parts[parts.length - 1]; // Assuming the last part is the subjectId
   }
 
-  updateCurrentView(event: any) {
-    this.currentView.type = event.type;
-    this.currentView.id = event.id;
+  updatecurrentView(event: any) {
+    let content = null;
 
     if (event.type === 'subtopic') {
-      this.currentView.content = this.subjectContent.topics
-      .flatMap((topic: any) => topic.subtopics)
-      .find((subtopic: any)=> subtopic.subtopic_id === event.id) || {};
-    } else if (event.type === 'exercise') {
-      this.currentView.content = this.subjectContent.topics
-      .flatMap((topic: any) => topic.exercise)
-      .find((exercise: any) => exercise.exercise_id === event.id) || {};
-    } else if (event.type === 'exam') {
-      this.currentView.content = this.subjectContent.exam
+      content = this.subjectContent.topics
+        .flatMap((topic: any) => topic.subtopics)
+        .find((subtopic: any)=> subtopic.subtopic_id === event.id) || {};
+      } else if (event.type === 'exercise') {
+        content = this.subjectContent.topics
+        .flatMap((topic: any) => topic.exercise)
+        .find((exercise: any) => exercise.exercise_id === event.id) || {};
+      } else if (event.type === 'exam') {
+        content = this.subjectContent.exam
+      }
+      
+    this.currentView = {
+      id: event.id,
+      type: event.type,
+      content: content
     }
+    if (event.type === 'subtopic') this.updateChatMetadata();
     console.log(this.currentView)
   }
   
@@ -184,15 +212,50 @@ export class LessonPage {
 
     const topic = this.subjectContent.topics.find((t: any) => t.topic_id === topic_id);
     if (!topic) return;
+
     const subtopics = topic.subtopics;
     const currentIndex = subtopics.findIndex((s: any) => s.subtopic_id === this.currentView.id);
     if (currentIndex === -1) return;
+
     let newIndex = currentIndex + (direction === 'next' ? 1 : -1);
     if (newIndex < 0) newIndex = 0; // Caps previus subtopic at first subtopic
     if (newIndex >= subtopics.length) subtopics.length - 1; // Caps next subtopic at last subtopic
-    this.currentView.id = subtopics[newIndex].subtopic_id;
-    this.currentView.content = subtopics[newIndex];
-    this.currentView.type = 'subtopic';
 
+    this.updatecurrentView({ id: subtopics[newIndex].subtopic_id, type: 'subtopic'})
+  }
+
+  updateChatMetadata(question_event? : any) {
+    if (this.currentView.type === 'subtopic') {
+      const topicData = this.getTopicDataFromSubtopic()
+      this.chatMetadata.topic_id = topicData.topic_id
+      this.chatMetadata.topic_name = topicData.topic_name
+      this.chatMetadata.sub_topic_id = this.currentView.id
+      this.chatMetadata.sub_topic_name = this.currentView.content.subtopic_name
+      this.chatMetadata.exam_id = null
+      this.chatMetadata.exercise_id = null
+      this.chatMetadata.question_id = null
+    } else if (this.currentView.type === 'exercise') {
+      const topicData = this.getTopicDataFromExercise()
+      this.chatMetadata.topic_id = topicData.topic_id
+      this.chatMetadata.topic_name = topicData.topic_name
+      this.chatMetadata.sub_topic_id = null
+      this.chatMetadata.sub_topic_name = null
+      this.chatMetadata.exam_id = null
+      this.chatMetadata.exercise_id = this.currentView.id
+      this.chatMetadata.question_id = question_event.id
+    } else if (this.currentView.type === 'exam') {
+      this.chatMetadata.topic_id = null
+      this.chatMetadata.topic_name = null
+      this.chatMetadata.sub_topic_id = null
+      this.chatMetadata.sub_topic_name = null
+      this.chatMetadata.exam_id = this.currentView.id
+      this.chatMetadata.exercise_id = null
+      this.chatMetadata.question_id = question_event.id
+    }
+  }
+
+  toggleChatPopup() {
+    this.chatOpen = !this.chatOpen
+    console.log("chat toggled")
   }
 }
