@@ -25,15 +25,43 @@
   </div>
 }
 
-<div class="w-full flex flex-row">
-  <app-sidebar [content]="subjectContent" [currentView]="currentView" (updateView)="updateCurrentView($event)" class="w-1/5"></app-sidebar>
-  <div class="flex w-4/5">
+<div class="w-full flex flex-row flex-grow overflow-hidden">
+  <app-sidebar 
+    class="w-3/12 h-full overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 hover:scrollbar-thumb-gray-500"
+    [content]="subjectContent" 
+    [currentView]="currentView" 
+    (updateView)="updatecurrentView($event)" 
+  ></app-sidebar>
+
+  <div [class]="`flex overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 hover:scrollbar-thumb-gray-500 ${chatOpen ? 'w-6/12' : 'w-9/12'}`">
     @if (currentView.type === 'subtopic') {
-      <app-subtopic [currentTopic]="getTopicDataFromSubtopic()" [currentView]="currentView" (cycleSubtopic)="changeSubtopic($event)" class="w-full mr-6 ml-12"></app-subtopic>
+      <app-subtopic 
+        class="w-full mr-6 ml-12"
+        [currentView]="currentView" 
+        [currentTopic]="getTopicDataFromSubtopic()" 
+        (cycleSubtopic)="changeSubtopic($event)" 
+      ></app-subtopic>
     }
     @if (currentView.type === 'exercise' || currentView.type === 'exam') {
-      <app-practice [currentView]="currentView" class="w-full mr-6 ml-12"></app-practice>
+      <app-practice 
+        class="w-full mr-6 ml-12"
+        [currentView]="currentView" 
+        (changeQuestion)="updateChatMetadata($event)" 
+      ></app-practice>
     }
   </div>
-  <app-chatbot class="hidden w-1/5"></app-chatbot>
+
+  <app-chatbot 
+    [class]="`w-3/12 absolute right-0 top-0 h-screen ${chatOpen ? '' : 'hidden'}`" 
+    [chatHistory]="chatHistory" 
+    [metadata]="chatMetadata"
+    (closeChat)="toggleChatPopup()"
+  ></app-chatbot>
 </div>
+
+<button 
+  [class]="`absolute right-24 bottom-16 rounded-full p-6 bg-prussian-blue-200 hover:bg-prussian-blue-250 ${chatOpen ? 'hidden' : ''}`" 
+  (click)="toggleChatPopup()"
+>
+  <img src="images/chat-popup-icon.svg" alt="Chat" class="w-10">
+</button>
