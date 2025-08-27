@@ -3,4 +3,5 @@ export interface TopicModel {
   title: string;
   brief_description: string;
   completed: boolean;
+  selected: boolean;
 }

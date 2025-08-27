@@ -13,13 +13,16 @@ export class Chatbot {
   metadata = input<any>();
   closeChat = output<any>();
   currentMessage: string = ''; 
+  loading = false;
 
   onCloseChat() {
     this.closeChat.emit({});
   }
 
   sendMessage() {
+    this.loading = true;
     if (!this.currentMessage) {
+      this.loading = false;
       return
     }
 
@@ -42,5 +45,6 @@ export class Chatbot {
     console.log(reply)
 
     this.currentMessage = '';
+    this.loading = false;
   }
 }

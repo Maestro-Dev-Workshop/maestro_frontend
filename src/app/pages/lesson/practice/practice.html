@@ -48,7 +48,11 @@
   </div>
 
   <!-- Submission Button -->
-  <button class="self-start w-max text-sm text-white bg-prussian-blue-800 m-4 px-12 py-3 rounded-lg hover:bg-prussian-blue-500 transition duration-100" (click)="submitAnswers()">
+  <button 
+    class="self-start w-max text-sm text-white bg-prussian-blue-800 m-4 px-12 py-3 rounded-lg hover:bg-prussian-blue-500 transition duration-100" 
+    (click)="submitAnswers()"
+    [disabled]="loading"
+  >
     Submit
   </button>
 </div>

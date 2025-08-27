@@ -50,6 +50,23 @@ export class NamingUpload {
     this.files = this.files.filter(f => f !== file);
   }
 
+  formatFileSize(file: File) {
+    let size: any = file.size
+    let end = null
+    if (size >= 1_000_000) {
+      size /= 1_000_000
+      size = size.toFixed(3)
+      end = 'MB'
+    } else if (size >= 1_000) {
+      size /= 1_000
+      size = size.toFixed(3)
+      end = 'KB'
+    } else {
+      end = 'B'
+    }
+    return `${size} ${end}`
+  }
+
   onSubmit() {
     this.loading = true;
     if (this.subjectName.trim() === '') {
