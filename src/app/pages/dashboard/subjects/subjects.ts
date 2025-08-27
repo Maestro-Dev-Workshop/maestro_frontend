@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Header } from '../../../shared/components/header/header';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { SubjectModel } from '../../../core/models/subject-model';
+import { SubjectModel } from '../../../core/models/subject.model';
 
 @Component({
   selector: 'app-subjects',

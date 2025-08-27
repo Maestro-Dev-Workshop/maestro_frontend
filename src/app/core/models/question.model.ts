@@ -1,15 +1,18 @@
 export interface QuestionOption {
   id: string;
   text: string;
-  isCorrect: boolean;
+  correct: boolean;
+  selected: boolean;
+  explanation: string;
 }
 
-export type QuestionType = 'multiple-choice' | 'multi-select' | 'essay';
+export type QuestionType = 'multiple choice' | 'multi selection' | 'essay';
 
 export interface QuestionModel {
   id: string;
-  prompt: string;
-  type: QuestionType;
+  text: string;
+  question_type: QuestionType;
   options?: QuestionOption[]; // only for choice types
-  subtopicId: string;
+  essay_answer?: string;
+  essay_feedback?: string;
 }

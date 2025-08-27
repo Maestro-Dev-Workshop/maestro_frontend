@@ -4,5 +4,5 @@ export interface ChatMessage {
   id: string;
   sender: Sender;
   timestamp: string;
-  content: string;
+  message: string;
 }
