@@ -11,16 +11,16 @@
   <div class="p-2">
     <!-- Topic List -->
     @for (topic of content().topics; track topic.topic_id) {
-      <button class="flex flex-row items-center hover:text-gray-600 text-left" (click)="toggleExpandTopic(topic.topic_id)">
+      <button [class]="`flex flex-row items-center hover:text-gray-600 text-left ${!topic.completed ? 'font-bold' : ''}`" (click)="toggleExpandTopic(topic.topic_id)">
         <img src="images/dropdown-icon-closed.svg" alt="" [class]="`w-2 m-4 ${topic.expanded ? 'rotate-90' : ''}`">
         {{ topic.topic_name }}
       </button>
       @if (topic.expanded) {
         <!-- Subtopic List -->
         @for (subtopic of topic.subtopics; track subtopic.subtopic_id) {
-          <button [class]="`py-2 px-2 pl-8 text-gray-600 w-full text-left hover:bg-prussian-blue-200 border-prussian-blue-900 ${
-            (subtopic.subtopic_id === currentView().id && currentView().type === 'subtopic') ? 'border-l-4' : ''
-            }`"
+          <button [class]="`py-2 px-2 pl-8 text-gray-600 w-full text-left hover:bg-prussian-blue-200 border-prussian-blue-900 
+            ${(subtopic.subtopic_id === currentView().id && currentView().type === 'subtopic') ? 'border-l-4' : ''}
+            ${!subtopic.read ? 'font-bold' : ''}`"
             (click)="selectView(subtopic.subtopic_id, 'subtopic')"
           >
             {{ subtopic.subtopic_name }}
@@ -28,9 +28,9 @@
         }
         <!-- Exercise -->
         @if (topic.exercise) {
-          <button [class]="`py-2 px-2 pl-8 text-gray-600 w-full text-left hover:bg-prussian-blue-200 border-prussian-blue-900 ${
-              (topic.exercise.exercise_id === currentView().id && currentView().type === 'exercise') ? 'border-l-4' : ''
-              }`"
+          <button [class]="`py-2 px-2 pl-8 text-gray-600 w-full text-left hover:bg-prussian-blue-200 border-prussian-blue-900 
+            ${(topic.exercise.exercise_id === currentView().id && currentView().type === 'exercise') ? 'border-l-4' : ''}
+            ${!topic.exercise.score ? 'font-bold' : ''}`"
             (click)="selectView(topic.exercise.exercise_id, 'exercise')">
             Exercise
           </button>
@@ -39,9 +39,9 @@
     }
     <!-- Exam -->
     @if (content().exam) {
-      <button [class]="`py-2 px-2 pl-8 text-gray-600 w-full text-left hover:bg-prussian-blue-200 border-prussian-blue-900 ${
-          (content().exam.exam_id === currentView().id && currentView().type === 'exam') ? 'border-l-4' : ''
-          }`"
+      <button [class]="`py-2 px-2 pl-8 text-gray-600 w-full text-left hover:bg-prussian-blue-200 border-prussian-blue-900 
+        ${(content().exam.exam_id === currentView().id && currentView().type === 'exam') ? 'border-l-4' : ''}
+        ${!content().exam.score ? 'font-bold' : ''}`"
         (click)="selectView(content().exam.exam_id, 'exam')">
         Exam
       </button>

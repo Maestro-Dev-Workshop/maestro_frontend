@@ -34,7 +34,7 @@
         <!-- Subjects Item -->
         <button 
           class="flex flex-col w-56 h-28 p-4 bg-prussian-blue-150 hover:bg-prussian-blue-200 rounded-md justify-between m-4 relative hover:top-2"
-          routerLink="/lesson/{{subject.id}}"
+          (click)="navigateSubject(subject)"
         >
           <div class="flex flex-row justify-between items-center">
             <span>{{subject.name}}</span>

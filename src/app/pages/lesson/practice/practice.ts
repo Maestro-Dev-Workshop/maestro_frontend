@@ -11,6 +11,7 @@ export class Practice {
   currentView = input<any>();
   changeQuestion = output<any>();
   question: any;
+  loading = false;
 
   // This will run any time currentView changes
   private updateOnInputChange = effect(() => {
@@ -59,6 +60,9 @@ export class Practice {
   }
 
   submitAnswers() {
-
+    this.loading = true;
+    // score exercise/exam
+    // emit check for completed topic
+    this.loading = false;
   }
 }

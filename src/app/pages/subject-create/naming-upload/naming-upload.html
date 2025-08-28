@@ -73,7 +73,7 @@
           @for (file of files; track $index) {
             <li>
               {{ file.name }}
-              <span class="text-gray-400 text-xs">({{ file.size/1000 }} KB)</span>
+              <span class="text-gray-400 text-xs">({{formatFileSize(file)}})</span>
               <button
                 class="ml-2 text-red-500 hover:text-red-700"
                 (click)="removeFile(file)"

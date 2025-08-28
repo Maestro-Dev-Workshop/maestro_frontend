@@ -17,24 +17,28 @@ export class LessonPage {
     subject_name: 'Geography',
     topics: [
       {
+        expanded: false,
         topic_id: 't1',
         topic_name: 'Intro to Geography',
-        expanded: false,
+        completed: false,
         subtopics: [
           {
             subtopic_id: 's1-t1',
             subtopic_name: 'Geography Basics',
-            content: 'Geography is the study of places and the relationships between people and their environments.'
+            content: 'Geography is the study of places and the relationships between people and their environments.',
+            read: true
           },
           {
             subtopic_id: 's2-t1',
             subtopic_name: 'World Capitals',
-            content: 'A capital city is the most important city in a country, often where the government is located.'
+            content: 'A capital city is the most important city in a country, often where the government is located.',
+            read: false
           },
           {
             subtopic_id: 's3-t1',
             subtopic_name: 'Physical Geography',
-            content: 'Physical geography focuses on the natural environment, including landforms, climates, and ecosystems.'
+            content: 'Physical geography focuses on the natural environment, including landforms, climates, and ecosystems.',
+            read: false
           }
         ],
         exercise: {
@@ -72,19 +76,22 @@ export class LessonPage {
         }
       },
       {
+        expanded: false,
         topic_id: 't2',
         topic_name: 'Physical Geography',
-        expanded: false,
+        completed: true,
         subtopics: [
           {
             subtopic_id: 's1-t2',
             subtopic_name: 'Climate Zones',
-            content: 'Climate zones are regions of the world with distinct weather patterns and temperatures.'
+            content: 'Climate zones are regions of the world with distinct weather patterns and temperatures.',
+            read: true
           },
           {
             subtopic_id: 's2-t2',
             subtopic_name: 'Human Geography',
-            content: 'Human geography studies how humans interact with the environment and how cultures vary across regions.'
+            content: 'Human geography studies how humans interact with the environment and how cultures vary across regions.',
+            read: true
           }
         ],
         exercise: {
@@ -178,6 +185,8 @@ export class LessonPage {
       content = this.subjectContent.topics
         .flatMap((topic: any) => topic.subtopics)
         .find((subtopic: any)=> subtopic.subtopic_id === event.id) || {};
+      // mark subtopic as read
+      // check for completed topic
       } else if (event.type === 'exercise') {
         content = this.subjectContent.topics
         .flatMap((topic: any) => topic.exercise)

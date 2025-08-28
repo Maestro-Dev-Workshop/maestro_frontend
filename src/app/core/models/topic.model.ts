@@ -1,5 +1,7 @@
 export interface TopicModel {
   id: string;
-  name: string;
-  order: number;
+  title: string;
+  brief_description: string;
+  completed: boolean;
+  selected: boolean;
 }

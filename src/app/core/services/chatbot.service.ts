@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { HttpBaseService } from './http-base.service';
+import { ChatMetadata } from '../models/chat-metadata.model';
 
 @Injectable({ providedIn: 'root' })
 export class ChatbotService {
-  private baseUrl = '/api/chatbot';
+  constructor(private http: HttpBaseService) {}
 
-  constructor(private http: HttpClient) {}
+  sendMessage(sessionId: string, message: string, metadata: ChatMetadata): Observable<any> {
+    return this.http.post(`chatbot/${sessionId}/send-message`, { message, metadata });
+  }
 
-  sendMessage(message: string): Observable<{ reply: string }> {
-    return this.http.post<{ reply: string }>(this.baseUrl, { message });
+  getChatHistory(sessionId: string): Observable<any> {
+    return this.http.get(`chatbot/${sessionId}/chat-history`);
   }
 }

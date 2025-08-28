@@ -1,6 +1,7 @@
 export interface SubtopicModel {
   id: string;
   title: string;
-  content: string;      // HTML or markdown
-  topicId: string;
+  brief_description: string;
+  content: string;      // Text or markdown
+  read: boolean;
 }

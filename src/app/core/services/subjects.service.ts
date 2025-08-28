@@ -1,27 +1,52 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { SubjectModel } from '../models/subjects.model';
+import { HttpBaseService } from './http-base.service';
 
-@Injectable({ providedIn: 'root' })
-export class SubjectService {
-  private baseUrl = '/api/subjects';
+@Injectable({
+  providedIn: 'root',
+})
+export class SubjectsService {
+  constructor(private http: HttpBaseService) {}
 
-  constructor(private http: HttpClient) {}
-
-  createSubject(data: Partial<SubjectModel>): Observable<SubjectModel> {
-    return this.http.post<SubjectModel>(this.baseUrl, data);
+  getAllSubjects(): Observable<any> {
+    return this.http.get('session/list');
   }
 
-  listSubjects(): Observable<SubjectModel[]> {
-    return this.http.get<SubjectModel[]>(this.baseUrl);
+  createSubject(name: string): Observable<any> {
+    return this.http.post('session/create', { name });
   }
 
-  updateSubject(id: string, data: Partial<SubjectModel>): Observable<SubjectModel> {
-    return this.http.put<SubjectModel>(`${this.baseUrl}/${id}`, data);
+  ingestDocuments(sessionId: string, files: File[]): Observable<any> {
+    const formData = new FormData();
+    files.forEach((file) => formData.append('files', file));
+    return this.http.post(`session/${sessionId}/docs/ingest`, formData);
   }
 
-  deleteSubject(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  labelDocuments(sessionId: string): Observable<any> {
+    return this.http.post(`session/${sessionId}/docs/label`, {});
+  }
+
+  selectTopics(sessionId: string, topicIds: string[]): Observable<any> {
+    return this.http.post(`session/${sessionId}/select-topics`, { topics: topicIds });
+  }
+
+  generateLesson(sessionId: string, prefs: string): Observable<any> {
+    return this.http.post(`session/${sessionId}/generate-lesson`, { lesson_preference: prefs });
+  }
+
+  generateExercise(sessionId: string, prefs: string, questionTypes: string[]): Observable<any> {
+    return this.http.post(`session/${sessionId}/generate-exercise`, { exercise_preference: prefs, question_types: questionTypes });
+  }
+
+  generateExam(sessionId: string, prefs: string, questionTypes: string[], timeLimit: boolean = false): Observable<any> {
+    return this.http.post(`session/${sessionId}/generate-exam`, { exam_preference: prefs, question_types: questionTypes, use_time_limit: timeLimit });
+  }
+
+  updateSessionStatus(sessionId: string, status: string): Observable<any> {
+    return this.http.put(`session/${sessionId}/update-status`, { status });
+  }
+
+  updateSessionProgress(sessionId: string, progress: number): Observable<any> {
+    return this.http.put(`session/${sessionId}/update-progress`, { update_tick: progress });
   }
 }
