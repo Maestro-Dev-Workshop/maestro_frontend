@@ -7,13 +7,15 @@ export interface LoginPayload {
 
 export interface LoginResponse {
   user: UserModel;
-  token: string;
+  accessToken: string;
+  refreshToken: string;
 }
 
 export interface SignupPayload {
   name: string;
   email: string;
   password: string;
+  confirmPassword: string;
 }
 
 export interface VerifyEmailResponse {

@@ -2,6 +2,7 @@ export interface Plan {
   id: string;
   name: string;
   price: number;
+  maxSubjects: number;
   durationDays: number;
 }
 

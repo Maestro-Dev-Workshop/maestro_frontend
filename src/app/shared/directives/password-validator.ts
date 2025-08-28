@@ -17,5 +17,8 @@ export class PasswordValidator implements Validator {
 
     const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*()_+.,?-]{8,}$/;
     return regex.test(control.value) ? null : { invalidPassword: true };
+    const pw = control.get('password')?.value;
+    const cpw = control.get('confirmPassword')?.value;
+    return pw === cpw ? null : { passwordMismatch: true };
   }
 }

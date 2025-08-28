@@ -2,11 +2,15 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpBaseService } from './http-base.service';
 import { UserModel } from '../models/user.model';
+import { LoginResponse } from '../models/auth-payload.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  refreshToken() {
+      throw new Error('Method not implemented.');
+  }
   http = inject(HttpBaseService);
 
   signup(data: { first_name: string, last_name: string, email: string, password: string }): Observable<any> {
@@ -36,4 +40,12 @@ export class AuthService {
   //   localStorage.removeItem('refreshToken');
   //   return response
   // }
+  get accessToken(): string | null {
+    return localStorage.getItem('accessToken');
+  }
+
+  private storeTokens(res: LoginResponse): void{
+    localStorage.setItem('accessToken', res.accessToken);
+    localStorage.setItem('refreshToken', res.refreshToken);
+  }
 }
