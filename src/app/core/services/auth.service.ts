@@ -1,33 +1,34 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { UserModel } from '../models/user.model'; 
+import { HttpBaseService } from './http-base.service';
+import { UserModel } from '../models/user.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root',
+})
 export class AuthService {
-  private baseUrl = '/api/auth';
+  constructor(private http: HttpBaseService) {}
 
-  constructor(private http: HttpClient) {}
-
-  login(credentials: { email: string; password: string }): Observable<UserModel> {
-    return this.http.post<UserModel>(`${this.baseUrl}/login`, credentials);
+  signup(data: UserModel): Observable<any> {
+    return this.http.post('auth/sign-up', data);
   }
 
-  signup(data: { name?: string; email: string; password: string }): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/signup`, data);
+  login(credentials: { email: string; password: string }): Observable<any> {
+    return this.http.post('auth/login', credentials);
+  }
+
+  refreshAccessToken(): Observable<any> {
+    return this.http.post('auth/refresh-token', {});
   }
 
   verifyEmail(token: string): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/verify-email`, {
-      params: { token },
-    });
+    return this.http.post('auth/verify-email', { token });
   }
 
-  logout(): void {
-    localStorage.removeItem('auth_token');
-  }
-
-  getToken(): string | null {
-    return localStorage.getItem('auth_token');
+  logout(): Observable<any> {
+    const response = this.http.post('auth/logout', { refreshToken: localStorage.getItem('refreshToken') });
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    return response;
   }
 }

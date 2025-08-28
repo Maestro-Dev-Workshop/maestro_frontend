@@ -16,3 +16,11 @@ export interface QuestionModel {
   essay_answer?: string;
   essay_feedback?: string;
 }
+
+export interface SaveQuestionData {
+  id: string;
+  type: QuestionType;
+  options?: { id: string; selected: boolean }[]; // only for choice types
+  essay_answer?: string;
+  essay_feedback?: string;
+}
