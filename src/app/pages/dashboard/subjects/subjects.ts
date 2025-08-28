@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { Header } from '../../../shared/components/header/header';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SubjectModel } from '../../../core/models/subject.model';
+import { SubjectsService } from '../../../core/services/subjects.service';
 
 @Component({
   selector: 'app-subjects',
@@ -10,8 +11,8 @@ import { SubjectModel } from '../../../core/models/subject.model';
   templateUrl: './subjects.html',
   styleUrl: './subjects.css'
 })
-export class Subjects {
-  subjects: SubjectModel[] = [
+export class Subjects implements OnInit {
+  old_subjects: SubjectModel[] = [
     {
       "id": "sj2nd-2dkap-uamds",
       "name": "Mathematics",
@@ -41,18 +42,35 @@ export class Subjects {
       "completion": 50,
     }
   ];
+  subjects: SubjectModel[] = [];
+  subjectService = inject(SubjectsService)
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private cdr: ChangeDetectorRef) {}
+
+  ngOnInit(): void {
+    this.subjectService.getAllSubjects().subscribe({
+      next: (response) => {
+        console.log(response)
+        this.subjects = response.sessions;
+        console.log(this.subjects)
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error fetching subjects:', err);
+        alert("Failed to load subjects. Please try again later.");
+      }
+    });
+  }
 
   navigateSubject(subject: SubjectModel) {
-    if (subject.status === 'pending document upload' || subject.status === ' pending topic labelling') {
+    if (subject.status === 'pending document upload' || subject.status === 'pending topic labelling') {
       this.router.navigate(['/subject-create/naming-upload'])
     } else if (subject.status === 'pending topic selection' || subject.status === 'pending lesson generation') {
-      this.router.navigate(['/subject-create/topic-preferences'])
-    } else if (subject.status === 'pending exercise generation' || subject.status === 'pending exam generation') {
-      this.router.navigate(['/subject-create/question-settings'])
+      this.router.navigate([`/subject-create/${subject.id}/topic-preferences`])
+    } else if (subject.status === 'pending practice question generation') {
+      this.router.navigate([`/subject-create/${subject.id}/question-settings`])
     } else {
-      this.router.navigate([`/lesson/:${subject.id}`])
+      this.router.navigate([`/lesson/${subject.id}`])
     }
   }
 }

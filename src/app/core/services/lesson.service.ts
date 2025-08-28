@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpBaseService } from './http-base.service';
 import { SaveQuestionData } from '../models/question.model';
@@ -7,7 +7,7 @@ import { SaveQuestionData } from '../models/question.model';
   providedIn: 'root'
 })
 export class LessonService {
-  constructor(private http: HttpBaseService) {}
+  http = inject(HttpBaseService);
 
   getAllTopics(sessionId: string): Observable<any> {
     return this.http.get<any>(`topic/${sessionId}/list`);

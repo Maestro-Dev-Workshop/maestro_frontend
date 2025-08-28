@@ -1,7 +1,9 @@
 export type ChatMetadata = {
-  topicId?: string;
-  subtopicId?: string;
-  exerciseId?: string;
-  examId?: string;
-  questionId?: string;
+  topic_id?: string | null;
+  topic_name?: string | null;
+  sub_topic_id?: string | null;
+  sub_topic_name?: string | null;
+  exercise_id?: string | null;
+  exam_id?: string | null;
+  question_id?: string | null;
 };

@@ -1,6 +1,7 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { FormsModule, NgModel } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,10 @@ export class Login {
   @ViewChild('emailCtrl') emailCtrl!: NgModel;
   @ViewChild('passwordCtrl') passwordCtrl!: NgModel;
 
-  constructor(private router: Router) {}
+  authService = inject(AuthService);
+  constructor(
+    private router: Router,
+  ) {}
 
   togglePasswordVisibility() {
     if (this.passwordVisible === "password") {
@@ -32,13 +36,20 @@ export class Login {
     if (this.emailCtrl.invalid || this.passwordCtrl.invalid) {
       alert("Valid email and password required");
     } else {
-      if (this.email === 'test@example.com' && this.password === 'password') {
-        console.log('Login successful');
-        this.router.navigate(['/dashboard']);
-      } else {
-        console.log('Invalid credentials');
-        alert('Invalid email or password');
-      }
+      this.authService.login({ email: this.email, password: this.password }).subscribe({
+        next: (response) => {
+          console.log('Login successful', response);
+          localStorage.setItem('accessToken', response.accessToken);
+          localStorage.setItem('refreshToken', response.refreshToken);
+          const user = response.user;
+          console.log('Logged in user:', user);
+          this.router.navigate(['/dashboard']);
+        },
+        error: (error) => {
+          console.error('Login failed', error);
+          alert('Invalid email or password');
+        }
+      });
     }
     this.loading = false;
   }

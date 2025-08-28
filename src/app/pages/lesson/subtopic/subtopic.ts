@@ -1,8 +1,9 @@
 import { Component, input, output } from '@angular/core';
+import { MarkdownModule } from 'ngx-markdown';
 
 @Component({
   selector: 'app-subtopic',
-  imports: [],
+  imports: [MarkdownModule],
   templateUrl: './subtopic.html',
   styleUrl: './subtopic.css'
 })
@@ -12,10 +13,10 @@ export class Subtopic {
   cycleSubtopic = output<any>();
 
   prevSubtopic() {
-    this.cycleSubtopic.emit({ topic_id: this.currentTopic().topic_id, direction: 'prev' });
+    this.cycleSubtopic.emit({ id: this.currentTopic().id, direction: 'prev' });
   }
 
   nextSubtopic() {
-    this.cycleSubtopic.emit({ topic_id: this.currentTopic().topic_id, direction: 'next' });
+    this.cycleSubtopic.emit({ id: this.currentTopic().id, direction: 'next' });
   }
 }

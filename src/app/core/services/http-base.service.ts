@@ -1,5 +1,5 @@
 // http-base.service.ts
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -9,13 +9,11 @@ import { environment } from '../../../environments/environment';
 })
 export class HttpBaseService {
   private readonly apiUrl = environment.apiUrl;
-
-  constructor(private http: HttpClient) {}
+  http = inject(HttpClient);
 
   private getHeaders(): HttpHeaders {
     const token = localStorage.getItem('accessToken');
     return new HttpHeaders({
-      'Content-Type': 'application/json',
       Authorization: token ? `Bearer ${token}` : '',
     });
   }

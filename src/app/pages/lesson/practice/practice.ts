@@ -1,9 +1,10 @@
 import { Component, effect, input, OnInit, output, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MarkdownModule } from 'ngx-markdown';
 
 @Component({
   selector: 'app-practice',
-  imports: [FormsModule],
+  imports: [FormsModule, MarkdownModule],
   templateUrl: './practice.html',
   styleUrl: './practice.css'
 })
@@ -18,7 +19,7 @@ export class Practice {
     const view = this.currentView(); // <-- THIS is reactive
     if (view?.content?.questions?.length) {
       this.question = view.content.questions[0];
-      this.changeQuestion.emit({ id: this.question.question_id })
+      this.changeQuestion.emit({ id: this.question.id })
     }
   });
 
@@ -30,7 +31,7 @@ export class Practice {
   }
 
   cycleQuestion(direction: string) {
-    const currentIndex = this.currentView().content.questions.findIndex((q: any) => q.question_id === this.question.question_id);
+    const currentIndex = this.currentView().content.questions.findIndex((q: any) => q.id === this.question.id);
 
     let newIndex = currentIndex + (direction === 'next' ? 1 : -1);
     if (newIndex < 0) newIndex = 0; // Caps previous question at first question
@@ -38,25 +39,25 @@ export class Practice {
 
     this.question = this.currentView().content.questions[newIndex]
     console.log(this.question)
-    this.changeQuestion.emit({id: this.question.question_id})
+    this.changeQuestion.emit({id: this.question.id})
   }
 
   getQuestionNumber() {
-    return this.currentView().content.questions.findIndex((q: any) => q.question_id === this.question.question_id) + 1;
+    return this.currentView().content.questions.findIndex((q: any) => q.id === this.question.id) + 1;
   }
 
-  toggleSelectOption(option_id: any) {
-    if (this.question.question_type === 'multiple choice') {
+  toggleSelectOption(id: any) {
+    if (this.question.type === 'multiple choice') {
       this.question.options.forEach((option: any) => {
-        option.selected = option.option_id === option_id;
+        option.selected = option.id === id;
       });
-    } else if (this.question.question_type === 'multiple selection') {
-      const option = this.question.options.find((o: any) => o.option_id === option_id);
+    } else if (this.question.type === 'multiple selection') {
+      const option = this.question.options.find((o: any) => o.id === id);
       if (option) {
         option.selected = !option.selected;
       }
     }
-    console.log(this.currentView()?.content?.questions.find((q: any) => q.question_id === this.question.question_id)?.options);
+    console.log(this.currentView()?.content?.questions.find((q: any) => q.id === this.question.id)?.options);
   }
 
   submitAnswers() {
