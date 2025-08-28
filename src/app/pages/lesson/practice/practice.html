@@ -3,10 +3,11 @@
     Question {{getQuestionNumber()}}
   </h1>
   <div class="w-full p-4">
-    <h2 class="mb-2 text-gray-800">
-      {{question.question_text}}
-    </h2>
-    @if (question.question_type === 'essay') {
+    <markdown class="mb-2 text-gray-800" [data]="question.text"></markdown>
+    <!-- <h2 class="mb-2 text-gray-800">
+      {{question.text}}
+    </h2> -->
+    @if (question.type === 'essay') {
       <textarea
         class="w-full p-2 text-gray-600 border-b-2 border-gray-300 resize-none overflow-hidden focus:outline-none focus:border-b-2 focus:border-prussian-blue-800"
         rows="1"
@@ -17,19 +18,22 @@
         [disabled]="currentView().content.score"
       ></textarea>
     } @else {
-      @for (option of question.options; track option.option_id) {
+      @for (option of question.options; track option.id) {
         <div>
           <input 
-            [type]="`${question.question_type === 'multiple choice' ? 'radio' : 'checkbox'}`" 
-            [name]="question.question_id" 
-            [id]="option.option_id" 
+            [type]="`${question.type === 'multiple choice' ? 'radio' : 'checkbox'}`" 
+            [name]="question.id" 
+            [id]="option.id" 
             class="m-2 accent-blue-900 cursor-pointer" 
-            [value]="option.option_id"
+            [value]="option.id"
             [checked]="option.selected"
-            (change)="toggleSelectOption(option.option_id)"
+            (change)="toggleSelectOption(option.id)"
             [disabled]="currentView().content.score"
           >
-          <label [for]="option.option_id" class="text-gray-600 cursor-pointer">{{option.option_text}}</label>
+          <label [for]="option.id" class="text-gray-600 cursor-pointer">
+            <!-- <markdown class="inline" [data]="option.text"></markdown> -->
+            {{option.text}}
+          </label>
         </div>
       }
     }

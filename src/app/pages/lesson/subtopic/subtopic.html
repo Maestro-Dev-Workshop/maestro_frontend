@@ -3,9 +3,9 @@
   <div class="flex flex-row justify-between my-4">
     <!-- Topic tree display -->
     <div class="flex flex-row items-center text-prussian-blue-800">
-      {{ currentTopic().topic_name }}
+      {{ currentTopic().title }}
       <img src="images/dropdown-icon-closed.svg" alt="" class="w-2 m-4">
-      {{ currentView().content.subtopic_name }}
+      {{ currentView().content.title }}
     </div>
     <!-- Subtopic Navigation -->
     <div class="flex flex-row">
@@ -25,11 +25,12 @@
     <div class="rounded-full bg-prussian-blue-200 p-3">
       <img src="images/subject-icon.svg" alt="" class="w-6">
     </div>
-    <span class="text-3xl font-medium mx-4">{{ currentView().content.subtopic_name }}</span>
+    <span class="text-3xl font-medium mx-4">{{ currentView().content.title }}</span>
   </h1>
 
   <!-- Subtopic Content -->
-  <div class="text-lg text-gray-700">
+  <markdown class="text-lg text-gray-700" [data]="currentView().content.content"></markdown>
+  <!-- <div class="text-lg text-gray-700">
     {{ currentView().content.content }}
-  </div>
+  </div> -->
 </div>

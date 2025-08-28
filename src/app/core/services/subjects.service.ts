@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpBaseService } from './http-base.service';
 
@@ -6,7 +6,7 @@ import { HttpBaseService } from './http-base.service';
   providedIn: 'root',
 })
 export class SubjectsService {
-  constructor(private http: HttpBaseService) {}
+  http = inject(HttpBaseService);
 
   getAllSubjects(): Observable<any> {
     return this.http.get('session/list');
@@ -35,7 +35,7 @@ export class SubjectsService {
   }
 
   generateExercise(sessionId: string, prefs: string, questionTypes: string[]): Observable<any> {
-    return this.http.post(`session/${sessionId}/generate-exercise`, { exercise_preference: prefs, question_types: questionTypes });
+    return this.http.post(`session/${sessionId}/generate-exercises`, { exercise_preference: prefs, question_types: questionTypes });
   }
 
   generateExam(sessionId: string, prefs: string, questionTypes: string[], timeLimit: boolean = false): Observable<any> {

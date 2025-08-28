@@ -1,8 +1,11 @@
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, ViewChild } from '@angular/core';
 import { Header } from '../../../shared/components/header/header';
 import { CreationStepTab } from '../creation-step-tab/creation-step-tab';
 import { FormsModule, NgModel } from '@angular/forms';
 import { Router } from '@angular/router';
+import { TopicModel } from '../../../core/models/topic.model';
+import { SubjectsService } from '../../../core/services/subjects.service';
+import { LessonService } from '../../../core/services/lesson.service';
 
 type Topic = {
   id: string,
@@ -16,11 +19,12 @@ type Topic = {
   templateUrl: './topic-preferences.html',
   styleUrl: './topic-preferences.css'
 })
-export class TopicPreferences {
+export class TopicPreferences implements OnInit {
   learningStyle = '';
+  subjectId = '';
   @ViewChild('learningStyleCtrl') learningStyleCtrl!: NgModel;
   loading = false;
-  topics = [
+  old_topics = [
     {
       "id": "dksda-daidj2d-a2m90-1",
       "name": "Definition",
@@ -57,8 +61,16 @@ export class TopicPreferences {
       "selected": false
     },
   ];
+  topics: TopicModel[] = [];
+  subjectService = inject(SubjectsService)
+  lessonService = inject(LessonService)
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private cdr: ChangeDetectorRef) {
+    // Extract subjectId from the route parameters
+    const url = window.location.pathname;
+    const parts = url.split('/');
+    this.subjectId = parts[parts.length - 2]; // Assuming the last part is the subjectId
+  }
 
   toggleTopicSelection(topic_id: any) {
     this.topics.map(
@@ -66,6 +78,22 @@ export class TopicPreferences {
         if (topic.id === topic_id) {topic.selected = !topic.selected}
       }
     )
+  }
+
+  ngOnInit(): void {
+    // Fetch topics from backend
+    this.lessonService.getAllTopics(this.subjectId).subscribe({
+      next: (response) => {
+        console.log(response)
+        this.topics = response.topics
+        console.log(this.topics)
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error fetching topics:', err);
+        alert("Failed to load topics. Please try again later.");
+      }
+    });
   }
 
   onSubmit() {
@@ -86,7 +114,32 @@ export class TopicPreferences {
     console.log(selectedTopics);
     console.log(this.learningStyle);
 
-    this.router.navigate(['/subject-create/question-settings'])
-    this.loading = false;
+    // Select topics
+    this.subjectService.selectTopics(this.subjectId, selectedTopics.map((topic) => topic.id)).subscribe({
+      next: (response) => {
+        console.log("Topics selected:", response);
+
+        // Generate lesson
+        this.subjectService.generateLesson(this.subjectId, this.learningStyle).subscribe({
+          next: (response) => {
+            console.log("Lesson generated:", response);
+            this.router.navigate([`/subject-create/${this.subjectId}/question-settings`])
+            this.loading = false;
+          },
+
+          error: (err) => {
+            console.error('Error generating lesson:', err);
+            alert("Failed to generate lesson. Please try again later.");
+            this.loading = false;
+          }
+        });
+      },
+      
+      error: (err) => {
+        console.error('Error selecting topics:', err);
+        alert("Failed to select topics. Please try again later.");
+        this.loading = false;
+      }
+    });
   }
 }

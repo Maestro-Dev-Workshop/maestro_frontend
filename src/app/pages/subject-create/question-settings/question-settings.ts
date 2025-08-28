@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { Header } from '../../../shared/components/header/header';
 import { CreationStepTab } from '../creation-step-tab/creation-step-tab';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { SubjectsService } from '../../../core/services/subjects.service';
+import { forkJoin, Observable } from 'rxjs';
 
 class ExerciseSettings {
   include: boolean = false
@@ -26,8 +28,15 @@ export class QuestionSettings {
   exerciseSettings = new ExerciseSettings();
   examSettings = new ExamSettings();
   loading = false;
+  subjectId = '';
+  subjectService = inject(SubjectsService)
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private cdr: ChangeDetectorRef) {
+    // Extract subjectId from the route parameters
+    const url = window.location.pathname;
+    const parts = url.split('/');
+    this.subjectId = parts[parts.length - 2]; // Assuming the last part is the subjectId
+  }
 
   toggleExerciseType(event: any) {
     if (event.target.checked) {
@@ -49,52 +58,96 @@ export class QuestionSettings {
     this.loading = true;
     let exerciseValidated = false;
     let examValidated = false;
-
+  
     // Validate exercise fields
     if (this.exerciseSettings.include) {
       if (this.exerciseSettings.questionTypes.length == 0) {
         alert("Choose at least one question type for the exercises");
         this.loading = false;
-        return
+        return;
       }
       if (!this.exerciseSettings.preference) {
         alert("Exercise preference cannot be empty");
         this.loading = false;
-        return
+        return;
       }
     }
-    exerciseValidated = true
-    
+    exerciseValidated = true;
+  
     // Validate exam fields
     if (this.examSettings.include) {
       if (this.examSettings.questionTypes.length == 0) {
         alert("Choose at least one question type for the exam");
         this.loading = false;
-        return
+        return;
       }
       if (!this.examSettings.preference) {
         alert("Exam preference cannot be empty");
         this.loading = false;
-        return
+        return;
       }
     }
-    examValidated = true
-    
-    // Generate Practice Questions
+    examValidated = true;
+  
+    // Collect all requests to run in parallel
+    const requests: Observable<any>[] = [];
+  
     if (this.exerciseSettings.include && exerciseValidated) {
-      // API call here
-      console.log("Generating Exercises")
-      console.log(this.exerciseSettings)
+      requests.push(
+        this.subjectService.generateExercise(
+          this.subjectId,
+          this.exerciseSettings.preference,
+          this.exerciseSettings.questionTypes
+        )
+      );
     }
+  
     if (this.examSettings.include && examValidated) {
-      // API call here
-      console.log("Generating Exam")
-      console.log(this.examSettings)
+      requests.push(
+        this.subjectService.generateExam(
+          this.subjectId,
+          this.examSettings.preference,
+          this.examSettings.questionTypes
+        )
+      );
     }
-
-    console.log("Practice Question Generation done")
-    this.router.navigate([`/lesson/${'subject-id-here'}`])
-    this.loading = false;
+  
+    // If there are requests, wait for them to finish before updating status
+    if (requests.length > 0) {
+      forkJoin(requests).subscribe({
+        next: (responses) => {
+          console.log("Generation responses:", responses);
+          this.subjectService.updateSessionStatus(this.subjectId, "In Progress").subscribe({
+            next: () => {
+              console.log("Session status updated");
+              this.router.navigate([`/lesson/${this.subjectId}`]);
+            },
+            error: (err) => {
+              console.error("Failed to update session status", err);
+              this.router.navigate([`/lesson/${this.subjectId}`]);
+            },
+            complete: () => (this.loading = false),
+          });
+        },
+        error: (err) => {
+          console.error("Error during generation:", err);
+          this.loading = false;
+        }
+      });
+    } else {
+      // If no requests to generate, just update status directly
+      this.subjectService.updateSessionStatus(this.subjectId, "In Progress").subscribe({
+        next: () => {
+          console.log("Session status updated (no generation needed)");
+          this.router.navigate([`/lesson/${this.subjectId}`]);
+        },
+        error: (err) => {
+          console.error("Failed to update session status", err);
+          this.router.navigate([`/lesson/${this.subjectId}`]);
+        },
+        complete: () => (this.loading = false),
+      });
+    }
   }
 
 }

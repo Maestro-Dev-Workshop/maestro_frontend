@@ -17,7 +17,7 @@ export class Sidebar {
   }
 
   toggleExpandTopic(topic_id: string) {
-    const topic = this.content().topics.find((t: any) => t.topic_id === topic_id);
+    const topic = this.content().topics.find((t: any) => t.id === topic_id);
     if (topic) {
       topic.expanded = !topic.expanded;
     }

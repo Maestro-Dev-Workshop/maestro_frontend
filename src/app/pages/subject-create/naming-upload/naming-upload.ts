@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Header } from '../../../shared/components/header/header';
 import { Router } from '@angular/router';
 import { CreationStepTab } from '../creation-step-tab/creation-step-tab';
 import { FormsModule } from '@angular/forms';
+import { SubjectsService } from '../../../core/services/subjects.service';
 
 @Component({
   selector: 'app-naming-upload',
@@ -15,13 +16,14 @@ export class NamingUpload {
   files: File[] = [];
   isDragging = false;
   loading = false;
+  subjectService = inject(SubjectsService)
 
   constructor(private router: Router) {}
 
   onFileDrop(event: DragEvent) {
     event.preventDefault();
     this.isDragging = false;
-    if (event.dataTransfer?.files) {
+    if (event.dataTransfer?.files && !this.loading) {
       this.addFiles(event.dataTransfer.files);
     }
   }
@@ -37,7 +39,7 @@ export class NamingUpload {
 
   onFileSelect(event: Event) {
     const input = event.target as HTMLInputElement;
-    if (input.files) {
+    if (input.files && !this.loading) {
       this.addFiles(input.files);
     }
   }
@@ -83,8 +85,51 @@ export class NamingUpload {
     // Here you would typically send the data to the backend
     console.log('Subject Name:', this.subjectName);
     console.log('Files:', this.files);
+    console.log('Stage 0' + this.loading)
+    
+    // Create subject
+    this.subjectService.createSubject(this.subjectName).subscribe({
+      next: (response) => {
+        console.log('Stage 1' + this.loading)
+        console.log(response)
+        const sessionId = response.session.id;
+        
+        // Ingest documents
+        this.subjectService.ingestDocuments(sessionId, this.files).subscribe({
+          next: (ingestResponse) => {
+            console.log(ingestResponse)
+            console.log('Stage 2' + this.loading)
+            
+            // Label documents with topics
+            this.subjectService.labelDocuments(sessionId).subscribe({
+              next: (labelResponse) => {
+                console.log('Stage 3' + this.loading)
+                console.log(labelResponse)
+                this.router.navigate([`/subject-create/${sessionId}/topic-preferences`]);
+                this.loading = false;
+              },
+              
+              error: (err) => {
+                console.error('Error labeling documents:', err);
+                alert("Failed to label documents. Please try again later.");
+                this.loading = false;
+              }
+            });
+          },
 
-    this.router.navigate(['/subject-create/topic-preferences']);
-    this.loading = false;
+          error: (err) => {
+            console.error('Error ingesting documents:', err);
+            alert("Failed to upload documents. Please try again later.");
+            this.loading = false;
+          }
+        });
+      },
+
+      error: (err) => {
+        console.error('Error creating subject:', err);
+        alert("Failed to create subject. Please try again later.");
+        this.loading = false;
+      }
+    });
   }
 }

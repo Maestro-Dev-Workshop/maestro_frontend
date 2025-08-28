@@ -5,7 +5,7 @@
   <div class="w-full bg-gray-100 flex flex-row items-center justify-between px-12 py-6">
     <div class="">
       <h1 class="text-3xl font-medium text-prussian-blue-900">
-        Practice {{currentView.type.capitalize}} for {{(currentView.type === 'exercise') ? getTopicDataFromExercise().topic_name : subjectContent.subject_name}}
+        Practice {{currentView.type.capitalize}} for {{(currentView.type === 'exercise') ? getTopicDataFromExercise().title : subjectContent.subject_name}}
       </h1>
       <h2 class="text-xl font-medium text-prussian-blue-500">
         {{ currentView.content.questions.length }} Question{{(currentView.content.questions.length > 1) ? 's' : '' }}
