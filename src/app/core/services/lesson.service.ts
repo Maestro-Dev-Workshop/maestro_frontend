@@ -29,15 +29,15 @@ export class LessonService {
     return this.http.put<any>(`topic/${topicId}/mark-as-read`, { subtopic_id: subtopicId });
   }
 
-  scoreEssayQuestion(sessionId: string, questionId: string, answer: string): Observable<any> {
+  scoreEssayQuestion(sessionId?: string, questionId?: string, answer?: string | null): Observable<any> {
     return this.http.put<any>(`chatbot/answer-question`, { session_id: sessionId, question_id: questionId, answer });
   }
 
-  saveExerciseScore(topicId: string, exerciseId: string, score: number, questionData: SaveQuestionData): Observable<any> {
+  saveExerciseScore(topicId?: string | null, exerciseId?: string, score?: number, questionData?: SaveQuestionData[]): Observable<any> {
     return this.http.put<any>(`topic/${topicId}/save-exercise-score`, { exercise_id: exerciseId, score, question_data: questionData });
   }
 
-  saveExamScore(sessionId: string, examId: string, score: number, questionData: SaveQuestionData): Observable<any> {
+  saveExamScore(sessionId?: string, examId?: string, score?: number, questionData?: SaveQuestionData[]): Observable<any> {
     return this.http.put<any>(`session/${sessionId}/save-exam-score`, { exam_id: examId, score, question_data: questionData });
   }
 }

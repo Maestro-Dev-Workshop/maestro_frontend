@@ -12,10 +12,10 @@
         class="w-full p-2 text-gray-600 border-b-2 border-gray-300 resize-none overflow-hidden focus:outline-none focus:border-b-2 focus:border-prussian-blue-800"
         rows="1"
         placeholder="Type your answer here..."
-        [(ngModel)]="question.answer"
+        [(ngModel)]="question.essay_answer"
         oninput="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px';"
         onmousemove="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px';"
-        [disabled]="currentView().content.score"
+        [disabled]="currentView().content.score || loading"
       ></textarea>
     } @else {
       @for (option of question.options; track option.id) {
@@ -28,7 +28,7 @@
             [value]="option.id"
             [checked]="option.selected"
             (change)="toggleSelectOption(option.id)"
-            [disabled]="currentView().content.score"
+            [disabled]="currentView().content.score || loading"
           >
           <label [for]="option.id" class="text-gray-600 cursor-pointer">
             <!-- <markdown class="inline" [data]="option.text"></markdown> -->

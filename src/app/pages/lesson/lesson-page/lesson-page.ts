@@ -284,7 +284,6 @@ export class LessonPage implements OnInit {
       content = this.subjectContent.topics
         .flatMap((topic: any) => topic.subtopics)
         .find((subtopic: any)=> subtopic.id === event.id) || {};
-      // mark subtopic as read
       // check for completed topic
       } else if (event.type === 'exercise') {
         content = this.subjectContent.topics
@@ -299,7 +298,23 @@ export class LessonPage implements OnInit {
       type: event.type,
       content: content
     }
-    if (event.type === 'subtopic') this.updateChatMetadata();
+    if (event.type === 'subtopic') {
+      this.updateChatMetadata();
+
+      // mark subtopic as read
+      const topic_id = this.getTopicDataFromSubtopic().id
+      this.lessonService.markSubtopicAsRead(topic_id, event.id).subscribe({
+        next: () => {
+          this.subjectContent
+          .find((topic: any) => topic.id == topic_id)
+          .find((subtopic: any) => subtopic.id == event.id)
+          .read = true
+          this.checkForTopicCompleteness(topic_id)
+        }, error(err) {
+          console.error(`Failed to mark subtopic as read: ${err}`)
+        },
+      });
+    };
     console.log(this.currentView)
   }
   
@@ -311,6 +326,13 @@ export class LessonPage implements OnInit {
   getTopicDataFromExercise() {
     const topicData = this.subjectContent.topics.find((topic: any) => topic.exercise && topic.exercise.id === this.currentView.id);
     return { id: topicData?.id, title: topicData?.title};
+  }
+
+  checkForTopicCompleteness(topic_id: string) {
+    const topic = this.subjectContent.find((topic: any) => topic.id == topic_id)
+    const allSubtopicsRead = topic.subtopics.every((st: any) => st.read);
+    const hasExerciseScore = topic.exercises.some((ex: any) => ex.score !== undefined && ex.score !== null);
+    this.subjectContent.find((topic: any) => topic.id == topic_id).completed = allSubtopicsRead && hasExerciseScore;
   }
 
   // Updates the current view to the previous or next subtopic

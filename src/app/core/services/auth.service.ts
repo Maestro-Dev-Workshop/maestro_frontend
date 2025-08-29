@@ -8,7 +8,7 @@ import { LoginResponse } from '../models/auth-payload.model';
   providedIn: 'root',
 })
 export class AuthService {
-  refreshToken() {
+  refreshToken(): Observable<any> {
       throw new Error('Method not implemented.');
   }
   http = inject(HttpBaseService);
