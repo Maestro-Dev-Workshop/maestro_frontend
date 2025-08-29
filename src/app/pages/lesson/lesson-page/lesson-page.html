@@ -10,7 +10,7 @@
       <h2 class="text-xl font-medium text-prussian-blue-500">
         {{ currentView.content.questions.length }} Question{{(currentView.content.questions.length > 1) ? 's' : '' }}
       </h2>
-      <span class="block mt-4 text-gray-600">These questions will help reinforce your understanding. Take your time to choose the correct answers.</span>
+      <span class="block mt-4 text-gray-600">These questions will help reinforce your understanding. Take your time to answer all the questions.</span>
     </div>
     <div class="text-3xl flex flex-col text-gray-800 text-right tracking-wider font-medium">
       <span>Score:</span>
@@ -57,6 +57,7 @@
   <app-chatbot 
     [class]="`w-3/12 absolute right-0 top-0 h-screen ${(chatOpen && !(currentView.type !== 'subtopic' && !currentView.content.score)) ? '' : 'hidden'}`" 
     [chatHistory]="chatHistory" 
+    [subjectId]="subjectId"
     [metadata]="chatMetadata"
     (closeChat)="toggleChatPopup()"
   ></app-chatbot>

@@ -9,6 +9,7 @@ import { LessonService } from '../../../core/services/lesson.service';
 import { ChatMetadata } from '../../../core/models/chat-metadata.model';
 import { ChatbotService } from '../../../core/services/chatbot.service';
 import { forkJoin, map, switchMap } from 'rxjs';
+import { ChatMessage } from '../../../core/models/chat-message.model';
 
 @Component({
   selector: 'app-lesson-page',
@@ -25,6 +26,7 @@ export class LessonPage implements OnInit {
     id: '', // ID of the current subtopic, exercise question, or exam question
     content: {} // Content to display based on the current view
   }
+  chatHistory: ChatMessage[] = [];
   chatOpen = false;
   subjectService = inject(SubjectsService)
   lessonService = inject(LessonService)
@@ -160,18 +162,18 @@ export class LessonPage implements OnInit {
   //     ]
   //   }
   // }
-  chatHistory = [
-    {
-      sender: "user",
-      message: "Hello",
-      timestamp: ""
-    },
-    {
-      sender: "assistant",
-      message: "Hi there, how can I help you?",
-      timestamp: ""
-    },
-  ]
+  // chatHistory = [
+  //   {
+  //     sender: "user",
+  //     message: "Hello",
+  //     timestamp: ""
+  //   },
+  //   {
+  //     sender: "assistant",
+  //     message: "Hi there, how can I help you?",
+  //     timestamp: ""
+  //   },
+  // ]
 
   constructor(private cdr: ChangeDetectorRef) {
     // Extract subjectId from the route parameters
@@ -181,6 +183,16 @@ export class LessonPage implements OnInit {
   }
 
   ngOnInit(): void {
+    // Fetch chat history
+    this.chatbotService.getChatHistory(this.subjectId).subscribe({
+      next: (response) => {
+        this.chatHistory = response.history;
+      }, error(err) {
+        console.error(`Error fetching chat history ${err}`)
+      },
+    });
+
+
     // 1. Fetch all subjects first
     this.subjectService.getAllSubjects().pipe(
       map((res: any) => res.sessions || []), // unwrap sessions array
@@ -276,7 +288,7 @@ export class LessonPage implements OnInit {
   }
   
   
-
+  //
   updatecurrentView(event: any) {
     let content = null;
 
@@ -318,16 +330,19 @@ export class LessonPage implements OnInit {
     console.log(this.currentView)
   }
   
+  //
   getTopicDataFromSubtopic() {
     const topicData = this.subjectContent.topics.find((topic: any) => topic.subtopics.some((subtopic: any) => subtopic.id === this.currentView.id));
     return { id: topicData?.id, title: topicData?.title};
   }
 
+  //
   getTopicDataFromExercise() {
     const topicData = this.subjectContent.topics.find((topic: any) => topic.exercise && topic.exercise.id === this.currentView.id);
     return { id: topicData?.id, title: topicData?.title};
   }
 
+  //
   checkForTopicCompleteness(topic_id: string) {
     const topic = this.subjectContent.find((topic: any) => topic.id == topic_id)
     const allSubtopicsRead = topic.subtopics.every((st: any) => st.read);
@@ -354,6 +369,7 @@ export class LessonPage implements OnInit {
     this.updatecurrentView({ id: subtopics[newIndex].id, type: 'subtopic'})
   }
 
+  //
   updateChatMetadata(question_event? : any) {
     if (this.currentView.type === 'subtopic') {
       const topicData = this.getTopicDataFromSubtopic()
@@ -384,6 +400,7 @@ export class LessonPage implements OnInit {
     }
   }
 
+  //
   toggleChatPopup() {
     this.chatOpen = !this.chatOpen
     console.log("chat toggled")

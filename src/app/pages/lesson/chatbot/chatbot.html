@@ -8,10 +8,10 @@
   <div class="flex flex-col w-full flex-grow overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 hover:scrollbar-thumb-gray-500">
     @for (chat of chatHistory(); track $index) {
       <div 
-        [class]="`rounded-xl p-2 my-1 break-words ${(chat.sender === 'user') ? 'self-end bg-prussian-blue-800 text-white' : 'self-start bg-prussian-blue-200 text-prussian-blue-900'}`"
+        [class]="`rounded-xl p-2 my-1 break-words text-sm ${(chat.sender === 'user') ? 'self-end bg-prussian-blue-800 text-white' : 'self-start bg-prussian-blue-200 text-prussian-blue-900'}`"
         style="max-width: 80%;"
       >
-        {{chat.message}}
+        <markdown [data]="chat.message"></markdown>
       </div>
     }
   </div>
@@ -22,13 +22,14 @@
       class="p-2 my-2 border-2 rounded-md overflow-hidden w-full"
       rows="1"
       [(ngModel)]="currentMessage"
+      [disabled]="loading"
       oninput="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px';"
       onmousemove="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px';"
     ></textarea>
 
     <!-- Submit Button -->
     <button 
-      class="self-center w-2/4 text-white rounded-md p-2 bg-prussian-blue-800 hover:bg-prussian-blue-500" 
+      class="self-center w-2/4 text-white rounded-md p-2 bg-prussian-blue-800 hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500" 
       (click)="sendMessage()"
       [disabled]="loading || !currentMessage"
     >

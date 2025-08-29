@@ -68,6 +68,9 @@ export class Practice {
   }
 
   submitAnswers() {
+    const proceed = confirm("Are you sure you want to submit?")
+    if (!proceed) return
+
     this.loading = true;
 
     let correctCount = 0;
@@ -91,6 +94,7 @@ export class Practice {
       } 
       
       else if (question.type === 'essay') {
+        if (!question.essay_answer) question.essay_answer = "System message: user did not provide an answer"
         essayCalls.push(
           this.lessonService.scoreEssayQuestion(this.subjectId(), question.id, question.essay_answer).pipe(
             tap((value) => {
