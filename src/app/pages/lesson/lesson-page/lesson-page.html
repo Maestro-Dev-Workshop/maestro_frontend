@@ -5,7 +5,7 @@
   <div class="w-full bg-gray-100 flex flex-row items-center justify-between px-12 py-6">
     <div class="">
       <h1 class="text-3xl font-medium text-prussian-blue-900">
-        Practice {{currentView.type.capitalize}} for {{(currentView.type === 'exercise') ? getTopicDataFromExercise().title : subjectContent.subject_name}}
+        Practice {{capitalizeFirstLetter(currentView.type)}} for {{(currentView.type === 'exercise') ? getTopicDataFromExercise().title : subjectContent.subject_name}}
       </h1>
       <h2 class="text-xl font-medium text-prussian-blue-500">
         {{ currentView.content.questions.length }} Question{{(currentView.content.questions.length > 1) ? 's' : '' }}
@@ -25,7 +25,7 @@
   </div>
 }
 
-<div class="w-full flex flex-row flex-grow overflow-hidden">
+<div class="w-full flex flex-row flex-grow overflow-hidden mt-2">
   <app-sidebar 
     class="w-3/12 h-full overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 hover:scrollbar-thumb-gray-500"
     [content]="subjectContent" 
@@ -50,6 +50,7 @@
         [topicId]="(currentView.type == 'exercise') ? getTopicDataFromExercise().id : null"
         (changeQuestion)="updateChatMetadata($event)" 
         (exerciseCompleted)="checkForTopicCompleteness($event)"
+        (changeProgress)="updateProgress()"
       ></app-practice>
     }
   </div>

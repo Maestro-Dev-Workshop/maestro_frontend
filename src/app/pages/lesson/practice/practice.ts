@@ -17,6 +17,7 @@ export class Practice {
   topicId = input<string | null>()
   changeQuestion = output<any>();
   exerciseCompleted = output<any>();
+  changeProgress = output<any>();
   question: any;
   loading = false;
   lessonService = inject(LessonService)
@@ -137,6 +138,7 @@ export class Practice {
       })
     ).subscribe({
       next: () => {
+        this.changeProgress.emit({}); // Notify parent to refresh progress
         this.loading = false; // ✅ only after scoring + saving
       },
       error: (err) => {

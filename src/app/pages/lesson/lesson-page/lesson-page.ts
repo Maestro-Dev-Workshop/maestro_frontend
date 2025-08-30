@@ -322,6 +322,7 @@ export class LessonPage implements OnInit {
           .find((topic: any) => topic.id == topic_id).subtopics
           .find((subtopic: any) => subtopic.id == event.id)
           .read = true
+          this.updateProgress()
           this.checkForTopicCompleteness(topic_id)
         }, error(err) {
           console.error(`Failed to mark subtopic as read: ${err}`)
@@ -332,6 +333,48 @@ export class LessonPage implements OnInit {
     }
     console.log(this.currentView)
   }
+
+  updateProgress() {
+    let total = 0;
+    let completed = 0;
+  
+    // --- Loop through topics ---
+    this.subjectContent.topics.forEach((topic: any) => {
+      // Count subtopics
+      if (topic.subtopics?.length) {
+        total += topic.subtopics.length;
+        completed += topic.subtopics.filter((st: any) => st.read).length;
+      }
+  
+      // Count exercise (each topic has exactly one exercise object)
+      if (topic.exercise) {
+        total += 1;
+        if (topic.exercise.score !== null && topic.exercise.score !== undefined) {
+          completed += 1;
+        }
+      }
+    });
+  
+    // --- Count exam (only one per subjectContent) ---
+    if (this.subjectContent.exam) {
+      total += 1;
+      if (this.subjectContent.exam.score !== null && this.subjectContent.exam.score !== undefined) {
+        completed += 1;
+      }
+    }
+  
+    // Calculate percentage
+    const fraction = (completed / total)
+    this.subjectService.updateSessionProgress(this.subjectId, fraction).subscribe({
+      next: () => {
+        console.log("Progress updated successfully")
+        const percentage = total > 0 ? Math.round(fraction * 100) : 0;
+        console.log(`Progress: ${completed}/${total} (${percentage}%)`);
+      }, error(err) {
+        console.error(`Failed to update progress: ${err}`)
+      },
+    });
+  }  
   
   //
   getTopicDataFromSubtopic() {
@@ -355,8 +398,8 @@ export class LessonPage implements OnInit {
       ? topic.subtopics.every((st: any) => st.read) 
       : false;
   
-    const hasExerciseScore = Array.isArray(topic.exercise) 
-      ? topic.exercises.some((ex: any) => ex.score !== undefined && ex.score !== null) 
+    const hasExerciseScore = topic.exercise
+      ? topic.exercise.score !== null
       : true;
   
     topic.completed = allSubtopicsRead && hasExerciseScore;
@@ -416,5 +459,9 @@ export class LessonPage implements OnInit {
   toggleChatPopup() {
     this.chatOpen = !this.chatOpen
     console.log("chat toggled")
+  }
+
+  capitalizeFirstLetter(str: string) {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
   }
 }
