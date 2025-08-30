@@ -25,12 +25,12 @@ export class LessonService {
     return this.http.get<any>(`session/${sessionId}/get-exam`);
   }
 
-  markSubtopicAsRead(topicId: string, subtopicId: string): Observable<any> {
-    return this.http.put<any>(`topic/${topicId}/mark-as-read`, { subtopic_id: subtopicId });
+  scoreEssayQuestion(sessionId?: string, questionId?: string, answer?: string | null): Observable<any> {
+    return this.http.post<any>(`chatbot/answer-question`, { session_id: sessionId, question_id: questionId, answer });
   }
 
-  scoreEssayQuestion(sessionId?: string, questionId?: string, answer?: string | null): Observable<any> {
-    return this.http.put<any>(`chatbot/answer-question`, { session_id: sessionId, question_id: questionId, answer });
+  markSubtopicAsRead(topicId: string, subtopicId: string): Observable<any> {
+    return this.http.put<any>(`topic/${topicId}/mark-as-read`, { subtopic_id: subtopicId });
   }
 
   saveExerciseScore(topicId?: string | null, exerciseId?: string, score?: number, questionData?: SaveQuestionData[]): Observable<any> {

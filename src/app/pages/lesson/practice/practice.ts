@@ -94,10 +94,11 @@ export class Practice {
       } 
       
       else if (question.type === 'essay') {
-        if (!question.essay_answer) question.essay_answer = "System message: user did not provide an answer"
+        if (!question.essay_answer) question.essay_answer = "<no-answer-provided>"
         essayCalls.push(
           this.lessonService.scoreEssayQuestion(this.subjectId(), question.id, question.essay_answer).pipe(
             tap((value) => {
+              console.log(value)
               if (value.correct) correctCount++;
               q.essay_answer = question.essay_answer;
               q.essay_feedback = question.essay_feedback = value.feedback;
@@ -110,16 +111,18 @@ export class Practice {
         );
       }
 
-      questionData.push(q); // this might seem counterintuitive, but it actually does work with the async essay scoring, trust me bro, I asked gpt
+      questionData.push(q); // this might seem counterintuitive, but it actually does work with the async essay scoring, trust me bro, I asked gpt... I lied, it doesn't work
     });
 
     // save score observable
     let saveCall$: Observable<any>;
     if (this.currentView().type === 'exercise') {
+      console.log(questionData)
       saveCall$ = this.lessonService.saveExerciseScore(this.topicId(), this.currentView().id, correctCount, questionData).pipe(
         tap(() => this.exerciseCompleted.emit(this.topicId()))
-      );
+        );
     } else if (this.currentView().type === 'exam') {
+      console.log(questionData)
       saveCall$ = this.lessonService.saveExamScore(this.subjectId(), this.currentView().id, correctCount, questionData);
     } else {
       saveCall$ = of(null);

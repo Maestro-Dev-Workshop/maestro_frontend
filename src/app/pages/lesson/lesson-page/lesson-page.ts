@@ -310,6 +310,7 @@ export class LessonPage implements OnInit {
       type: event.type,
       content: content
     }
+
     if (event.type === 'subtopic') {
       this.updateChatMetadata();
 
@@ -317,8 +318,8 @@ export class LessonPage implements OnInit {
       const topic_id = this.getTopicDataFromSubtopic().id
       this.lessonService.markSubtopicAsRead(topic_id, event.id).subscribe({
         next: () => {
-          this.subjectContent
-          .find((topic: any) => topic.id == topic_id)
+          this.subjectContent.topics
+          .find((topic: any) => topic.id == topic_id).subtopics
           .find((subtopic: any) => subtopic.id == event.id)
           .read = true
           this.checkForTopicCompleteness(topic_id)
@@ -326,7 +327,9 @@ export class LessonPage implements OnInit {
           console.error(`Failed to mark subtopic as read: ${err}`)
         },
       });
-    };
+    } else if (this.chatOpen && (this.currentView.content.score == null)){
+      this.chatOpen = false;
+    }
     console.log(this.currentView)
   }
   
@@ -344,10 +347,19 @@ export class LessonPage implements OnInit {
 
   //
   checkForTopicCompleteness(topic_id: string) {
-    const topic = this.subjectContent.find((topic: any) => topic.id == topic_id)
-    const allSubtopicsRead = topic.subtopics.every((st: any) => st.read);
-    const hasExerciseScore = topic.exercises.some((ex: any) => ex.score !== undefined && ex.score !== null);
-    this.subjectContent.find((topic: any) => topic.id == topic_id).completed = allSubtopicsRead && hasExerciseScore;
+    const topic = this.subjectContent.topics.find((t: any) => t.id === topic_id);
+  
+    if (!topic) return; // no topic found
+  
+    const allSubtopicsRead = Array.isArray(topic.subtopics) 
+      ? topic.subtopics.every((st: any) => st.read) 
+      : false;
+  
+    const hasExerciseScore = Array.isArray(topic.exercise) 
+      ? topic.exercises.some((ex: any) => ex.score !== undefined && ex.score !== null) 
+      : true;
+  
+    topic.completed = allSubtopicsRead && hasExerciseScore;
   }
 
   // Updates the current view to the previous or next subtopic
