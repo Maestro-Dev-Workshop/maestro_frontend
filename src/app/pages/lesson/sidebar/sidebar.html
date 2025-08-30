@@ -40,9 +40,9 @@
     <!-- Exam -->
     @if (content().exam) {
       <button [class]="`py-2 px-2 pl-8 text-gray-600 w-full text-left hover:bg-prussian-blue-200 border-prussian-blue-900 
-        ${(content().exam.exam_id === currentView().id && currentView().type === 'exam') ? 'border-l-4' : ''}
+        ${(content().exam.id === currentView().id && currentView().type === 'exam') ? 'border-l-4' : ''}
         ${!content().exam.score ? 'font-bold' : ''}`"
-        (click)="selectView(content().exam.exam_id, 'exam')">
+        (click)="selectView(content().exam.id, 'exam')">
         Exam
       </button>
     }
