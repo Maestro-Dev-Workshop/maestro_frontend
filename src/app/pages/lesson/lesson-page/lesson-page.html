@@ -5,17 +5,17 @@
   <div class="w-full bg-gray-100 flex flex-row items-center justify-between px-12 py-6">
     <div class="">
       <h1 class="text-3xl font-medium text-prussian-blue-900">
-        Practice {{currentView.type.capitalize}} for {{(currentView.type === 'exercise') ? getTopicDataFromExercise().title : subjectContent.subject_name}}
+        Practice {{capitalizeFirstLetter(currentView.type)}} for {{(currentView.type === 'exercise') ? getTopicDataFromExercise().title : subjectContent.subject_name}}
       </h1>
       <h2 class="text-xl font-medium text-prussian-blue-500">
         {{ currentView.content.questions.length }} Question{{(currentView.content.questions.length > 1) ? 's' : '' }}
       </h2>
-      <span class="block mt-4 text-gray-600">These questions will help reinforce your understanding. Take your time to choose the correct answers.</span>
+      <span class="block mt-4 text-gray-600">These questions will help reinforce your understanding. Take your time to answer all the questions.</span>
     </div>
     <div class="text-3xl flex flex-col text-gray-800 text-right tracking-wider font-medium">
       <span>Score:</span>
       <span>
-        @if (currentView.content.score) {
+        @if (!(currentView.content.score == null)) {
           {{currentView.content.score}} / {{currentView.content.questions.length}}
         } @else {
           Not Graded
@@ -25,7 +25,7 @@
   </div>
 }
 
-<div class="w-full flex flex-row flex-grow overflow-hidden">
+<div class="w-full flex flex-row flex-grow overflow-hidden mt-2">
   <app-sidebar 
     class="w-3/12 h-full overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 hover:scrollbar-thumb-gray-500"
     [content]="subjectContent" 
@@ -46,23 +46,29 @@
       <app-practice 
         class="w-full mr-6 ml-12"
         [currentView]="currentView" 
+        [subjectId]="subjectId"
+        [topicId]="(currentView.type == 'exercise') ? getTopicDataFromExercise().id : null"
         (changeQuestion)="updateChatMetadata($event)" 
+        (exerciseCompleted)="checkForTopicCompleteness($event)"
+        (changeProgress)="updateProgress()"
       ></app-practice>
     }
   </div>
 
   <app-chatbot 
-    [class]="`w-3/12 absolute right-0 top-0 h-screen ${(chatOpen && !(currentView.type !== 'subtopic' && !currentView.content.score)) ? '' : 'hidden'}`" 
+    [class]="`w-3/12 absolute right-0 top-0 h-screen ${(chatOpen && !(currentView.type !== 'subtopic' && (currentView.content.score == null))) ? '' : 'hidden'}`" 
     [chatHistory]="chatHistory" 
+    [subjectId]="subjectId"
     [metadata]="chatMetadata"
     (closeChat)="toggleChatPopup()"
   ></app-chatbot>
 </div>
 
 <button 
-  [class]="`absolute right-24 bottom-16 rounded-full p-6 bg-prussian-blue-200 hover:bg-prussian-blue-250 ${chatOpen ? 'hidden' : ''}`" 
+  [class]="`absolute right-24 bottom-16 rounded-full p-6 bg-prussian-blue-200 hover:bg-prussian-blue-250 
+  ${(chatOpen || (currentView.type !== 'subtopic' && (currentView.content.score == null))) ? 'hidden' : ''}`" 
   (click)="toggleChatPopup()"
-  [disabled]="(currentView.type !== 'subtopic' && !currentView.content.score)"
+  [disabled]="(currentView.type !== 'subtopic' && (currentView.content.score == null))"
 >
   <img src="images/chat-popup-icon.svg" alt="Chat" class="w-10">
 </button>

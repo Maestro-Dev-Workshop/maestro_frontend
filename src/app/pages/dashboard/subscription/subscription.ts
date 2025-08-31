@@ -9,7 +9,7 @@ import {Plan, SubscriptionStatus} from '../../../core/models/subscription.model'
   imports: [CommonModule],
   template: ` `
 })
-export class SubscriptionComponent implements OnInit {
+export class Subscription implements OnInit {
   plans = signal<Plan[]>([]);
   status = signal<SubscriptionStatus | null>(null);
 

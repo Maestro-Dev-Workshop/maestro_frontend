@@ -6,21 +6,21 @@ export interface QuestionOption {
   explanation: string;
 }
 
-export type QuestionType = 'multiple choice' | 'multi selection' | 'essay';
+export type QuestionType = 'multiple choice' | 'multiple selection' | 'essay';
 
 export interface QuestionModel {
   id: string;
   text: string;
-  question_type: QuestionType;
-  options?: QuestionOption[]; // only for choice types
-  essay_answer?: string;
-  essay_feedback?: string;
+  type: QuestionType;
+  options?: QuestionOption[] | null; // only for choice types
+  essay_answer?: string | null;
+  essay_feedback?: string | null;
 }
 
 export interface SaveQuestionData {
   id: string;
   type: QuestionType;
-  options?: { id: string; selected: boolean }[]; // only for choice types
-  essay_answer?: string;
-  essay_feedback?: string;
+  options?: { id: string; selected: boolean }[] | null; // only for choice types
+  essay_answer?: string | null;
+  essay_feedback?: string | null;
 }

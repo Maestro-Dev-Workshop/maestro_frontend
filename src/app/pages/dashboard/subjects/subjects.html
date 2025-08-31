@@ -44,10 +44,10 @@
             <!-- Progress Bar -->
             <div class="w-full">
               <div class="w-3/4 h-2 bg-gray-300 rounded-full">
-                <div class="h-full bg-prussian-blue-800 rounded-full" [ngStyle]="{ width: subject.completion + '%' }"></div>
+                <div class="h-full bg-prussian-blue-800 rounded-full" [ngStyle]="{ width: subject.completion*100 + '%' }"></div>
               </div>
             </div>
-            <span>{{subject.completion}}%</span>
+            <span>{{(subject.completion*100).toFixed(0)}}%</span>
           </div>
         </button>
       }
