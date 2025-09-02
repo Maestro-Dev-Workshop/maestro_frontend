@@ -7,11 +7,11 @@ import { ChatMetadata } from '../models/chat-metadata.model';
 export class ChatbotService {
   http = inject(HttpBaseService);
 
-  sendMessage(sessionId: string, message: string, metadata: ChatMetadata): Observable<any> {
+  sendMessage(sessionId?: string, message?: string, metadata?: ChatMetadata): Observable<any> {
     return this.http.post(`chatbot/${sessionId}/send-message`, { message, metadata });
   }
 
-  getChatHistory(sessionId: string): Observable<any> {
+  getChatHistory(sessionId?: string): Observable<any> {
     return this.http.get(`chatbot/${sessionId}/chat-history`);
   }
 }

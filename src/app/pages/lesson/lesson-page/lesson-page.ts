@@ -9,6 +9,7 @@ import { LessonService } from '../../../core/services/lesson.service';
 import { ChatMetadata } from '../../../core/models/chat-metadata.model';
 import { ChatbotService } from '../../../core/services/chatbot.service';
 import { forkJoin, map, switchMap } from 'rxjs';
+import { ChatMessage } from '../../../core/models/chat-message.model';
 
 @Component({
   selector: 'app-lesson-page',
@@ -25,6 +26,7 @@ export class LessonPage implements OnInit {
     id: '', // ID of the current subtopic, exercise question, or exam question
     content: {} // Content to display based on the current view
   }
+  chatHistory: ChatMessage[] = [];
   chatOpen = false;
   subjectService = inject(SubjectsService)
   lessonService = inject(LessonService)
@@ -160,18 +162,18 @@ export class LessonPage implements OnInit {
   //     ]
   //   }
   // }
-  chatHistory = [
-    {
-      sender: "user",
-      message: "Hello",
-      timestamp: ""
-    },
-    {
-      sender: "assistant",
-      message: "Hi there, how can I help you?",
-      timestamp: ""
-    },
-  ]
+  // chatHistory = [
+  //   {
+  //     sender: "user",
+  //     message: "Hello",
+  //     timestamp: ""
+  //   },
+  //   {
+  //     sender: "assistant",
+  //     message: "Hi there, how can I help you?",
+  //     timestamp: ""
+  //   },
+  // ]
 
   constructor(private cdr: ChangeDetectorRef) {
     // Extract subjectId from the route parameters
@@ -181,6 +183,16 @@ export class LessonPage implements OnInit {
   }
 
   ngOnInit(): void {
+    // Fetch chat history
+    this.chatbotService.getChatHistory(this.subjectId).subscribe({
+      next: (response) => {
+        this.chatHistory = response.history;
+      }, error(err) {
+        console.error(`Error fetching chat history ${err}`)
+      },
+    });
+
+
     // 1. Fetch all subjects first
     this.subjectService.getAllSubjects().pipe(
       map((res: any) => res.sessions || []), // unwrap sessions array
@@ -276,7 +288,7 @@ export class LessonPage implements OnInit {
   }
   
   
-
+  //
   updatecurrentView(event: any) {
     let content = null;
 
@@ -284,7 +296,6 @@ export class LessonPage implements OnInit {
       content = this.subjectContent.topics
         .flatMap((topic: any) => topic.subtopics)
         .find((subtopic: any)=> subtopic.id === event.id) || {};
-      // mark subtopic as read
       // check for completed topic
       } else if (event.type === 'exercise') {
         content = this.subjectContent.topics
@@ -299,18 +310,99 @@ export class LessonPage implements OnInit {
       type: event.type,
       content: content
     }
-    if (event.type === 'subtopic') this.updateChatMetadata();
+
+    if (event.type === 'subtopic') {
+      this.updateChatMetadata();
+
+      // mark subtopic as read
+      const topic_id = this.getTopicDataFromSubtopic().id
+      this.lessonService.markSubtopicAsRead(topic_id, event.id).subscribe({
+        next: () => {
+          this.subjectContent.topics
+          .find((topic: any) => topic.id == topic_id).subtopics
+          .find((subtopic: any) => subtopic.id == event.id)
+          .read = true
+          this.updateProgress()
+          this.checkForTopicCompleteness(topic_id)
+        }, error(err) {
+          console.error(`Failed to mark subtopic as read: ${err}`)
+        },
+      });
+    } else if (this.chatOpen && (this.currentView.content.score == null)){
+      this.chatOpen = false;
+    }
     console.log(this.currentView)
   }
+
+  updateProgress() {
+    let total = 0;
+    let completed = 0;
   
+    // --- Loop through topics ---
+    this.subjectContent.topics.forEach((topic: any) => {
+      // Count subtopics
+      if (topic.subtopics?.length) {
+        total += topic.subtopics.length;
+        completed += topic.subtopics.filter((st: any) => st.read).length;
+      }
+  
+      // Count exercise (each topic has exactly one exercise object)
+      if (topic.exercise) {
+        total += 1;
+        if (topic.exercise.score !== null && topic.exercise.score !== undefined) {
+          completed += 1;
+        }
+      }
+    });
+  
+    // --- Count exam (only one per subjectContent) ---
+    if (this.subjectContent.exam) {
+      total += 1;
+      if (this.subjectContent.exam.score !== null && this.subjectContent.exam.score !== undefined) {
+        completed += 1;
+      }
+    }
+  
+    // Calculate percentage
+    const fraction = (completed / total)
+    this.subjectService.updateSessionProgress(this.subjectId, fraction).subscribe({
+      next: () => {
+        console.log("Progress updated successfully")
+        const percentage = total > 0 ? Math.round(fraction * 100) : 0;
+        console.log(`Progress: ${completed}/${total} (${percentage}%)`);
+      }, error(err) {
+        console.error(`Failed to update progress: ${err}`)
+      },
+    });
+  }  
+  
+  //
   getTopicDataFromSubtopic() {
     const topicData = this.subjectContent.topics.find((topic: any) => topic.subtopics.some((subtopic: any) => subtopic.id === this.currentView.id));
     return { id: topicData?.id, title: topicData?.title};
   }
 
+  //
   getTopicDataFromExercise() {
     const topicData = this.subjectContent.topics.find((topic: any) => topic.exercise && topic.exercise.id === this.currentView.id);
     return { id: topicData?.id, title: topicData?.title};
+  }
+
+  //
+  checkForTopicCompleteness(topic_id: string) {
+    const topic = this.subjectContent.topics.find((t: any) => t.id === topic_id);
+  
+    if (!topic) return; // no topic found
+  
+    const allSubtopicsRead = Array.isArray(topic.subtopics) 
+      ? topic.subtopics.every((st: any) => st.read) 
+      : false;
+  
+    const hasExerciseScore = topic.exercise
+      ? topic.exercise.score !== null
+      : true;
+  
+    topic.completed = allSubtopicsRead && hasExerciseScore;
   }
 
   // Updates the current view to the previous or next subtopic
@@ -332,6 +424,7 @@ export class LessonPage implements OnInit {
     this.updatecurrentView({ id: subtopics[newIndex].id, type: 'subtopic'})
   }
 
+  //
   updateChatMetadata(question_event? : any) {
     if (this.currentView.type === 'subtopic') {
       const topicData = this.getTopicDataFromSubtopic()
@@ -348,22 +441,27 @@ export class LessonPage implements OnInit {
       this.chatMetadata.topic_name = topicData.title
       this.chatMetadata.sub_topic_id = null
       this.chatMetadata.sub_topic_name = null
-      this.chatMetadata.exercise_id = null
-      this.chatMetadata.exam_id = this.currentView.id
+      this.chatMetadata.exercise_id = this.currentView.id
+      this.chatMetadata.exam_id = null
       this.chatMetadata.question_id = question_event.id
     } else if (this.currentView.type === 'exam') {
       this.chatMetadata.topic_id = null
       this.chatMetadata.topic_name = null
       this.chatMetadata.sub_topic_id = null
       this.chatMetadata.sub_topic_name = null
-      this.chatMetadata.exercise_id = this.currentView.id
       this.chatMetadata.exercise_id = null
+      this.chatMetadata.exam_id = this.currentView.id
       this.chatMetadata.question_id = question_event.id
     }
   }
 
+  //
   toggleChatPopup() {
     this.chatOpen = !this.chatOpen
     console.log("chat toggled")
+  }
+
+  capitalizeFirstLetter(str: string) {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
   }
 }

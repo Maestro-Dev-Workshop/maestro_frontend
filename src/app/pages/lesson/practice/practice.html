@@ -12,11 +12,17 @@
         class="w-full p-2 text-gray-600 border-b-2 border-gray-300 resize-none overflow-hidden focus:outline-none focus:border-b-2 focus:border-prussian-blue-800"
         rows="1"
         placeholder="Type your answer here..."
-        [(ngModel)]="question.answer"
+        [(ngModel)]="question.essay_answer"
         oninput="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px';"
         onmousemove="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px';"
-        [disabled]="currentView().content.score"
+        [disabled]="!(currentView().content.score == null) || loading"
       ></textarea>
+      @if (currentView().content.score) {
+        <div class="w-full my-2 text-gray-500">
+          <strong><em>Feedback: </em></strong>
+          <markdown class="" [data]="question.essay_feedback"></markdown>
+        </div>
+      }
     } @else {
       @for (option of question.options; track option.id) {
         <div>
@@ -28,13 +34,22 @@
             [value]="option.id"
             [checked]="option.selected"
             (change)="toggleSelectOption(option.id)"
-            [disabled]="currentView().content.score"
+            [disabled]="!(currentView().content.score == null) || loading"
           >
-          <label [for]="option.id" class="text-gray-600 cursor-pointer">
+          <label 
+            [for]="option.id" 
+            [class]="`text-gray-600 cursor-pointer 
+            ${!(currentView().content.score == null) ? (option.correct ? 'text-green-600' : (option.selected? 'text-red-600' : '')) : ''}`"
+            >
             <!-- <markdown class="inline" [data]="option.text"></markdown> -->
             {{option.text}}
           </label>
         </div>
+        @if (!(currentView().content.score == null)) {
+          <div class="w-full my-1 text-gray-500">
+            <strong><em><markdown class="" [data]="option.explanation"></markdown></em></strong>
+          </div>
+        }
       }
     }
   </div>
@@ -53,9 +68,9 @@
 
   <!-- Submission Button -->
   <button 
-    class="self-start w-max text-sm text-white bg-prussian-blue-800 m-4 px-12 py-3 rounded-lg hover:bg-prussian-blue-500 transition duration-100" 
+    class="self-start w-max text-sm text-white bg-prussian-blue-800 m-4 px-12 py-3 rounded-lg hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500 transition duration-100" 
     (click)="submitAnswers()"
-    [disabled]="loading"
+    [disabled]="loading || !(currentView().content.score == null)"
   >
     Submit
   </button>
