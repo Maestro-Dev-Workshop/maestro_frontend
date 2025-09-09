@@ -1,1 +1,74 @@
-<p>landing works!</p>
+<!-- Page Container-->
+<div
+  class="relative min-h-screen bg-cover bg-center bg-no-repeat bg-[url(/images/landing_background.png)]"
+>
+  <!-- Dark Overlay for readability-->
+  <div class="absolute inset-0 bg-black bg-opacity-60"></div>
+
+  <!-- Main Content Wrapper-->
+  <div class="relative z-10 mx-auto px-8 md:px-20">
+    <header
+      class="flex w-full items-center justify-between py-4 backdrop-blur-sm"
+    >
+      <div class="flex items-center space-x-4">
+        <img
+          src="images/logo-coloured.svg"
+          alt="Maestro Logo"
+          class="h-8 w-8 sm:h-10 sm:w-10"
+        />
+        <span class="font-serif text-2xl sm:text-4xl font-bold text-white"
+          >Maestro</span
+        >
+      </div>
+
+      <!-- Nav Bar-->
+      <nav
+        class="hidden md:flex items-center space-x-6 text-xl sm:space-x-10 text-white"
+      >
+        <a href="#" class="font-medium hover:text-prussian-blue-500">Home</a>
+        <a href="#" class="font-medium hover:text-prussian-blue-500"
+          >Features</a
+        >
+        <a href="#" class="font-medium hover:text-prussian-blue-500"
+          >Contact us</a
+        >
+      </nav>
+
+      <a
+        href="#"
+        class="rounded-md bg-prussian-blue-900 px-8 py-4 text-lg font-semibold text-white transition hover:bg-prussian-blue-700 inline-block"
+      >
+        Try Maestro
+      </a>
+    </header>
+
+    <!-- Primary Headline-->
+    <main
+      class="flex min-h-screen flex-col items-start justify-center text-white"
+    >
+      <div class="flex max-w-2xl flex-col items-start space-y-4">
+        <h1 class="text-6xl font-normal leading-[72px] text-white">
+          Unlock Your Learning Potential with Maestro
+        </h1>
+        <p class="text-xl leading-relaxed text-gray-300">
+          Upload your materials, customize how you learn, and get AI-crafted
+          lessons, quizzes, and study plans tailored just for you.
+        </p>
+        <button
+          class="rounded-md bg-prussian-blue-900 px-8 py-4 text-lg font-semibold transition hover:bg-prussian-blue-700"
+        >
+          Get Started
+        </button>
+      </div>
+    </main>
+
+    <!-- Footer-->
+    <footer class="absolute bottom-20 w-full text-center">
+      <p
+        class="font-normal italic text-xl leading-7 text-gray-100 md:text-gray-100"
+      >
+        Be among the first to shape the future of learning.
+      </p>
+    </footer>
+  </div>
+</div>
