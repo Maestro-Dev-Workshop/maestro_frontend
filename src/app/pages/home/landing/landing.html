@@ -25,17 +25,17 @@
       <nav
         class="hidden md:flex items-center space-x-6 text-xl sm:space-x-10 text-white"
       >
-        <a href="#" class="font-medium hover:text-prussian-blue-500">Home</a>
-        <a href="#" class="font-medium hover:text-prussian-blue-500"
+        <a (click)="onHomeClick()" class="font-medium hover:text-prussian-blue-500">Home</a>
+        <a (click)="onFeaturesClick()" class="font-medium hover:text-prussian-blue-500"
           >Features</a
         >
-        <a href="#" class="font-medium hover:text-prussian-blue-500"
+        <a (click)="onContactClick()" class="font-medium hover:text-prussian-blue-500"
           >Contact us</a
         >
       </nav>
 
       <a
-        href="#"
+        (click)="onGetStartedClick()"
         class="rounded-md bg-prussian-blue-900 px-8 py-4 text-lg font-semibold text-white transition hover:bg-prussian-blue-700 inline-block"
       >
         Try Maestro
