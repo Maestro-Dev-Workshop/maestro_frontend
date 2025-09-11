@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { ViewportScroller } from '@angular/common';
 import { Landing } from '../landing/landing';
 import { Features } from '../features/features';
 import { Pricing } from '../pricing/pricing';
@@ -12,17 +13,20 @@ import { Contact } from '../contact/contact';
   styleUrl: './home.css'
 })
 export class Home {
-  vscroller: any;
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private vscroller: ViewportScroller
+  ) {}
 
   ngOnInit(): void {
     // this.router.navigate(['/login']);
   }
-  scrollTo(section: 'top' | 'features' | 'contact') {
-  if (section === 'top') {
-    this.vscroller.scrollToPosition([0, 0]);
-  } else {
-    this.vscroller.scrollToAnchor(section);
+
+  scrollTo(section: 'top' | 'features' | 'pricing' | 'contact' ) {
+    if (section === 'top') {
+      this.vscroller.scrollToPosition([0, 0]);
+    } else {
+      this.vscroller.scrollToAnchor(section);
+    }
   }
-}
 }

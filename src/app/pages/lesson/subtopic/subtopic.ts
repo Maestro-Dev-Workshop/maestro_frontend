@@ -1,9 +1,10 @@
 import { Component, input, output } from '@angular/core';
-import { MarkdownModule } from 'ngx-markdown';
+import { MarkdownPipe } from '../../../shared/pipes/markdown-pipe';
+// import { MarkdownModule } from 'ngx-markdown';
 
 @Component({
   selector: 'app-subtopic',
-  imports: [MarkdownModule],
+  imports: [MarkdownPipe],
   templateUrl: './subtopic.html',
   styleUrl: './subtopic.css'
 })

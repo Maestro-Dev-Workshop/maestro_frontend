@@ -29,8 +29,5 @@
   </h1>
 
   <!-- Subtopic Content -->
-  <markdown class="text-lg text-gray-700" [data]="currentView().content.content"></markdown>
-  <!-- <div class="text-lg text-gray-700">
-    {{ currentView().content.content }}
-  </div> -->
+  <div class="text-lg text-gray-700" [innerHTML]="currentView().content.content | markdown"></div>
 </div>

@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   styleUrl: './landing.css'
 })
 export class Landing {
-  @Output() navigateSection = new EventEmitter<'top' | 'features' | 'contact'>();
+  @Output() navigateSection = new EventEmitter<'top' | 'features' | 'pricing' | 'contact'>();
 
   constructor(private router: Router) {}
 
@@ -21,11 +21,15 @@ export class Landing {
     this.navigateSection.emit('features');
   }
 
+  onPricingClick() {
+    this.navigateSection.emit('pricing');
+  }
+
   onContactClick() {
     this.navigateSection.emit('contact');
   }
 
   onGetStartedClick() {
-    this.router.navigate(['/auth/signup']);
+    this.router.navigate(['/signup']);
   }
 }

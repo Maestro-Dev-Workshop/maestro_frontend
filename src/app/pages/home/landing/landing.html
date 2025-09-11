@@ -26,20 +26,17 @@
         class="hidden md:flex items-center space-x-6 text-xl sm:space-x-10 text-white"
       >
         <a (click)="onHomeClick()" class="font-medium hover:text-prussian-blue-500">Home</a>
-        <a (click)="onFeaturesClick()" class="font-medium hover:text-prussian-blue-500"
-          >Features</a
-        >
-        <a (click)="onContactClick()" class="font-medium hover:text-prussian-blue-500"
-          >Contact us</a
-        >
+        <a (click)="onFeaturesClick()" class="font-medium hover:text-prussian-blue-500">Features</a>
+        <a (click)="onPricingClick()" class="font-medium hover:text-prussian-blue-500">Pricing</a>
+        <a (click)="onContactClick()" class="font-medium hover:text-prussian-blue-500">Contact us</a>
       </nav>
 
-      <a
+      <button
         (click)="onGetStartedClick()"
         class="rounded-md bg-prussian-blue-900 px-8 py-4 text-lg font-semibold text-white transition hover:bg-prussian-blue-700 inline-block"
       >
         Try Maestro
-      </a>
+      </button>
     </header>
 
     <!-- Primary Headline-->
@@ -55,6 +52,7 @@
           lessons, quizzes, and study plans tailored just for you.
         </p>
         <button
+          (click)="onGetStartedClick()"
           class="rounded-md bg-prussian-blue-900 px-8 py-4 text-lg font-semibold transition hover:bg-prussian-blue-700"
         >
           Get Started
