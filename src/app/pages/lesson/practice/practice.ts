@@ -1,13 +1,13 @@
 import { Component, effect, inject, input, OnInit, output, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MarkdownModule } from 'ngx-markdown';
 import { QuestionModel, SaveQuestionData } from '../../../core/models/question.model';
 import { LessonService } from '../../../core/services/lesson.service';
 import { catchError, forkJoin, Observable, of, switchMap, take, tap } from 'rxjs';
+import { MarkdownPipe } from '../../../shared/pipes/markdown-pipe';
 
 @Component({
   selector: 'app-practice',
-  imports: [FormsModule, MarkdownModule],
+  imports: [FormsModule, MarkdownPipe],
   templateUrl: './practice.html',
   styleUrl: './practice.css'
 })

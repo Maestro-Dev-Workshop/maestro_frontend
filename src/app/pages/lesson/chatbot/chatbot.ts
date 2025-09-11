@@ -4,11 +4,11 @@ import { timestamp } from 'rxjs';
 import { ChatMessage } from '../../../core/models/chat-message.model';
 import { ChatbotService } from '../../../core/services/chatbot.service';
 import { ChatMetadata } from '../../../core/models/chat-metadata.model';
-import { MarkdownModule } from 'ngx-markdown';
+import { MarkdownPipe } from '../../../shared/pipes/markdown-pipe';
 
 @Component({
   selector: 'app-chatbot',
-  imports: [FormsModule, MarkdownModule],
+  imports: [FormsModule, MarkdownPipe],
   templateUrl: './chatbot.html',
   styleUrl: './chatbot.css'
 })
