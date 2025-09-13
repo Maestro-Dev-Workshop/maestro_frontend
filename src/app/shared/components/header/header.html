@@ -5,3 +5,32 @@
   </div>
   <img src="images/profile-img.png" alt="" class="w-12">
 </div>
+
+<header class="flex items-center justify-between px-6 py-4 bg-white shadow">
+  <!-- Logo / Title -->
+  <a routerLink="/" class="text-2xl font-bold text-gray-800">Maestro</a>
+
+  <!-- Nav Links -->
+  <nav class="space-x-6 text-gray-600 hidden md:flex">
+    <a routerLink="/" routerLinkActive="text-gray-900" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+    <a routerLink="/dashboard" routerLinkActive="text-gray-900">Dashboard</a>
+    <a routerLink="/dashboard/subscription" routerLinkActive="text-gray-900">Subscription</a>
+  </nav>
+
+  <!-- Actions -->
+  <div class="flex items-center space-x-4">
+    <button
+      class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+      (click)="openLogout()"
+    >
+      Logout
+    </button>
+  </div>
+</header>
+
+@if(showLogout()) {
+  <app-confirm-logout
+    (cancel)="cancelLogout()"
+    (confirm)="confirmLogout()">
+  </app-confirm-logout>
+}
