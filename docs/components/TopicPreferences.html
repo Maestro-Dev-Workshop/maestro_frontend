@@ -1,0 +1,1118 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>maestro-frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">maestro-frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  TopicPreferences</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/pages/subject-create/topic-preferences/topic-preferences.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-topic-preferences</code></td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="../components/Header.html" target="_self" >Header</a></code>
+                                <code><a href="../components/CreationStepTab.html" target="_self" >CreationStepTab</a></code>
+                            <code>FormsModule</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./topic-preferences.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./topic-preferences.css</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#learningStyle" >learningStyle</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                <a href="#learningStyleCtrl" >learningStyleCtrl</a>
+                            </li>
+                            <li>
+                                <a href="#lessonService" >lessonService</a>
+                            </li>
+                            <li>
+                                <a href="#loading" >loading</a>
+                            </li>
+                            <li>
+                                <a href="#old_topics" >old_topics</a>
+                            </li>
+                            <li>
+                                <a href="#subjectId" >subjectId</a>
+                            </li>
+                            <li>
+                                <a href="#subjectService" >subjectService</a>
+                            </li>
+                            <li>
+                                <a href="#topics" >topics</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onSubmit" >onSubmit</a>
+                            </li>
+                            <li>
+                                <a href="#toggleTopicSelection" >toggleTopicSelection</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(router: Router, cdr: ChangeDetectorRef)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="66" class="link-to-prism">src/app/pages/subject-create/topic-preferences/topic-preferences.ts:66</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                    <code>Router</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>cdr</td>
+                                                  
+                                                        <td>
+                                                                    <code>ChangeDetectorRef</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="83"
+                                    class="link-to-prism">src/app/pages/subject-create/topic-preferences/topic-preferences.ts:83</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onSubmit"></a>
+                    <span class="name">
+                        <span ><b>onSubmit</b></span>
+                        <a href="#onSubmit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onSubmit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="99"
+                                    class="link-to-prism">src/app/pages/subject-create/topic-preferences/topic-preferences.ts:99</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleTopicSelection"></a>
+                    <span class="name">
+                        <span ><b>toggleTopicSelection</b></span>
+                        <a href="#toggleTopicSelection"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleTopicSelection(topic_id: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="75"
+                                    class="link-to-prism">src/app/pages/subject-create/topic-preferences/topic-preferences.ts:75</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>topic_id</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="learningStyle"></a>
+                    <span class="name">
+                        <span ><b>learningStyle</b></span>
+                        <a href="#learningStyle"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/app/pages/subject-create/topic-preferences/topic-preferences.ts:23</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="learningStyleCtrl"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                        <span ><b>learningStyleCtrl</b></span>
+                        <a href="#learningStyleCtrl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>NgModel</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(&#x27;learningStyleCtrl&#x27;)<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/app/pages/subject-create/topic-preferences/topic-preferences.ts:25</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="lessonService"></a>
+                    <span class="name">
+                        <span ><b>lessonService</b></span>
+                        <a href="#lessonService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(LessonService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="66" class="link-to-prism">src/app/pages/subject-create/topic-preferences/topic-preferences.ts:66</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loading"></a>
+                    <span class="name">
+                        <span ><b>loading</b></span>
+                        <a href="#loading"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/pages/subject-create/topic-preferences/topic-preferences.ts:26</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="old_topics"></a>
+                    <span class="name">
+                        <span ><b>old_topics</b></span>
+                        <a href="#old_topics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-1&quot;,
+      &quot;name&quot;: &quot;Definition&quot;,
+      &quot;selected&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-2&quot;,
+      &quot;name&quot;: &quot;Course Overview&quot;,
+      &quot;selected&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-3&quot;,
+      &quot;name&quot;: &quot;Key Features of the Course&quot;,
+      &quot;selected&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-4&quot;,
+      &quot;name&quot;: &quot;Learning Objectives&quot;,
+      &quot;selected&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-5&quot;,
+      &quot;name&quot;: &quot;Course Modules&quot;,
+      &quot;selected&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-6&quot;,
+      &quot;name&quot;: &quot;Assesment Methods&quot;,
+      &quot;selected&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-7&quot;,
+      &quot;name&quot;: &quot;Frequently Asked Questions (FAQs)&quot;,
+      &quot;selected&quot;: false
+    },
+  ]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/app/pages/subject-create/topic-preferences/topic-preferences.ts:27</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="subjectId"></a>
+                    <span class="name">
+                        <span ><b>subjectId</b></span>
+                        <a href="#subjectId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/pages/subject-create/topic-preferences/topic-preferences.ts:24</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="subjectService"></a>
+                    <span class="name">
+                        <span ><b>subjectService</b></span>
+                        <a href="#subjectService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(SubjectsService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="65" class="link-to-prism">src/app/pages/subject-create/topic-preferences/topic-preferences.ts:65</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="topics"></a>
+                    <span class="name">
+                        <span ><b>topics</b></span>
+                        <a href="#topics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/TopicModel.html" target="_self" >TopicModel[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="64" class="link-to-prism">src/app/pages/subject-create/topic-preferences/topic-preferences.ts:64</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { ChangeDetectorRef, Component, inject, OnInit, ViewChild } from &#x27;@angular/core&#x27;;
+import { Header } from &#x27;../../../shared/components/header/header&#x27;;
+import { CreationStepTab } from &#x27;../creation-step-tab/creation-step-tab&#x27;;
+import { FormsModule, NgModel } from &#x27;@angular/forms&#x27;;
+import { Router } from &#x27;@angular/router&#x27;;
+import { TopicModel } from &#x27;../../../core/models/topic.model&#x27;;
+import { SubjectsService } from &#x27;../../../core/services/subjects.service&#x27;;
+import { LessonService } from &#x27;../../../core/services/lesson.service&#x27;;
+
+type Topic &#x3D; {
+  id: string,
+  name: string,
+  selected: boolean
+}
+
+@Component({
+  selector: &#x27;app-topic-preferences&#x27;,
+  imports: [Header, CreationStepTab, FormsModule],
+  templateUrl: &#x27;./topic-preferences.html&#x27;,
+  styleUrl: &#x27;./topic-preferences.css&#x27;
+})
+export class TopicPreferences implements OnInit {
+  learningStyle &#x3D; &#x27;&#x27;;
+  subjectId &#x3D; &#x27;&#x27;;
+  @ViewChild(&#x27;learningStyleCtrl&#x27;) learningStyleCtrl!: NgModel;
+  loading &#x3D; false;
+  old_topics &#x3D; [
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-1&quot;,
+      &quot;name&quot;: &quot;Definition&quot;,
+      &quot;selected&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-2&quot;,
+      &quot;name&quot;: &quot;Course Overview&quot;,
+      &quot;selected&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-3&quot;,
+      &quot;name&quot;: &quot;Key Features of the Course&quot;,
+      &quot;selected&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-4&quot;,
+      &quot;name&quot;: &quot;Learning Objectives&quot;,
+      &quot;selected&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-5&quot;,
+      &quot;name&quot;: &quot;Course Modules&quot;,
+      &quot;selected&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-6&quot;,
+      &quot;name&quot;: &quot;Assesment Methods&quot;,
+      &quot;selected&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-7&quot;,
+      &quot;name&quot;: &quot;Frequently Asked Questions (FAQs)&quot;,
+      &quot;selected&quot;: false
+    },
+  ];
+  topics: TopicModel[] &#x3D; [];
+  subjectService &#x3D; inject(SubjectsService)
+  lessonService &#x3D; inject(LessonService)
+
+  constructor(private router: Router, private cdr: ChangeDetectorRef) {
+    // Extract subjectId from the route parameters
+    const url &#x3D; window.location.pathname;
+    const parts &#x3D; url.split(&#x27;/&#x27;);
+    this.subjectId &#x3D; parts[parts.length - 2]; // Assuming the last part is the subjectId
+  }
+
+  toggleTopicSelection(topic_id: any) {
+    this.topics.map(
+      (topic) &#x3D;&gt; {
+        if (topic.id &#x3D;&#x3D;&#x3D; topic_id) {topic.selected &#x3D; !topic.selected}
+      }
+    )
+  }
+
+  ngOnInit(): void {
+    // Fetch topics from backend
+    this.lessonService.getAllTopics(this.subjectId).subscribe({
+      next: (response) &#x3D;&gt; {
+        console.log(response)
+        this.topics &#x3D; response.topics
+        console.log(this.topics)
+        this.cdr.detectChanges();
+      },
+      error: (err) &#x3D;&gt; {
+        console.error(&#x27;Error fetching topics:&#x27;, err);
+        alert(&quot;Failed to load topics. Please try again later.&quot;);
+      }
+    });
+  }
+
+  onSubmit() {
+    const selectedTopics &#x3D; this.topics.filter((topic) &#x3D;&gt; topic.selected);
+    this.loading &#x3D; true;
+    if (selectedTopics.length &#x3D;&#x3D; 0) {
+      alert(&quot;At least one topic must be selected&quot;);
+      this.loading &#x3D; false;
+      return
+    }
+    if (this.learningStyleCtrl.invalid) {
+      alert(&quot;Learning Style is required&quot;);
+      this.loading &#x3D; false;
+      return
+    }
+
+    // Here you would typically send the data to the backend
+    console.log(selectedTopics);
+    console.log(this.learningStyle);
+
+    // Select topics
+    this.subjectService.selectTopics(this.subjectId, selectedTopics.map((topic) &#x3D;&gt; topic.id)).subscribe({
+      next: (response) &#x3D;&gt; {
+        console.log(&quot;Topics selected:&quot;, response);
+
+        // Generate lesson
+        this.subjectService.generateLesson(this.subjectId, this.learningStyle).subscribe({
+          next: (response) &#x3D;&gt; {
+            console.log(&quot;Lesson generated:&quot;, response);
+            this.router.navigate([&#x60;/subject-create/${this.subjectId}/question-settings&#x60;])
+            this.loading &#x3D; false;
+          },
+
+          error: (err) &#x3D;&gt; {
+            console.error(&#x27;Error generating lesson:&#x27;, err);
+            alert(&quot;Failed to generate lesson. Please try again later.&quot;);
+            this.loading &#x3D; false;
+          }
+        });
+      },
+      
+      error: (err) &#x3D;&gt; {
+        console.error(&#x27;Error selecting topics:&#x27;, err);
+        alert(&quot;Failed to select topics. Please try again later.&quot;);
+        this.loading &#x3D; false;
+      }
+    });
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;app-header&gt;&lt;/app-header&gt;
+&lt;div class&#x3D;&quot;flex flex-col w-full px-32&quot;&gt;
+  &lt;!-- Creation Tab Header --&gt;
+  &lt;div class&#x3D;&quot;flex flex-row mb-8&quot;&gt;
+    &lt;app-creation-step-tab
+      [text]&#x3D;&quot;&#x27;My Subject and Materials&#x27;&quot;
+      [icon]&#x3D;&quot;&#x27;images/subject-icon.svg&#x27;&quot;
+      [active]&#x3D;&quot;true&quot;
+      class&#x3D;&quot;w-2/6&quot;
+    /&gt;
+    &lt;app-creation-step-tab
+      [text]&#x3D;&quot;&#x27;Lesson Content Generation&#x27;&quot;
+      [icon]&#x3D;&quot;&#x27;images/lesson-generation-icon.svg&#x27;&quot;
+      [active]&#x3D;&quot;true&quot;
+      class&#x3D;&quot;w-2/6&quot;
+    /&gt;
+    &lt;app-creation-step-tab
+      [text]&#x3D;&quot;&#x27;Practice Question Generation&#x27;&quot;
+      [icon]&#x3D;&quot;&#x27;images/question-generation-icon.svg&#x27;&quot;
+      [active]&#x3D;&quot;false&quot;
+      class&#x3D;&quot;w-2/6&quot;
+    /&gt;
+  &lt;/div&gt;
+
+  &lt;h1 class&#x3D;&quot;text-2xl mb-2 font-medium&quot;&gt;Create Your Personalized Lesson&lt;/h1&gt;
+  &lt;p class&#x3D;&quot;mb-4 text-gray-600&quot;&gt;
+    Select the specific topics from your document that you want Maestro to focus on for your lesson.
+  &lt;/p&gt;
+
+  &lt;!-- Topic List --&gt;
+  &lt;div class&#x3D;&quot;flex flex-row flex-wrap mb-16&quot;&gt;
+    @for (topic of topics; track topic.id) {
+      &lt;button
+        [class]&#x3D;&quot;&#x27;flex flex-row rounded-full py-4 px-6 text-sm text-white mx-2 my-1 transition duration-300 ease-in-out &#x27; + ( topic.selected? &#x27;bg-prussian-blue-900&#x27; : &#x27;bg-gray-500&#x27;)&quot;
+        (click)&#x3D;&quot;toggleTopicSelection(topic.id)&quot;
+        [disabled]&#x3D;&quot;loading&quot;
+      &gt;
+        @if (topic.selected) {
+          &lt;!-- Replace with X icon --&gt;
+          &lt;img src&#x3D;&quot;images/x-icon.svg&quot; alt&#x3D;&quot;X&quot; class&#x3D;&quot;mr-2 w-3&quot;&gt;
+        }
+        {{topic.title}}
+      &lt;/button&gt;
+    }
+  &lt;/div&gt;
+
+  &lt;!-- Learning Preferences Form --&gt;
+  &lt;h1 class&#x3D;&quot;text-2xl font-medium&quot;&gt;Learning Style&lt;/h1&gt;
+  &lt;form #form&#x3D;&quot;ngForm&quot; class&#x3D;&quot;flex flex-col w-2/4&quot;&gt;
+    &lt;label class&#x3D;&quot;text-gray-700 my-2&quot;&gt;How would you like this lesson to be?&lt;/label&gt;
+    &lt;textarea
+      type&#x3D;&quot;text&quot; 
+      name&#x3D;&quot;learningStyle&quot; 
+      placeholder&#x3D;&quot;This helps Maestro tailor the content delivery to your unique style, you can provide your custom instructions here.&quot; 
+      class&#x3D;&quot;bg-gray-50 p-4 rounded-lg border border-2 h-48 text-sm&quot; 
+      [(ngModel)]&#x3D;&quot;learningStyle&quot;
+      required
+      learningStyle
+      #learningStyleCtrl&#x3D;&quot;ngModel&quot;
+      [disabled]&#x3D;&quot;loading&quot;
+    &gt;&lt;/textarea&gt;
+    &lt;!-- Error messages --&gt;
+    @if (learningStyleCtrl.invalid &amp;&amp; learningStyleCtrl.touched) {
+      &lt;div class&#x3D;&quot;text-red-500 text-sm mt-1&quot;&gt;
+        &lt;span&gt;Learning Style is required&lt;/span&gt;
+      &lt;/div&gt;
+    }
+    &lt;button
+      type&#x3D;&quot;submit&quot; 
+      class&#x3D;&quot;w-max bg-prussian-blue-800 hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500 text-white flex flex-row items-center px-5 py-3 rounded-md text-sm my-4&quot; 
+      (click)&#x3D;&quot;onSubmit()&quot;
+      [disabled]&#x3D;&quot;loading&quot;
+    &gt;
+      Next
+      &lt;img src&#x3D;&quot;images/next-icon.svg&quot; alt&#x3D;&quot;&quot; class&#x3D;&quot;w-3 ml-2&quot;&gt;
+    &lt;/button&gt;
+  &lt;/form&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><app-header></app-header><div class="flex flex-col w-full px-32">  <!-- Creation Tab Header -->  <div class="flex flex-row mb-8">    <app-creation-step-tab      [text]="\'My Subject and Materials\'"      [icon]="\'images/subject-icon.svg\'"      [active]="true"      class="w-2/6"    />    <app-creation-step-tab      [text]="\'Lesson Content Generation\'"      [icon]="\'images/lesson-generation-icon.svg\'"      [active]="true"      class="w-2/6"    />    <app-creation-step-tab      [text]="\'Practice Question Generation\'"      [icon]="\'images/question-generation-icon.svg\'"      [active]="false"      class="w-2/6"    />  </div>  <h1 class="text-2xl mb-2 font-medium">Create Your Personalized Lesson</h1>  <p class="mb-4 text-gray-600">    Select the specific topics from your document that you want Maestro to focus on for your lesson.  </p>  <!-- Topic List -->  <div class="flex flex-row flex-wrap mb-16">    @for (topic of topics; track topic.id) {      <button        [class]="\'flex flex-row rounded-full py-4 px-6 text-sm text-white mx-2 my-1 transition duration-300 ease-in-out \' + ( topic.selected? \'bg-prussian-blue-900\' : \'bg-gray-500\')"        (click)="toggleTopicSelection(topic.id)"        [disabled]="loading"      >        @if (topic.selected) {          <!-- Replace with X icon -->          <img src="images/x-icon.svg" alt="X" class="mr-2 w-3">        }        {{topic.title}}      </button>    }  </div>  <!-- Learning Preferences Form -->  <h1 class="text-2xl font-medium">Learning Style</h1>  <form #form="ngForm" class="flex flex-col w-2/4">    <label class="text-gray-700 my-2">How would you like this lesson to be?</label>    <textarea      type="text"       name="learningStyle"       placeholder="This helps Maestro tailor the content delivery to your unique style, you can provide your custom instructions here."       class="bg-gray-50 p-4 rounded-lg border border-2 h-48 text-sm"       [(ngModel)]="learningStyle"      required      learningStyle      #learningStyleCtrl="ngModel"      [disabled]="loading"    ></textarea>    <!-- Error messages -->    @if (learningStyleCtrl.invalid && learningStyleCtrl.touched) {      <div class="text-red-500 text-sm mt-1">        <span>Learning Style is required</span>      </div>    }    <button      type="submit"       class="w-max bg-prussian-blue-800 hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500 text-white flex flex-row items-center px-5 py-3 rounded-md text-sm my-4"       (click)="onSubmit()"      [disabled]="loading"    >      Next      <img src="images/next-icon.svg" alt="" class="w-3 ml-2">    </button>  </form></div></div>'
+    var COMPONENTS = [{'name': 'About', 'selector': 'app-about'},{'name': 'App', 'selector': 'app-root'},{'name': 'Chatbot', 'selector': 'app-chatbot'},{'name': 'ConfirmLogout', 'selector': 'app-confirm-logout'},{'name': 'Contact', 'selector': 'app-contact'},{'name': 'CreationStepTab', 'selector': 'app-creation-step-tab'},{'name': 'Features', 'selector': 'app-features'},{'name': 'Header', 'selector': 'app-header'},{'name': 'Home', 'selector': 'app-home'},{'name': 'Landing', 'selector': 'app-landing'},{'name': 'LessonPage', 'selector': 'app-lesson-page'},{'name': 'Login', 'selector': 'app-login'},{'name': 'NamingUpload', 'selector': 'app-naming-upload'},{'name': 'NotFound', 'selector': 'app-not-found'},{'name': 'Practice', 'selector': 'app-practice'},{'name': 'Pricing', 'selector': 'app-pricing'},{'name': 'QuestionSettings', 'selector': 'app-question-settings'},{'name': 'Sidebar', 'selector': 'app-sidebar'},{'name': 'Signup', 'selector': 'app-signup'},{'name': 'Subjects', 'selector': 'app-subjects'},{'name': 'Subscription', 'selector': 'app-subscription'},{'name': 'Subtopic', 'selector': 'app-subtopic'},{'name': 'Toast', 'selector': 'app-toast'},{'name': 'TopicPreferences', 'selector': 'app-topic-preferences'},{'name': 'VerifyEmail', 'selector': 'app-verify-email'}];
+    var DIRECTIVES = [{'name': 'FileTypeDirective', 'selector': '[appFileType]'},{'name': 'PasswordValidator', 'selector': '[appPasswordValidator]'}];
+    var ACTUAL_COMPONENT = {'name': 'TopicPreferences'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'TopicPreferences.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
