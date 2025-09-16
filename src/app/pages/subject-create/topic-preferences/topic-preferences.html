@@ -65,14 +65,20 @@
         <span>Learning Style is required</span>
       </div>
     }
-    <button
-      type="submit" 
-      class="w-max bg-prussian-blue-800 hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500 text-white flex flex-row items-center px-5 py-3 rounded-md text-sm my-4" 
-      (click)="onSubmit()"
-      [disabled]="loading"
-    >
-      Next
-      <img src="images/next-icon.svg" alt="" class="w-3 ml-2">
-    </button>
+    <div class="flex flex-row items-center">
+      <button
+        type="submit" 
+        class="w-max bg-prussian-blue-800 hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500 text-white flex flex-row items-center px-5 py-3 rounded-md text-sm my-4" 
+        (click)="onSubmit()"
+        [disabled]="loading"
+      >
+        Next
+        <img src="images/next-icon.svg" alt="" class="w-3 ml-2">
+      </button>
+      <div [class]="`flex flex-row items-center ${loading ? '' : 'hidden'}`">
+        <img src="images/spinner.gif" alt="" class="w-8 h-8 mx-2">
+        loading...
+      </div>
+    </div>
   </form>
 </div>

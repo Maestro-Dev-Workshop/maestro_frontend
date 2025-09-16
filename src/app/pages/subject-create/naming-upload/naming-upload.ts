@@ -110,25 +110,25 @@ export class NamingUpload {
               },
               
               error: (err) => {
+                this.loading = false;
                 console.error('Error labeling documents:', err);
                 alert("Failed to label documents. Please try again later.");
-                this.loading = false;
               }
             });
           },
 
           error: (err) => {
+            this.loading = false;
             console.error('Error ingesting documents:', err);
             alert("Failed to upload documents. Please try again later.");
-            this.loading = false;
           }
         });
       },
 
       error: (err) => {
+        this.loading = false;
         console.error('Error creating subject:', err);
         alert("Failed to create subject. Please try again later.");
-        this.loading = false;
       }
     });
   }

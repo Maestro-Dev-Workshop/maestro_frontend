@@ -128,17 +128,17 @@ export class TopicPreferences implements OnInit {
           },
 
           error: (err) => {
+            this.loading = false;
             console.error('Error generating lesson:', err);
             alert("Failed to generate lesson. Please try again later.");
-            this.loading = false;
           }
         });
       },
       
       error: (err) => {
+        this.loading = false;
         console.error('Error selecting topics:', err);
         alert("Failed to select topics. Please try again later.");
-        this.loading = false;
       }
     });
   }
