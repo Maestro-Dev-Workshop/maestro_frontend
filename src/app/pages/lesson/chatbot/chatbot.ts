@@ -82,8 +82,8 @@ export class Chatbot {
         this.loading = false;
         console.log(response);
       }, error: (err) => {
-        console.error(`Error sending message: ${err}`);
         this.loading = false;
+        console.error(`Error sending message: ${err}`);
       },
     });
     
