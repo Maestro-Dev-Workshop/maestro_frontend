@@ -38,20 +38,22 @@ export class Signup {
     // Later: replace with real API call
     if (this.emailCtrl.invalid || this.passwordCtrl.invalid || this.firstnameCtrl.invalid || this.lastnameCtrl.invalid) {
       alert("first name, last name, valid email, and valid password are required");
+      this.loading = false;
     } else {
       this.authService.signup({ 
         first_name: this.firstname, last_name: this.lastname, email: this.email, password: this.password }).subscribe({
         next: (response) => {
           console.log('Signup successful', response);
           alert('Signup successful! Please log in.');
-          this.router.navigate(['/login']);
+          this.loading = false;
+          this.router.navigateByUrl('/check-email', { state: { email: this.email } });
         },
         error: (error) => {
           console.error('Signup failed', error);
           alert('Signup failed, Please try again.');
+          this.loading = false;
         }
       });
     }
-    this.loading = false;
   }
 }
