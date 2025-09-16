@@ -29,6 +29,10 @@ export class AuthService {
     return this.http.post('auth/verify-email', { token });
   }
 
+  resendVerificationEmail(email: string): Observable<any> {
+    return this.http.post('auth/resend-verification', { email });
+  }
+
   logout(): void {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
