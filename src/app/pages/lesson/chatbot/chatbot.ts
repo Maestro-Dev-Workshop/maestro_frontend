@@ -1,10 +1,11 @@
-import { Component, inject, input, model, output, AfterViewInit, ElementRef, ViewChild, effect, Injector } from '@angular/core';
+import { Component, inject, input, model, output, AfterViewInit, ElementRef, ViewChild, effect, Injector, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { timestamp } from 'rxjs';
 import { ChatMessage } from '../../../core/models/chat-message.model';
 import { ChatbotService } from '../../../core/services/chatbot.service';
 import { ChatMetadata } from '../../../core/models/chat-metadata.model';
 import { MarkdownPipe } from '../../../shared/pipes/markdown-pipe';
+import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
   selector: 'app-chatbot',
@@ -20,7 +21,10 @@ export class Chatbot {
   currentMessage: string = ''; 
   loading = false;
   chatbotService = inject(ChatbotService)
+  notify = inject(NotificationService);
   @ViewChild('chatContainer') private chatContainer!: ElementRef<HTMLDivElement>;
+
+  constructor(private cdr: ChangeDetectorRef) {}
 
   onCloseChat() {
     this.closeChat.emit({});
@@ -81,9 +85,12 @@ export class Chatbot {
         this.currentMessage = '';
         this.loading = false;
         console.log(response);
+        this.cdr.detectChanges();
       }, error: (err) => {
         this.loading = false;
         console.error(`Error sending message: ${err}`);
+        this.notify.showError('Failed to send message. Please try again.');
+        this.cdr.detectChanges();
       },
     });
     

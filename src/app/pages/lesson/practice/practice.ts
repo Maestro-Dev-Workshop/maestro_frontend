@@ -1,9 +1,10 @@
-import { Component, effect, inject, input, OnInit, output, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, inject, input, OnInit, output, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { QuestionModel, SaveQuestionData } from '../../../core/models/question.model';
 import { LessonService } from '../../../core/services/lesson.service';
 import { catchError, forkJoin, Observable, of, switchMap, take, tap } from 'rxjs';
 import { MarkdownPipe } from '../../../shared/pipes/markdown-pipe';
+import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
   selector: 'app-practice',
@@ -20,7 +21,10 @@ export class Practice {
   changeProgress = output<any>();
   question: any;
   loading = false;
+  notify = inject(NotificationService);
   lessonService = inject(LessonService)
+
+  constructor(private cdr: ChangeDetectorRef) {}
 
   // This will run any time currentView changes
   private updateOnInputChange = effect(() => {
@@ -106,6 +110,7 @@ export class Practice {
             }),
             catchError(err => {
               console.error(`Error scoring essay question: ${err}`);
+              this.notify.showError('Failed to score an essay question.');
               return of(null);
             })
           )
@@ -140,10 +145,13 @@ export class Practice {
       next: () => {
         this.changeProgress.emit({}); // Notify parent to refresh progress
         this.loading = false; // ✅ only after scoring + saving
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Failed to submit answers:', err);
+        this.notify.showError('Failed to submit answers. Please try again.');
         this.loading = false;
+        this.cdr.detectChanges();
       }
     });
   }

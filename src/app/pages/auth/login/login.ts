@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ViewChild } from '@angular/core';
 import { FormsModule, NgModel } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
@@ -14,14 +14,15 @@ export class Login {
   password = '';
   passwordVisible = "password";
   loading = false;
+  authService = inject(AuthService);
   notify = inject(NotificationService); // <-- Inject notification service
 
   @ViewChild('emailCtrl') emailCtrl!: NgModel;
   @ViewChild('passwordCtrl') passwordCtrl!: NgModel;
 
-  authService = inject(AuthService);
   constructor(
     private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   togglePasswordVisibility() {
@@ -46,13 +47,15 @@ export class Login {
           localStorage.setItem('refreshToken', response.refreshToken);
           const user = response.user;
           console.log('Logged in user:', user);
+          localStorage.setItem('userEmail', user.email);
           this.loading = false;
-          this.router.navigate(['/dashboard']);
+          this.router.navigateByUrl('/dashboard');
         },
         error: (error) => {
           console.error('Login failed', error);
           this.notify.showError('Invalid email or password');
           this.loading = false;
+          this.cdr.detectChanges();
         }
       });
     }

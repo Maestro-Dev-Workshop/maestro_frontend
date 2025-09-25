@@ -7,7 +7,7 @@ import { NotificationService } from '../../../core/services/notification.service
   standalone: true,
   imports: [CommonModule],
   templateUrl: './toast.html',
-  providers: [NotificationService]
+  // providers: [NotificationService]
 })
 export class Toast {
   msg: any;

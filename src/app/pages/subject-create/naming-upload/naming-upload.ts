@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { Header } from '../../../shared/components/header/header';
 import { Router } from '@angular/router';
 import { CreationStepTab } from '../creation-step-tab/creation-step-tab';
@@ -20,7 +20,7 @@ export class NamingUpload {
   subjectService = inject(SubjectsService);
   notify = inject(NotificationService); // <-- Inject notification service
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private cdr: ChangeDetectorRef) {}
 
   onFileDrop(event: DragEvent) {
     event.preventDefault();
@@ -47,28 +47,34 @@ export class NamingUpload {
   }
 
   private addFiles(fileList: FileList) {
-    const allowedTypes = ['application/pdf', 'image/png', 'image/jpeg']; // Example allowed types
+    const allowedExtensions = ['pdf', 'doc', 'docx', 'pptx'];
     const validFiles: File[] = [];
     const invalidFiles: string[] = [];
-
+    const largeFiles: string[] = [];
+  
     Array.from(fileList).forEach((file) => {
-      if (allowedTypes.includes(file.type)) {
-        validFiles.push(file);
-      } else {
+      const ext = file.name.split('.').pop()?.toLowerCase();
+  
+      if (!ext || !allowedExtensions.includes(ext)) {
         invalidFiles.push(file.name);
+      } else if (file.size > 20_000_000) { // 20MB cap for now
+        largeFiles.push(file.name);
+      } else {
+        validFiles.push(file);
       }
     });
-
+  
     if (invalidFiles.length) {
-      this.notify.showError(
-        `Unsupported file types: ${invalidFiles.join(', ')}`
-      );
+      this.notify.showError(`Unsupported file types: ${invalidFiles.join(', ')}`);
+    }
+    if (largeFiles.length) {
+      this.notify.showError(`Files too large: ${largeFiles.join(", ")}`);
     }
     if (validFiles.length) {
       this.files = [...this.files, ...validFiles];
       this.notify.showSuccess(`${validFiles.length} file(s) added.`);
     }
-  }
+  }  
 
   removeFile(file: File) {
     this.files = this.files.filter((f) => f !== file);
@@ -121,12 +127,14 @@ export class NamingUpload {
           next: (ingestResponse) => {
             console.log(ingestResponse);
             console.log('Stage 2' + this.loading);
+            this.notify.showSuccess('Sucessfully ingested documents. Identifying topics...');
 
             // Label documents with topics
             this.subjectService.labelDocuments(sessionId).subscribe({
               next: (labelResponse) => {
                 console.log('Stage 3' + this.loading);
                 console.log(labelResponse);
+                this.notify.showSuccess("Topics sucessfully identified.")
                 this.router.navigate([
                   `/subject-create/${sessionId}/topic-preferences`,
                 ]);
@@ -140,6 +148,7 @@ export class NamingUpload {
                   'Failed to label documents. Please try again later.'
                 );
                 this.loading = false;
+                this.cdr.detectChanges();
               }
             });
           },
@@ -151,6 +160,7 @@ export class NamingUpload {
               'Failed to upload documents. Please try again later.'
             );
             this.loading = false;
+            this.cdr.detectChanges();
           }
         });
       },
@@ -162,6 +172,7 @@ export class NamingUpload {
           'Failed to create subject. Please try again later.'
         );
         this.loading = false;
+        this.cdr.detectChanges();
       }
     });
   }

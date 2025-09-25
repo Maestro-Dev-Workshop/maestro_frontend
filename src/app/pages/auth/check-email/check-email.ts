@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
   selector: 'app-check-email',
@@ -9,9 +10,11 @@ import { AuthService } from '../../../core/services/auth.service';
   styleUrl: './check-email.css'
 })
 export class CheckEmail {
-  email: string | null = 'blaze@gmail.com';
+  email: string | null = '';
   resendTimer = 0;
+  loading = false;
   authService = inject(AuthService)
+  notify = inject(NotificationService);
 
   constructor(private router: Router, private cdr: ChangeDetectorRef) {
     const nav = this.router.getCurrentNavigation();
@@ -32,19 +35,25 @@ export class CheckEmail {
   }
 
   resendVerificationEmail() {
+    this.loading = true;
     if (!this.email) {
-      alert('Email not available.');
+      this.notify.showError('Email not available.');
+      this.loading = false;
       return;
     }
     this.authService.resendVerificationEmail(this.email).subscribe({
       next: (response) => {
         console.log('Resend verification email successful', response);
-        alert('Verification email resent! Please check your inbox.');
+        this.notify.showSuccess('Verification email resent! Please check your inbox.');
         this.startResendTimer();
+        this.loading = false;
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Resend verification email failed', error);
-        alert('Failed to resend verification email, Please try again.');
+        this.notify.showError('Failed to resend verification email, Please try again.');
+        this.loading = false;
+        this.cdr.detectChanges();
       }
     });
   }
