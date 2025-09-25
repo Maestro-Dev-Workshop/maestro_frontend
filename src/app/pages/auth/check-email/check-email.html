@@ -5,15 +5,19 @@
       <img src="images/logo-coloured.svg" alt="Maestro Logo" class="w-12 mr-2">
       <span class="font-serif text-3xl h-max text-prussian-blue-900">Maestro</span>
     </div>
-    @if (verified) {
+    <div class="flex flex-col h-3/4 justify-between">
       <div>
-        Email verified successfully!<br>Now redirecting to login...
+        <h1 class="text-2xl font-bold my-4">Verify Email</h1>
+        <p>A verification mail has been sent to <span class="font-bold">{{email}}</span></p>
       </div>
-    } @else {
-      <div>
-        Please wait, verifying email...
-      </div>
-    }
+      <button 
+        class="text-left font-bold text-prussian-blue-900 disabled:text-prussian-blue-500 hover:text-prussian-blue-500"
+        [disabled]="resendTimer > 0"
+        (click)="resendVerificationEmail()"
+      >
+        Resend mail in {{resendTimer}} seconds
+      </button>
+    </div>
   </div>
   <!-- right panel -->
   <div class="w-6/12 h-full relative">

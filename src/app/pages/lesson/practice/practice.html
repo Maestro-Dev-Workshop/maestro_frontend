@@ -63,11 +63,17 @@
   </div>
 
   <!-- Submission Button -->
-  <button 
-    class="self-start w-max text-sm text-white bg-prussian-blue-800 m-4 px-12 py-3 rounded-lg hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500 transition duration-100" 
-    (click)="submitAnswers()"
-    [disabled]="loading || !(currentView().content.score == null)"
-  >
-    Submit
-  </button>
+  <div class="flex flex-row items-center">
+    <button 
+      class="self-start w-max text-sm text-white bg-prussian-blue-800 m-4 px-12 py-3 rounded-lg hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500 transition duration-100" 
+      (click)="submitAnswers()"
+      [disabled]="loading || !(currentView().content.score == null)"
+    >
+      Submit
+    </button>
+    <div [class]="`flex flex-row items-center ${loading ? '' : 'hidden'}`">
+      <img src="images/spinner.gif" alt="" class="w-8 h-8 mx-2">
+      loading...
+    </div>
+  </div>
 </div>

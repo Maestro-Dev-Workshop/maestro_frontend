@@ -37,6 +37,7 @@ export class Login {
     // Later: replace with real API call
     if (this.emailCtrl.invalid || this.passwordCtrl.invalid) {
       this.notify.showError("Valid email and password required");
+      this.loading = false;
     } else {
       this.authService.login({ email: this.email, password: this.password }).subscribe({
         next: (response) => {
@@ -45,14 +46,15 @@ export class Login {
           localStorage.setItem('refreshToken', response.refreshToken);
           const user = response.user;
           console.log('Logged in user:', user);
+          this.loading = false;
           this.router.navigate(['/dashboard']);
         },
         error: (error) => {
           console.error('Login failed', error);
           this.notify.showError('Invalid email or password');
+          this.loading = false;
         }
       });
     }
-    this.loading = false;
   }
 }

@@ -8,6 +8,7 @@ export const routes: Routes = [
   { path: 'signup', loadComponent: () => import('./pages/auth/signup/signup').then(m => m.Signup) },
   { path: 'login', loadComponent: () => import('./pages/auth/login/login').then(m => m.Login) },
   { path: 'verify-email', loadComponent: () => import('./pages/auth/verify-email/verify-email').then(m => m.VerifyEmail) },
+  { path: 'check-email', loadComponent: () => import('./pages/auth/check-email/check-email').then(m => m.CheckEmail) },
 
   // Dashboard
   { path: 'dashboard', loadComponent: () => import('./pages/dashboard/subjects/subjects').then(m => m.Subjects) },

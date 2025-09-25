@@ -134,32 +134,35 @@ export class NamingUpload {
               },
 
               error: (err) => {
+                this.loading = false;
                 console.error('Error labeling documents:', err);
                 this.notify.showError(
                   'Failed to label documents. Please try again later.'
                 );
                 this.loading = false;
-              },
+              }
             });
           },
 
           error: (err) => {
+            this.loading = false;
             console.error('Error ingesting documents:', err);
             this.notify.showError(
               'Failed to upload documents. Please try again later.'
             );
             this.loading = false;
-          },
+          }
         });
       },
 
       error: (err) => {
+        this.loading = false;
         console.error('Error creating subject:', err);
         this.notify.showError(
           'Failed to create subject. Please try again later.'
         );
         this.loading = false;
-      },
+      }
     });
   }
 }

@@ -130,6 +130,7 @@ export class TopicPreferences implements OnInit {
           },
 
           error: (err) => {
+            this.loading = false;
             console.error('Error generating lesson:', err);
             this.notify.showError("Failed to generate lesson. Please try again later.");
             this.loading = false;
@@ -138,6 +139,7 @@ export class TopicPreferences implements OnInit {
       },
       
       error: (err) => {
+        this.loading = false;
         console.error('Error selecting topics:', err);
         this.notify.showError("Failed to select topics. Please try again later.");
         this.loading = false;
