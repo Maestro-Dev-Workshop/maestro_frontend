@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SubjectsService } from '../../../core/services/subjects.service';
 import { forkJoin, Observable } from 'rxjs';
+import { NotificationService } from '../../../core/services/notification.service'; // <-- Add this import
 
 class ExerciseSettings {
   include: boolean = false
@@ -30,6 +31,7 @@ export class QuestionSettings {
   loading = false;
   subjectId = '';
   subjectService = inject(SubjectsService)
+  notify = inject(NotificationService); // <-- Inject notification service
 
   constructor(private router: Router, private cdr: ChangeDetectorRef) {
     // Extract subjectId from the route parameters
@@ -62,12 +64,12 @@ export class QuestionSettings {
     // Validate exercise fields
     if (this.exerciseSettings.include) {
       if (this.exerciseSettings.questionTypes.length == 0) {
-        alert("Choose at least one question type for the exercises");
+        this.notify.showError("Choose at least one question type for the exercises");
         this.loading = false;
         return;
       }
       if (!this.exerciseSettings.preference) {
-        alert("Exercise preference cannot be empty");
+        this.notify.showError("Exercise preference cannot be empty");
         this.loading = false;
         return;
       }
@@ -77,12 +79,12 @@ export class QuestionSettings {
     // Validate exam fields
     if (this.examSettings.include) {
       if (this.examSettings.questionTypes.length == 0) {
-        alert("Choose at least one question type for the exam");
+        this.notify.showError("Choose at least one question type for the exam");
         this.loading = false;
         return;
       }
       if (!this.examSettings.preference) {
-        alert("Exam preference cannot be empty");
+        this.notify.showError("Exam preference cannot be empty");
         this.loading = false;
         return;
       }

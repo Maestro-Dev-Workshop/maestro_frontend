@@ -2,6 +2,7 @@ import { Component, inject, ViewChild } from '@angular/core';
 import { FormsModule, NgModel } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+import { NotificationService } from '../../../core/services/notification.service'; // <-- Add this import
 
 @Component({
   selector: 'app-login',
@@ -13,6 +14,7 @@ export class Login {
   password = '';
   passwordVisible = "password";
   loading = false;
+  notify = inject(NotificationService); // <-- Inject notification service
 
   @ViewChild('emailCtrl') emailCtrl!: NgModel;
   @ViewChild('passwordCtrl') passwordCtrl!: NgModel;
@@ -34,7 +36,7 @@ export class Login {
     this.loading = true;
     // Later: replace with real API call
     if (this.emailCtrl.invalid || this.passwordCtrl.invalid) {
-      alert("Valid email and password required");
+      this.notify.showError("Valid email and password required");
     } else {
       this.authService.login({ email: this.email, password: this.password }).subscribe({
         next: (response) => {
@@ -47,7 +49,7 @@ export class Login {
         },
         error: (error) => {
           console.error('Login failed', error);
-          alert('Invalid email or password');
+          this.notify.showError('Invalid email or password');
         }
       });
     }
