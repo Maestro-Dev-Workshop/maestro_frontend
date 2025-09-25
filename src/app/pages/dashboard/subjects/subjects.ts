@@ -42,6 +42,7 @@ export class Subjects implements OnInit {
       "completion": 50,
     }
   ];
+  loadingSubjects = true;
   subjects: SubjectModel[] = [];
   subjectService = inject(SubjectsService)
 
@@ -53,6 +54,7 @@ export class Subjects implements OnInit {
         console.log(response)
         this.subjects = response.sessions;
         console.log(this.subjects)
+        this.loadingSubjects = false;
         this.cdr.detectChanges();
       },
       error: (err) => {

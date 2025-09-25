@@ -119,6 +119,7 @@ export class QuestionSettings {
       forkJoin(requests).subscribe({
         next: (responses) => {
           console.log("Generation responses:", responses);
+          this.notify.showSuccess("Sucessfully generated practice questions.")
           this.subjectService.updateSessionStatus(this.subjectId, "In Progress").subscribe({
             next: () => {
               console.log("Session status updated");
@@ -134,6 +135,7 @@ export class QuestionSettings {
         error: (err) => {
           console.error("Error during generation:", err);
           this.loading = false;
+          this.cdr.detectChanges();
         }
       });
     } else {

@@ -30,6 +30,6 @@ export class Landing {
   }
 
   onGetStartedClick() {
-    this.router.navigate(['/signup']);
+    this.router.navigate(['/login']);
   }
 }

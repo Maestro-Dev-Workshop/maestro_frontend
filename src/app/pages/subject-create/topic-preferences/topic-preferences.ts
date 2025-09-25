@@ -120,11 +120,12 @@ export class TopicPreferences implements OnInit {
     this.subjectService.selectTopics(this.subjectId, selectedTopics.map((topic) => topic.id)).subscribe({
       next: (response) => {
         console.log("Topics selected:", response);
-
+        
         // Generate lesson
         this.subjectService.generateLesson(this.subjectId, this.learningStyle).subscribe({
           next: (response) => {
             console.log("Lesson generated:", response);
+            this.notify.showSuccess("Successfully generated lesson.")
             this.router.navigate([`/subject-create/${this.subjectId}/question-settings`])
             this.loading = false;
           },
@@ -134,6 +135,7 @@ export class TopicPreferences implements OnInit {
             console.error('Error generating lesson:', err);
             this.notify.showError("Failed to generate lesson. Please try again later.");
             this.loading = false;
+            this.cdr.detectChanges();
           }
         });
       },
@@ -143,6 +145,7 @@ export class TopicPreferences implements OnInit {
         console.error('Error selecting topics:', err);
         this.notify.showError("Failed to select topics. Please try again later.");
         this.loading = false;
+        this.cdr.detectChanges();
       }
     });
   }
