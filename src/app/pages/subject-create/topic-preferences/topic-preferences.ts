@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { TopicModel } from '../../../core/models/topic.model';
 import { SubjectsService } from '../../../core/services/subjects.service';
 import { LessonService } from '../../../core/services/lesson.service';
+import { NotificationService } from '../../../core/services/notification.service'; // <-- Add this import
 
 type Topic = {
   id: string,
@@ -64,6 +65,7 @@ export class TopicPreferences implements OnInit {
   topics: TopicModel[] = [];
   subjectService = inject(SubjectsService)
   lessonService = inject(LessonService)
+  notify = inject(NotificationService)
 
   constructor(private router: Router, private cdr: ChangeDetectorRef) {
     // Extract subjectId from the route parameters
@@ -91,7 +93,7 @@ export class TopicPreferences implements OnInit {
       },
       error: (err) => {
         console.error('Error fetching topics:', err);
-        alert("Failed to load topics. Please try again later.");
+        this.notify.showError("Failed to load topics. Please try again later.");
       }
     });
   }
@@ -100,12 +102,12 @@ export class TopicPreferences implements OnInit {
     const selectedTopics = this.topics.filter((topic) => topic.selected);
     this.loading = true;
     if (selectedTopics.length == 0) {
-      alert("At least one topic must be selected");
+      this.notify.showError("At least one topic must be selected");
       this.loading = false;
       return
     }
     if (this.learningStyleCtrl.invalid) {
-      alert("Learning Style is required");
+      this.notify.showError("Learning Style is required");
       this.loading = false;
       return
     }
@@ -130,7 +132,8 @@ export class TopicPreferences implements OnInit {
           error: (err) => {
             this.loading = false;
             console.error('Error generating lesson:', err);
-            alert("Failed to generate lesson. Please try again later.");
+            this.notify.showError("Failed to generate lesson. Please try again later.");
+            this.loading = false;
           }
         });
       },
@@ -138,7 +141,8 @@ export class TopicPreferences implements OnInit {
       error: (err) => {
         this.loading = false;
         console.error('Error selecting topics:', err);
-        alert("Failed to select topics. Please try again later.");
+        this.notify.showError("Failed to select topics. Please try again later.");
+        this.loading = false;
       }
     });
   }

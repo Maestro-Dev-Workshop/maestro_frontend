@@ -22,6 +22,6 @@ export const routes: Routes = [
   // Lesson
   { path: 'lesson/:subjectId', loadComponent: () => import('./pages/lesson/lesson-page/lesson-page').then(m => m.LessonPage) },
 
-  // Catch-all
-  { path: '**', redirectTo: '' }
+  // Not Found
+  { path: '**', loadComponent: () => import('./pages/not-found/not-found').then(m => m.NotFound) },
 ];
