@@ -28,8 +28,8 @@
           <span>My Subjects</span>
         </div>
         <button 
-          routerLink="/subject-create/naming-upload"
           class="w-max rounded-md px-5 py-3 text-white bg-prussian-blue-800 hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500 flex flex-row text-xs" 
+          (click)="createNewSubject()"
         >
           Create New Subject
           <img src="images/create-subject-icon.svg" alt="" class="w-4 ml-2">
