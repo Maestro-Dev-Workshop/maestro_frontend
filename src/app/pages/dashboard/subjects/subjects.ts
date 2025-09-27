@@ -64,9 +64,22 @@ export class Subjects implements OnInit {
     });
   }
 
+  createNewSubject() {
+    this.subjectService.createSubject().subscribe({
+      next: (response) => {
+        const newSubjectId = response.session.id;
+        this.router.navigate([`/subject-create/${newSubjectId}/naming-upload`]);
+      },
+      error: (err) => {
+        console.error('Error creating subject:', err);
+        alert("Failed to create a new subject. Please try again later.");
+      }
+    });
+  }
+
   navigateSubject(subject: SubjectModel) {
-    if (subject.status === 'pending document upload' || subject.status === 'pending topic labelling') {
-      this.router.navigate(['/subject-create/naming-upload'])
+    if (subject.status === 'pending naming' || subject.status === 'pending document upload' || subject.status === 'pending topic labelling') {
+      this.router.navigate([`/subject-create/${subject.id}/naming-upload`])
     } else if (subject.status === 'pending topic selection' || subject.status === 'pending lesson generation') {
       this.router.navigate([`/subject-create/${subject.id}/topic-preferences`])
     } else if (subject.status === 'pending practice question generation') {

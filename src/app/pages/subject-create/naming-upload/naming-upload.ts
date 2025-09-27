@@ -1,10 +1,11 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { Header } from '../../../shared/components/header/header';
 import { Router } from '@angular/router';
 import { CreationStepTab } from '../creation-step-tab/creation-step-tab';
 import { FormsModule } from '@angular/forms';
 import { SubjectsService } from '../../../core/services/subjects.service';
 import { NotificationService } from '../../../core/services/notification.service'; // <-- Add this import
+import { catchError, EMPTY, finalize, iif, of, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-naming-upload',
@@ -12,15 +13,23 @@ import { NotificationService } from '../../../core/services/notification.service
   templateUrl: './naming-upload.html',
   styleUrl: './naming-upload.css',
 })
-export class NamingUpload {
+export class NamingUpload implements OnInit {
   subjectName = '';
+  subjectId = '';
+  subject: any = null;
   files: File[] = [];
   isDragging = false;
   loading = false;
+  uploadedDocs = false;
   subjectService = inject(SubjectsService);
   notify = inject(NotificationService); // <-- Inject notification service
 
-  constructor(private router: Router, private cdr: ChangeDetectorRef) {}
+  constructor(private router: Router, private cdr: ChangeDetectorRef) {
+    // Extract subjectId from the route parameters
+    const url = window.location.pathname;
+    const parts = url.split('/');
+    this.subjectId = parts[parts.length - 2]; // Assuming the last part is the subjectId
+  }
 
   onFileDrop(event: DragEvent) {
     event.preventDefault();
@@ -47,32 +56,36 @@ export class NamingUpload {
   }
 
   private addFiles(fileList: FileList) {
-    const allowedExtensions = ['pdf', 'doc', 'docx', 'pptx'];
-    const validFiles: File[] = [];
-    const invalidFiles: string[] = [];
-    const largeFiles: string[] = [];
-  
-    Array.from(fileList).forEach((file) => {
-      const ext = file.name.split('.').pop()?.toLowerCase();
-  
-      if (!ext || !allowedExtensions.includes(ext)) {
-        invalidFiles.push(file.name);
-      } else if (file.size > 20_000_000) { // 20MB cap for now
-        largeFiles.push(file.name);
-      } else {
-        validFiles.push(file);
+    if (this.uploadedDocs){
+      this.notify.showError("You have already uploaded documents for this subject. You cannot upload more.");
+    } else {
+      const allowedExtensions = ['pdf', 'doc', 'docx', 'pptx'];
+      const validFiles: File[] = [];
+      const invalidFiles: string[] = [];
+      const largeFiles: string[] = [];
+    
+      Array.from(fileList).forEach((file) => {
+        const ext = file.name.split('.').pop()?.toLowerCase();
+    
+        if (!ext || !allowedExtensions.includes(ext)) {
+          invalidFiles.push(file.name);
+        } else if (file.size > 20_000_000) { // 20MB cap for now
+          largeFiles.push(file.name);
+        } else {
+          validFiles.push(file);
+        }
+      });
+    
+      if (invalidFiles.length) {
+        this.notify.showError(`Unsupported file types: ${invalidFiles.join(', ')}`);
       }
-    });
-  
-    if (invalidFiles.length) {
-      this.notify.showError(`Unsupported file types: ${invalidFiles.join(', ')}`);
-    }
-    if (largeFiles.length) {
-      this.notify.showError(`Files too large: ${largeFiles.join(", ")}`);
-    }
-    if (validFiles.length) {
-      this.files = [...this.files, ...validFiles];
-      this.notify.showSuccess(`${validFiles.length} file(s) added.`);
+      if (largeFiles.length) {
+        this.notify.showError(`Files too large: ${largeFiles.join(", ")}`);
+      }
+      if (validFiles.length) {
+        this.files = [...this.files, ...validFiles];
+        this.notify.showSuccess(`${validFiles.length} file(s) added.`);
+      }
     }
   }  
 
@@ -97,83 +110,98 @@ export class NamingUpload {
     return `${size} ${end}`;
   }
 
+  ngOnInit(): void {
+    // Fetch details of the subject if needed
+    this.subjectService.getSubject(this.subjectId).subscribe({
+      next: (response) => {
+        console.log(response);
+        this.subject = response.session;
+        this.subjectName = this.subject.name || '';
+        if (this.subject.status !== 'pending naming' && this.subject.status !== 'pending document upload') {
+          this.uploadedDocs = true;
+        }
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error fetching subject details:', err);
+        this.notify.showError('Failed to load subject details. Please try again later.');
+      }
+    });
+  }
+
   onSubmit() {
     this.loading = true;
-    if (this.subjectName.trim() === '') {
+  
+    if (this.subjectName.trim() === '' && this.subject.status === 'pending naming') {
       this.notify.showError('Subject name is required');
       this.loading = false;
       return;
     }
-    if (this.files.length === 0) {
+  
+    if (this.files.length === 0 && !this.uploadedDocs) {
       this.notify.showError('At least one file must be uploaded');
       this.loading = false;
       return;
     }
-
-    // Here you would typically send the data to the backend
+  
     console.log('Subject Name:', this.subjectName);
     console.log('Files:', this.files);
     console.log('Stage 0' + this.loading);
-
-    // Create subject
-    this.subjectService.createSubject(this.subjectName).subscribe({
-      next: (response) => {
-        console.log('Stage 1' + this.loading);
-        console.log(response);
-        const sessionId = response.session.id;
-
-        // Ingest documents
-        this.subjectService.ingestDocuments(sessionId, this.files).subscribe({
-          next: (ingestResponse) => {
-            console.log(ingestResponse);
-            console.log('Stage 2' + this.loading);
-            this.notify.showSuccess('Sucessfully ingested documents. Identifying topics...');
-
-            // Label documents with topics
-            this.subjectService.labelDocuments(sessionId).subscribe({
-              next: (labelResponse) => {
-                console.log('Stage 3' + this.loading);
-                console.log(labelResponse);
-                this.notify.showSuccess("Topics sucessfully identified.")
-                this.router.navigate([
-                  `/subject-create/${sessionId}/topic-preferences`,
-                ]);
-                this.loading = false;
-              },
-
-              error: (err) => {
-                this.loading = false;
-                console.error('Error labeling documents:', err);
-                this.notify.showError(
-                  'Failed to label documents. Please try again later.'
-                );
-                this.loading = false;
-                this.cdr.detectChanges();
-              }
-            });
-          },
-
-          error: (err) => {
-            this.loading = false;
-            console.error('Error ingesting documents:', err);
-            this.notify.showError(
-              'Failed to upload documents. Please try again later.'
-            );
-            this.loading = false;
-            this.cdr.detectChanges();
-          }
-        });
-      },
-
-      error: (err) => {
-        this.loading = false;
-        console.error('Error creating subject:', err);
-        this.notify.showError(
-          'Failed to create subject. Please try again later.'
-        );
+  
+    // 👉 Decide whether to name subject or skip directly
+    iif(
+      () => this.subject.status === 'pending naming',
+      // ✅ Case 1: Subject needs naming → call nameSubject first
+      this.subjectService.nameSubject(this.subjectId, this.subjectName).pipe(
+        tap((response) => {
+          console.log('Stage 1 (naming)', this.loading, response);
+          this.subject.status = 'pending document upload'; // Update status locally
+        })
+      ),
+      // ✅ Case 2: Skip naming → just emit a dummy observable so chain continues
+      of({ session: { id: this.subjectId } })
+    ).pipe(
+      switchMap(() =>
+        iif(
+          () => this.uploadedDocs,
+          // ✅ Skip ingest → label only
+          this.subjectService.labelDocuments(this.subjectId).pipe(
+            tap((labelResponse) => {
+              console.log('Stage 2 (skipped ingest)', this.loading, labelResponse);
+              this.notify.showSuccess("Topics successfully identified.");
+              this.router.navigate([`/subject-create/${this.subjectId}/topic-preferences`]);
+            })
+          ),
+          // ✅ Ingest then label
+          this.subjectService.ingestDocuments(this.subjectId, this.files).pipe(
+            tap(() => {
+              console.log('Stage 2 (ingest)', this.loading);
+              this.subject.status = 'pending topic labelling'; // Update status locally
+              this.uploadedDocs = true; // Prevent further uploads
+              this.notify.showSuccess('Successfully ingested documents. Identifying topics...');
+            }),
+            switchMap(() =>
+              this.subjectService.labelDocuments(this.subjectId).pipe(
+                tap((labelResponse) => {
+                  console.log('Stage 3 (label)', this.loading, labelResponse);
+                  this.notify.showSuccess("Topics successfully identified.");
+                  this.router.navigate([`/subject-create/${this.subjectId}/topic-preferences`]);
+                })
+              )
+            )
+          )
+        )
+      ),
+      catchError((err) => {
+        console.error('Error in subject creation flow:', err);
+        this.notify.showError('Something went wrong. Please try again later.');
+        return EMPTY;
+      }),
+      finalize(() => {
         this.loading = false;
         this.cdr.detectChanges();
-      }
-    });
+      })
+    ).subscribe();
   }
+  
 }

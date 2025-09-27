@@ -12,8 +12,16 @@ export class SubjectsService {
     return this.http.get('session/list');
   }
 
-  createSubject(name: string): Observable<any> {
-    return this.http.post('session/create', { name });
+  createSubject(): Observable<any> {
+    return this.http.post('session/create', {});
+  }
+
+  nameSubject(sessionId: string, name: string): Observable<any> {
+    return this.http.put(`session/${sessionId}/name`, { name });
+  }
+
+  getSubject(sessionId: string): Observable<any> {
+    return this.http.get(`session/${sessionId}/get`);
   }
 
   ingestDocuments(sessionId: string, files: File[]): Observable<any> {
