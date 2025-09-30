@@ -180,6 +180,9 @@
                                 <a href="#refreshToken" >refreshToken</a>
                             </li>
                             <li>
+                                <a href="#resendVerificationEmail" >resendVerificationEmail</a>
+                            </li>
+                            <li>
                                 <a href="#signup" >signup</a>
                             </li>
                             <li>
@@ -308,8 +311,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="32"
-                                    class="link-to-prism">src/app/core/services/auth.service.ts:32</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="36"
+                                    class="link-to-prism">src/app/core/services/auth.service.ts:36</a></div>
                         </td>
                     </tr>
 
@@ -403,6 +406,73 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="resendVerificationEmail"></a>
+                    <span class="name">
+                        <span ><b>resendVerificationEmail</b></span>
+                        <a href="#resendVerificationEmail"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>resendVerificationEmail(email: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="32"
+                                    class="link-to-prism">src/app/core/services/auth.service.ts:32</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>email</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="signup"></a>
                     <span class="name">
                         <span ><b>signup</b></span>
@@ -488,8 +558,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="47"
-                                    class="link-to-prism">src/app/core/services/auth.service.ts:47</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="52"
+                                    class="link-to-prism">src/app/core/services/auth.service.ts:52</a></div>
                         </td>
                     </tr>
 
@@ -655,7 +725,7 @@
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/core/services/auth.service.ts:43</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/app/core/services/auth.service.ts:48</a></div>
                                 </td>
                             </tr>
 
@@ -697,9 +767,14 @@ export class AuthService {
     return this.http.post(&#x27;auth/verify-email&#x27;, { token });
   }
 
+  resendVerificationEmail(email: string): Observable&lt;any&gt; {
+    return this.http.post(&#x27;auth/resend-verification&#x27;, { email });
+  }
+
   logout(): void {
     localStorage.removeItem(&#x27;accessToken&#x27;);
     localStorage.removeItem(&#x27;refreshToken&#x27;);
+    localStorage.removeItem(&#x27;userEmail&#x27;);
   }
 
   // logout(): Observable&lt;any&gt; {

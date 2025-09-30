@@ -215,6 +215,9 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                <a href="#loadingSubjects" >loadingSubjects</a>
+                            </li>
+                            <li>
                                 <a href="#old_subjects" >old_subjects</a>
                             </li>
                             <li>
@@ -235,6 +238,9 @@
                 <tr>
                     <td class="col-md-4">
                         <ul class="index-list">
+                            <li>
+                                <a href="#createNewSubject" >createNewSubject</a>
+                            </li>
                             <li>
                                 <a href="#navigateSubject" >navigateSubject</a>
                             </li>
@@ -264,7 +270,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/app/pages/dashboard/subjects/subjects.ts:46</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/app/pages/dashboard/subjects/subjects.ts:47</a></div>
                             </td>
                         </tr>
 
@@ -327,6 +333,43 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="createNewSubject"></a>
+                    <span class="name">
+                        <span ><b>createNewSubject</b></span>
+                        <a href="#createNewSubject"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>createNewSubject()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="67"
+                                    class="link-to-prism">src/app/pages/dashboard/subjects/subjects.ts:67</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="navigateSubject"></a>
                     <span class="name">
                         <span ><b>navigateSubject</b></span>
@@ -343,8 +386,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="65"
-                                    class="link-to-prism">src/app/pages/dashboard/subjects/subjects.ts:65</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="80"
+                                    class="link-to-prism">src/app/pages/dashboard/subjects/subjects.ts:80</a></div>
                         </td>
                     </tr>
 
@@ -410,8 +453,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="50"
-                                    class="link-to-prism">src/app/pages/dashboard/subjects/subjects.ts:50</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="51"
+                                    class="link-to-prism">src/app/pages/dashboard/subjects/subjects.ts:51</a></div>
                         </td>
                     </tr>
 
@@ -433,6 +476,31 @@
     <h3 id="inputs">
         Properties
     </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadingSubjects"></a>
+                    <span class="name">
+                        <span ><b>loadingSubjects</b></span>
+                        <a href="#loadingSubjects"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>true</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/app/pages/dashboard/subjects/subjects.ts:45</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -517,7 +585,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/app/pages/dashboard/subjects/subjects.ts:45</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/app/pages/dashboard/subjects/subjects.ts:46</a></div>
                         </td>
                     </tr>
 
@@ -542,7 +610,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/app/pages/dashboard/subjects/subjects.ts:46</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/app/pages/dashboard/subjects/subjects.ts:47</a></div>
                         </td>
                     </tr>
 
@@ -599,6 +667,7 @@ export class Subjects implements OnInit {
       &quot;completion&quot;: 50,
     }
   ];
+  loadingSubjects &#x3D; true;
   subjects: SubjectModel[] &#x3D; [];
   subjectService &#x3D; inject(SubjectsService)
 
@@ -610,6 +679,7 @@ export class Subjects implements OnInit {
         console.log(response)
         this.subjects &#x3D; response.sessions;
         console.log(this.subjects)
+        this.loadingSubjects &#x3D; false;
         this.cdr.detectChanges();
       },
       error: (err) &#x3D;&gt; {
@@ -619,9 +689,22 @@ export class Subjects implements OnInit {
     });
   }
 
+  createNewSubject() {
+    this.subjectService.createSubject().subscribe({
+      next: (response) &#x3D;&gt; {
+        const newSubjectId &#x3D; response.session.id;
+        this.router.navigate([&#x60;/subject-create/${newSubjectId}/naming-upload&#x60;]);
+      },
+      error: (err) &#x3D;&gt; {
+        console.error(&#x27;Error creating subject:&#x27;, err);
+        alert(&quot;Failed to create a new subject. Please try again later.&quot;);
+      }
+    });
+  }
+
   navigateSubject(subject: SubjectModel) {
-    if (subject.status &#x3D;&#x3D;&#x3D; &#x27;pending document upload&#x27; || subject.status &#x3D;&#x3D;&#x3D; &#x27;pending topic labelling&#x27;) {
-      this.router.navigate([&#x27;/subject-create/naming-upload&#x27;])
+    if (subject.status &#x3D;&#x3D;&#x3D; &#x27;pending naming&#x27; || subject.status &#x3D;&#x3D;&#x3D; &#x27;pending document upload&#x27; || subject.status &#x3D;&#x3D;&#x3D; &#x27;pending topic labelling&#x27;) {
+      this.router.navigate([&#x60;/subject-create/${subject.id}/naming-upload&#x60;])
     } else if (subject.status &#x3D;&#x3D;&#x3D; &#x27;pending topic selection&#x27; || subject.status &#x3D;&#x3D;&#x3D; &#x27;pending lesson generation&#x27;) {
       this.router.navigate([&#x60;/subject-create/${subject.id}/topic-preferences&#x60;])
     } else if (subject.status &#x3D;&#x3D;&#x3D; &#x27;pending practice question generation&#x27;) {
@@ -635,61 +718,70 @@ export class Subjects implements OnInit {
     </div>
 
     <div class="tab-pane fade " id="templateData">
-        <pre class="line-numbers"><code class="language-html">&lt;app-header&gt;&lt;/app-header&gt;
-@if (subjects.length &#x3D;&#x3D; 0) {
-  &lt;div class&#x3D;&quot;flex flex-col w-full h-full items-center justify-center absolute&quot;&gt;
-    &lt;h1 class&#x3D;&quot;m-2 text-3xl font-medium&quot;&gt;Start Your Learning Journey&lt;/h1&gt;
-    &lt;p class&#x3D;&quot;w-6/12 text-center&quot;&gt;Create subjects to keep your study materials neatly categorized and easy to find.&lt;/p&gt;
-    &lt;button 
-      routerLink&#x3D;&quot;/subject-create/naming-upload&quot;
-      class&#x3D;&quot;w-max rounded-md m-8 px-5 py-3 text-white bg-prussian-blue-800 hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500 flex flex-row&quot; 
-    &gt;
-      Create New Subject
-      &lt;img src&#x3D;&quot;images/create-subject-icon.svg&quot; alt&#x3D;&quot;&quot; class&#x3D;&quot;w-4 ml-2&quot;&gt;
-    &lt;/button&gt;
+        <pre class="line-numbers"><code class="language-html">&lt;app-header class&#x3D;&quot;z-10&quot;&gt;&lt;/app-header&gt;
+@if (loadingSubjects) {
+  &lt;div class&#x3D;&quot;flex flex-col w-full h-full items-center justify-center absolute z-0&quot;&gt;
+    &lt;div class&#x3D;&quot;flex flex-row items-center text-4xl&quot;&gt;
+      &lt;img src&#x3D;&quot;images/spinner.gif&quot; alt&#x3D;&quot;&quot; class&#x3D;&quot;w-16 h-16 mx-2&quot;&gt;
+      Loading Subjects...
+    &lt;/div&gt;
   &lt;/div&gt;
 } @else {
-  &lt;div class&#x3D;&quot;flex flex-col w-full px-32&quot;&gt;
-    &lt;!-- Heading --&gt;
-    &lt;div class&#x3D;&quot;flex flex-row w-full justify-between my-4&quot;&gt;
-      &lt;div class&#x3D;&quot;flex flex-row items-center&quot;&gt;
-        &lt;img src&#x3D;&quot;images/subject-icon.svg&quot; alt&#x3D;&quot;&quot; class&#x3D;&quot;w-4 mx-4&quot;&gt;
-        &lt;span&gt;My Subjects&lt;/span&gt;
-      &lt;/div&gt;
+  @if (subjects.length &#x3D;&#x3D; 0) {
+    &lt;div class&#x3D;&quot;flex flex-col w-full h-full items-center justify-center absolute z-0&quot;&gt;
+      &lt;h1 class&#x3D;&quot;m-2 text-3xl font-medium&quot;&gt;Start Your Learning Journey&lt;/h1&gt;
+      &lt;p class&#x3D;&quot;w-6/12 text-center&quot;&gt;Create subjects to keep your study materials neatly categorized and easy to find.&lt;/p&gt;
       &lt;button 
         routerLink&#x3D;&quot;/subject-create/naming-upload&quot;
-        class&#x3D;&quot;w-max rounded-md px-5 py-3 text-white bg-prussian-blue-800 hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500 flex flex-row text-xs&quot; 
+        class&#x3D;&quot;w-max rounded-md m-8 px-5 py-3 text-white bg-prussian-blue-800 hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500 flex flex-row&quot; 
       &gt;
         Create New Subject
         &lt;img src&#x3D;&quot;images/create-subject-icon.svg&quot; alt&#x3D;&quot;&quot; class&#x3D;&quot;w-4 ml-2&quot;&gt;
       &lt;/button&gt;
     &lt;/div&gt;
-
-    &lt;!-- Subjects List --&gt;
-    &lt;div class&#x3D;&quot;w-full h-full flex flex-row flex-wrap items-center justify-center&quot;&gt;
-      @for (subject of subjects; track subject.id) {
-        &lt;!-- Subjects Item --&gt;
+  } @else {
+    &lt;div class&#x3D;&quot;flex flex-col w-full px-32&quot;&gt;
+      &lt;!-- Heading --&gt;
+      &lt;div class&#x3D;&quot;flex flex-row w-full justify-between my-4&quot;&gt;
+        &lt;div class&#x3D;&quot;flex flex-row items-center&quot;&gt;
+          &lt;img src&#x3D;&quot;images/subject-icon.svg&quot; alt&#x3D;&quot;&quot; class&#x3D;&quot;w-4 mx-4&quot;&gt;
+          &lt;span&gt;My Subjects&lt;/span&gt;
+        &lt;/div&gt;
         &lt;button 
-          class&#x3D;&quot;flex flex-col w-56 h-28 p-4 bg-prussian-blue-150 hover:bg-prussian-blue-200 rounded-md justify-between m-4 relative hover:top-2&quot;
-          (click)&#x3D;&quot;navigateSubject(subject)&quot;
+          class&#x3D;&quot;w-max rounded-md px-5 py-3 text-white bg-prussian-blue-800 hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500 flex flex-row text-xs&quot; 
+          (click)&#x3D;&quot;createNewSubject()&quot;
         &gt;
-          &lt;div class&#x3D;&quot;flex flex-row justify-between items-center&quot;&gt;
-            &lt;span&gt;{{subject.name}}&lt;/span&gt;
-            &lt;span class&#x3D;&quot;text-xs&quot;&gt;{{subject.status}}&lt;/span&gt;
-          &lt;/div&gt;
-          &lt;div class&#x3D;&quot;flex flex-row w-full items-center&quot;&gt;
-            &lt;!-- Progress Bar --&gt;
-            &lt;div class&#x3D;&quot;w-full&quot;&gt;
-              &lt;div class&#x3D;&quot;w-3/4 h-2 bg-gray-300 rounded-full&quot;&gt;
-                &lt;div class&#x3D;&quot;h-full bg-prussian-blue-800 rounded-full&quot; [ngStyle]&#x3D;&quot;{ width: subject.completion*100 + &#x27;%&#x27; }&quot;&gt;&lt;/div&gt;
-              &lt;/div&gt;
-            &lt;/div&gt;
-            &lt;span&gt;{{(subject.completion*100).toFixed(0)}}%&lt;/span&gt;
-          &lt;/div&gt;
+          Create New Subject
+          &lt;img src&#x3D;&quot;images/create-subject-icon.svg&quot; alt&#x3D;&quot;&quot; class&#x3D;&quot;w-4 ml-2&quot;&gt;
         &lt;/button&gt;
-      }
+      &lt;/div&gt;
+  
+      &lt;!-- Subjects List --&gt;
+      &lt;div class&#x3D;&quot;w-full h-full flex flex-row flex-wrap items-center justify-center&quot;&gt;
+        @for (subject of subjects; track subject.id) {
+          &lt;!-- Subjects Item --&gt;
+          &lt;button 
+            class&#x3D;&quot;flex flex-col w-56 h-28 p-4 bg-prussian-blue-150 hover:bg-prussian-blue-200 rounded-md justify-between m-4 relative hover:top-2&quot;
+            (click)&#x3D;&quot;navigateSubject(subject)&quot;
+          &gt;
+            &lt;div class&#x3D;&quot;flex flex-row justify-between items-center&quot;&gt;
+              &lt;span&gt;{{subject.name}}&lt;/span&gt;
+              &lt;span class&#x3D;&quot;text-xs&quot;&gt;{{subject.status}}&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;flex flex-row w-full items-center&quot;&gt;
+              &lt;!-- Progress Bar --&gt;
+              &lt;div class&#x3D;&quot;w-full&quot;&gt;
+                &lt;div class&#x3D;&quot;w-3/4 h-2 bg-gray-300 rounded-full&quot;&gt;
+                  &lt;div class&#x3D;&quot;h-full bg-prussian-blue-800 rounded-full&quot; [ngStyle]&#x3D;&quot;{ width: subject.completion*100 + &#x27;%&#x27; }&quot;&gt;&lt;/div&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+              &lt;span&gt;{{(subject.completion*100).toFixed(0)}}%&lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/button&gt;
+        }
+      &lt;/div&gt;
     &lt;/div&gt;
-  &lt;/div&gt;
+  }
 }
 </code></pre>
     </div>
@@ -720,8 +812,8 @@ export class Subjects implements OnInit {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><app-header></app-header>@if (subjects.length == 0) {  <div class="flex flex-col w-full h-full items-center justify-center absolute">    <h1 class="m-2 text-3xl font-medium">Start Your Learning Journey</h1>    <p class="w-6/12 text-center">Create subjects to keep your study materials neatly categorized and easy to find.</p>    <button       routerLink="/subject-create/naming-upload"      class="w-max rounded-md m-8 px-5 py-3 text-white bg-prussian-blue-800 hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500 flex flex-row"     >      Create New Subject      <img src="images/create-subject-icon.svg" alt="" class="w-4 ml-2">    </button>  </div>} @else {  <div class="flex flex-col w-full px-32">    <!-- Heading -->    <div class="flex flex-row w-full justify-between my-4">      <div class="flex flex-row items-center">        <img src="images/subject-icon.svg" alt="" class="w-4 mx-4">        <span>My Subjects</span>      </div>      <button         routerLink="/subject-create/naming-upload"        class="w-max rounded-md px-5 py-3 text-white bg-prussian-blue-800 hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500 flex flex-row text-xs"       >        Create New Subject        <img src="images/create-subject-icon.svg" alt="" class="w-4 ml-2">      </button>    </div>    <!-- Subjects List -->    <div class="w-full h-full flex flex-row flex-wrap items-center justify-center">      @for (subject of subjects; track subject.id) {        <!-- Subjects Item -->        <button           class="flex flex-col w-56 h-28 p-4 bg-prussian-blue-150 hover:bg-prussian-blue-200 rounded-md justify-between m-4 relative hover:top-2"          (click)="navigateSubject(subject)"        >          <div class="flex flex-row justify-between items-center">            <span>{{subject.name}}</span>            <span class="text-xs">{{subject.status}}</span>          </div>          <div class="flex flex-row w-full items-center">            <!-- Progress Bar -->            <div class="w-full">              <div class="w-3/4 h-2 bg-gray-300 rounded-full">                <div class="h-full bg-prussian-blue-800 rounded-full" [ngStyle]="{ width: subject.completion*100 + \'%\' }"></div>              </div>            </div>            <span>{{(subject.completion*100).toFixed(0)}}%</span>          </div>        </button>      }    </div>  </div>}</div>'
-    var COMPONENTS = [{'name': 'About', 'selector': 'app-about'},{'name': 'App', 'selector': 'app-root'},{'name': 'Chatbot', 'selector': 'app-chatbot'},{'name': 'ConfirmLogout', 'selector': 'app-confirm-logout'},{'name': 'Contact', 'selector': 'app-contact'},{'name': 'CreationStepTab', 'selector': 'app-creation-step-tab'},{'name': 'Features', 'selector': 'app-features'},{'name': 'Header', 'selector': 'app-header'},{'name': 'Home', 'selector': 'app-home'},{'name': 'Landing', 'selector': 'app-landing'},{'name': 'LessonPage', 'selector': 'app-lesson-page'},{'name': 'Login', 'selector': 'app-login'},{'name': 'NamingUpload', 'selector': 'app-naming-upload'},{'name': 'NotFound', 'selector': 'app-not-found'},{'name': 'Practice', 'selector': 'app-practice'},{'name': 'Pricing', 'selector': 'app-pricing'},{'name': 'QuestionSettings', 'selector': 'app-question-settings'},{'name': 'Sidebar', 'selector': 'app-sidebar'},{'name': 'Signup', 'selector': 'app-signup'},{'name': 'Subjects', 'selector': 'app-subjects'},{'name': 'Subscription', 'selector': 'app-subscription'},{'name': 'Subtopic', 'selector': 'app-subtopic'},{'name': 'Toast', 'selector': 'app-toast'},{'name': 'TopicPreferences', 'selector': 'app-topic-preferences'},{'name': 'VerifyEmail', 'selector': 'app-verify-email'}];
+        var COMPONENT_TEMPLATE = '<div><app-header class="z-10"></app-header>@if (loadingSubjects) {  <div class="flex flex-col w-full h-full items-center justify-center absolute z-0">    <div class="flex flex-row items-center text-4xl">      <img src="images/spinner.gif" alt="" class="w-16 h-16 mx-2">      Loading Subjects...    </div>  </div>} @else {  @if (subjects.length == 0) {    <div class="flex flex-col w-full h-full items-center justify-center absolute z-0">      <h1 class="m-2 text-3xl font-medium">Start Your Learning Journey</h1>      <p class="w-6/12 text-center">Create subjects to keep your study materials neatly categorized and easy to find.</p>      <button         routerLink="/subject-create/naming-upload"        class="w-max rounded-md m-8 px-5 py-3 text-white bg-prussian-blue-800 hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500 flex flex-row"       >        Create New Subject        <img src="images/create-subject-icon.svg" alt="" class="w-4 ml-2">      </button>    </div>  } @else {    <div class="flex flex-col w-full px-32">      <!-- Heading -->      <div class="flex flex-row w-full justify-between my-4">        <div class="flex flex-row items-center">          <img src="images/subject-icon.svg" alt="" class="w-4 mx-4">          <span>My Subjects</span>        </div>        <button           class="w-max rounded-md px-5 py-3 text-white bg-prussian-blue-800 hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500 flex flex-row text-xs"           (click)="createNewSubject()"        >          Create New Subject          <img src="images/create-subject-icon.svg" alt="" class="w-4 ml-2">        </button>      </div>        <!-- Subjects List -->      <div class="w-full h-full flex flex-row flex-wrap items-center justify-center">        @for (subject of subjects; track subject.id) {          <!-- Subjects Item -->          <button             class="flex flex-col w-56 h-28 p-4 bg-prussian-blue-150 hover:bg-prussian-blue-200 rounded-md justify-between m-4 relative hover:top-2"            (click)="navigateSubject(subject)"          >            <div class="flex flex-row justify-between items-center">              <span>{{subject.name}}</span>              <span class="text-xs">{{subject.status}}</span>            </div>            <div class="flex flex-row w-full items-center">              <!-- Progress Bar -->              <div class="w-full">                <div class="w-3/4 h-2 bg-gray-300 rounded-full">                  <div class="h-full bg-prussian-blue-800 rounded-full" [ngStyle]="{ width: subject.completion*100 + \'%\' }"></div>                </div>              </div>              <span>{{(subject.completion*100).toFixed(0)}}%</span>            </div>          </button>        }      </div>    </div>  }}</div>'
+    var COMPONENTS = [{'name': 'About', 'selector': 'app-about'},{'name': 'App', 'selector': 'app-root'},{'name': 'Chatbot', 'selector': 'app-chatbot'},{'name': 'CheckEmail', 'selector': 'app-check-email'},{'name': 'ConfirmLogout', 'selector': 'app-confirm-logout'},{'name': 'Contact', 'selector': 'app-contact'},{'name': 'CreationStepTab', 'selector': 'app-creation-step-tab'},{'name': 'Features', 'selector': 'app-features'},{'name': 'Header', 'selector': 'app-header'},{'name': 'Home', 'selector': 'app-home'},{'name': 'Landing', 'selector': 'app-landing'},{'name': 'LessonPage', 'selector': 'app-lesson-page'},{'name': 'Login', 'selector': 'app-login'},{'name': 'NamingUpload', 'selector': 'app-naming-upload'},{'name': 'NotFound', 'selector': 'app-not-found'},{'name': 'Practice', 'selector': 'app-practice'},{'name': 'Pricing', 'selector': 'app-pricing'},{'name': 'QuestionSettings', 'selector': 'app-question-settings'},{'name': 'Sidebar', 'selector': 'app-sidebar'},{'name': 'Signup', 'selector': 'app-signup'},{'name': 'Subjects', 'selector': 'app-subjects'},{'name': 'Subscription', 'selector': 'app-subscription'},{'name': 'Subtopic', 'selector': 'app-subtopic'},{'name': 'Toast', 'selector': 'app-toast'},{'name': 'TopicPreferences', 'selector': 'app-topic-preferences'},{'name': 'VerifyEmail', 'selector': 'app-verify-email'}];
     var DIRECTIVES = [{'name': 'FileTypeDirective', 'selector': '[appFileType]'},{'name': 'PasswordValidator', 'selector': '[appPasswordValidator]'}];
     var ACTUAL_COMPONENT = {'name': 'Subjects'};
 </script>

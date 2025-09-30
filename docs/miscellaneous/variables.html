@@ -212,7 +212,7 @@
                     <td class="col-md-4">
                         <i>Default value : </i><code>{
   production: true,
-  apiUrl: &#x27;https://your-backend-url.com/api&#x27; // deployed API
+  apiUrl: &#x27;https://maestro-backend-staging.onrender.com/api&#x27; // deployed API
 }</code>
                     </td>
                 </tr>
@@ -323,13 +323,14 @@
   { path: &#x27;signup&#x27;, loadComponent: () &#x3D;&gt; &quot;import(&#x27;./pages/auth/signup/signup&#x27;).then(m &#x3D;&gt; m.Signup)&quot; },
   { path: &#x27;login&#x27;, loadComponent: () &#x3D;&gt; &quot;import(&#x27;./pages/auth/login/login&#x27;).then(m &#x3D;&gt; m.Login)&quot; },
   { path: &#x27;verify-email&#x27;, loadComponent: () &#x3D;&gt; &quot;import(&#x27;./pages/auth/verify-email/verify-email&#x27;).then(m &#x3D;&gt; m.VerifyEmail)&quot; },
+  { path: &#x27;check-email&#x27;, loadComponent: () &#x3D;&gt; &quot;import(&#x27;./pages/auth/check-email/check-email&#x27;).then(m &#x3D;&gt; m.CheckEmail)&quot; },
 
   // Dashboard
   { path: &#x27;dashboard&#x27;, loadComponent: () &#x3D;&gt; &quot;import(&#x27;./pages/dashboard/subjects/subjects&#x27;).then(m &#x3D;&gt; m.Subjects)&quot; },
   { path: &#x27;dashboard/subscription&#x27;, loadComponent: () &#x3D;&gt; &quot;import(&#x27;./pages/dashboard/subscription/subscription&#x27;).then(m &#x3D;&gt; m.Subscription)&quot; },
 
   // Subject Creation (stepper flow, could be nested later if you want)
-  { path: &#x27;subject-create/naming-upload&#x27;, loadComponent: () &#x3D;&gt; &quot;import(&#x27;./pages/subject-create/naming-upload/naming-upload&#x27;).then(m &#x3D;&gt; m.NamingUpload)&quot; },
+  { path: &#x27;subject-create/:sessionId/naming-upload&#x27;, loadComponent: () &#x3D;&gt; &quot;import(&#x27;./pages/subject-create/naming-upload/naming-upload&#x27;).then(m &#x3D;&gt; m.NamingUpload)&quot; },
   { path: &#x27;subject-create/:sessionId/topic-preferences&#x27;, loadComponent: () &#x3D;&gt; &quot;import(&#x27;./pages/subject-create/topic-preferences/topic-preferences&#x27;).then(m &#x3D;&gt; m.TopicPreferences)&quot; },
   { path: &#x27;subject-create/:sessionId/question-settings&#x27;, loadComponent: () &#x3D;&gt; &quot;import(&#x27;./pages/subject-create/question-settings/question-settings&#x27;).then(m &#x3D;&gt; m.QuestionSettings)&quot; },
 
