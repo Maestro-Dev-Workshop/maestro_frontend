@@ -12,8 +12,8 @@
       <h1 class="m-2 text-3xl font-medium">Start Your Learning Journey</h1>
       <p class="w-6/12 text-center">Create subjects to keep your study materials neatly categorized and easy to find.</p>
       <button 
-        routerLink="/subject-create/naming-upload"
         class="w-max rounded-md m-8 px-5 py-3 text-white bg-prussian-blue-800 hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500 flex flex-row" 
+        (click)="createNewSubject()"
       >
         Create New Subject
         <img src="images/create-subject-icon.svg" alt="" class="w-4 ml-2">
