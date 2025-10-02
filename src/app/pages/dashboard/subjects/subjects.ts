@@ -1,13 +1,13 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { Header } from '../../../shared/components/header/header';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SubjectModel } from '../../../core/models/subject.model';
 import { SubjectsService } from '../../../core/services/subjects.service';
 
 @Component({
   selector: 'app-subjects',
-  imports: [Header, RouterLink, CommonModule],
+  imports: [Header, CommonModule],
   templateUrl: './subjects.html',
   styleUrl: './subjects.css'
 })
