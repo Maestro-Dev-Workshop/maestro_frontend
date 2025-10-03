@@ -16,6 +16,6 @@ export class NotificationService {
   }
 
   showError(msg: string, ms = 5000) { this.show('error', msg, ms); }
-  showSuccess(msg: string, ms = 2500) { this.show('success', msg, ms); }
+  showSuccess(msg: string, ms = 4000) { this.show('success', msg, ms); }
   clear() { this.message.set(null); this.type.set(null); }
 }
