@@ -13,7 +13,7 @@ export class Toast {
   msg: any;
   type: any;
   classes = computed(() => ({
-    'fixed bottom-4 right-4 z-50 flex items-center space-x-3 p-4 rounded shadow-lg text-white':
+    'z-50 flex items-center space-x-3 p-4 rounded shadow-lg text-white':
       true,
     'bg-green-500': this.type() === 'success',
     'bg-red-500': this.type() === 'error',

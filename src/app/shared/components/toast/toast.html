@@ -1,6 +1,8 @@
 @if(msg()) {
-  <div [ngClass]="classes()">
-    <span class="flex-1">{{ msg() }}</span>
-    <button (click)="close()" class="font-bold">✕</button>
+  <div class="fixed top-4 w-full flex items-center justify-center">
+    <div [ngClass]="classes()">
+      <span class="flex">{{ msg() }}</span>
+      <button (click)="close()" class="font-bold">✕</button>
+    </div>
   </div>
 }
