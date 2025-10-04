@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { AuthService } from '../../../core/services/auth.service';
 import { Router } from '@angular/router';
+import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
   selector: 'app-verify-email',
@@ -11,6 +12,7 @@ import { Router } from '@angular/router';
 export class VerifyEmail {
   verified = false;
   authService = inject(AuthService);
+  notify = inject(NotificationService);
 
   constructor(private router: Router) {
     // Extract token from URL query params then call verifyEmail
@@ -26,7 +28,7 @@ export class VerifyEmail {
         },
         error: (error) => {
           console.error('Email verification failed', error);
-          alert('Email verification failed, Please try again.');
+          this.notify.showError('Email verification failed, Please try again.');
           this.router.navigateByUrl('/signup');
         }
       });
