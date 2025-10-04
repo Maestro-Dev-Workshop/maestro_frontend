@@ -10,6 +10,7 @@ import { ChatMetadata } from '../../../core/models/chat-metadata.model';
 import { ChatbotService } from '../../../core/services/chatbot.service';
 import { forkJoin, map, switchMap } from 'rxjs';
 import { ChatMessage } from '../../../core/models/chat-message.model';
+import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
   selector: 'app-lesson-page',
@@ -28,9 +29,11 @@ export class LessonPage implements OnInit {
   }
   chatHistory: ChatMessage[] = [];
   chatOpen = false;
+  subjectLoading = true;
   subjectService = inject(SubjectsService)
   lessonService = inject(LessonService)
   chatbotService = inject(ChatbotService)
+  notify = inject(NotificationService)
 
   // subjectContent: any = {
   //   subject_name: 'Geography',
@@ -187,8 +190,9 @@ export class LessonPage implements OnInit {
     this.chatbotService.getChatHistory(this.subjectId).subscribe({
       next: (response) => {
         this.chatHistory = response.history;
-      }, error(err) {
+      }, error: (err) => {
         console.error(`Error fetching chat history ${err}`)
+        this.notify.showError("Failed to load chat history. Please try again later.")
       },
     });
 
@@ -278,11 +282,15 @@ export class LessonPage implements OnInit {
             this.updatecurrentView({ id: firstTopic.subtopics[0].id, type: 'subtopic' });
           }
         }
-  
+        
+        this.subjectLoading = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Failed to initialize subject content:', err);
+        this.notify.showError('Failed to load lesson content. Please try again later.');
+        this.subjectLoading = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -324,8 +332,9 @@ export class LessonPage implements OnInit {
           .read = true
           this.updateProgress()
           this.checkForTopicCompleteness(topic_id)
-        }, error(err) {
+        }, error: (err) => {
           console.error(`Failed to mark subtopic as read: ${err}`)
+          this.notify.showError('Failed to mark subtopic as read.')
         },
       });
     } else if (this.chatOpen && (this.currentView.content.score == null)){
@@ -370,8 +379,9 @@ export class LessonPage implements OnInit {
         console.log("Progress updated successfully")
         const percentage = total > 0 ? Math.round(fraction * 100) : 0;
         console.log(`Progress: ${completed}/${total} (${percentage}%)`);
-      }, error(err) {
+      }, error: (err) => {
         console.error(`Failed to update progress: ${err}`)
+        this.notify.showError('Failed to update progress.')
       },
     });
   }  

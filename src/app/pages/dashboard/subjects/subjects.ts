@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SubjectModel } from '../../../core/models/subject.model';
 import { SubjectsService } from '../../../core/services/subjects.service';
+import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
   selector: 'app-subjects',
@@ -43,8 +44,10 @@ export class Subjects implements OnInit {
     }
   ];
   loadingSubjects = true;
+  loadingCreate = false;
   subjects: SubjectModel[] = [];
   subjectService = inject(SubjectsService)
+  notify = inject(NotificationService);
 
   constructor(private router: Router, private cdr: ChangeDetectorRef) {}
 
@@ -59,20 +62,27 @@ export class Subjects implements OnInit {
       },
       error: (err) => {
         console.error('Error fetching subjects:', err);
-        alert("Failed to load subjects. Please try again later.");
+        this.notify.showError("Failed to load subjects. Please try again later.");
+        this.loadingSubjects = false;
+        this.cdr.detectChanges();
       }
     });
   }
 
   createNewSubject() {
+    this.loadingCreate = true;
     this.subjectService.createSubject().subscribe({
       next: (response) => {
         const newSubjectId = response.session.id;
         this.router.navigate([`/subject-create/${newSubjectId}/naming-upload`]);
+        this.loadingCreate = false;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error creating subject:', err);
-        alert("Failed to create a new subject. Please try again later.");
+        this.notify.showError("Failed to create a new subject. Please try again later.");
+        this.loadingCreate = false;
+        this.cdr.detectChanges();
       }
     });
   }
