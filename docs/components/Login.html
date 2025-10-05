@@ -264,12 +264,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(router: Router)</code>
+<code>constructor(router: Router, cdr: ChangeDetectorRef)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/app/pages/auth/login/login.ts:22</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="21" class="link-to-prism">src/app/pages/auth/login/login.ts:21</a></div>
                             </td>
                         </tr>
 
@@ -291,6 +291,18 @@
                                                   
                                                         <td>
                                                                     <code>Router</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>cdr</td>
+                                                  
+                                                        <td>
+                                                                    <code>ChangeDetectorRef</code>
                                                         </td>
                                                   
                                                     <td>
@@ -336,8 +348,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="35"
-                                    class="link-to-prism">src/app/pages/auth/login/login.ts:35</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="36"
+                                    class="link-to-prism">src/app/pages/auth/login/login.ts:36</a></div>
                         </td>
                     </tr>
 
@@ -373,8 +385,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="27"
-                                    class="link-to-prism">src/app/pages/auth/login/login.ts:27</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="28"
+                                    class="link-to-prism">src/app/pages/auth/login/login.ts:28</a></div>
                         </td>
                     </tr>
 
@@ -414,7 +426,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/app/pages/auth/login/login.ts:22</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/app/pages/auth/login/login.ts:17</a></div>
                         </td>
                     </tr>
 
@@ -481,7 +493,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/app/pages/auth/login/login.ts:19</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/app/pages/auth/login/login.ts:20</a></div>
                         </td>
                     </tr>
 
@@ -531,7 +543,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/app/pages/auth/login/login.ts:17</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/app/pages/auth/login/login.ts:18</a></div>
                         </td>
                     </tr>
 
@@ -598,7 +610,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/app/pages/auth/login/login.ts:20</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="21" class="link-to-prism">src/app/pages/auth/login/login.ts:21</a></div>
                         </td>
                     </tr>
 
@@ -642,7 +654,7 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, inject, ViewChild } from &#x27;@angular/core&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { ChangeDetectorRef, Component, inject, ViewChild } from &#x27;@angular/core&#x27;;
 import { FormsModule, NgModel } from &#x27;@angular/forms&#x27;;
 import { Router } from &#x27;@angular/router&#x27;;
 import { AuthService } from &#x27;../../../core/services/auth.service&#x27;;
@@ -658,14 +670,15 @@ export class Login {
   password &#x3D; &#x27;&#x27;;
   passwordVisible &#x3D; &quot;password&quot;;
   loading &#x3D; false;
+  authService &#x3D; inject(AuthService);
   notify &#x3D; inject(NotificationService); // &lt;-- Inject notification service
 
   @ViewChild(&#x27;emailCtrl&#x27;) emailCtrl!: NgModel;
   @ViewChild(&#x27;passwordCtrl&#x27;) passwordCtrl!: NgModel;
 
-  authService &#x3D; inject(AuthService);
   constructor(
     private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   togglePasswordVisibility() {
@@ -681,6 +694,7 @@ export class Login {
     // Later: replace with real API call
     if (this.emailCtrl.invalid || this.passwordCtrl.invalid) {
       this.notify.showError(&quot;Valid email and password required&quot;);
+      this.loading &#x3D; false;
     } else {
       this.authService.login({ email: this.email, password: this.password }).subscribe({
         next: (response) &#x3D;&gt; {
@@ -689,15 +703,18 @@ export class Login {
           localStorage.setItem(&#x27;refreshToken&#x27;, response.refreshToken);
           const user &#x3D; response.user;
           console.log(&#x27;Logged in user:&#x27;, user);
-          this.router.navigate([&#x27;/dashboard&#x27;]);
+          localStorage.setItem(&#x27;userEmail&#x27;, user.email);
+          this.loading &#x3D; false;
+          this.router.navigateByUrl(&#x27;/dashboard&#x27;);
         },
         error: (error) &#x3D;&gt; {
           console.error(&#x27;Login failed&#x27;, error);
           this.notify.showError(&#x27;Invalid email or password&#x27;);
+          this.loading &#x3D; false;
+          this.cdr.detectChanges();
         }
       });
     }
-    this.loading &#x3D; false;
   }
 }
 </code></pre>
@@ -781,6 +798,11 @@ export class Login {
       &lt;span class&#x3D;&quot;font-serif text-3xl h-max text-white&quot;&gt;Maestro&lt;/span&gt;
     &lt;/div&gt;
   &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div [class]&#x3D;&quot;&#x60;absolute left-4 bottom-4 flex flex-row items-center ${loading ? &#x27;&#x27; : &#x27;hidden&#x27;}&#x60;&quot;&gt;
+  &lt;img src&#x3D;&quot;images/spinner.gif&quot; alt&#x3D;&quot;&quot; class&#x3D;&quot;w-8 h-8 mx-2&quot;&gt;
+  Logging In...
 &lt;/div&gt;</code></pre>
     </div>
 
@@ -810,8 +832,8 @@ export class Login {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><div class="flex flex-row w-screen h-screen justify-between">  <!-- left panel -->  <div class="w-6/12 h-full flex flex-col p-12">    <div class="flex flex-row my-8 items-center">      <img src="images/logo-coloured.svg" alt="Maestro Logo" class="w-12 mr-2">      <span class="font-serif text-3xl h-max text-prussian-blue-900">Maestro</span>    </div>    <h1 class="font-bold text-2xl text-gray-700 my-2">Welcome Back!</h1>    <p class="">Access your personalized lessons and materials.</p>    <form class="mt-2" #form="ngForm">      <!-- Email Input -->      <div class="flex flex-col my-6 font-medium">        <label class="text-gray-400">Email Address</label>        <input          type="email"          name="email"          placeholder="Email Address"          class="bg-gray-100 p-4 rounded-md"          [(ngModel)]="email"          required          email          #emailCtrl="ngModel"        />        <!-- Error messages -->        @if (emailCtrl.invalid && emailCtrl.touched) {          <div class="text-red-500 text-sm mt-1">            @if (emailCtrl.errors?.[\'required\']) {<span>Email is required</span>}            @if (emailCtrl.errors?.[\'email\']) {<span>Invalid email format</span>}          </div>        }      </div>      <!-- Password Input -->      <div class="flex flex-col my-6 font-medium relative">        <label class="text-gray-400">Password</label>        <input           [type]="passwordVisible"           name="password"           placeholder="Password"           class="bg-gray-100 p-4 rounded-md"           [(ngModel)]="password"          required          password          #passwordCtrl="ngModel"        />        <!-- Error messages -->        @if (passwordCtrl.invalid && passwordCtrl.touched) {          <div class="text-red-500 text-sm mt-1">            <span>Password is required</span>          </div>        }        <button type="button" (click)="togglePasswordVisibility()"class="absolute p-4 right-0 top-6 bottom-6" >          <img src="images/eye-icon.svg" alt="Toggle Visibility" class="w-6">        </button>      </div>      <button         type="submit"         class="w-full rounded-md p-4 text-white font-bold bg-prussian-blue-900 hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500"         (click)="onSubmit()"         [disabled]="loading"      >        Next      </button>    </form>    <div class="self-center m-4">      New to Maestro? <a href="/signup" class="font-medium text-prussian-blue-900 hover:text-prussian-blue-500">Sign Up!</a>    </div>  </div>  <!-- right panel -->  <div class="w-6/12 h-full relative">    <img src="images/person-studying-1.png" alt="Maestro Logo" class="h-full w-full object-cover">    <div class="flex flex-row m-8 items-center absolute left-0 bottom-0">      <img src="images/logo-white.svg" alt="Maestro Logo" class="w-12 mr-2">      <span class="font-serif text-3xl h-max text-white">Maestro</span>    </div>  </div></div></div>'
-    var COMPONENTS = [{'name': 'About', 'selector': 'app-about'},{'name': 'App', 'selector': 'app-root'},{'name': 'Chatbot', 'selector': 'app-chatbot'},{'name': 'ConfirmLogout', 'selector': 'app-confirm-logout'},{'name': 'Contact', 'selector': 'app-contact'},{'name': 'CreationStepTab', 'selector': 'app-creation-step-tab'},{'name': 'Features', 'selector': 'app-features'},{'name': 'Header', 'selector': 'app-header'},{'name': 'Home', 'selector': 'app-home'},{'name': 'Landing', 'selector': 'app-landing'},{'name': 'LessonPage', 'selector': 'app-lesson-page'},{'name': 'Login', 'selector': 'app-login'},{'name': 'NamingUpload', 'selector': 'app-naming-upload'},{'name': 'NotFound', 'selector': 'app-not-found'},{'name': 'Practice', 'selector': 'app-practice'},{'name': 'Pricing', 'selector': 'app-pricing'},{'name': 'QuestionSettings', 'selector': 'app-question-settings'},{'name': 'Sidebar', 'selector': 'app-sidebar'},{'name': 'Signup', 'selector': 'app-signup'},{'name': 'Subjects', 'selector': 'app-subjects'},{'name': 'Subscription', 'selector': 'app-subscription'},{'name': 'Subtopic', 'selector': 'app-subtopic'},{'name': 'Toast', 'selector': 'app-toast'},{'name': 'TopicPreferences', 'selector': 'app-topic-preferences'},{'name': 'VerifyEmail', 'selector': 'app-verify-email'}];
+        var COMPONENT_TEMPLATE = '<div><div class="flex flex-row w-screen h-screen justify-between">  <!-- left panel -->  <div class="w-6/12 h-full flex flex-col p-12">    <div class="flex flex-row my-8 items-center">      <img src="images/logo-coloured.svg" alt="Maestro Logo" class="w-12 mr-2">      <span class="font-serif text-3xl h-max text-prussian-blue-900">Maestro</span>    </div>    <h1 class="font-bold text-2xl text-gray-700 my-2">Welcome Back!</h1>    <p class="">Access your personalized lessons and materials.</p>    <form class="mt-2" #form="ngForm">      <!-- Email Input -->      <div class="flex flex-col my-6 font-medium">        <label class="text-gray-400">Email Address</label>        <input          type="email"          name="email"          placeholder="Email Address"          class="bg-gray-100 p-4 rounded-md"          [(ngModel)]="email"          required          email          #emailCtrl="ngModel"        />        <!-- Error messages -->        @if (emailCtrl.invalid && emailCtrl.touched) {          <div class="text-red-500 text-sm mt-1">            @if (emailCtrl.errors?.[\'required\']) {<span>Email is required</span>}            @if (emailCtrl.errors?.[\'email\']) {<span>Invalid email format</span>}          </div>        }      </div>      <!-- Password Input -->      <div class="flex flex-col my-6 font-medium relative">        <label class="text-gray-400">Password</label>        <input           [type]="passwordVisible"           name="password"           placeholder="Password"           class="bg-gray-100 p-4 rounded-md"           [(ngModel)]="password"          required          password          #passwordCtrl="ngModel"        />        <!-- Error messages -->        @if (passwordCtrl.invalid && passwordCtrl.touched) {          <div class="text-red-500 text-sm mt-1">            <span>Password is required</span>          </div>        }        <button type="button" (click)="togglePasswordVisibility()"class="absolute p-4 right-0 top-6 bottom-6" >          <img src="images/eye-icon.svg" alt="Toggle Visibility" class="w-6">        </button>      </div>      <button         type="submit"         class="w-full rounded-md p-4 text-white font-bold bg-prussian-blue-900 hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500"         (click)="onSubmit()"         [disabled]="loading"      >        Next      </button>    </form>    <div class="self-center m-4">      New to Maestro? <a href="/signup" class="font-medium text-prussian-blue-900 hover:text-prussian-blue-500">Sign Up!</a>    </div>  </div>  <!-- right panel -->  <div class="w-6/12 h-full relative">    <img src="images/person-studying-1.png" alt="Maestro Logo" class="h-full w-full object-cover">    <div class="flex flex-row m-8 items-center absolute left-0 bottom-0">      <img src="images/logo-white.svg" alt="Maestro Logo" class="w-12 mr-2">      <span class="font-serif text-3xl h-max text-white">Maestro</span>    </div>  </div></div><div [class]="`absolute left-4 bottom-4 flex flex-row items-center ${loading ? \'\' : \'hidden\'}`">  <img src="images/spinner.gif" alt="" class="w-8 h-8 mx-2">  Logging In...</div></div>'
+    var COMPONENTS = [{'name': 'About', 'selector': 'app-about'},{'name': 'App', 'selector': 'app-root'},{'name': 'Chatbot', 'selector': 'app-chatbot'},{'name': 'CheckEmail', 'selector': 'app-check-email'},{'name': 'ConfirmLogout', 'selector': 'app-confirm-logout'},{'name': 'Contact', 'selector': 'app-contact'},{'name': 'CreationStepTab', 'selector': 'app-creation-step-tab'},{'name': 'Features', 'selector': 'app-features'},{'name': 'Header', 'selector': 'app-header'},{'name': 'Home', 'selector': 'app-home'},{'name': 'Landing', 'selector': 'app-landing'},{'name': 'LessonPage', 'selector': 'app-lesson-page'},{'name': 'Login', 'selector': 'app-login'},{'name': 'NamingUpload', 'selector': 'app-naming-upload'},{'name': 'NotFound', 'selector': 'app-not-found'},{'name': 'Practice', 'selector': 'app-practice'},{'name': 'Pricing', 'selector': 'app-pricing'},{'name': 'QuestionSettings', 'selector': 'app-question-settings'},{'name': 'Sidebar', 'selector': 'app-sidebar'},{'name': 'Signup', 'selector': 'app-signup'},{'name': 'Subjects', 'selector': 'app-subjects'},{'name': 'Subscription', 'selector': 'app-subscription'},{'name': 'Subtopic', 'selector': 'app-subtopic'},{'name': 'Toast', 'selector': 'app-toast'},{'name': 'TopicPreferences', 'selector': 'app-topic-preferences'},{'name': 'VerifyEmail', 'selector': 'app-verify-email'}];
     var DIRECTIVES = [{'name': 'FileTypeDirective', 'selector': '[appFileType]'},{'name': 'PasswordValidator', 'selector': '[appPasswordValidator]'}];
     var ACTUAL_COMPONENT = {'name': 'Login'};
 </script>

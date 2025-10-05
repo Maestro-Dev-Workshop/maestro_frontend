@@ -183,10 +183,16 @@
                                 <a href="#getAllSubjects" >getAllSubjects</a>
                             </li>
                             <li>
+                                <a href="#getSubject" >getSubject</a>
+                            </li>
+                            <li>
                                 <a href="#ingestDocuments" >ingestDocuments</a>
                             </li>
                             <li>
                                 <a href="#labelDocuments" >labelDocuments</a>
+                            </li>
+                            <li>
+                                <a href="#nameSubject" >nameSubject</a>
                             </li>
                             <li>
                                 <a href="#selectTopics" >selectTopics</a>
@@ -228,7 +234,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>createSubject(name: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+<code>createSubject()</code>
                 </td>
             </tr>
 
@@ -244,40 +250,10 @@
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>name</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
                         <div class="io-description">
                             <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
 
                         </div>
-                            <div class="io-description">
-                                
-                            </div>
                 </td>
             </tr>
         </tbody>
@@ -302,8 +278,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="41"
-                                    class="link-to-prism">src/app/core/services/subjects.service.ts:41</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="49"
+                                    class="link-to-prism">src/app/core/services/subjects.service.ts:49</a></div>
                         </td>
                     </tr>
 
@@ -415,8 +391,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="37"
-                                    class="link-to-prism">src/app/core/services/subjects.service.ts:37</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="45"
+                                    class="link-to-prism">src/app/core/services/subjects.service.ts:45</a></div>
                         </td>
                     </tr>
 
@@ -506,8 +482,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="33"
-                                    class="link-to-prism">src/app/core/services/subjects.service.ts:33</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="41"
+                                    class="link-to-prism">src/app/core/services/subjects.service.ts:41</a></div>
                         </td>
                     </tr>
 
@@ -606,6 +582,73 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="getSubject"></a>
+                    <span class="name">
+                        <span ><b>getSubject</b></span>
+                        <a href="#getSubject"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getSubject(sessionId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="23"
+                                    class="link-to-prism">src/app/core/services/subjects.service.ts:23</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>sessionId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="ingestDocuments"></a>
                     <span class="name">
                         <span ><b>ingestDocuments</b></span>
@@ -622,8 +665,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="19"
-                                    class="link-to-prism">src/app/core/services/subjects.service.ts:19</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="27"
+                                    class="link-to-prism">src/app/core/services/subjects.service.ts:27</a></div>
                         </td>
                     </tr>
 
@@ -701,8 +744,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="25"
-                                    class="link-to-prism">src/app/core/services/subjects.service.ts:25</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="33"
+                                    class="link-to-prism">src/app/core/services/subjects.service.ts:33</a></div>
                         </td>
                     </tr>
 
@@ -752,6 +795,85 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="nameSubject"></a>
+                    <span class="name">
+                        <span ><b>nameSubject</b></span>
+                        <a href="#nameSubject"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>nameSubject(sessionId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, name: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="19"
+                                    class="link-to-prism">src/app/core/services/subjects.service.ts:19</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>sessionId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>name</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="selectTopics"></a>
                     <span class="name">
                         <span ><b>selectTopics</b></span>
@@ -768,8 +890,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="29"
-                                    class="link-to-prism">src/app/core/services/subjects.service.ts:29</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="37"
+                                    class="link-to-prism">src/app/core/services/subjects.service.ts:37</a></div>
                         </td>
                     </tr>
 
@@ -847,8 +969,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="49"
-                                    class="link-to-prism">src/app/core/services/subjects.service.ts:49</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="57"
+                                    class="link-to-prism">src/app/core/services/subjects.service.ts:57</a></div>
                         </td>
                     </tr>
 
@@ -926,8 +1048,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="45"
-                                    class="link-to-prism">src/app/core/services/subjects.service.ts:45</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="53"
+                                    class="link-to-prism">src/app/core/services/subjects.service.ts:53</a></div>
                         </td>
                     </tr>
 
@@ -1036,8 +1158,16 @@ export class SubjectsService {
     return this.http.get(&#x27;session/list&#x27;);
   }
 
-  createSubject(name: string): Observable&lt;any&gt; {
-    return this.http.post(&#x27;session/create&#x27;, { name });
+  createSubject(): Observable&lt;any&gt; {
+    return this.http.post(&#x27;session/create&#x27;, {});
+  }
+
+  nameSubject(sessionId: string, name: string): Observable&lt;any&gt; {
+    return this.http.put(&#x60;session/${sessionId}/name&#x60;, { name });
+  }
+
+  getSubject(sessionId: string): Observable&lt;any&gt; {
+    return this.http.get(&#x60;session/${sessionId}/get&#x60;);
   }
 
   ingestDocuments(sessionId: string, files: File[]): Observable&lt;any&gt; {

@@ -66,6 +66,9 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="components/Chatbot.html" data-type="entity-link" >Chatbot</a>
                             </li>
                             <li class="link">
+                                <a href="components/CheckEmail.html" data-type="entity-link" >CheckEmail</a>
+                            </li>
+                            <li class="link">
                                 <a href="components/ConfirmLogout.html" data-type="entity-link" >ConfirmLogout</a>
                             </li>
                             <li class="link">
