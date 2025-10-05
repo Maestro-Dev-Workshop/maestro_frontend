@@ -63,18 +63,34 @@ export class NamingUpload implements OnInit {
       const validFiles: File[] = [];
       const invalidFiles: string[] = [];
       const largeFiles: string[] = [];
+
+      let totalFilesCount = this.files.length;
+      let totalFilesSize = this.files.reduce((acc, file) => acc + file.size, 0);
     
-      Array.from(fileList).forEach((file) => {
+      for (const file of fileList) {
         const ext = file.name.split('.').pop()?.toLowerCase();
-    
+        
+        // Type validity check
         if (!ext || !allowedExtensions.includes(ext)) {
           invalidFiles.push(file.name);
+        // Size check
         } else if (file.size > 20_000_000) { // 20MB cap for now
           largeFiles.push(file.name);
+        // Count check
+        } else if (totalFilesCount == 15) {
+          this.notify.showError("You can upload a maximum of 15 files per subject.");
+          break;
+        // Total size check
+        } else if (totalFilesSize + file.size > 50_000_000) { // 100MB total cap
+          this.notify.showError("Total upload size cannot exceed 50MB per subject.");
+          break;
+        // All checks passed
         } else {
           validFiles.push(file);
+          totalFilesCount++;
+          totalFilesSize += file.size;
         }
-      });
+      };
     
       if (invalidFiles.length) {
         this.notify.showError(`Unsupported file types: ${invalidFiles.join(', ')}`);

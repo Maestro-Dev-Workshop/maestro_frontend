@@ -1,4 +1,13 @@
-<app-header/>
+<app-header class="z-20"/>
+
+@if (subjectLoading) {
+  <div class="flex flex-row items-center justify-center h-full w-full bg-white z-10 absolute">
+    <div class="flex flex-row items-center">
+      <img src="images/spinner.gif" alt="" class="w-24 m-4">
+      <span class="text-4xl">Retrieving Subject Content...</span>
+    </div>
+  </div>
+}
 
 <!-- Practice (Exercise/Exam) Header -->
 @if (currentView.type === 'exercise' || currentView.type === 'exam') {
