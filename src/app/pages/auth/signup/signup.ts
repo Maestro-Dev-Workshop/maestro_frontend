@@ -20,7 +20,17 @@ export class Signup {
   loading = false;
   authService = inject(AuthService);
   notify = inject(NotificationService);
-  allowedEmails: Array<String> = [];
+  allowedEmails: Array<String> = [
+    "ewuoso03@gmail.com",
+    "xlegend1251@gmail.com",
+    "Adebawojomosope@gmail.com",
+    "maestroaidevs@gmail.com",
+    "mosopekushimo@gmail.com",
+    "tobiraph09@gmail.com",
+    "trust.okpokpo@gmail.com",
+    "tunjitanny25@gmail.com",
+    "everlast666666666@gmail.com",
+  ];
   
   @ViewChild('firstnameCtrl') firstnameCtrl!: NgModel;
   @ViewChild('lastnameCtrl') lastnameCtrl!: NgModel;
@@ -47,7 +57,7 @@ export class Signup {
       this.notify.showError("first name, last name, valid email, and valid password are required");
       this.loading = false;
     } else if (environment.beta && this.allowedEmails.length > 0 && !this.allowedEmails.includes(this.email)) {
-      this.notify.showError("This email is not authorized for signup.");
+      this.notify.showError("This email is not authorized for signup on beta.");
       this.loading = false;
     } else {
       this.authService.signup({ 
