@@ -3,7 +3,6 @@ import { FormsModule, NgModel } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { NotificationService } from '../../../core/services/notification.service'; // <-- Add this import
-import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -17,17 +16,6 @@ export class Login {
   loading = false;
   authService = inject(AuthService);
   notify = inject(NotificationService); // <-- Inject notification service
-  allowedEmails: Array<String> = [
-    "ewuoso03@gmail.com",
-    "xlegend1251@gmail.com",
-    "Adebawojomosope@gmail.com",
-    "maestroaidevs@gmail.com",
-    "mosopekushimo@gmail.com",
-    "tobiraph09@gmail.com",
-    "trust.okpokpo@gmail.com",
-    "tunjitanny25@gmail.com",
-    "everlast666666666@gmail.com",
-  ];
 
   @ViewChild('emailCtrl') emailCtrl!: NgModel;
   @ViewChild('passwordCtrl') passwordCtrl!: NgModel;
@@ -50,9 +38,6 @@ export class Login {
     // Later: replace with real API call
     if (this.emailCtrl.invalid || this.passwordCtrl.invalid) {
       this.notify.showError("Valid email and password required");
-      this.loading = false;
-    } else if (environment.beta && this.allowedEmails.length > 0 && !this.allowedEmails.includes(this.email)) {
-      this.notify.showError("This email is not authorized for login on beta.");
       this.loading = false;
     } else {
       this.authService.login({ email: this.email, password: this.password }).subscribe({
