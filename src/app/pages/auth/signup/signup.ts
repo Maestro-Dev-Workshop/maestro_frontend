@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { PasswordValidator } from '../../../shared/directives/password-validator';
 import { AuthService } from '../../../core/services/auth.service';
 import { NotificationService } from '../../../core/services/notification.service';
-import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-signup',
@@ -20,7 +19,6 @@ export class Signup {
   loading = false;
   authService = inject(AuthService);
   notify = inject(NotificationService);
-  allowedEmails: Array<String> = [];
   
   @ViewChild('firstnameCtrl') firstnameCtrl!: NgModel;
   @ViewChild('lastnameCtrl') lastnameCtrl!: NgModel;
@@ -45,9 +43,6 @@ export class Signup {
     // Later: replace with real API call
     if (this.emailCtrl.invalid || this.passwordCtrl.invalid || this.firstnameCtrl.invalid || this.lastnameCtrl.invalid) {
       this.notify.showError("first name, last name, valid email, and valid password are required");
-      this.loading = false;
-    } else if (environment.beta && this.allowedEmails.length > 0 && !this.allowedEmails.includes(this.email)) {
-      this.notify.showError("This email is not authorized for signup.");
       this.loading = false;
     } else {
       this.authService.signup({ 
