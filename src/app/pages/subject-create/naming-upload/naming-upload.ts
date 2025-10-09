@@ -1,15 +1,16 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, ViewChild } from '@angular/core';
 import { Header } from '../../../shared/components/header/header';
 import { Router } from '@angular/router';
 import { CreationStepTab } from '../creation-step-tab/creation-step-tab';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgModel } from '@angular/forms';
 import { SubjectsService } from '../../../core/services/subjects.service';
 import { NotificationService } from '../../../core/services/notification.service'; // <-- Add this import
 import { catchError, EMPTY, finalize, iif, of, switchMap, tap } from 'rxjs';
+import { SubjectNameValidator } from '../../../shared/directives/subject-name-validator';
 
 @Component({
   selector: 'app-naming-upload',
-  imports: [Header, CreationStepTab, FormsModule],
+  imports: [Header, CreationStepTab, FormsModule, SubjectNameValidator],
   templateUrl: './naming-upload.html',
   styleUrl: './naming-upload.css',
 })
@@ -23,6 +24,8 @@ export class NamingUpload implements OnInit {
   uploadedDocs = false;
   subjectService = inject(SubjectsService);
   notify = inject(NotificationService); // <-- Inject notification service
+
+  @ViewChild('nameCtrl') nameCtrl!: NgModel;
 
   constructor(private router: Router, private cdr: ChangeDetectorRef) {
     // Extract subjectId from the route parameters
@@ -148,8 +151,8 @@ export class NamingUpload implements OnInit {
   onSubmit() {
     this.loading = true;
   
-    if (this.subjectName.trim() === '' && this.subject.status === 'pending naming') {
-      this.notify.showError('Subject name is required');
+    if (this.nameCtrl.invalid && this.subject.status === 'pending naming') {
+      this.notify.showError('Valid subject name is required');
       this.loading = false;
       return;
     }

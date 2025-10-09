@@ -66,7 +66,17 @@
         class="bg-gray-50 p-4 rounded-lg border border-2 h-32 text-sm w-11/12" 
         [(ngModel)]="exerciseSettings.preference"
         [disabled]="!exerciseSettings.include || loading"
+        exercisePreference
+        #exercisePreferenceCtrl="ngModel"
+        appPreferenceValidator
+        [required]="exerciseSettings.include"
       ></textarea>
+      @if (exercisePreferenceCtrl.invalid && exercisePreferenceCtrl.touched) {
+        <div class="text-red-500 text-sm mt-1">
+          @if (exercisePreferenceCtrl.errors?.['required']) {<span>Exercise Preference cannot be empty</span>}
+          @if (exercisePreferenceCtrl.errors?.['invalidPreference']) {<span>Exercise Preference cannot be longer than 1000 characters</span>}
+        </div>
+      }
     </div>
     
     <!-- Exam Form -->
@@ -107,7 +117,17 @@
         class="bg-gray-50 p-4 rounded-lg border border-2 h-32 text-sm w-11/12" 
         [(ngModel)]="examSettings.preference"
         [disabled]="!examSettings.include || loading"
+        examPreference
+        #examPreferenceCtrl="ngModel"
+        appPreferenceValidator
+        [required]="examSettings.include"
       ></textarea>
+      @if (examPreferenceCtrl.invalid && examPreferenceCtrl.touched) {
+        <div class="text-red-500 text-sm mt-1">
+          @if (examPreferenceCtrl.errors?.['required']) {<span>Exam Preference cannot be empty</span>}
+          @if (examPreferenceCtrl.errors?.['invalidPreference']) {<span>Exam Preference cannot be longer than 1000 characters</span>}
+        </div>
+      }
     </div>
   </form>
   <div class="flex flex-row items-center">

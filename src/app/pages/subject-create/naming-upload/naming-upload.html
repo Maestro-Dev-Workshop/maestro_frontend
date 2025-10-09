@@ -32,12 +32,14 @@
       required
       subjectName
       #nameCtrl="ngModel"
+      appSubjectNameValidator
       [disabled]="!(subject.status == 'pending naming')"
     />
     <!-- Error messages -->
     @if (nameCtrl.invalid && nameCtrl.touched) {
       <div class="text-red-500 text-sm mt-1">
         @if (nameCtrl.errors?.['required']) {<span>Subject Name cannot be empty</span>}
+        @if (nameCtrl.errors?.['invalidName']) {<span>Subject Name cannot be longer than 30 characters</span>}
       </div>
     }
 

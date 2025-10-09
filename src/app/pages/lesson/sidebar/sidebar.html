@@ -1,6 +1,6 @@
-<div class="m-6">
+<div class="mx-6 mb-6 h-max relative">
   <!-- Return to Dashboard -->
-  <div class="flex flex-row mb-2 items-center">
+  <div class="flex flex-row mb-2 pt-6 items-center sticky top-0 bg-white z-10">
     <button class="rounded-full p-3 bg-prussian-blue-800 hover:bg-prussian-blue-500" routerLink="/dashboard">
       <img src="images/subject-icon-white.svg" alt="" class="w-5">
     </button>
@@ -12,7 +12,7 @@
     <!-- Topic List -->
     @for (topic of content().topics; track topic.id) {
       <button [class]="`flex flex-row items-center hover:text-gray-600 text-left ${!topic.completed ? 'font-bold' : ''}`" (click)="toggleExpandTopic(topic.id)">
-        <img src="images/dropdown-icon-closed.svg" alt="" [class]="`w-2 m-4 ${topic.expanded ? 'rotate-90' : ''}`">
+        <img src="images/dropdown-icon-closed.svg" alt="" [class]="`w-2 m-4 z-0 ${topic.expanded ? 'rotate-90' : ''}`">
         {{ topic.title }}
       </button>
       @if (topic.expanded) {
