@@ -57,12 +57,14 @@
       required
       learningStyle
       #learningStyleCtrl="ngModel"
+      appPreferenceValidator
       [disabled]="loading"
     ></textarea>
     <!-- Error messages -->
     @if (learningStyleCtrl.invalid && learningStyleCtrl.touched) {
       <div class="text-red-500 text-sm mt-1">
-        <span>Learning Style is required</span>
+        @if (learningStyleCtrl.errors?.['required']) {<span>Learning Style is required</span>}
+        @if (learningStyleCtrl.errors?.['invalidPreference']) {<span>Learning Style cannot exceed 1000 characters</span>}
       </div>
     }
     <div class="flex flex-row items-center">
