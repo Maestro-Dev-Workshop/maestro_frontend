@@ -69,6 +69,16 @@ export class Subjects implements OnInit {
     });
   }
 
+  getStatusColours(status: string): string {
+    if (status.toLocaleLowerCase() == "completed") {
+      return "text-green-600 bg-green-50";
+    } else if (status.toLocaleLowerCase() == "in progress") {
+      return "text-yellow-600 bg-yellow-50";
+    } else {
+      return "text-red-600 bg-red-50";
+    }
+  }
+
   createNewSubject() {
     this.loadingCreate = true;
     this.subjectService.createSubject().subscribe({
