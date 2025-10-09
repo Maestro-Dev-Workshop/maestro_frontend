@@ -36,7 +36,7 @@
 
 <div class="w-full flex flex-row flex-grow overflow-hidden mt-2">
   <app-sidebar 
-    class="w-3/12 h-full overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 hover:scrollbar-thumb-gray-500"
+    class="w-3/12 h-full relative overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 hover:scrollbar-thumb-gray-500"
     [content]="subjectContent" 
     [currentView]="currentView" 
     (updateView)="updatecurrentView($event)" 
@@ -65,7 +65,7 @@
   </div>
 
   <app-chatbot 
-    [class]="`w-3/12 absolute right-0 top-0 h-screen ${(chatOpen && !(currentView.type !== 'subtopic' && (currentView.content.score == null))) ? '' : 'hidden'}`" 
+    [class]="`w-3/12 absolute z-30 right-0 top-0 h-screen ${(chatOpen && !(currentView.type !== 'subtopic' && (currentView.content.score == null))) ? '' : 'hidden'}`" 
     [chatHistory]="chatHistory" 
     [subjectId]="subjectId"
     [metadata]="chatMetadata"

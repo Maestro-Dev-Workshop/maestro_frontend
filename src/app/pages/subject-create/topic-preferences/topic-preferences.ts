@@ -7,6 +7,7 @@ import { TopicModel } from '../../../core/models/topic.model';
 import { SubjectsService } from '../../../core/services/subjects.service';
 import { LessonService } from '../../../core/services/lesson.service';
 import { NotificationService } from '../../../core/services/notification.service'; // <-- Add this import
+import { PreferenceValidator } from '../../../shared/directives/preference-validator';
 
 type Topic = {
   id: string,
@@ -16,7 +17,7 @@ type Topic = {
 
 @Component({
   selector: 'app-topic-preferences',
-  imports: [Header, CreationStepTab, FormsModule],
+  imports: [Header, CreationStepTab, FormsModule, PreferenceValidator],
   templateUrl: './topic-preferences.html',
   styleUrl: './topic-preferences.css'
 })
@@ -107,7 +108,7 @@ export class TopicPreferences implements OnInit {
       return
     }
     if (this.learningStyleCtrl.invalid) {
-      this.notify.showError("Learning Style is required");
+      this.notify.showError("Learning Style cannot be empty or exceed 1000 characters");
       this.loading = false;
       return
     }

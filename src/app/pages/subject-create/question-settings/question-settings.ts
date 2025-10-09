@@ -1,11 +1,12 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ViewChild } from '@angular/core';
 import { Header } from '../../../shared/components/header/header';
 import { CreationStepTab } from '../creation-step-tab/creation-step-tab';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgModel } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SubjectsService } from '../../../core/services/subjects.service';
 import { forkJoin, Observable } from 'rxjs';
 import { NotificationService } from '../../../core/services/notification.service'; // <-- Add this import
+import { PreferenceValidator } from '../../../shared/directives/preference-validator';
 
 class ExerciseSettings {
   include: boolean = false
@@ -21,7 +22,7 @@ class ExamSettings {
 
 @Component({
   selector: 'app-question-settings',
-  imports: [Header, CreationStepTab, FormsModule],
+  imports: [Header, CreationStepTab, FormsModule, PreferenceValidator],
   templateUrl: './question-settings.html',
   styleUrl: './question-settings.css'
 })
@@ -32,6 +33,9 @@ export class QuestionSettings {
   subjectId = '';
   subjectService = inject(SubjectsService)
   notify = inject(NotificationService); // <-- Inject notification service
+
+  @ViewChild('exercisePreferenceCtrl') exercisePreferenceCtrl!: NgModel;
+  @ViewChild('examPreferenceCtrl') examPreferenceCtrl!: NgModel;
 
   constructor(private router: Router, private cdr: ChangeDetectorRef) {
     // Extract subjectId from the route parameters
@@ -68,8 +72,8 @@ export class QuestionSettings {
         this.loading = false;
         return;
       }
-      if (!this.exerciseSettings.preference) {
-        this.notify.showError("Exercise preference cannot be empty");
+      if (this.exercisePreferenceCtrl.invalid) {
+        this.notify.showError("Exercise preference cannot be empty or exceed 1000 characters");
         this.loading = false;
         return;
       }
@@ -83,8 +87,8 @@ export class QuestionSettings {
         this.loading = false;
         return;
       }
-      if (!this.examSettings.preference) {
-        this.notify.showError("Exam preference cannot be empty");
+      if (this.examPreferenceCtrl.invalid) {
+        this.notify.showError("Exam preference cannot be empty or exceed 1000 characters");
         this.loading = false;
         return;
       }
