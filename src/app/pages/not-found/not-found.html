@@ -4,13 +4,13 @@
   Anyways, just keep in mind that you can take the bug out of the code, but you can never take the code out of the bug ;)
 </div>
 <div class="h-screen flex flex-col justify-center">
-  <div class="flex flex-row items-center justify-center">
+  <div class="flex flex-col lg:flex-row items-center justify-center">
     <img src="images/not-found-image.png" alt="Happy bot" class="w-6/12">
-    <div class="text-gray-700 w-5/12 px-8 py-4">
-      <h1 class="text-8xl font-bold my-4">404</h1>
+      <div class="text-gray-700 text-center flex flex-col w-full lg:w-5/12 lg:flex-none lg:text-left px-8 py-4">
+      <h1 class="text-6xl my-2 lg:text-8xl font-bold lg:my-4">404</h1>
       <span class="block text-lg font-bold my-2">Oops! Looks like you've gone off-topic.</span>
       Even Maestro can't find this page — but we can help you get back to learning.
-      <button class="block text-sm bg-prussian-blue-900 text-white p-4 rounded-md hover:bg-prussian-blue-500 my-4" (click)="goHome()">
+      <button class="block text-sm bg-prussian-blue-900 text-white p-4 rounded-md hover:bg-prussian-blue-500 my-4 mx-auto w-fit lg:mx-0" (click)="goHome()">
         Return to Home
       </button>
     </div>
