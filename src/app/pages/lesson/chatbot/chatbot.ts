@@ -1,4 +1,4 @@
-import { Component, inject, input, model, output, AfterViewInit, ElementRef, ViewChild, effect, Injector, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, input, model, output, AfterViewInit, ElementRef, ViewChild, effect, Injector, ChangeDetectorRef, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { timestamp } from 'rxjs';
 import { ChatMessage } from '../../../core/models/chat-message.model';
@@ -13,7 +13,7 @@ import { NotificationService } from '../../../core/services/notification.service
   templateUrl: './chatbot.html',
   styleUrl: './chatbot.css'
 })
-export class Chatbot {
+export class Chatbot implements OnInit {
   chatHistory = model<ChatMessage[]>([]);
   subjectId = input<string>()
   metadata = input<ChatMetadata>();
@@ -50,6 +50,10 @@ export class Chatbot {
     this.viewReady = true;
     // initial scroll (e.g., when history is preloaded)
     queueMicrotask(() => this.scrollToBottom());
+  }
+
+  ngOnInit() {
+    this.scrollToBottom();
   }
 
   private scrollToBottom() {
