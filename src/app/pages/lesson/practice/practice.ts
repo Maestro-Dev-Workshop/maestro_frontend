@@ -108,9 +108,9 @@ export class Practice {
               q.essay_answer = question.essay_answer;
               q.essay_feedback = question.essay_feedback = value.feedback;
             }),
-            catchError(err => {
-              console.error(`Error scoring essay question: ${err}`);
-              this.notify.showError('Failed to score an essay question.');
+            catchError(res => {
+              console.error(`Error scoring essay question: ${res}`);
+              this.notify.showError(res.error.message || 'Failed to score an essay question.');
               return of(null);
             })
           )
@@ -147,9 +147,9 @@ export class Practice {
         this.loading = false; // ✅ only after scoring + saving
         this.cdr.detectChanges();
       },
-      error: (err) => {
-        console.error('Failed to submit answers:', err);
-        this.notify.showError('Failed to submit answers. Please try again.');
+      error: (res) => {
+        console.error('Failed to submit answers:', res);
+        this.notify.showError(res.error.message || 'Failed to submit answers. Please try again.');
         this.loading = false;
         this.cdr.detectChanges();
       }
