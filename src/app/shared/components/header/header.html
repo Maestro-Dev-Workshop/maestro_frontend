@@ -1,25 +1,25 @@
-<header class="flex flex-row justify-between items-center m-8">
+<header class="flex flex-col md:flex-row justify-between items-center m-4 md:m-8 space-y-4 md:space-y-0">
   <!-- Left: logo + title (styling follows first block) -->
-  <a routerLink="/" class="flex flex-row mx-8 items-center no-underline">
-    <img src="images/logo-coloured.svg" alt="Maestro Logo" class="w-12 mr-2">
-    <span class="text-2xl h-max text-prussian-blue-900 font-serif">Maestro</span>
+  <a routerLink="/" class="flex flex-row items-center no-underline mx-4 md:mx-8">
+    <img src="images/logo-coloured.svg" alt="Maestro Logo" class="w-8 md:w-12 mr-2">
+    <span class="text-lg md:text-2xl h-max text-prussian-blue-900 font-serif">Maestro</span>
   </a>
 
   <!-- Center / Right: nav + actions -->
-  <div class="flex flex-row items-center mx-8 space-x-6">
+  <div class="flex flex-row items-center mx-4 md:mx-8 space-x-4 md:space-x-8">
     <!-- Actions: Logout button + profile image -->
   </div>
   <button
     class="rounded-full p-1 hover:bg-gray-100"
     (click)="popout()"
   >
-    <img src="images/profile-icon.svg" alt="Profile" class="w-12">
+    <img src="images/profile-icon.svg" alt="Profile" class="w-8 md:w-12">
   </button>
 </header>
 
 <!-- Account Menu -->
 @if (showAccount()) {
-  <div class="absolute top-24 right-8 flex flex-col items-start p-2 rounded-md text-gray-500 bg-white shadow">
+  <div class="absolute top-24 right-4 md:right-8 flex flex-col items-start p-2 rounded-md text-gray-500 bg-white shadow w-[90vw] max-w-sm">
     <div class="flex flex-row items-center my-1 mr-8">
       <img src="images/profile-icon.svg" alt="" class="w-6 mr-2">
       <div>
