@@ -26,14 +26,14 @@ export class VerifyEmail {
           this.verified = true;
           this.router.navigateByUrl('/login');
         },
-        error: (error) => {
-          console.error('Email verification failed', error);
-          this.notify.showError('Email verification failed, Please try again.');
+        error: (res) => {
+          console.error('Email verification failed', res);
+          this.notify.showError(res.error.message || 'Email verification failed. Please try again.');
           this.router.navigateByUrl('/signup');
         }
       });
     } else {
-      alert('Invalid verification link.');
+      this.notify.showError('Invalid verification link.');
       this.router.navigateByUrl('/signup');
     }
   }

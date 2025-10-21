@@ -53,9 +53,9 @@ export class Signup {
           this.loading = false;
           this.router.navigateByUrl('/check-email', { state: { email: this.email } });
         },
-        error: (error) => {
-          console.error('Signup failed', error);
-          this.notify.showError('Signup failed, Please try again.');
+        error: (res) => {
+          console.error('Signup failed', res);
+          this.notify.showError(res.error.message || 'Signup failed. Please try again.');
           this.loading = false;
           this.cdr.detectChanges();
         }
