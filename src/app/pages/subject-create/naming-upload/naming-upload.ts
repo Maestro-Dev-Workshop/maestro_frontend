@@ -62,7 +62,7 @@ export class NamingUpload implements OnInit {
     if (this.uploadedDocs){
       this.notify.showError("You have already uploaded documents for this subject. You cannot upload more.");
     } else {
-      const allowedExtensions = ['pdf', 'doc', 'docx', 'pptx'];
+      const allowedExtensions = ['pdf', 'doc', 'docx', 'ppt', 'pptx'];
       const validFiles: File[] = [];
       const invalidFiles: string[] = [];
       const largeFiles: string[] = [];
