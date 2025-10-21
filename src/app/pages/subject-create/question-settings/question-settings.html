@@ -1,24 +1,23 @@
 <app-header></app-header>
-<div class="flex flex-col w-full px-32">
-  <!-- Creation Tab Header -->
-  <div class="flex flex-row mb-8">
+<div class="flex flex-col w-full px-12 md:px-32">
+  <div class="flex flex-row mb-8 w-full">
     <app-creation-step-tab
       [text]="'My Subject and Materials'"
       [icon]="'images/subject-icon.svg'"
       [active]="true"
-      class="w-2/6"
+      class="hidden md:block w-2/6"
     />
     <app-creation-step-tab
       [text]="'Lesson Content Generation'"
       [icon]="'images/lesson-generation-icon.svg'"
       [active]="true"
-      class="w-2/6"
+      class="hidden md:block w-2/6"
     />
     <app-creation-step-tab
       [text]="'Practice Question Generation'"
       [icon]="'images/question-generation-icon.svg'"
       [active]="true"
-      class="w-2/6"
+      class="w-full md:w-2/6"
     />
   </div>
 
@@ -27,9 +26,9 @@
     You can choose to generate practice exercises as well as an exam alongside the lesson.
   </p>
 
-  <form #form="ngForm" class="flex flex-row justify-between w-full my-4">
+  <form #form="ngForm" class="flex flex-col md:flex-row justify-between w-full my-4">
     <!-- Exercise Form -->
-    <div class="flex flex-col w-2/4">
+    <div class="flex flex-col w-full md:w-2/4 mb-8 md:mb-0">
       <h1 class="text-2xl">Exercises</h1>
       <!-- Include Exercises -->
       <label class="my-2">Do you want to include exercises for each topic?</label>
@@ -46,11 +45,11 @@
       <label class="my-2">What question types do you want for the exercise?</label>
       <div>
         <input type="checkbox" id="exercise-mc" class="m-2 accent-blue-900" [disabled]="!exerciseSettings.include || loading" value="multiple choice" (change)="toggleExerciseType($event)">
-        <label for="exercise-mc">Multiple Choice</label>
+        <label for="exercise-mc">Single Choice</label>
       </div>
       <div>
         <input type="checkbox" id="exercise-ms" class="m-2 accent-blue-900" [disabled]="!exerciseSettings.include || loading" value="multiple selection" (change)="toggleExerciseType($event)">
-        <label for="exercise-ms">Multiple Selection</label>
+        <label for="exercise-ms">Multiple Choice</label>
       </div>
       <div>
         <input type="checkbox" id="exercise-ess" class="m-2 accent-blue-900" [disabled]="!exerciseSettings.include || loading" value="essay" (change)="toggleExerciseType($event)">
@@ -80,7 +79,7 @@
     </div>
     
     <!-- Exam Form -->
-    <div class="flex flex-col w-2/4">
+    <div class="flex flex-col w-full md:w-2/4">
       <h1 class="text-2xl">Exam</h1>
       <!-- Include Exam -->
       <label class="my-2">Do you want to include an exam for the lesson?</label>
@@ -97,11 +96,11 @@
       <label class="my-2">What question types do you want for the exam?</label>
       <div>
         <input type="checkbox" id="exam-mc" class="m-2 accent-blue-900" [disabled]="!examSettings.include || loading" value="multiple choice" (change)="toggleExamType($event)">
-        <label for="exam-mc">Multiple Choice</label>
+        <label for="exam-mc">Single Choice</label>
       </div>
       <div>
         <input type="checkbox" id="exam-ms" class="m-2 accent-blue-900" [disabled]="!examSettings.include || loading" value="multiple selection" (change)="toggleExamType($event)">
-        <label for="exam-ms">Multiple Selection</label>
+        <label for="exam-ms">Multiple Choice</label>
       </div>
       <div>
         <input type="checkbox" id="exam-ess" class="m-2 accent-blue-900" [disabled]="!examSettings.include || loading" value="essay" (change)="toggleExamType($event)">

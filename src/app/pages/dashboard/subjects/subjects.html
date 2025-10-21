@@ -22,13 +22,13 @@
   } @else {
     <div class="flex flex-col w-full px-4 md:px-12 lg:px-32">
       <!-- Heading -->
-      <div class="flex flex-col md:flex-row w-full justify-between my-4 space-y-4 md:space-y-0">
+      <div class="flex flex-row w-full justify-between my-4 space-y-4 md:space-y-0">
         <div class="flex flex-row items-center">
           <img src="images/subject-icon.svg" alt="" class="w-4 mx-4">
           <span class="font-medium text-prussian-blue-900">My Subjects</span>
         </div>
         <button 
-          class="w-full md:w-max rounded-md px-5 py-3 text-white bg-prussian-blue-800 hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500 flex flex-row justify-center text-xs" 
+          class="w-max rounded-md px-5 py-3 text-white bg-prussian-blue-800 hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500 flex flex-row justify-center text-xs" 
           (click)="createNewSubject()"
           [disabled]="loadingCreate"
         >
@@ -54,7 +54,7 @@
             <div class="flex flex-row w-full items-center">
               <!-- Progress Bar -->
               <div class="w-full">
-                <div class="w-full md:w-11/12 h-1 bg-gray-300 rounded-full">
+                <div class="w-11/12 h-1 bg-gray-300 rounded-full">
                   <div class="h-full bg-prussian-blue-800 rounded-full" [ngStyle]="{ width: subject.completion*100 + '%' }"></div>
                 </div>
               </div>
