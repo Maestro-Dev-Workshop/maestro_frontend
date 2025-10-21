@@ -60,9 +60,9 @@ export class Subjects implements OnInit {
         this.loadingSubjects = false;
         this.cdr.detectChanges();
       },
-      error: (err) => {
-        console.error('Error fetching subjects:', err);
-        this.notify.showError("Failed to load subjects. Please try again later.");
+      error: (res) => {
+        console.error('Error fetching subjects:', res);
+        this.notify.showError(res.error.message || "Failed to load subjects. Please try again later.");
         this.loadingSubjects = false;
         this.cdr.detectChanges();
       }
@@ -88,9 +88,9 @@ export class Subjects implements OnInit {
         this.loadingCreate = false;
         this.cdr.detectChanges();
       },
-      error: (err) => {
-        console.error('Error creating subject:', err);
-        this.notify.showError("Failed to create a new subject. Please try again later.");
+      error: (res) => {
+        console.error('Error creating subject:', res);
+        this.notify.showError(res.error.message || "Failed to create a new subject. Please try again later.");
         this.loadingCreate = false;
         this.cdr.detectChanges();
       }

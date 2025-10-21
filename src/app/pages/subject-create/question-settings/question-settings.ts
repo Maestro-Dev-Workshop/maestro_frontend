@@ -137,9 +137,9 @@ export class QuestionSettings {
             complete: () => (this.loading = false),
           });
         },
-        error: (err) => {
-          console.error("Error during generation:", err);
-          this.notify.showError("Failed to generate practice questions. Please try again later.");
+        error: (res) => {
+          console.error("Error during generation:", res);
+          this.notify.showError(res.error.message || "Failed to generate practice questions. Please try again later.");
           this.loading = false;
           this.cdr.detectChanges();
         }
@@ -151,9 +151,9 @@ export class QuestionSettings {
           console.log("Session status updated (no generation needed)");
           this.router.navigate([`/lesson/${this.subjectId}`]);
         },
-        error: (err) => {
-          console.error("Failed to update session status", err);
-          this.notify.showError("Failed to update session status.");
+        error: (res) => {
+          console.error("Failed to update session status", res);
+          this.notify.showError(res.error.message || "Failed to update session status.");
           this.router.navigate([`/lesson/${this.subjectId}`]);
         },
         complete: () => (this.loading = false),

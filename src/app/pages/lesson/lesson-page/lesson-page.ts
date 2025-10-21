@@ -190,9 +190,9 @@ export class LessonPage implements OnInit {
     this.chatbotService.getChatHistory(this.subjectId).subscribe({
       next: (response) => {
         this.chatHistory = response.history;
-      }, error: (err) => {
-        console.error(`Error fetching chat history ${err}`)
-        this.notify.showError("Failed to load chat history. Please try again later.")
+      }, error: (res) => {
+        console.error(`Error fetching chat history ${res}`)
+        this.notify.showError(res.error.message || "Failed to load chat history. Please try again later.")
       },
     });
 
@@ -286,9 +286,9 @@ export class LessonPage implements OnInit {
         this.subjectLoading = false;
         this.cdr.detectChanges();
       },
-      error: (err) => {
-        console.error('Failed to initialize subject content:', err);
-        this.notify.showError('Failed to load lesson content. Please try again later.');
+      error: (res) => {
+        console.error('Failed to initialize subject content:', res);
+        this.notify.showError(res.error.message || 'Failed to load lesson content. Please try again later.');
         this.subjectLoading = false;
         this.cdr.detectChanges();
       }
@@ -332,9 +332,9 @@ export class LessonPage implements OnInit {
           .read = true
           this.updateProgress()
           this.checkForTopicCompleteness(topic_id)
-        }, error: (err) => {
-          console.error(`Failed to mark subtopic as read: ${err}`)
-          this.notify.showError('Failed to mark subtopic as read.')
+        }, error: (res) => {
+          console.error(`Failed to mark subtopic as read: ${res}`)
+          this.notify.showError(res.error.message || 'Failed to mark subtopic as read.')
         },
       });
     } else if (this.chatOpen && (this.currentView.content.score == null)){
@@ -379,9 +379,9 @@ export class LessonPage implements OnInit {
         console.log("Progress updated successfully")
         const percentage = total > 0 ? Math.round(fraction * 100) : 0;
         console.log(`Progress: ${completed}/${total} (${percentage}%)`);
-      }, error: (err) => {
-        console.error(`Failed to update progress: ${err}`)
-        this.notify.showError('Failed to update progress.')
+      }, error: (res) => {
+        console.error(`Failed to update progress: ${res}`)
+        this.notify.showError(res.error.message || 'Failed to update progress.')
       },
     });
   }  

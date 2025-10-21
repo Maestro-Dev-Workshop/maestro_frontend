@@ -51,9 +51,9 @@ export class Login {
           this.loading = false;
           this.router.navigateByUrl('/dashboard');
         },
-        error: (error) => {
-          console.error('Login failed', error);
-          this.notify.showError('Invalid email or password');
+        error: (res) => {
+          console.error('Login failed', res);
+          this.notify.showError(res.error.message || 'Login failed. Please try again.');
           this.loading = false;
           this.cdr.detectChanges();
         }

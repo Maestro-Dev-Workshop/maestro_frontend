@@ -49,9 +49,9 @@ export class CheckEmail {
         this.loading = false;
         this.cdr.detectChanges();
       },
-      error: (error) => {
-        console.error('Resend verification email failed', error);
-        this.notify.showError('Failed to resend verification email, Please try again.');
+      error: (res) => {
+        console.error('Resend verification email failed', res);
+        this.notify.showError(res.error.message || 'Failed to resend verification email. Please try again.');
         this.loading = false;
         this.cdr.detectChanges();
       }

@@ -141,9 +141,9 @@ export class NamingUpload implements OnInit {
         }
         this.cdr.detectChanges();
       },
-      error: (err) => {
-        console.error('Error fetching subject details:', err);
-        this.notify.showError('Failed to load subject details. Please try again later.');
+      error: (res) => {
+        console.error('Error fetching subject details:', res);
+        this.notify.showError(res.error.message || 'Failed to load subject details. Please try again later.');
       }
     });
   }
@@ -211,9 +211,9 @@ export class NamingUpload implements OnInit {
           )
         )
       ),
-      catchError((err) => {
-        console.error('Error in subject creation flow:', err);
-        this.notify.showError('Something went wrong. Please try again later.');
+      catchError((res) => {
+        console.error('Error in subject creation flow:', res);
+        this.notify.showError(res.error.message || 'Something went wrong. Please try again later.');
         return EMPTY;
       }),
       finalize(() => {

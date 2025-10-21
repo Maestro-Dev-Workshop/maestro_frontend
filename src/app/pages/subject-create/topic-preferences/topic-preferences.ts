@@ -92,9 +92,9 @@ export class TopicPreferences implements OnInit {
         console.log(this.topics)
         this.cdr.detectChanges();
       },
-      error: (err) => {
-        console.error('Error fetching topics:', err);
-        this.notify.showError("Failed to load topics. Please try again later.");
+      error: (res) => {
+        console.error('Error fetching topics:', res);
+        this.notify.showError(res.error.message || "Failed to load topics. Please try again later.");
       }
     });
   }
@@ -131,20 +131,20 @@ export class TopicPreferences implements OnInit {
             this.loading = false;
           },
 
-          error: (err) => {
+          error: (res) => {
             this.loading = false;
-            console.error('Error generating lesson:', err);
-            this.notify.showError("Failed to generate lesson. Please try again later.");
+            console.error('Error generating lesson:', res);
+            this.notify.showError(res.error.message || "Failed to generate lesson. Please try again later.");
             this.loading = false;
             this.cdr.detectChanges();
           }
         });
       },
       
-      error: (err) => {
+      error: (res) => {
         this.loading = false;
-        console.error('Error selecting topics:', err);
-        this.notify.showError("Failed to select topics. Please try again later.");
+        console.error('Error selecting topics:', res);
+        this.notify.showError(res.error.message || "Failed to select topics. Please try again later.");
         this.loading = false;
         this.cdr.detectChanges();
       }
