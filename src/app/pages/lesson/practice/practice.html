@@ -3,7 +3,7 @@
     Question {{getQuestionNumber()}}
   </h1>
   <div class="w-full p-4">
-    <h2 class="mb-2 text-gray-800" [innerHTML]="question.text | markdown"></h2>
+    <h2 class="prose mb-2 text-gray-800" [innerHTML]="question.text | markdown"></h2>
     @if (question.type === 'essay') {
       <textarea
         class="w-full p-2 text-gray-600 border-b-2 border-gray-300 resize-none overflow-hidden focus:outline-none focus:border-b-2 focus:border-prussian-blue-800"
@@ -17,7 +17,7 @@
       @if (currentView().content.score) {
         <div class="w-full my-2 text-gray-500">
           <strong><em>Feedback: </em></strong>
-          <span [innerHTML]="question.essay_feedback | markdown"></span>
+          <span class="prose" [innerHTML]="question.essay_feedback | markdown"></span>
         </div>
       }
     } @else {
@@ -35,7 +35,7 @@
           >
           <label 
             [for]="option.id" 
-            [class]="`text-gray-600 cursor-pointer
+            [class]="`prose text-gray-600 cursor-pointer
             ${!(currentView().content.score == null) ? (option.correct ? 'text-green-600' : (option.selected? 'text-red-600' : '')) : ''}`"
             [innerHTML]="option.text | markdown"
             >
@@ -43,7 +43,7 @@
         </div>
         @if (!(currentView().content.score == null)) {
           <div class="w-full my-1 text-gray-500">
-            <strong><em><span [innerHTML]="option.explanation | markdown"></span></em></strong>
+            <strong><em><span class="prose" [innerHTML]="option.explanation | markdown"></span></em></strong>
           </div>
         }
       }
