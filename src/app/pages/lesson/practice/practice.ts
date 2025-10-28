@@ -20,9 +20,10 @@ export class Practice {
   exerciseCompleted = output<any>();
   changeProgress = output<any>();
   question: any;
+  currentIndex = 0;
   loading = false;
   notify = inject(NotificationService);
-  lessonService = inject(LessonService)
+  lessonService = inject(LessonService);
 
   constructor(private cdr: ChangeDetectorRef) {}
 
@@ -43,13 +44,12 @@ export class Practice {
   }
 
   cycleQuestion(direction: string) {
-    const currentIndex = this.currentView().content.questions.findIndex((q: any) => q.id === this.question.id);
+    // const currentIndex = this.currentView().content.questions.findIndex((q: any) => q.id === this.question.id);
+    this.currentIndex += (direction === 'next' ? 1 : -1);
+    if (this.currentIndex < 0) this.currentIndex = 0; // Caps previous question at first question
+    if (this.currentIndex >= this.currentView().content.questions.length) this.currentIndex = this.currentView().content.questions.length - 1; // Caps next question at last question
 
-    let newIndex = currentIndex + (direction === 'next' ? 1 : -1);
-    if (newIndex < 0) newIndex = 0; // Caps previous question at first question
-    if (newIndex >= this.currentView().content.questions.length) newIndex = this.currentView().content.questions.length - 1; // Caps next question at last question
-
-    this.question = this.currentView().content.questions[newIndex]
+    this.question = this.currentView().content.questions[this.currentIndex]
     console.log(this.question)
     this.changeQuestion.emit({id: this.question.id})
   }

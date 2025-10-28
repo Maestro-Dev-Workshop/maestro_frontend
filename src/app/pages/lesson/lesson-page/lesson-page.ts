@@ -415,6 +415,17 @@ export class LessonPage implements OnInit {
     topic.completed = allSubtopicsRead && hasExerciseScore;
   }
 
+  getSubtopicPosition() {
+    const topic = this.subjectContent.topics.find((t: any) => t.id === this.getTopicDataFromSubtopic().id);
+    if (!topic) return -1;
+
+    const subtopicIndex = topic.subtopics.findIndex((s: any) => s.id === this.currentView.id);
+    let pos = [];
+    if (subtopicIndex === 0) pos.push("top")
+    if (subtopicIndex === topic.subtopics.length - 1) pos.push("bottom")
+    return pos;
+  }
+
   // Updates the current view to the previous or next subtopic
   changeSubtopic(event: any) {
     const id = event.id

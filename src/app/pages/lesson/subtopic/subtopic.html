@@ -9,11 +9,19 @@
     </div>
     <!-- Subtopic Navigation -->
     <div class="flex flex-row">
-      <button class="flex flex-row items-center mx-4 text-prussian-blue-900 hover:text-prussian-blue-500" (click)="prevSubtopic()">
+      <button 
+        [class]="`flex flex-row items-center mx-4 text-prussian-blue-900 hover:text-prussian-blue-500 disabled:text-prussian-blue-500 ${getPosition().includes('top') ? 'invisible' : ''}`" 
+        (click)="prevSubtopic()"
+        [disabled]="getPosition() === 'top'"
+      >
         <img src="images/dropdown-icon-closed.svg" alt="" class="w-2 m-4 rotate-180">
         Previous
       </button>
-      <button class="flex flex-row items-center mx-4 text-prussian-blue-900 hover:text-prussian-blue-500" (click)="nextSubtopic()">
+      <button 
+        [class]="`flex flex-row items-center mx-4 text-prussian-blue-900 hover:text-prussian-blue-500 disabled:text-prussian-blue-500 ${getPosition().includes('bottom') ? 'invisible' : ''}`" 
+        (click)="nextSubtopic()"
+        [disabled]="getPosition() === 'bottom'"
+      >
         Next
         <img src="images/dropdown-icon-closed.svg" alt="" class="w-2 m-4">
       </button>
