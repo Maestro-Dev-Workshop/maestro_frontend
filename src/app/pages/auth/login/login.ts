@@ -40,7 +40,7 @@ export class Login {
       this.notify.showError("Valid email and password required");
       this.loading = false;
     } else {
-      this.authService.login({ email: this.email, password: this.password }).subscribe({
+      this.authService.login({ email: this.email.toLowerCase(), password: this.password }).subscribe({
         next: (response) => {
           console.log('Login successful', response);
           localStorage.setItem('accessToken', response.accessToken);

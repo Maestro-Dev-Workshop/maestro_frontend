@@ -46,12 +46,12 @@ export class Signup {
       this.loading = false;
     } else {
       this.authService.signup({ 
-        first_name: this.firstname, last_name: this.lastname, email: this.email, password: this.password }).subscribe({
+        first_name: this.firstname, last_name: this.lastname, email: this.email.toLowerCase(), password: this.password }).subscribe({
         next: (response) => {
           console.log('Signup successful', response);
           this.notify.showSuccess('Signup successful! Please log in.');
           this.loading = false;
-          this.router.navigateByUrl('/check-email', { state: { email: this.email } });
+          this.router.navigateByUrl('/check-email', { state: { email: this.email.toLowerCase() } });
         },
         error: (res) => {
           console.error('Signup failed', res);

@@ -48,6 +48,7 @@
         class="w-full mr-6 ml-12"
         [currentView]="currentView" 
         [currentTopic]="getTopicDataFromSubtopic()" 
+        [getPosition]="getSubtopicPosition()"
         (cycleSubtopic)="changeSubtopic($event)" 
       ></app-subtopic>
     }
