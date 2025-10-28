@@ -12,6 +12,8 @@ export class Subtopic {
   currentTopic = input<any>();
   currentView = input<any>();
   cycleSubtopic = output<any>();
+  getPosition = input<any>();
+
 
   prevSubtopic() {
     this.cycleSubtopic.emit({ id: this.currentTopic().id, direction: 'prev' });
