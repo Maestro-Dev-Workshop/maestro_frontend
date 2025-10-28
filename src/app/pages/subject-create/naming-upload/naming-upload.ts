@@ -77,14 +77,14 @@ export class NamingUpload implements OnInit {
         if (!ext || !allowedExtensions.includes(ext)) {
           invalidFiles.push(file.name);
         // Size check
-        } else if (file.size > 20_000_000) { // 20MB cap for now
+        } else if (file.size > 200 * (1024 ** 2)) { // 20MB cap for now
           largeFiles.push(file.name);
         // Count check
         } else if (totalFilesCount == 15) {
           this.notify.showError("You can upload a maximum of 15 files per subject.");
           break;
         // Total size check
-        } else if (totalFilesSize + file.size > 50_000_000) { // 100MB total cap
+        } else if (totalFilesSize + file.size > 500 *(1024 ** 2)) { // 50MB total cap
           this.notify.showError("Total upload size cannot exceed 50MB per subject.");
           break;
         // All checks passed
@@ -115,12 +115,12 @@ export class NamingUpload implements OnInit {
   formatFileSize(file: File) {
     let size: any = file.size;
     let end = null;
-    if (size >= 1_000_000) {
-      size /= 1_000_000;
+    if (size >= (1024 ** 2)) {
+      size /= (1024 ** 2);
       size = size.toFixed(3);
       end = 'MB';
-    } else if (size >= 1_000) {
-      size /= 1_000;
+    } else if (size >= 1024) {
+      size /= 1024;
       size = size.toFixed(3);
       end = 'KB';
     } else {
