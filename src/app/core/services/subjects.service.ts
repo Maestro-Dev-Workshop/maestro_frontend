@@ -42,12 +42,12 @@ export class SubjectsService {
     return this.http.post(`session/${sessionId}/generate-lesson`, { lesson_preference: prefs });
   }
 
-  generateExercise(sessionId: string, prefs: string, questionTypes: string[]): Observable<any> {
-    return this.http.post(`session/${sessionId}/generate-exercises`, { exercise_preference: prefs, question_types: questionTypes });
+  generateExercise(sessionId: string, prefs: string, questionTypes: string[], numQuestions: number): Observable<any> {
+    return this.http.post(`session/${sessionId}/generate-exercises`, { exercise_preference: prefs, question_types: questionTypes, no_of_questions: numQuestions });
   }
 
-  generateExam(sessionId: string, prefs: string, questionTypes: string[], timeLimit: boolean = false): Observable<any> {
-    return this.http.post(`session/${sessionId}/generate-exam`, { exam_preference: prefs, question_types: questionTypes, use_time_limit: timeLimit });
+  generateExam(sessionId: string, prefs: string, questionTypes: string[], numQuestions: number, timeLimit: boolean = false): Observable<any> {
+    return this.http.post(`session/${sessionId}/generate-exam`, { exam_preference: prefs, question_types: questionTypes, no_of_questions: numQuestions, use_time_limit: timeLimit });
   }
 
   updateSessionStatus(sessionId: string, status: string): Observable<any> {
