@@ -56,26 +56,44 @@
         <label for="exercise-ess">Essay</label>
       </div>
       
-      <!-- Exercise Preference -->
-      <label class="my-2">How would you like the exercises to be?</label>
-      <textarea
-        type="text" 
-        name="exercisePreference" 
-        placeholder="Input your custom instructions for exercise generation here." 
-        class="bg-gray-50 p-4 rounded-lg border border-2 h-32 text-sm w-11/12" 
-        [(ngModel)]="exerciseSettings.preference"
-        [disabled]="!exerciseSettings.include || loading"
-        exercisePreference
-        #exercisePreferenceCtrl="ngModel"
-        appPreferenceValidator
-        [required]="exerciseSettings.include"
-      ></textarea>
-      @if (exercisePreferenceCtrl.invalid && exercisePreferenceCtrl.touched) {
-        <div class="text-red-500 text-sm mt-1">
-          @if (exercisePreferenceCtrl.errors?.['required']) {<span>Exercise Preference cannot be empty</span>}
-          @if (exercisePreferenceCtrl.errors?.['invalidPreference']) {<span>Exercise Preference cannot be longer than 1000 characters</span>}
+      <div class="w-full flex flex-col">
+        <!-- Exercise Question Count -->
+        <div>
+          <label for="" class="my-2">Number of questions:</label>
+          <input 
+            type="number" 
+            name="exerciseCount" 
+            class="bg-gray-50 p-2 rounded-lg border border-2 text-sm w-12 mx-4" 
+            [disabled]="!exerciseSettings.include || loading"
+            [(ngModel)]="exerciseSettings.numQuestions"
+            [required]="exerciseSettings.include"
+            min="1"
+            [max]="maxExerciseQuestions"
+          >
         </div>
-      }
+
+        <!-- Exercise Preference -->
+        <div>
+          <label class="my-2">(optional) How would you like the exercises to be?</label>
+          <textarea
+          type="text" 
+          name="exercisePreference" 
+          placeholder="Input your custom instructions for exercise generation here." 
+          class="bg-gray-50 p-4 rounded-lg border border-2 h-32 text-sm w-11/12" 
+          [(ngModel)]="exerciseSettings.preference"
+          [disabled]="!exerciseSettings.include || loading"
+          #exercisePreferenceCtrl="ngModel"
+          exercisePreference
+          appPreferenceValidator
+          ></textarea>
+          @if (exercisePreferenceCtrl.invalid && exercisePreferenceCtrl.touched) {
+            <div class="text-red-500 text-sm mt-1">
+              <!-- @if (exercisePreferenceCtrl.errors?.['required']) {<span>Exercise Preference cannot be empty</span>} -->
+              @if (exercisePreferenceCtrl.errors?.['invalidPreference']) {<span>Exercise Preference cannot be longer than 1000 characters</span>}
+            </div>
+          }
+        </div>
+      </div>
     </div>
     
     <!-- Exam Form -->
@@ -107,28 +125,48 @@
         <label for="exam-ess">Essay</label>
       </div>
       
-      <!-- Exam Preference -->
-      <label class="my-2">How would you like the exam to be?</label>
-      <textarea
-        type="text" 
-        name="examPreference" 
-        placeholder="Input your custom instructions for exam generation here." 
-        class="bg-gray-50 p-4 rounded-lg border border-2 h-32 text-sm w-11/12" 
-        [(ngModel)]="examSettings.preference"
-        [disabled]="!examSettings.include || loading"
-        examPreference
-        #examPreferenceCtrl="ngModel"
-        appPreferenceValidator
-        [required]="examSettings.include"
-      ></textarea>
-      @if (examPreferenceCtrl.invalid && examPreferenceCtrl.touched) {
-        <div class="text-red-500 text-sm mt-1">
-          @if (examPreferenceCtrl.errors?.['required']) {<span>Exam Preference cannot be empty</span>}
-          @if (examPreferenceCtrl.errors?.['invalidPreference']) {<span>Exam Preference cannot be longer than 1000 characters</span>}
+      <div class="w-full flex flex-col">
+        <!-- Exam Question Count -->
+        <div>
+          <label for="" class="my-2">Number of questions:</label>
+          <input 
+            type="number" 
+            name="examCount" 
+            class="bg-gray-50 p-2 rounded-lg border border-2 text-sm w-12 mx-4" 
+            [disabled]="!examSettings.include || loading"
+            [(ngModel)]="examSettings.numQuestions"
+            [required]="examSettings.include"
+            min="1"
+            [max]="maxExamQuestions"
+          >
         </div>
-      }
+
+        <!-- Exam Preference -->
+        <div>
+          <label class="my-2">(optional) How would you like the exam to be?</label>
+          <textarea
+            type="text" 
+            name="examPreference" 
+            placeholder="Input your custom instructions for exam generation here." 
+            class="bg-gray-50 p-4 rounded-lg border border-2 h-32 text-sm w-11/12" 
+            [(ngModel)]="examSettings.preference"
+            [disabled]="!examSettings.include || loading"
+            #examPreferenceCtrl="ngModel"
+            examPreference
+            appPreferenceValidator
+          ></textarea>
+          @if (examPreferenceCtrl.invalid && examPreferenceCtrl.touched) {
+            <div class="text-red-500 text-sm mt-1">
+              <!-- @if (examPreferenceCtrl.errors?.['required']) {<span>Exam Preference cannot be empty</span>} -->
+              @if (examPreferenceCtrl.errors?.['invalidPreference']) {<span>Exam Preference cannot be longer than 1000 characters</span>}
+            </div>
+          }
+        </div>
+      </div>
     </div>
   </form>
+
+  <!-- Submit Button -->
   <div class="flex flex-row items-center">
     <button
       type="submit" 

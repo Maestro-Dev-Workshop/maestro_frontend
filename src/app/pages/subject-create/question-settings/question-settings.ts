@@ -12,12 +12,14 @@ class ExerciseSettings {
   include: boolean = false
   questionTypes: Array<string> = []
   preference: string = ''
+  numQuestions: number = 3
 }
 class ExamSettings {
   include: boolean = false
   questionTypes: Array<string> = []
   preference: string = ''
   timeLimit: any = null
+  numQuestions: number = 10
 }
 
 @Component({
@@ -31,11 +33,15 @@ export class QuestionSettings {
   examSettings = new ExamSettings();
   loading = false;
   subjectId = '';
+  maxExerciseQuestions = 10;
+  maxExamQuestions = 40;
   subjectService = inject(SubjectsService)
   notify = inject(NotificationService); // <-- Inject notification service
 
   @ViewChild('exercisePreferenceCtrl') exercisePreferenceCtrl!: NgModel;
+  // @ViewChild('exerciseCountCtrl') exerciseCountCtrl!: NgModel;
   @ViewChild('examPreferenceCtrl') examPreferenceCtrl!: NgModel;
+  // @ViewChild('examCountCtrl') examCountCtrl!: NgModel;
 
   constructor(private router: Router, private cdr: ChangeDetectorRef) {
     // Extract subjectId from the route parameters
@@ -73,9 +79,17 @@ export class QuestionSettings {
         return;
       }
       if (this.exercisePreferenceCtrl.invalid) {
-        this.notify.showError("Exercise preference cannot be empty or exceed 1000 characters");
+        this.notify.showError("Exercise preference cannot exceed 1000 characters");
         this.loading = false;
         return;
+      }
+      if (this.exerciseSettings.numQuestions < 1 || this.exerciseSettings.numQuestions > this.maxExerciseQuestions || this.exerciseSettings.numQuestions == null) {
+        this.notify.showError(`Number of exercise questions must be between 1 and ${this.maxExerciseQuestions}`);
+        this.loading = false;
+        return;
+      }
+      if (this.exerciseSettings.preference.trim() === '') {
+        this.exerciseSettings.preference = 'User did not provide any specific preferences.';
       }
     }
     exerciseValidated = true;
@@ -88,9 +102,17 @@ export class QuestionSettings {
         return;
       }
       if (this.examPreferenceCtrl.invalid) {
-        this.notify.showError("Exam preference cannot be empty or exceed 1000 characters");
+        this.notify.showError("Exam preference cannot exceed 1000 characters");
         this.loading = false;
         return;
+      }
+      if (this.examSettings.numQuestions < 1 || this.examSettings.numQuestions > this.maxExamQuestions || this.examSettings.numQuestions == null) {
+        this.notify.showError(`Number of exam questions must be between 1 and ${this.maxExamQuestions}`);
+        this.loading = false;
+        return;
+      }
+      if (this.examSettings.preference.trim() === '') {
+        this.examSettings.preference = 'User did not provide any specific preferences.';
       }
     }
     examValidated = true;
@@ -103,7 +125,8 @@ export class QuestionSettings {
         this.subjectService.generateExercise(
           this.subjectId,
           this.exerciseSettings.preference,
-          this.exerciseSettings.questionTypes
+          this.exerciseSettings.questionTypes,
+          this.exerciseSettings.numQuestions
         )
       );
     }
@@ -113,7 +136,8 @@ export class QuestionSettings {
         this.subjectService.generateExam(
           this.subjectId,
           this.examSettings.preference,
-          this.examSettings.questionTypes
+          this.examSettings.questionTypes,
+          this.examSettings.numQuestions,
         )
       );
     }
