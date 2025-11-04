@@ -24,7 +24,7 @@ export class CheckEmail {
   }
 
   startResendTimer() {
-    this.resendTimer = 60; // 60 seconds
+    this.resendTimer = 10; // 60 seconds
     const interval = setInterval(() => {
       this.resendTimer--;
       if (this.resendTimer <= 0) {
@@ -41,7 +41,7 @@ export class CheckEmail {
       this.loading = false;
       return;
     }
-    this.authService.resendVerificationEmail(this.email).subscribe({
+    this.authService.resendVerificationEmail(this.email || '').subscribe({
       next: (response) => {
         console.log('Resend verification email successful', response);
         this.notify.showSuccess('Verification email resent! Please check your inbox.');

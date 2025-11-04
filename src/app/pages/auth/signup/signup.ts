@@ -40,7 +40,6 @@ export class Signup {
 
   onSubmit() {
     this.loading = true;
-    // Later: replace with real API call
     if (this.emailCtrl.invalid || this.passwordCtrl.invalid || this.firstnameCtrl.invalid || this.lastnameCtrl.invalid) {
       this.notify.showError("first name, last name, valid email, and valid password are required");
       this.loading = false;

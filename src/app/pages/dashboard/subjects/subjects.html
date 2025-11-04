@@ -12,7 +12,7 @@
       <h1 class="m-2 text-xl md:text-3xl font-medium">Start Your Learning Journey</h1>
       <p class="w-full md:w-6/12 text-center px-4">Create subjects to keep your study materials neatly categorized and easy to find.</p>
       <button 
-        class="w-full md:w-max rounded-md m-4 md:m-8 px-5 py-3 text-white bg-prussian-blue-800 hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500 flex flex-row justify-center" 
+        class="w-full md:w-max rounded-md m-4 md:m-8 px-5 py-3 text-white bg-prussian-blue-800 lg:hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500 flex flex-row justify-center" 
         (click)="createNewSubject()"
         [disabled]="loadingCreate"
       >
@@ -29,7 +29,7 @@
           <span class="font-medium text-prussian-blue-900">My Subjects</span>
         </div>
         <button 
-          class="w-max rounded-md px-5 py-3 text-white bg-prussian-blue-800 hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500 flex flex-row justify-center text-xs" 
+          class="w-max rounded-md px-5 py-3 text-white bg-prussian-blue-800 lg:hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500 flex flex-row justify-center text-xs" 
           (click)="createNewSubject()"
           [disabled]="loadingCreate"
         >
