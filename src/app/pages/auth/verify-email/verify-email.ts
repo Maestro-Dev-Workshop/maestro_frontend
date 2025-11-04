@@ -20,7 +20,7 @@ export class VerifyEmail {
     const token = urlParams.get('token');
 
     if (token) {
-      this.authService.verifyEmail(token).subscribe({
+      this.authService.verifyEmail(token || '').subscribe({
         next: (response) => {
           console.log('Email verification successful', response);
           this.verified = true;

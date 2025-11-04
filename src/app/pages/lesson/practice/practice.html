@@ -61,7 +61,7 @@
       Previous
     </button>
     <button 
-      [class]="`flex flex-row items-center mx-4 text-prussian-blue-900 hover:text-prussian-blue-500 disabled:text-prussian-blue-500 ${currentIndex === (currentView().content.questions.length - 1) ? 'invisible' : ''}`" 
+      [class]="`flex flex-row items-center mx-4 text-prussian-blue-900 lg:hover:text-prussian-blue-500 disabled:text-prussian-blue-500 ${currentIndex === (currentView().content.questions.length - 1) ? 'invisible' : ''}`" 
       (click)="cycleQuestion('next')"
       [disabled]="currentIndex === (currentView().content.questions.length - 1)"
     >
