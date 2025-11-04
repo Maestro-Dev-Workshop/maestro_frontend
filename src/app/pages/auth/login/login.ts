@@ -35,7 +35,6 @@ export class Login {
 
   onSubmit() {
     this.loading = true;
-    // Later: replace with real API call
     if (this.emailCtrl.invalid || this.passwordCtrl.invalid) {
       this.notify.showError("Valid email and password required");
       this.loading = false;
