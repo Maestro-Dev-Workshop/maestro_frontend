@@ -150,6 +150,12 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <li class="link">
                                     <a href="directives/PasswordValidator.html" data-type="entity-link" >PasswordValidator</a>
                                 </li>
+                                <li class="link">
+                                    <a href="directives/PreferenceValidator.html" data-type="entity-link" >PreferenceValidator</a>
+                                </li>
+                                <li class="link">
+                                    <a href="directives/SubjectNameValidator.html" data-type="entity-link" >SubjectNameValidator</a>
+                                </li>
                             </ul>
                         </li>
                     <li class="chapter">

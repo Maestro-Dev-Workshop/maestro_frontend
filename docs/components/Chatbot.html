@@ -140,6 +140,12 @@
 
 
 
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+    </p>
 
 
 <section data-compodoc="block-metadata">
@@ -250,6 +256,9 @@
                         <ul class="index-list">
                             <li>
                                 <a href="#ngAfterViewInit" >ngAfterViewInit</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
                             </li>
                             <li>
                                 <a href="#onCloseChat" >onCloseChat</a>
@@ -523,6 +532,43 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="55"
+                                    class="link-to-prism">src/app/pages/lesson/chatbot/chatbot.ts:55</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="onCloseChat"></a>
                     <span class="name">
                         <span ><b>onCloseChat</b></span>
@@ -578,8 +624,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="55"
-                                    class="link-to-prism">src/app/pages/lesson/chatbot/chatbot.ts:55</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="59"
+                                    class="link-to-prism">src/app/pages/lesson/chatbot/chatbot.ts:59</a></div>
                         </td>
                     </tr>
 
@@ -615,8 +661,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="61"
-                                    class="link-to-prism">src/app/pages/lesson/chatbot/chatbot.ts:61</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="65"
+                                    class="link-to-prism">src/app/pages/lesson/chatbot/chatbot.ts:65</a></div>
                         </td>
                     </tr>
 
@@ -875,7 +921,7 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, inject, input, model, output, AfterViewInit, ElementRef, ViewChild, effect, Injector, ChangeDetectorRef } from &#x27;@angular/core&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, inject, input, model, output, AfterViewInit, ElementRef, ViewChild, effect, Injector, ChangeDetectorRef, OnInit } from &#x27;@angular/core&#x27;;
 import { FormsModule } from &#x27;@angular/forms&#x27;;
 import { timestamp } from &#x27;rxjs&#x27;;
 import { ChatMessage } from &#x27;../../../core/models/chat-message.model&#x27;;
@@ -890,7 +936,7 @@ import { NotificationService } from &#x27;../../../core/services/notification.se
   templateUrl: &#x27;./chatbot.html&#x27;,
   styleUrl: &#x27;./chatbot.css&#x27;
 })
-export class Chatbot {
+export class Chatbot implements OnInit {
   chatHistory &#x3D; model&lt;ChatMessage[]&gt;([]);
   subjectId &#x3D; input&lt;string&gt;()
   metadata &#x3D; input&lt;ChatMetadata&gt;();
@@ -929,6 +975,10 @@ export class Chatbot {
     queueMicrotask(() &#x3D;&gt; this.scrollToBottom());
   }
 
+  ngOnInit() {
+    this.scrollToBottom();
+  }
+
   private scrollToBottom() {
     const el &#x3D; this.chatContainer?.nativeElement;
     if (!el) return;
@@ -963,10 +1013,10 @@ export class Chatbot {
         this.loading &#x3D; false;
         console.log(response);
         this.cdr.detectChanges();
-      }, error: (err) &#x3D;&gt; {
+      }, error: (res) &#x3D;&gt; {
         this.loading &#x3D; false;
-        console.error(&#x60;Error sending message: ${err}&#x60;);
-        this.notify.showError(&#x27;Failed to send message. Please try again.&#x27;);
+        console.error(&#x60;Error sending message: ${res}&#x60;);
+        this.notify.showError(res.error.message || &#x27;Failed to send message. Please try again.&#x27;);
         this.cdr.detectChanges();
       },
     });
@@ -987,7 +1037,7 @@ export class Chatbot {
   &lt;div #chatContainer class&#x3D;&quot;flex flex-col w-full flex-grow overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 hover:scrollbar-thumb-gray-500&quot;&gt;
     @for (chat of chatHistory(); track $index) {
       &lt;div 
-        [class]&#x3D;&quot;&#x60;rounded-xl p-2 my-1 break-words text-sm ${(chat.sender &#x3D;&#x3D;&#x3D; &#x27;user&#x27;) ? &#x27;self-end bg-prussian-blue-800 text-white&#x27; : &#x27;self-start bg-prussian-blue-200 text-prussian-blue-900&#x27;}&#x60;&quot;
+        [class]&#x3D;&quot;&#x60;rounded-xl p-2 my-1 break-words text-sm ${(chat.sender &#x3D;&#x3D;&#x3D; &#x27;user&#x27;) ? &#x27;self-end bg-prussian-blue-800 text-white&#x27; : &#x27;prose self-start bg-prussian-blue-200 text-prussian-blue-900&#x27;}&#x60;&quot;
         style&#x3D;&quot;max-width: 80%;&quot;
       &gt;
       &lt;span [innerHTML]&#x3D;&quot;chat.message | markdown&quot;&gt;&lt;/span&gt;
@@ -1008,7 +1058,7 @@ export class Chatbot {
 
     &lt;!-- Submit Button --&gt;
     &lt;button 
-      class&#x3D;&quot;self-center w-2/4 text-white rounded-md p-2 bg-prussian-blue-800 hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500&quot; 
+      class&#x3D;&quot;self-center w-2/4 text-white rounded-md p-2 bg-prussian-blue-800 lg:hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500&quot; 
       (click)&#x3D;&quot;sendMessage()&quot;
       [disabled]&#x3D;&quot;loading || !currentMessage&quot;
     &gt;
@@ -1046,9 +1096,9 @@ export class Chatbot {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><div class="flex flex-col justify-end h-full w-full bg-white border-l-2 p-2">  <!-- Close Button -->  <button class="absolute top-2 justify-self-start p-3 rounded-full bg-prussian-blue-800 hover:bg-prussian-blue-500" (click)="onCloseChat()">    <img src="images/x-icon.svg" alt="">  </button>  <!-- Chat Messages -->  <div #chatContainer class="flex flex-col w-full flex-grow overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 hover:scrollbar-thumb-gray-500">    @for (chat of chatHistory(); track $index) {      <div         [class]="`rounded-xl p-2 my-1 break-words text-sm ${(chat.sender === \'user\') ? \'self-end bg-prussian-blue-800 text-white\' : \'self-start bg-prussian-blue-200 text-prussian-blue-900\'}`"        style="max-width: 80%;"      >      <span [innerHTML]="chat.message | markdown"></span>      </div>    }  </div>  <!-- Text Input -->  <div class="w-full flex flex-col place-self-end">    <textarea       class="p-2 my-2 border-2 rounded-md overflow-hidden w-full"      rows="1"      [(ngModel)]="currentMessage"      [disabled]="loading"      oninput="this.style.height = \'auto\'; this.style.height = this.scrollHeight + \'px\';"      onmousemove="this.style.height = \'auto\'; this.style.height = this.scrollHeight + \'px\';"    ></textarea>    <!-- Submit Button -->    <button       class="self-center w-2/4 text-white rounded-md p-2 bg-prussian-blue-800 hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500"       (click)="sendMessage()"      [disabled]="loading || !currentMessage"    >      Send    </button>  </div>  <img src="images/spinner.gif" alt="" class="absolute bottom-3 right-2 h-8 mx-2" [hidden]="!loading"></div></div>'
+        var COMPONENT_TEMPLATE = '<div><div class="flex flex-col justify-end h-full w-full bg-white border-l-2 p-2">  <!-- Close Button -->  <button class="absolute top-2 justify-self-start p-3 rounded-full bg-prussian-blue-800 hover:bg-prussian-blue-500" (click)="onCloseChat()">    <img src="images/x-icon.svg" alt="">  </button>  <!-- Chat Messages -->  <div #chatContainer class="flex flex-col w-full flex-grow overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 hover:scrollbar-thumb-gray-500">    @for (chat of chatHistory(); track $index) {      <div         [class]="`rounded-xl p-2 my-1 break-words text-sm ${(chat.sender === \'user\') ? \'self-end bg-prussian-blue-800 text-white\' : \'prose self-start bg-prussian-blue-200 text-prussian-blue-900\'}`"        style="max-width: 80%;"      >      <span [innerHTML]="chat.message | markdown"></span>      </div>    }  </div>  <!-- Text Input -->  <div class="w-full flex flex-col place-self-end">    <textarea       class="p-2 my-2 border-2 rounded-md overflow-hidden w-full"      rows="1"      [(ngModel)]="currentMessage"      [disabled]="loading"      oninput="this.style.height = \'auto\'; this.style.height = this.scrollHeight + \'px\';"      onmousemove="this.style.height = \'auto\'; this.style.height = this.scrollHeight + \'px\';"    ></textarea>    <!-- Submit Button -->    <button       class="self-center w-2/4 text-white rounded-md p-2 bg-prussian-blue-800 lg:hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500"       (click)="sendMessage()"      [disabled]="loading || !currentMessage"    >      Send    </button>  </div>  <img src="images/spinner.gif" alt="" class="absolute bottom-3 right-2 h-8 mx-2" [hidden]="!loading"></div></div>'
     var COMPONENTS = [{'name': 'About', 'selector': 'app-about'},{'name': 'App', 'selector': 'app-root'},{'name': 'Chatbot', 'selector': 'app-chatbot'},{'name': 'CheckEmail', 'selector': 'app-check-email'},{'name': 'ConfirmLogout', 'selector': 'app-confirm-logout'},{'name': 'Contact', 'selector': 'app-contact'},{'name': 'CreationStepTab', 'selector': 'app-creation-step-tab'},{'name': 'Features', 'selector': 'app-features'},{'name': 'Header', 'selector': 'app-header'},{'name': 'Home', 'selector': 'app-home'},{'name': 'Landing', 'selector': 'app-landing'},{'name': 'LessonPage', 'selector': 'app-lesson-page'},{'name': 'Login', 'selector': 'app-login'},{'name': 'NamingUpload', 'selector': 'app-naming-upload'},{'name': 'NotFound', 'selector': 'app-not-found'},{'name': 'Practice', 'selector': 'app-practice'},{'name': 'Pricing', 'selector': 'app-pricing'},{'name': 'QuestionSettings', 'selector': 'app-question-settings'},{'name': 'Sidebar', 'selector': 'app-sidebar'},{'name': 'Signup', 'selector': 'app-signup'},{'name': 'Subjects', 'selector': 'app-subjects'},{'name': 'Subscription', 'selector': 'app-subscription'},{'name': 'Subtopic', 'selector': 'app-subtopic'},{'name': 'Toast', 'selector': 'app-toast'},{'name': 'TopicPreferences', 'selector': 'app-topic-preferences'},{'name': 'VerifyEmail', 'selector': 'app-verify-email'}];
-    var DIRECTIVES = [{'name': 'FileTypeDirective', 'selector': '[appFileType]'},{'name': 'PasswordValidator', 'selector': '[appPasswordValidator]'}];
+    var DIRECTIVES = [{'name': 'FileTypeDirective', 'selector': '[appFileType]'},{'name': 'PasswordValidator', 'selector': '[appPasswordValidator]'},{'name': 'PreferenceValidator', 'selector': '[appPreferenceValidator]'},{'name': 'SubjectNameValidator', 'selector': '[appSubjectNameValidator]'}];
     var ACTUAL_COMPONENT = {'name': 'Chatbot'};
 </script>
 <script src="../js/tree.js"></script>
