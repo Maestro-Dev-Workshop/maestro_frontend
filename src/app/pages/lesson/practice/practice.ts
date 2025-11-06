@@ -31,8 +31,7 @@ export class Practice {
   private updateOnInputChange = effect(() => {
     const view = this.currentView(); // <-- THIS is reactive
     if (view?.content?.questions?.length) {
-      this.question = view.content.questions[0];
-      this.changeQuestion.emit({ id: this.question.id })
+      this.goToQuestion(0);
     }
   });
 
@@ -43,15 +42,20 @@ export class Practice {
     textarea.style.height = textarea.scrollHeight + 'px';
   }
 
-  cycleQuestion(direction: string) {
-    // const currentIndex = this.currentView().content.questions.findIndex((q: any) => q.id === this.question.id);
-    this.currentIndex += (direction === 'next' ? 1 : -1);
-    if (this.currentIndex < 0) this.currentIndex = 0; // Caps previous question at first question
-    if (this.currentIndex >= this.currentView().content.questions.length) this.currentIndex = this.currentView().content.questions.length - 1; // Caps next question at last question
-
-    this.question = this.currentView().content.questions[this.currentIndex]
+  goToQuestion(index: number) {
+    this.currentIndex = index;
+    this.question = this.currentView().content.questions[this.currentIndex];
     console.log(this.question)
     this.changeQuestion.emit({id: this.question.id})
+  }
+
+  cycleQuestion(direction: string) {
+    // const currentIndex = this.currentView().content.questions.findIndex((q: any) => q.id === this.question.id);
+    let index = this.currentIndex
+    index += (direction === 'next' ? 1 : -1);
+    if (index < 0) index = 0; // Caps previous question at first question
+    if (index >= this.currentView().content.questions.length) index = this.currentView().content.questions.length - 1; // Caps next question at last question
+    this.goToQuestion(index);
   }
 
   getQuestionNumber() {
@@ -84,9 +88,11 @@ export class Practice {
     const essayCalls: Observable<any>[] = [];
 
     this.currentView().content.questions.forEach((question: QuestionModel) => {
+      this.currentView().content.questions.find((q: any) => q.id === question.id).scored = false;
       let q: SaveQuestionData = {
         id: question.id,
         type: question.type,
+        scored: false,
         options: [],
         essay_answer: null,
         essay_feedback: null
@@ -94,7 +100,11 @@ export class Practice {
 
       if (question.type === 'multiple choice' || question.type === 'multiple selection') {
         const isCorrect = question.options?.every(opt => opt.selected === opt.correct);
-        if (isCorrect) correctCount++;
+        if (isCorrect){
+          q.scored = true;
+          this.currentView().content.questions.find((q: any) => q.id === question.id).scored = true;
+          correctCount++;
+        } 
         q.options = question.options?.map(opt => ({ id: opt.id, selected: opt.selected }));
       } 
       
@@ -104,7 +114,11 @@ export class Practice {
           this.lessonService.scoreEssayQuestion(this.subjectId(), question.id, question.essay_answer).pipe(
             tap((value) => {
               console.log(value)
-              if (value.correct) correctCount++;
+              if (value.correct) {
+                q.scored = true;
+                this.currentView().content.questions.find((q: any) => q.id === question.id).scored = true;
+                correctCount++;
+              } 
               q.essay_answer = question.essay_answer;
               q.essay_feedback = question.essay_feedback = value.feedback;
             }),
