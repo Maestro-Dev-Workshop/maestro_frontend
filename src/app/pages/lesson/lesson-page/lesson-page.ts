@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { Header } from '../../../shared/components/header/header';
 import { Sidebar } from '../sidebar/sidebar';
 import { Chatbot } from '../chatbot/chatbot';
@@ -34,6 +34,7 @@ export class LessonPage implements OnInit {
   lessonService = inject(LessonService)
   chatbotService = inject(ChatbotService)
   notify = inject(NotificationService)
+  @ViewChild('contentContainer') private contentContainer!: ElementRef<HTMLDivElement>;
 
   // subjectContent: any = {
   //   subject_name: 'Geography',
@@ -340,6 +341,7 @@ export class LessonPage implements OnInit {
     } else if (this.chatOpen && (this.currentView.content.score == null)){
       this.chatOpen = false;
     }
+    this.scrollToTop();
     console.log(this.currentView)
   }
 
@@ -484,5 +486,11 @@ export class LessonPage implements OnInit {
 
   capitalizeFirstLetter(str: string) {
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  }
+
+  scrollToTop() {
+    const el = this.contentContainer?.nativeElement;
+    if (!el) return;
+    el.scrollTop = 0;
   }
 }
