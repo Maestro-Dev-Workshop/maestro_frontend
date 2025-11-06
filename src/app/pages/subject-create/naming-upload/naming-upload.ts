@@ -24,6 +24,7 @@ export class NamingUpload implements OnInit {
   uploadedDocs = false;
   subjectService = inject(SubjectsService);
   notify = inject(NotificationService); // <-- Inject notification service
+  allowedExtensions = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'epub'];
 
   @ViewChild('nameCtrl') nameCtrl!: NgModel;
 
@@ -62,7 +63,6 @@ export class NamingUpload implements OnInit {
     if (this.uploadedDocs){
       this.notify.showError("You have already uploaded documents for this subject. You cannot upload more.");
     } else {
-      const allowedExtensions = ['pdf', 'doc', 'docx', 'ppt', 'pptx'];
       const validFiles: File[] = [];
       const invalidFiles: string[] = [];
       const largeFiles: string[] = [];
@@ -74,17 +74,17 @@ export class NamingUpload implements OnInit {
         const ext = file.name.split('.').pop()?.toLowerCase();
         
         // Type validity check
-        if (!ext || !allowedExtensions.includes(ext)) {
+        if (!ext || !this.allowedExtensions.includes(ext)) {
           invalidFiles.push(file.name);
         // Size check
-        } else if (file.size > 200 * (1024 ** 2)) { // 20MB cap for now
+        } else if (file.size > 20 * (1024 ** 2)) { // 20MB cap for now
           largeFiles.push(file.name);
         // Count check
         } else if (totalFilesCount == 15) {
           this.notify.showError("You can upload a maximum of 15 files per subject.");
           break;
         // Total size check
-        } else if (totalFilesSize + file.size > 500 *(1024 ** 2)) { // 50MB total cap
+        } else if (totalFilesSize + file.size > 50 *(1024 ** 2)) { // 50MB total cap
           this.notify.showError("Total upload size cannot exceed 50MB per subject.");
           break;
         // All checks passed
