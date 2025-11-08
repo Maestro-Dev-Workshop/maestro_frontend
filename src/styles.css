@@ -116,3 +116,88 @@ body {
   border-radius: 0px 33.75px 0px 16.88px;
   z-index: 10;
 }
+
+
+/* Remove prose styling from all KaTeX elements */
+.prose-math .katex,
+.prose-math .katex * {
+  all: revert;
+  font-family: 'KaTeX_Main', 'Times New Roman', serif;
+}
+
+.prose-math .katex-display {
+  margin: 1.5em 0;
+  overflow: auto;
+}
+
+/* Fix KaTeX rendering issues with Tailwind prose */
+.prose .katex-html {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.prose .katex-display {
+  display: block;
+  margin: 1em 0;
+  text-align: center;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.prose .katex-display > .katex {
+  display: inline-block;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+/* Prevent Tailwind typography from breaking KaTeX layout */
+.prose .katex * {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.prose .katex .base {
+  display: inline-block;
+}
+
+.prose .katex .strut {
+  display: inline-block;
+}
+
+/* Ensure proper positioning for superscripts/subscripts */
+.prose .katex .vlist-t {
+  display: inline-table;
+  vertical-align: baseline;
+}
+
+.prose .katex .vlist-r {
+  display: table-row;
+}
+
+.prose .katex .vlist {
+  display: table-cell;
+  vertical-align: bottom;
+  position: relative;
+}
+
+/* Fix fraction rendering */
+.prose .katex .frac-line {
+  display: inline-block;
+  width: 100%;
+  border-bottom-width: 0.04em;
+}
+
+.prose .katex .mfrac {
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.prose-math .katex .katex-html {
+  display: none !important;
+}
+
+.prose-math span .katex-mathml math semantics mrow mtext {
+  display: flex;
+  flex-direction: row;
+}
