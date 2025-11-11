@@ -38,8 +38,14 @@
 }
 
 <!-- Confirm logout modal / component (Angular) -->
-<app-confirm-logout
-  *ngIf="showLogout()"
-  (cancel)="cancelLogout()"
-  (confirm)="confirmLogout()">
-</app-confirm-logout>
+@if (showLogout()) {
+  <app-confirmation
+    (cancel)="cancelLogout()"
+    (confirm)="confirmLogout()"
+    [title]="'Logout'"
+    [message]="'Are you sure you want to log out?'"
+    [acceptText]="'Yes, Logout'"
+    [cancelText]="'Cancel'"
+  >
+  </app-confirmation>
+}
