@@ -62,19 +62,24 @@
               </div>
               <span>{{(subject.completion*100).toFixed(0)}}%</span>
             </div>
-            <!-- Delete button -->
-            @if (rightClickSubject?.id == subject.id) {
-              <div class="absolute top-2 right-2 p-1 bg-white rounded-md flex flex-col items-center justify-center">
-                <button class="rounded-md px-2 py-1 text-white bg-red-600 hover:bg-red-400" (click)="openDelete()">
-                  Delete
-                </button>
-              </div>
-            }
           </button>
         }
       </div>
     </div>
   }
+}
+
+<!-- Popup Delete button -->
+@if (rightClickSubject) {
+  <div 
+    [class]="`fixed p-1 bg-white rounded-md flex flex-col items-center justify-center top-[${popup.y}px] left-[${popup.x}px]`"
+    [style.top.px]="popup.y + 8"
+    [style.left.px]="popup.x + 8"
+  >
+    <button class="rounded-md px-2 py-1 text-white bg-red-600 hover:bg-red-400" (click)="openDelete()">
+      Delete
+    </button>
+  </div>
 }
 
 @if (showDeleteConfirmation) {

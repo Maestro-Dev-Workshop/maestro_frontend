@@ -51,6 +51,10 @@ export class Subjects implements OnInit {
   notify = inject(NotificationService);
   rightClickSubject : SubjectModel | null = null;
   showDeleteConfirmation = false;
+  popup = {
+    x: 0,
+    y: 0,
+  };
 
   constructor(private router: Router, private cdr: ChangeDetectorRef) {}
 
@@ -107,6 +111,8 @@ export class Subjects implements OnInit {
       return;
     } else {
       this.rightClickSubject = subject;
+      this.popup.x = event.clientX;
+      this.popup.y = event.clientY;
     }
   }
 
@@ -135,7 +141,8 @@ export class Subjects implements OnInit {
   }
 
   navigateSubject(subject: SubjectModel) {
-    if (subject.id === this.rightClickSubject?.id) {
+    if (this.rightClickSubject) {
+      this.rightClickSubject = null;
       return;
     }
     if (subject.status === 'pending naming' || subject.status === 'pending document upload' || subject.status === 'pending topic labelling') {
