@@ -57,4 +57,8 @@ export class SubjectsService {
   updateSessionProgress(sessionId: string, progress: number): Observable<any> {
     return this.http.put(`session/${sessionId}/update-progress`, { update_tick: progress });
   }
+
+  deleteSubject(sessionId: string): Observable<any> {
+    return this.http.delete(`session/${sessionId}/delete`);
+  }
 }

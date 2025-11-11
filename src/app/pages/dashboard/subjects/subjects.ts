@@ -5,49 +5,56 @@ import { CommonModule } from '@angular/common';
 import { SubjectModel } from '../../../core/models/subject.model';
 import { SubjectsService } from '../../../core/services/subjects.service';
 import { NotificationService } from '../../../core/services/notification.service';
+import { Confirmation } from '../../../shared/components/confirmation/confirmation';
 
 @Component({
   selector: 'app-subjects',
-  imports: [Header, CommonModule],
+  imports: [Header, CommonModule, Confirmation],
   templateUrl: './subjects.html',
   styleUrl: './subjects.css'
 })
 export class Subjects implements OnInit {
-  old_subjects: SubjectModel[] = [
-    {
-      "id": "sj2nd-2dkap-uamds",
-      "name": "Mathematics",
-      "created_at": new Date("2023-10-01T12:00:00Z"),
-      "status": "In Progress",
-      "completion": 30,
-    },
-    {
-      "id": "sj2nd-2dkap-uamds",
-      "name": "Science",
-      "created_at": new Date("2023-10-01T12:00:00Z"),
-      "status": "Completed",
-      "completion": 100,
-    },
-    {
-      "id": "sj2nd-2dkap-uamds",
-      "name": "History",
-      "created_at": new Date("2023-10-01T12:00:00Z"),
-      "status": "Not Started",
-      "completion": 0,
-    },
-    {
-      "id": "sj2nd-2dkap-uamds",
-      "name": "Literature",
-      "created_at": new Date("2023-10-01T12:00:00Z"),
-      "status": "In Progress",
-      "completion": 50,
-    }
-  ];
+  // old_subjects: SubjectModel[] = [
+  //   {
+  //     "id": "sj2nd-2dkap-uamds",
+  //     "name": "Mathematics",
+  //     "created_at": new Date("2023-10-01T12:00:00Z"),
+  //     "status": "In Progress",
+  //     "completion": 30,
+  //   },
+  //   {
+  //     "id": "sj2nd-2dkap-uamds",
+  //     "name": "Science",
+  //     "created_at": new Date("2023-10-01T12:00:00Z"),
+  //     "status": "Completed",
+  //     "completion": 100,
+  //   },
+  //   {
+  //     "id": "sj2nd-2dkap-uamds",
+  //     "name": "History",
+  //     "created_at": new Date("2023-10-01T12:00:00Z"),
+  //     "status": "Not Started",
+  //     "completion": 0,
+  //   },
+  //   {
+  //     "id": "sj2nd-2dkap-uamds",
+  //     "name": "Literature",
+  //     "created_at": new Date("2023-10-01T12:00:00Z"),
+  //     "status": "In Progress",
+  //     "completion": 50,
+  //   }
+  // ];
   loadingSubjects = true;
   loadingCreate = false;
   subjects: SubjectModel[] = [];
   subjectService = inject(SubjectsService)
   notify = inject(NotificationService);
+  rightClickSubject : SubjectModel | null = null;
+  showDeleteConfirmation = false;
+  popup = {
+    x: 0,
+    y: 0,
+  };
 
   constructor(private router: Router, private cdr: ChangeDetectorRef) {}
 
@@ -97,7 +104,47 @@ export class Subjects implements OnInit {
     });
   }
 
+  onSubjectRightClick(event: MouseEvent, subject: SubjectModel) {
+    event.preventDefault();
+    if (this.rightClickSubject?.id === subject.id) {
+      this.rightClickSubject = null;
+      return;
+    } else {
+      this.rightClickSubject = subject;
+      this.popup.x = event.clientX;
+      this.popup.y = event.clientY;
+    }
+  }
+
+  openDelete() { this.showDeleteConfirmation = true; }
+  cancelDelete() { this.showDeleteConfirmation = false; }
+  deleteSubject() {
+    if (!this.rightClickSubject) {
+      return;
+    }
+    this.subjectService.deleteSubject(this.rightClickSubject.id).subscribe({
+      next: (response) => {
+        this.notify.showSuccess("Subject deleted successfully.");
+        this.subjects = this.subjects.filter(subj => subj.id !== this.rightClickSubject?.id);
+        this.rightClickSubject = null;
+        this.showDeleteConfirmation = false;
+        this.cdr.detectChanges();
+      },
+      error: (res) => {
+        console.error('Error deleting subject:', res);
+        this.notify.showError(res.error.message || "Failed to delete subject. Please try again later.");
+        this.rightClickSubject = null;
+        this.showDeleteConfirmation = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
   navigateSubject(subject: SubjectModel) {
+    if (this.rightClickSubject) {
+      this.rightClickSubject = null;
+      return;
+    }
     if (subject.status === 'pending naming' || subject.status === 'pending document upload' || subject.status === 'pending topic labelling') {
       this.router.navigate([`/subject-create/${subject.id}/naming-upload`])
     } else if (subject.status === 'pending topic selection' || subject.status === 'pending lesson generation') {
