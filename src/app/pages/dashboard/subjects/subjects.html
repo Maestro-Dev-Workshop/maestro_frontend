@@ -45,6 +45,7 @@
           <button 
             class="relative flex flex-col justify-between overflow-hidden rounded-lg w-full sm:w-56 h-28 p-4 m-4 bg-prussian-blue-150 hover:bg-prussian-blue-200 hover:top-2"
             (click)="navigateSubject(subject)"
+            (contextmenu)="onSubjectRightClick($event, subject)"
           >
             <div class="flex flex-row justify-between items-center">
               <span class="font-medium text-prussian-blue-900">{{subject.name}}</span>
@@ -66,4 +67,29 @@
       </div>
     </div>
   }
+}
+
+<!-- Popup Delete button -->
+@if (rightClickSubject) {
+  <div 
+    [class]="`fixed p-1 bg-white rounded-md flex flex-col items-center justify-center top-[${popup.y}px] left-[${popup.x}px]`"
+    [style.top.px]="popup.y + 8"
+    [style.left.px]="popup.x + 8"
+  >
+    <button class="rounded-md px-2 py-1 text-white bg-red-600 hover:bg-red-400" (click)="openDelete()">
+      Delete
+    </button>
+  </div>
+}
+
+@if (showDeleteConfirmation) {
+  <app-confirmation
+    (cancel)="cancelDelete()"
+    (confirm)="deleteSubject()"
+    [title]="'Delete Subject'"
+    [message]="`Are you sure you want to delete '${rightClickSubject?.name}'?`"
+    [acceptText]="'Yes'"
+    [cancelText]="'No'"
+  >
+  </app-confirmation>
 }

@@ -1,13 +1,13 @@
 import { Component, signal } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ConfirmLogout } from '../confirm-logout/confirm-logout';
 import { AuthService } from '../../../core/services/auth.service';
+import { Confirmation } from '../confirmation/confirmation';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterLink, ConfirmLogout],
+  imports: [CommonModule, RouterLink, Confirmation],
   templateUrl: './header.html'
 })
 export class Header {

@@ -1,6 +1,6 @@
 <div class="w-full flex flex-col">
   <!-- Top Section -->
-  <div class="flex flex-row justify-between py-4 sticky top-0 bg-white">
+  <div class="flex flex-row justify-between py-4 sticky z-[9] top-0 bg-white">
     <!-- Topic tree display -->
     <div class="flex flex-row items-center text-prussian-blue-800">
       {{ currentTopic().title }}
@@ -37,5 +37,7 @@
   </h1>
 
   <!-- Subtopic Content -->
-  <div class="prose text-lg text-gray-700 pb-16" [innerHTML]="currentView().content.content | markdown"></div>
+  <div class="text-lg text-gray-700 pb-32">
+    <div class="prose prose-math" [innerHTML]="currentView().content.content | markdown"></div>
+  </div>
 </div>
