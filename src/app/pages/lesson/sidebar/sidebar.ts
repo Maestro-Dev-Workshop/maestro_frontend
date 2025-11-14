@@ -11,6 +11,7 @@ export class Sidebar {
   content = input<any>();
   currentView = input<any>();
   updateView = output<any>();
+  closeSidebar = output<void>();
 
   logContent() {
     console.log(this.content());
@@ -26,5 +27,10 @@ export class Sidebar {
   selectView(id: string, type: string) {
     console.log(`Selected view: ${type} with ID: ${id}`);
     this.updateView.emit({ id, type });
+    this.closeSidebar.emit();
+  }
+
+  closeBar() {
+    this.closeSidebar.emit();
   }
 }
