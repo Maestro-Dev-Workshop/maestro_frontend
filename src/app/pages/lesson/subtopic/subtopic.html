@@ -38,6 +38,14 @@
 
   <!-- Subtopic Content -->
   <div class="text-lg text-gray-700 pb-32">
-    <div class="prose prose-math" [innerHTML]="currentView().content.content | markdown"></div>
+    @for (cell of currentView().content.cells; track $index) {
+      @if (cell.type === "text") {
+        <!-- Markdown Text Cells -->
+        <div class="prose prose-math" [innerHTML]="cell.content | markdown"></div>
+      } @else {
+        <!-- Default Fallback Cells -->
+        <div class="prose prose-math" [innerHTML]="cell.content | markdown"></div>
+      }
+    }
   </div>
 </div>
