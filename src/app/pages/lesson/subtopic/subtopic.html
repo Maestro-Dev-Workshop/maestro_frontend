@@ -1,14 +1,14 @@
 <div class="w-full flex flex-col">
   <!-- Top Section -->
-  <div class="flex flex-row justify-between py-4 sticky z-[9] top-0 bg-white">
+  <div class="flex flex-row justify-between pt-4 pb-2 sticky z-[9] top-0 bg-white">
     <!-- Topic tree display -->
-    <div class="flex flex-row items-center text-prussian-blue-800">
+    <div class="hidden lg:flex flex-row items-center text-prussian-blue-800">
       {{ currentTopic().title }}
       <img src="images/dropdown-icon-closed.svg" alt="" class="w-2 m-4">
       {{ currentView().content.title }}
     </div>
     <!-- Subtopic Navigation -->
-    <div class="flex flex-row">
+    <div class="flex flex-row ml-auto">
       <button 
         [class]="`flex flex-row items-center mx-4 text-prussian-blue-900 hover:text-prussian-blue-500 disabled:text-prussian-blue-500 ${getPosition().includes('top') ? 'invisible' : ''}`" 
         (click)="prevSubtopic()"

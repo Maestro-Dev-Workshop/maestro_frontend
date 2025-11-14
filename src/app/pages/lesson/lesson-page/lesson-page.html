@@ -1,7 +1,7 @@
-<app-header class="z-20"/>
+<app-header class="z-40"/>
 
 @if (subjectLoading) {
-  <div class="flex flex-row items-center justify-center h-full w-full bg-white z-10 absolute">
+  <div class="flex flex-row items-center justify-center h-full w-full bg-white z-30 absolute">
     <div class="flex flex-row items-center">
       <img src="images/spinner.gif" alt="" class="w-24 m-4">
       <span class="text-4xl">Retrieving Subject Content...</span>
@@ -11,15 +11,18 @@
 
 <!-- Practice (Exercise/Exam) Header -->
 @if (currentView.type === 'exercise' || currentView.type === 'exam') {
-  <div class="w-full bg-gray-100 flex flex-row items-center justify-between px-12 py-6">
+  <div class="w-full bg-gray-100 flex flex-row items-center justify-between px-6 lg:px-12 py-6">
     <div class="">
-      <h1 class="text-3xl font-medium text-prussian-blue-900">
+      <h1 class="hidden lg:block text-3xl font-medium text-prussian-blue-900">
         Practice {{capitalizeFirstLetter(currentView.type)}} for {{(currentView.type === 'exercise') ? getTopicDataFromExercise().title : subjectContent.subject_name}}
+      </h1>
+      <h1 class="lg:hidden text-3xl font-medium text-prussian-blue-900">
+        {{capitalizeFirstLetter(currentView.type)}}
       </h1>
       <h2 class="text-xl font-medium text-prussian-blue-500">
         {{ currentView.content.questions.length }} Question{{(currentView.content.questions.length > 1) ? 's' : '' }}
       </h2>
-      <span class="block mt-4 text-gray-600">These questions will help reinforce your understanding. Take your time to answer all the questions.</span>
+      <span class="hidden lg:block mt-4 text-gray-600">These questions will help reinforce your understanding. Take your time to answer all the questions.</span>
     </div>
     <div class="text-3xl flex flex-col text-gray-800 text-right tracking-wider font-medium">
       <span>Score:</span>
@@ -34,18 +37,30 @@
   </div>
 }
 
-<div class="w-full flex flex-row flex-grow overflow-hidden mt-2">
+<div class="w-full flex flex-row flex-grow overflow-hidden mt-2 relative">
+  <!-- Sidebar Toggle -->
+  <button 
+    [class]="`absolute z-20 top-4 ${sidebarOpen ? 'hidden' : 'left-0 rounded-r-full'} p-3 bg-prussian-blue-800 lg:hidden`"
+    (click)="toggleSidebar()"
+  >
+    <img src="images/subject-icon-white.svg" alt="" class="w-6">
+  </button>
+
+  <!-- Sidebar Container -->
   <app-sidebar 
-    class="w-3/12 h-full relative overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 hover:scrollbar-thumb-gray-500"
+    [class]="`w-5/6 lg:w-3/12 h-full absolute lg:relative ${sidebarOpen ? '' : 'hidden'} lg:block 
+    overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 hover:scrollbar-thumb-gray-500 bg-white z-[19]`"
     [content]="subjectContent" 
     [currentView]="currentView" 
     (updateView)="updatecurrentView($event)" 
+    (closeSidebar)="toggleSidebar()"
   ></app-sidebar>
 
-  <div #contentContainer [class]="`flex overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 hover:scrollbar-thumb-gray-500 ${chatOpen ? 'w-6/12' : 'w-9/12'}`">
+  <!-- Main View Container -->
+  <div #contentContainer [class]="`flex overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 hover:scrollbar-thumb-gray-500 w-full lg:${chatOpen ? 'w-6/12' : 'w-9/12'}`">
     @if (currentView.type === 'subtopic') {
       <app-subtopic 
-        class="w-full mr-6 ml-12"
+        class="w-full mx-8 lg:ml-12"
         [currentView]="currentView" 
         [currentTopic]="getTopicDataFromSubtopic()" 
         [getPosition]="getSubtopicPosition()"
@@ -54,7 +69,7 @@
     }
     @if (currentView.type === 'exercise' || currentView.type === 'exam') {
       <app-practice 
-        class="w-full mr-6 ml-12"
+        class="w-full mx-8 lg:ml-12"
         [currentView]="currentView" 
         [subjectId]="subjectId"
         [topicId]="(currentView.type == 'exercise') ? getTopicDataFromExercise().id : null"
@@ -65,8 +80,9 @@
     }
   </div>
 
+  <!-- Chatbot Container -->
   <app-chatbot 
-    [class]="`w-3/12 absolute z-30 right-0 top-0 h-screen ${(chatOpen && !(currentView.type !== 'subtopic' && (currentView.content.score == null))) ? '' : 'hidden'}`" 
+    [class]="`w-5/6 lg:w-3/12 absolute z-30 right-0 top-0 h-full ${(chatOpen && !(currentView.type !== 'subtopic' && (currentView.content.score == null))) ? '' : 'hidden'}`" 
     [chatHistory]="chatHistory" 
     [subjectId]="subjectId"
     [metadata]="chatMetadata"
@@ -74,11 +90,12 @@
   ></app-chatbot>
 </div>
 
+<!-- Chatbot Popup -->
 <button 
-  [class]="`absolute right-24 bottom-16 rounded-full p-6 bg-prussian-blue-200 hover:bg-prussian-blue-250 
+  [class]="`absolute right-6 lg:right-16 bottom-6 lg:bottom-16 rounded-full p-4 lg:p-6 bg-prussian-blue-200 hover:bg-prussian-blue-250 
   ${(chatOpen || (currentView.type !== 'subtopic' && (currentView.content.score == null))) ? 'hidden' : ''}`" 
   (click)="toggleChatPopup()"
   [disabled]="(currentView.type !== 'subtopic' && (currentView.content.score == null))"
 >
-  <img src="images/chat-popup-icon.svg" alt="Chat" class="w-10">
+  <img src="images/chat-popup-icon.svg" alt="Chat" class="w-8 lg:w-10">
 </button>
