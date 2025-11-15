@@ -29,6 +29,7 @@ export class LessonPage implements OnInit {
   }
   chatHistory: ChatMessage[] = [];
   chatOpen = false;
+  sidebarOpen = false;
   subjectLoading = true;
   subjectService = inject(SubjectsService)
   lessonService = inject(LessonService)
@@ -492,5 +493,9 @@ export class LessonPage implements OnInit {
     const el = this.contentContainer?.nativeElement;
     if (!el) return;
     el.scrollTop = 0;
+  }
+
+  toggleSidebar() {
+    this.sidebarOpen = !this.sidebarOpen;
   }
 }
