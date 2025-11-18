@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { AuthService } from '../../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { NotificationService } from '../../../core/services/notification.service';
@@ -14,7 +14,7 @@ export class VerifyEmail {
   authService = inject(AuthService);
   notify = inject(NotificationService);
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private cdr: ChangeDetectorRef) {
     // Extract token from URL query params then call verifyEmail
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
@@ -24,7 +24,11 @@ export class VerifyEmail {
         next: (response) => {
           console.log('Email verification successful', response);
           this.verified = true;
-          this.router.navigateByUrl('/login');
+          this.cdr.detectChanges();
+          // Close this tab after a short delay
+          setTimeout(() => {
+            window.close();
+          }, 1000);
         },
         error: (res) => {
           console.error('Email verification failed', res);
