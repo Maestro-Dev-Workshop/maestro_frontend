@@ -8,7 +8,10 @@
   <div #chatContainer class="flex flex-col w-full flex-grow overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 hover:scrollbar-thumb-gray-500">
     @for (chat of chatHistory(); track $index) {
       <div 
-        [class]="`rounded-xl p-2 my-1 break-words text-sm ${(chat.sender === 'user') ? 'self-end bg-prussian-blue-800 text-white' : 'prose prose-math self-start bg-prussian-blue-200 text-prussian-blue-900'}`"
+        [class]="`rounded-2xl p-3 my-1 break-words text-sm 
+          ${(chat.sender === 'user') 
+            ? 'self-end bg-prussian-blue-800 text-white rounded-br-none' 
+            : 'prose prose-math self-start bg-gray-100 text-gray-900 rounded-bl-none'}`"
         style="max-width: 80%;"
       >
       <span [innerHTML]="chat.message | markdown"></span>
@@ -23,6 +26,7 @@
       rows="1"
       [(ngModel)]="currentMessage"
       [disabled]="loading"
+      (keydown)="handleKeyDown($event)"
       oninput="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px';"
       onmousemove="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px';"
     ></textarea>

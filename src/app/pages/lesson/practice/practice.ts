@@ -5,10 +5,11 @@ import { LessonService } from '../../../core/services/lesson.service';
 import { catchError, forkJoin, Observable, of, switchMap, take, tap } from 'rxjs';
 import { MarkdownPipe } from '../../../shared/pipes/markdown-pipe';
 import { NotificationService } from '../../../core/services/notification.service';
+import { Confirmation } from '../../../shared/components/confirmation/confirmation';
 
 @Component({
   selector: 'app-practice',
-  imports: [FormsModule, MarkdownPipe],
+  imports: [FormsModule, MarkdownPipe, Confirmation],
   templateUrl: './practice.html',
   styleUrl: './practice.css'
 })
@@ -22,6 +23,7 @@ export class Practice {
   question: any;
   currentIndex = 0;
   loading = false;
+  showSubmitConfirmation = false;
   notify = inject(NotificationService);
   lessonService = inject(LessonService);
 
@@ -76,9 +78,12 @@ export class Practice {
     console.log(this.currentView()?.content?.questions.find((q: any) => q.id === this.question.id)?.options);
   }
 
+  toggleSubmit() {
+    this.showSubmitConfirmation = !this.showSubmitConfirmation;
+  }
+
   submitAnswers() {
-    const proceed = confirm("Are you sure you want to submit?")
-    if (!proceed) return
+    this.toggleSubmit();
 
     this.loading = true;
 
