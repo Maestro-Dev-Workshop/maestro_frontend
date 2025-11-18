@@ -97,6 +97,30 @@ export class Chatbot implements OnInit {
         this.cdr.detectChanges();
       },
     });
-    
+  }
+
+  handleKeyDown(event: KeyboardEvent) {
+    const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+  
+    if (isMobile) return; // always allow newlines on mobile
+  
+    if (event.key === 'Enter') {
+      if (event.shiftKey || event.ctrlKey) {
+        // insert newline manually
+        const textarea = event.target as HTMLTextAreaElement;
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        this.currentMessage = this.currentMessage.slice(0, start) + '\n' + this.currentMessage.slice(end);
+        textarea.selectionStart = textarea.selectionEnd = start + 1;
+        textarea.style.height = 'auto';
+        textarea.style.height = textarea.scrollHeight + 'px';
+        event.preventDefault();
+        this.cdr.detectChanges();
+      } else {
+        // send message
+        event.preventDefault();
+        this.sendMessage();
+      }
+    }
   }
 }

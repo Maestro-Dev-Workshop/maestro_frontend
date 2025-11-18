@@ -5,6 +5,7 @@
   <div class="w-full p-4">
     <h2 class="prose prose-math mb-2 text-gray-800" [innerHTML]="question.text | markdown"></h2>
     @if (question.type === 'essay') {
+      <!-- Essay Answering -->
       <textarea
         class="w-full p-2 text-gray-600 border-b-2 border-gray-300 resize-none overflow-hidden focus:outline-none focus:border-b-2 focus:border-prussian-blue-800"
         rows="1"
@@ -22,6 +23,7 @@
       }
     } @else {
       @for (option of question.options; track option.id) {
+        <!-- Multiple Choice / Multiple Select Answering -->
         <div class="flex flex-row">
           <input 
             [type]="`${question.type === 'multiple choice' ? 'radio' : 'checkbox'}`" 
@@ -90,7 +92,7 @@
   <div class="flex flex-row items-center">
     <button 
       class="self-start w-max text-sm text-white bg-prussian-blue-800 m-4 px-12 py-3 rounded-lg hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500 transition duration-100" 
-      (click)="submitAnswers()"
+      (click)="toggleSubmit()"
       [disabled]="loading || !(currentView().content.score == null)"
     >
       Submit
@@ -101,3 +103,15 @@
     </div>
   </div>
 </div>
+
+@if (showSubmitConfirmation) {
+  <app-confirmation
+    [title]="'Submit '+currentView().type"
+    [message]="'Are you sure you want to submit your answers? Once submitted, you will not be able to change them.'"
+    [acceptText]="'Submit'"
+    [cancelText]="'Cancel'"
+    (confirm)="submitAnswers()"
+    (cancel)="toggleSubmit()"
+  >
+  </app-confirmation>
+}

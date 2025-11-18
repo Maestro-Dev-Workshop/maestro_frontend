@@ -25,6 +25,7 @@ export class NamingUpload implements OnInit {
   subjectService = inject(SubjectsService);
   notify = inject(NotificationService); // <-- Inject notification service
   allowedExtensions = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'epub'];
+  acceptString = this.allowedExtensions.map(ext => '.' + ext).join(', ')
 
   @ViewChild('nameCtrl') nameCtrl!: NgModel;
 
