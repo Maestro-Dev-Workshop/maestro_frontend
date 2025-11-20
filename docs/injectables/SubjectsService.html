@@ -271,7 +271,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>generateExam(sessionId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, prefs: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, questionTypes: string[], timeLimit: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+<code>generateExam(sessionId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, prefs: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, questionTypes: string[], numQuestions: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, timeLimit: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
                 </td>
             </tr>
 
@@ -343,6 +343,20 @@
 
                                         </tr>
                                         <tr>
+                                                <td>numQuestions</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
                                                 <td>timeLimit</td>
                                             <td>
                                                             <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
@@ -384,7 +398,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>generateExercise(sessionId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, prefs: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, questionTypes: string[])</code>
+<code>generateExercise(sessionId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, prefs: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, questionTypes: string[], numQuestions: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
@@ -440,6 +454,18 @@
                                                 <td>questionTypes</td>
                                             <td>
                                                         <code>string[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>numQuestions</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                             </td>
 
                                             <td>
@@ -1188,12 +1214,12 @@ export class SubjectsService {
     return this.http.post(&#x60;session/${sessionId}/generate-lesson&#x60;, { lesson_preference: prefs });
   }
 
-  generateExercise(sessionId: string, prefs: string, questionTypes: string[]): Observable&lt;any&gt; {
-    return this.http.post(&#x60;session/${sessionId}/generate-exercises&#x60;, { exercise_preference: prefs, question_types: questionTypes });
+  generateExercise(sessionId: string, prefs: string, questionTypes: string[], numQuestions: number): Observable&lt;any&gt; {
+    return this.http.post(&#x60;session/${sessionId}/generate-exercises&#x60;, { exercise_preference: prefs, question_types: questionTypes, no_of_questions: numQuestions });
   }
 
-  generateExam(sessionId: string, prefs: string, questionTypes: string[], timeLimit: boolean &#x3D; false): Observable&lt;any&gt; {
-    return this.http.post(&#x60;session/${sessionId}/generate-exam&#x60;, { exam_preference: prefs, question_types: questionTypes, use_time_limit: timeLimit });
+  generateExam(sessionId: string, prefs: string, questionTypes: string[], numQuestions: number, timeLimit: boolean &#x3D; false): Observable&lt;any&gt; {
+    return this.http.post(&#x60;session/${sessionId}/generate-exam&#x60;, { exam_preference: prefs, question_types: questionTypes, no_of_questions: numQuestions, use_time_limit: timeLimit });
   }
 
   updateSessionStatus(sessionId: string, status: string): Observable&lt;any&gt; {

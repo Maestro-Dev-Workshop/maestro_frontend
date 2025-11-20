@@ -40,15 +40,29 @@ export class Signup {
 
   onSubmit() {
     this.loading = true;
-    if (this.emailCtrl.invalid || this.passwordCtrl.invalid || this.firstnameCtrl.invalid || this.lastnameCtrl.invalid) {
-      this.notify.showError("first name, last name, valid email, and valid password are required");
+    const errors: string[] = [];
+    if (this.firstnameCtrl.invalid) {
+      errors.push("First name is required.");
+    }
+    if (this.lastnameCtrl.invalid) {
+      errors.push("Last name is required.");
+    }
+    if (this.emailCtrl.invalid) {
+      errors.push("A valid email is required.");
+    }
+    if (this.passwordCtrl.invalid) {
+      errors.push("Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.");
+    }
+    if (errors.length > 0) {
+      this.notify.showError(errors.join('<br>'));
       this.loading = false;
+      return;
     } else {
       this.authService.signup({ 
         first_name: this.firstname, last_name: this.lastname, email: this.email.toLowerCase(), password: this.password }).subscribe({
         next: (response) => {
           console.log('Signup successful', response);
-          this.notify.showSuccess('Signup successful! Please log in.');
+          this.notify.showSuccess('Verification email sent. Please check your inbox.');
           this.loading = false;
           this.router.navigateByUrl('/check-email', { state: { email: this.email.toLowerCase() } });
         },
