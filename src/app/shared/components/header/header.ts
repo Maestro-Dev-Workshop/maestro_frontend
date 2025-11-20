@@ -16,12 +16,11 @@ export class Header {
   showAccount = signal(false);
   email = signal(localStorage.getItem("userEmail"));
 
-  // Credit System
-  creditsUsed = signal (0);
-  creditsTotal = signal (20);
+  subjectsCreated = signal (0);
+  subjectsTotal = signal (10);
 
-  creditPercent = computed (() => {
-    return (this.creditsUsed() / this.creditsTotal()) * 100;
+  subjectPercent = computed (() => {
+    return (this.subjectsCreated() / this.subjectsTotal()) * 100;
   });
 
   constructor(private auth: AuthService, private router: Router) {}

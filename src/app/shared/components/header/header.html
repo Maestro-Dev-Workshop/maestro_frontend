@@ -47,10 +47,10 @@
       <div>
         <div class="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
           <div class="h-full bg-prussian-blue-800 rounded-full" 
-               [style.width.%]="creditPercent()">
+               [style.width.%]="subjectPercent()">
           </div>
         </div>
-        <p class="text-xs mt-1">{{ creditsUsed() }}/20 Lessons Created</p>
+        <p class="text-xs mt-1">{{ subjectsCreated() }}/{{ subjectsTotal() }} Subjects Created</p>
       </div>
     </div>
 
