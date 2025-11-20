@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../core/services/auth.service';
@@ -11,9 +11,18 @@ import { Confirmation } from '../confirmation/confirmation';
   templateUrl: './header.html'
 })
 export class Header {
+  pageLoading = false;
   showLogout = signal(false);
   showAccount = signal(false);
   email = signal(localStorage.getItem("userEmail"));
+
+  // Credit System
+  creditsUsed = signal (0);
+  creditsTotal = signal (20);
+
+  creditPercent = computed (() => {
+    return (this.creditsUsed() / this.creditsTotal()) * 100;
+  });
 
   constructor(private auth: AuthService, private router: Router) {}
 
@@ -27,5 +36,14 @@ export class Header {
 
   popout() {
     this.showAccount.set(!this.showAccount());
+  }
+
+  // Navigate to Subscription Page
+  goToUpgrade() {
+    this.pageLoading = true;
+    this.showAccount.set(false);
+    setTimeout(() => {
+      this.router.navigateByUrl('dashboard/subscription');
+    }, 400);
   }
 }

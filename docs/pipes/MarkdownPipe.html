@@ -184,8 +184,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="16"
-                                    class="link-to-prism">src/app/shared/pipes/markdown-pipe.ts:16</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="23"
+                                    class="link-to-prism">src/app/shared/pipes/markdown-pipe.ts:23</a></div>
                         </td>
                     </tr>
 
@@ -251,8 +251,15 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>new MarkdownIt({ html: true, linkify: true, typographer: true })
-    .use(markdownItKatex)</code>
+                        <i>Default value : </i><code>new MarkdownIt({ 
+    html: true, 
+    linkify: true, 
+    typographer: true 
+  }).use(markdownItKatex, {
+    throwOnError: false,
+    errorColor: &#x27;#cc0000&#x27;,
+    output: &#x27;mathml&#x27; // Use only MathML output
+  })</code>
                     </td>
                 </tr>
                     <tr>
@@ -273,15 +280,22 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Pipe, PipeTransform } from &#x27;@angular/core&#x27;;
 import { DomSanitizer, SafeHtml } from &#x27;@angular/platform-browser&#x27;;
 import MarkdownIt from &#x27;markdown-it&#x27;;
-import markdownItKatex from &#x27;markdown-it-katex&#x27;;
+import markdownItKatex from &#x27;@traptitech/markdown-it-katex&#x27;;
 
 @Pipe({
   name: &#x27;markdown&#x27;,
   standalone: true
 })
 export class MarkdownPipe implements PipeTransform {
-  private md &#x3D; new MarkdownIt({ html: true, linkify: true, typographer: true })
-    .use(markdownItKatex);
+  private md &#x3D; new MarkdownIt({ 
+    html: true, 
+    linkify: true, 
+    typographer: true 
+  }).use(markdownItKatex, {
+    throwOnError: false,
+    errorColor: &#x27;#cc0000&#x27;,
+    output: &#x27;mathml&#x27; // Use only MathML output
+  });
 
   constructor(private sanitizer: DomSanitizer) {}
 
