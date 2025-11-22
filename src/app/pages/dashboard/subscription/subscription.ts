@@ -32,7 +32,8 @@ export class Subscription implements OnInit {
   // --------------------------
   // USAGE DATA (Make dynamic later)
   // --------------------------
-  lessonsUsed = 5;
+  generatedLessons = 1;
+  generatedLimit = 2;
   savedLessons = 3;
   savedLimit = 5;
 
@@ -63,6 +64,7 @@ export class Subscription implements OnInit {
 
     this.subSvc.getPlans().subscribe(plans => this.plans.set(plans));
     this.refresh();
+    this.calculateUsage();
   }
 
   openTab(tab: 'account' | 'billing') {
@@ -108,20 +110,19 @@ export class Subscription implements OnInit {
   // DONUT CALCULATION
   // --------------------------
   calculateUsage() {
-    const max = this.getMaxSubjects();
-
-    const used = this.lessonsUsed || 0;
+    const used = this.generatedLessons || 0;
+    const max = this.generatedLimit || 1;
     const saved = this.savedLessons || 0;
     const savedLimit = this.savedLimit || 1;
 
     // OUTER RING — lesson generation
     const outerPercent = Math.min(used / max, 1);
-    this.outerDashArray = `${this.outerCircumference}`;
-    this.outerDashOffset = `${this.outerCircumference * (1 - outerPercent)}`;
+    this.outerDashArray = `${this.outerCircumference * outerPercent} ${this.outerCircumference * (1 - outerPercent)}`;
+    this.outerDashOffset = `${this.outerCircumference * outerPercent}`;
 
     // INNER RING — saved lessons
     const innerPercent = Math.min(saved / savedLimit, 1);
-    this.innerDashArray = `${this.innerCircumference}`;
-    this.innerDashOffset = `${this.innerCircumference * (1 - innerPercent)}`;
+    this.innerDashArray = `${this.innerCircumference * innerPercent} ${this.innerCircumference * (1 - innerPercent)}`;
+    this.innerDashOffset = `${this.innerCircumference * innerPercent}`;
   }
 }
