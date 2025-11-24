@@ -1,11 +1,11 @@
 <div class="flex flex-col justify-end h-full w-full bg-white border-l-2 p-2">
   <!-- Close Button -->
-  <button class="absolute top-2 justify-self-start p-3 rounded-full bg-prussian-blue-800 hover:bg-prussian-blue-500" (click)="onCloseChat()">
+  <button class="absolute top-2 justify-self-start p-3 rounded-full bg-prussian-blue-800 lg:hover:bg-prussian-blue-500" (click)="onCloseChat()">
     <img src="images/x-icon.svg" alt="">
   </button>
 
   <!-- Chat Messages -->
-  <div #chatContainer class="flex flex-col w-full flex-grow overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 hover:scrollbar-thumb-gray-500">
+  <div #chatContainer class="flex flex-col w-full flex-grow overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 lg:hover:scrollbar-thumb-gray-500">
     @for (chat of chatHistory(); track $index) {
       <div 
         [class]="`rounded-2xl p-3 my-1 break-words text-sm 
