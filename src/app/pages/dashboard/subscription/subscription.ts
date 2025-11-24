@@ -1,7 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Header } from '../../../shared/components/header/header';
 import { SubscriptionService } from '../../../core/services/subscription.service';
 import { Plan, SubscriptionStatus } from '../../../core/models/subscription.model';
@@ -9,7 +9,7 @@ import { Plan, SubscriptionStatus } from '../../../core/models/subscription.mode
 @Component({
   selector: 'app-subscription',
   standalone: true,
-  imports: [CommonModule, FormsModule, Header],
+  imports: [CommonModule, FormsModule, Header, RouterLink],
   templateUrl: './subscription.html'
 })
 export class Subscription implements OnInit {

@@ -1,4 +1,4 @@
-<div class="p-4 w-full flex flex-col">
+<div class="py-4 w-full flex flex-col">
   <h1 class="mx-4 mt-4 text-2xl font-medium">
     Question {{getQuestionNumber()}}
   </h1>
@@ -55,7 +55,7 @@
   <!-- Question Cycling -->
   <div class="flex flex-row">
     <button 
-      [class]="`flex flex-row items-center mx-4 text-prussian-blue-900 hover:text-prussian-blue-500 disabled:text-prussian-blue-500 ${currentIndex === 0 ? 'invisible' : ''}`" 
+      [class]="`flex flex-row items-center mx-4 text-prussian-blue-900 lg:hover:text-prussian-blue-500 disabled:text-prussian-blue-500 ${currentIndex === 0 ? 'invisible' : ''}`" 
       (click)="cycleQuestion('prev')"
       [disabled]="currentIndex === 0"
     >
@@ -91,7 +91,7 @@
   <!-- Submission Button -->
   <div class="flex flex-row items-center">
     <button 
-      class="self-start w-max text-sm text-white bg-prussian-blue-800 m-4 px-12 py-3 rounded-lg hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500 transition duration-100" 
+      class="self-start w-max text-sm text-white bg-prussian-blue-800 m-4 px-12 py-3 rounded-lg lg:hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500 transition duration-100" 
       (click)="toggleSubmit()"
       [disabled]="loading || !(currentView().content.score == null)"
     >

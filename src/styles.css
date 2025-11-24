@@ -96,6 +96,17 @@ body {
   );
 }
 
+.gradient-border-white {
+  border: 1px solid;
+  border-image-slice: 1;
+  border-image-source: linear-gradient(
+    90deg,
+    rgba(212, 212, 212, 0.12) 13.94%,
+    rgba(211, 211, 211, 0.6) 50.29%,
+    rgba(213, 213, 213, 0.12) 82.69%
+  );
+}
+
 /* popular tag*/
 .popular-tag {
   /* position */
