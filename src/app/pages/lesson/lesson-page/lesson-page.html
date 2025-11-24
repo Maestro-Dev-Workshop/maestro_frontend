@@ -49,7 +49,7 @@
   <!-- Sidebar Container -->
   <app-sidebar 
     [class]="`w-5/6 lg:w-3/12 h-full absolute lg:relative ${sidebarOpen ? '' : 'hidden'} lg:block 
-    overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 hover:scrollbar-thumb-gray-500 bg-white z-[19]`"
+    overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 lg:hover:scrollbar-thumb-gray-500 bg-white z-[19]`"
     [content]="subjectContent" 
     [currentView]="currentView" 
     (updateView)="updatecurrentView($event)" 
@@ -57,7 +57,10 @@
   ></app-sidebar>
 
   <!-- Main View Container -->
-  <div #contentContainer [class]="`flex overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 hover:scrollbar-thumb-gray-500 w-full lg:${chatOpen ? 'w-6/12' : 'w-9/12'}`">
+  <div 
+    #contentContainer 
+    [class]="`flex overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 lg:hover:scrollbar-thumb-gray-500 flex-grow lg:${chatOpen ? 'w-6/12' : 'w-9/12'}`"
+  >
     @if (currentView.type === 'subtopic') {
       <app-subtopic 
         class="w-full px-8 lg:pl-12"
@@ -92,10 +95,10 @@
 
 <!-- Chatbot Popup -->
 <button 
-  [class]="`absolute right-6 lg:right-16 bottom-6 lg:bottom-16 rounded-full p-4 lg:p-6 bg-prussian-blue-200 hover:bg-prussian-blue-250 
+  [class]="`absolute right-6 lg:right-16 bottom-6 lg:bottom-16 rounded-full p-4 lg:p-5 bg-prussian-blue-200 lg:hover:bg-prussian-blue-250 
   ${(chatOpen || (currentView.type !== 'subtopic' && (currentView.content.score == null))) ? 'hidden' : ''}`" 
   (click)="toggleChatPopup()"
   [disabled]="(currentView.type !== 'subtopic' && (currentView.content.score == null))"
 >
-  <img src="images/chat-popup-icon.svg" alt="Chat" class="w-8 lg:w-10">
+  <img src="images/chatbot-speech-bubble.png" alt="Chat" class="w-8 lg:w-10">
 </button>

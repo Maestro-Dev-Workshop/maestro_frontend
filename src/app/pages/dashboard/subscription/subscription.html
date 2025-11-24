@@ -6,7 +6,7 @@
   <aside class="w-64 bg-white border-r border-gray-300 p-6">
 
     <button 
-      class="flex items-center text-prussian-blue-900 mb-6 hover:underline"
+      class="flex items-center text-prussian-blue-900 mb-6 lg:hover:underline"
       (click)="goBack()"
     >
       <img src="images/subject-icon.svg" class="w-5 mr-2">
@@ -15,7 +15,7 @@
 
     <nav class="flex flex-col space-y-3 mt-4">
       <button
-        class="text-left px-3 py-2 rounded-md hover:bg-gray-100"
+        class="text-left px-3 py-2 rounded-md lg:hover:bg-gray-100"
         [ngClass]="{'bg-gray-100 font-medium': activeTab() === 'account'}"
         (click)="openTab('account')"
       >
@@ -23,7 +23,7 @@
       </button>
 
       <button
-        class="text-left px-3 py-2 rounded-md hover:bg-gray-100"
+        class="text-left px-3 py-2 rounded-md lg:hover:bg-gray-100"
         [ngClass]="{'bg-gray-100 font-medium': activeTab() === 'billing'}"
         (click)="openTab('billing')"
       >

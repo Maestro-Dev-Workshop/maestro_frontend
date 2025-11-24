@@ -59,6 +59,9 @@ export class Subjects implements OnInit {
   constructor(private router: Router, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
+    this.loadingSubjects = false;
+    this.cdr.detectChanges();
+    return
     this.subjectService.getAllSubjects().subscribe({
       next: (response) => {
         console.log(response)
