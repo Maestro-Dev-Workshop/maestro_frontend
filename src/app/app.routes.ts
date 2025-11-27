@@ -3,6 +3,8 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   // Home
   { path: '', loadComponent: () => import('./pages/home/home/home').then(m => m.Home) },
+  { path: 'privacy-policy', loadComponent: () => import('./pages/home/privacy-policy/privacy-policy').then(m => m.PrivacyPolicy) },
+  { path: 'terms-of-service', loadComponent: () => import('./pages/home/terms-of-service/terms-of-service').then(m => m.TermsOfService) },
 
   // Auth
   { path: 'signup', loadComponent: () => import('./pages/auth/signup/signup').then(m => m.Signup) },
