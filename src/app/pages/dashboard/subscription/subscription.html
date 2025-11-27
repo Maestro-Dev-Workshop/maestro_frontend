@@ -13,13 +13,13 @@
     </div>
 
     <nav class="flex flex-col space-y-3 mt-4">
-      <button
+      <!-- <button
         class="text-left px-3 py-2 lg:hover:bg-gray-100"
         [ngClass]="{'border-l-4 border-prussian-blue-900': activeTab() === 'account'}"
         (click)="openTab('account')"
       >
         Account
-      </button>
+      </button> -->
 
       <button
         class="text-left px-3 py-2 lg:hover:bg-gray-100"
@@ -178,7 +178,7 @@
             <li class="flex"><img src="images/check.svg" class="w-4 mr-2">Upload 3MB</li>
           </ul>
 
-          @if (st?.plan?.id === 'starter') {
+          @if (st?.plan?.code === 'starter') {
             <button class="mt-8 w-full py-2 bg-prussian-blue-900 text-white rounded-md">
               Current Plan
             </button>
@@ -211,7 +211,7 @@
             <li class="flex"><img src="images/whitecheck.svg" class="w-4 mr-2">Upload 10MB</li>
           </ul>
 
-          @if (st?.plan?.id !== 'pro') {
+          @if (st?.plan?.code !== 'pro') {
             <button 
               class="mt-8 w-full py-2 bg-white text-black rounded-md"
               (click)="onSubscribe('pro')"
@@ -244,7 +244,7 @@
             <li class="flex"><img src="images/whitecheck.svg" class="w-4 mr-2">Upload 20MB</li>
           </ul>
 
-          @if (st?.plan?.id !== 'premium') {
+          @if (st?.plan?.code !== 'premium') {
             <button 
               class="mt-8 w-full py-2 bg-white text-black rounded-md"
               (click)="onSubscribe('premium')"

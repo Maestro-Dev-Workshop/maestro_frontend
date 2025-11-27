@@ -11,15 +11,27 @@ export class SubscriptionService {
     return this.http.get('subscription/plans');
   }
 
-  subscribe(planId: string): Observable<any> {
-    return this.http.post('subscription/subscribe', { planId });
+  getSinglePlan(planCode: string): Observable<any> {
+    return this.http.get(`subscription/plans/${planCode}`);
   }
 
-  getStatus(): Observable<any> {
-    return this.http.get('subscription/status');
+  subscribe(planCode: string): Observable<any> {
+    return this.http.post('subscription/initialize-transaction', { planCode });
   }
 
-  cancel() : Observable<any> {
+  verifyTransaction(reference: string): Observable<any> {
+    return this.http.post('subscription/verify-transaction', { reference });
+  }
+
+  getSubscription(): Observable<any> {
+    return this.http.get('subscription/get');
+  }
+
+  cancel(): Observable<any> {
     return this.http.post('subscription/cancel', {});
+  }
+
+  manageSubscription() : Observable<any> {
+    return this.http.get('subscription/generate-manage-link');
   }
 }

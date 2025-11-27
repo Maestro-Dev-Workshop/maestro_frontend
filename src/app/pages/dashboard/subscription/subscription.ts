@@ -87,17 +87,17 @@ export class Subscription implements OnInit {
   }
 
   refresh() {
-    this.subSvc.getStatus().subscribe(st => {
-      this.status.set(st);
-      this.calculateUsage();
-    });
+    // this.subSvc.getStatus().subscribe(st => {
+    //   this.status.set(st);
+    //   this.calculateUsage();
+    // });
   }
 
   // ------------------------------------
   // PLAN LIMITS (Backend still missing)
   // ------------------------------------
   getMaxSubjects() {
-    const id = this.status()?.plan?.id;
+    const id = this.status()?.plan?.code;
     switch (id) {
       case 'starter': return 2;
       case 'pro': return 8;
