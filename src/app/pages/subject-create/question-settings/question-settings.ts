@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, ViewChild } from '@angular/core';
 import { Header } from '../../../shared/components/header/header';
 import { CreationStepTab } from '../creation-step-tab/creation-step-tab';
 import { FormsModule, NgModel } from '@angular/forms';
@@ -7,6 +7,7 @@ import { SubjectsService } from '../../../core/services/subjects.service';
 import { forkJoin, Observable } from 'rxjs';
 import { NotificationService } from '../../../core/services/notification.service'; // <-- Add this import
 import { PreferenceValidator } from '../../../shared/directives/preference-validator';
+import { SubscriptionService } from '../../../core/services/subscription.service';
 
 class ExerciseSettings {
   include: boolean = false
@@ -28,15 +29,16 @@ class ExamSettings {
   templateUrl: './question-settings.html',
   styleUrl: './question-settings.css'
 })
-export class QuestionSettings {
+export class QuestionSettings implements OnInit {
   exerciseSettings = new ExerciseSettings();
   examSettings = new ExamSettings();
   loading = false;
   subjectId = '';
-  maxExerciseQuestions = 10;
-  maxExamQuestions = 40;
+  maxExerciseQuestions = 3;
+  maxExamQuestions = 10;
   subjectService = inject(SubjectsService)
-  notify = inject(NotificationService); // <-- Inject notification service
+  notify = inject(NotificationService);
+  subscriptionService = inject(SubscriptionService)
 
   @ViewChild('exercisePreferenceCtrl') exercisePreferenceCtrl!: NgModel;
   // @ViewChild('exerciseCountCtrl') exerciseCountCtrl!: NgModel;
@@ -48,6 +50,23 @@ export class QuestionSettings {
     const url = window.location.pathname;
     const parts = url.split('/');
     this.subjectId = parts[parts.length - 2]; // Assuming the last part is the subjectId
+  }
+
+  ngOnInit(): void {
+    this.loading = true;
+    this.subscriptionService.getSubscription().subscribe({
+      next: (response) => {
+        this.maxExerciseQuestions = response.subscription.plan.exercise_question_count || 3;
+        this.maxExamQuestions = response.subscription.plan.exam_question_count || 10;
+      },
+      error: (err) => {
+        this.notify.showError("Failed to fetch subscription data. Using default limits.");
+      },
+      complete: () => {
+        this.loading = false;
+        this.cdr.detectChanges();
+      }
+    })
   }
 
   toggleExerciseType(event: any) {
@@ -146,15 +165,12 @@ export class QuestionSettings {
     if (requests.length > 0) {
       forkJoin(requests).subscribe({
         next: (responses) => {
-          console.log("Generation responses:", responses);
           this.notify.showSuccess("Sucessfully generated practice questions.")
           this.subjectService.updateSessionStatus(this.subjectId, "In Progress").subscribe({
             next: () => {
-              console.log("Session status updated");
               this.router.navigate([`/lesson/${this.subjectId}`]);
             },
             error: (err) => {
-              console.error("Failed to update session status", err);
               this.notify.showError("Failed to update session status.");
               this.router.navigate([`/lesson/${this.subjectId}`]);
             },
@@ -162,7 +178,6 @@ export class QuestionSettings {
           });
         },
         error: (res) => {
-          console.error("Error during generation:", res);
           this.notify.showError(res.error.message || "Failed to generate practice questions. Please try again later.");
           this.loading = false;
           this.cdr.detectChanges();
@@ -176,7 +191,6 @@ export class QuestionSettings {
           this.router.navigate([`/lesson/${this.subjectId}`]);
         },
         error: (res) => {
-          console.error("Failed to update session status", res);
           this.notify.showError(res.error.message || "Failed to update session status.");
           this.router.navigate([`/lesson/${this.subjectId}`]);
         },

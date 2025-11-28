@@ -69,7 +69,7 @@
       />
       <p class="text-gray-600 text-sm text-center">Upload your files here to start generating personalized lessons for this subject.</p>
       <p class="text-gray-400 text-xs my-2 text-center">
-        {{allowedExtensions.join(", ").toUpperCase()}}. Max file size: 20MB. Max total files size: 50MB. Maximum of 15 files.
+        {{allowedExtensions.join(", ").toUpperCase()}}. Max file size: {{single_file_size}}MB. Max total files size: {{total_files_size}}MB. Maximum of {{max_file_count}} files.
       </p>
     </div>
 

@@ -69,7 +69,6 @@ export class Chatbot implements OnInit {
       return
     }
 
-    console.log(this.currentMessage);
     this.chatHistory()?.push({
       sender: "user",
       message: this.currentMessage,
@@ -88,11 +87,9 @@ export class Chatbot implements OnInit {
         ]);
         this.currentMessage = '';
         this.loading = false;
-        console.log(response);
         this.cdr.detectChanges();
       }, error: (res) => {
         this.loading = false;
-        console.error(`Error sending message: ${res}`);
         this.notify.showError(res.error.message || 'Failed to send message. Please try again.');
         this.cdr.detectChanges();
       },

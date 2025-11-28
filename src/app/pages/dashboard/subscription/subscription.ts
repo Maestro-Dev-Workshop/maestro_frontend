@@ -1,10 +1,13 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { Header } from '../../../shared/components/header/header';
 import { SubscriptionService } from '../../../core/services/subscription.service';
 import { Plan, SubscriptionStatus } from '../../../core/models/subscription.model';
+import { NotificationService } from '../../../core/services/notification.service';
+import { io, Socket } from 'socket.io-client';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-subscription',
@@ -13,6 +16,9 @@ import { Plan, SubscriptionStatus } from '../../../core/models/subscription.mode
   templateUrl: './subscription.html'
 })
 export class Subscription implements OnInit {
+  pageLoading = true
+  loadText = 'Loading subscription details...';
+  socket!: Socket;
 
   // --------------------------
   // USER PROFILE SIGNALS
@@ -20,6 +26,8 @@ export class Subscription implements OnInit {
   firstname = signal('');
   lastname = signal('');
   email = signal('');
+  showMobileMenu = false;
+
 
   // --------------------------
   // SUBSCRIPTION SIGNALS
@@ -53,8 +61,10 @@ export class Subscription implements OnInit {
   innerDashOffset = '';
 
   constructor(
-    private subSvc: SubscriptionService,
-    private router: Router
+    private subscriptionService: SubscriptionService,
+    private notify: NotificationService,
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -62,8 +72,37 @@ export class Subscription implements OnInit {
     this.lastname.set(localStorage.getItem('lastname') || '');
     this.email.set(localStorage.getItem('userEmail') || '');
 
-    this.subSvc.getPlans().subscribe(plans => this.plans.set(plans));
-    this.refresh();
+    this.subscriptionService.getPlans().subscribe({
+      next: (response) => {
+        this.plans.set(response.plans)
+      }, 
+      error: (err) => {
+        this.notify.showError(err.error.message || "Failed to load subscription plans. Please try again later.");
+      }
+    });
+
+    this.subscriptionService.getSubscription().subscribe({
+      next: (response) => {
+        this.status.set(response.subscription);
+
+        this.generatedLessons = this.status()?.subjects_created_this_month || 0
+        this.generatedLimit = this.status()?.plan?.monthly_subject_creations || 0
+        this.savedLessons = this.status()?.total_subjects_created || 0
+        this.savedLimit = this.status()?.plan?.subject_capacity || 0
+
+        this.calculateUsage();
+        this.pageLoading = false;
+      },
+      error: (err) => {
+        this.notify.showError(err.error.message || "Failed to load subscription status. Please try again later.");
+        this.pageLoading = false;
+      },
+      complete: () => {
+        this.pageLoading = false;
+        this.cdr.detectChanges();
+      }
+    });
+
     this.calculateUsage();
   }
 
@@ -75,36 +114,12 @@ export class Subscription implements OnInit {
     this.router.navigateByUrl('/dashboard');
   }
 
-  onSubscribe(id: string) {
-    this.subSvc.subscribe(id).subscribe(() => this.refresh());
-  }
-
-  saveProfile() {
-    localStorage.setItem('firstname', this.firstname());
-    localStorage.setItem('lastname', this.lastname());
-    localStorage.setItem('userEmail', this.email());
-    alert("Profile saved!");
-  }
-
-  refresh() {
-    this.subSvc.getStatus().subscribe(st => {
-      this.status.set(st);
-      this.calculateUsage();
-    });
-  }
-
-  // ------------------------------------
-  // PLAN LIMITS (Backend still missing)
-  // ------------------------------------
-  getMaxSubjects() {
-    const id = this.status()?.plan?.id;
-    switch (id) {
-      case 'starter': return 2;
-      case 'pro': return 8;
-      case 'premium': return 25;
-      default: return 1;
-    }
-  }
+  // saveProfile() {
+  //   localStorage.setItem('firstname', this.firstname());
+  //   localStorage.setItem('lastname', this.lastname());
+  //   localStorage.setItem('userEmail', this.email());
+  //   alert("Profile saved!");
+  // }
 
   // --------------------------
   // DONUT CALCULATION
@@ -124,5 +139,56 @@ export class Subscription implements OnInit {
     const innerPercent = Math.min(saved / savedLimit, 1);
     this.innerDashArray = `${this.innerCircumference * innerPercent} ${this.innerCircumference * (1 - innerPercent)}`;
     this.innerDashOffset = `${this.innerCircumference * innerPercent}`;
+  }
+
+  switchPlan(planCode: string) {
+    this.pageLoading = true;
+    if (planCode == "free2play") {
+      this.loadText = "Cancelling subscription...";
+      this.subscriptionService.cancel().subscribe({
+        next: (response) => {
+          this.notify.showSuccess("Subscription cancelled successfully.");
+          window.location.reload();
+        },
+        error: (err) => {
+          this.notify.showError(err.error.message || "Failed to cancel subscription. Please try again later.");
+        },
+        complete: () => {
+          this.pageLoading = false;
+          this.cdr.detectChanges();
+        }
+      });
+    } else {
+      this.loadText = "Redirecting to payment gateway...";
+      this.subscriptionService.subscribe(planCode).subscribe({
+        next: (response) => {
+          window.open(response.transaction.authorization_url, '_blank');
+          this.loadText = "Waiting for payment verification...";
+          this.cdr.detectChanges();
+          this.socket = io(environment.apiUrl.slice(0, -4), {
+            withCredentials: true
+          });
+      
+          this.socket.emit("join-email-room", this.email());
+        
+          this.socket.on("payment-successful", () => {
+            this.notify.showSuccess("Payment successfully processed.");
+            window.location.reload();
+            this.pageLoading = false;
+          });
+
+          this.socket.on("payment-failed", () => {
+            this.notify.showError("Payment failed. Please try again.");
+            this.pageLoading = false;
+            this.cdr.detectChanges();
+          });
+        },
+        error: (err) => {
+          this.notify.showError(err.error.message || "Failed to initiate subscription. Please try again later.");
+          this.pageLoading = false;
+          this.cdr.detectChanges();
+        }
+      });
+    }
   }
 }

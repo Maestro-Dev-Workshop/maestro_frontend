@@ -3,6 +3,8 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   // Home
   { path: '', loadComponent: () => import('./pages/home/home/home').then(m => m.Home) },
+  { path: 'privacy-policy', loadComponent: () => import('./pages/home/privacy-policy/privacy-policy').then(m => m.PrivacyPolicy) },
+  { path: 'terms-of-service', loadComponent: () => import('./pages/home/terms-of-service/terms-of-service').then(m => m.TermsOfService) },
 
   // Auth
   { path: 'signup', loadComponent: () => import('./pages/auth/signup/signup').then(m => m.Signup) },
@@ -13,6 +15,9 @@ export const routes: Routes = [
   // Dashboard
   { path: 'dashboard', loadComponent: () => import('./pages/dashboard/subjects/subjects').then(m => m.Subjects) },
   { path: 'dashboard/subscription', loadComponent: () => import('./pages/dashboard/subscription/subscription').then(m => m.Subscription) },
+  { path: 'dashboard/verify-payment', loadComponent: () => import('./pages/dashboard/verify-payment/verify-payment').then(m => m.VerifyPayment) },
+
+  { path: 'subscription-test', loadComponent: () => import('./pages/dashboard/subscription/subscription').then(m => m.Subscription) },
 
   // Subject Creation (stepper flow, could be nested later if you want)
   { path: 'subject-create/:sessionId/naming-upload', loadComponent: () => import('./pages/subject-create/naming-upload/naming-upload').then(m => m.NamingUpload) },
