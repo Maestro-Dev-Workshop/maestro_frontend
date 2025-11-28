@@ -15,6 +15,7 @@ export const routes: Routes = [
   // Dashboard
   { path: 'dashboard', loadComponent: () => import('./pages/dashboard/subjects/subjects').then(m => m.Subjects) },
   { path: 'dashboard/subscription', loadComponent: () => import('./pages/dashboard/subscription/subscription').then(m => m.Subscription) },
+  { path: 'dashboard/verify-payment', loadComponent: () => import('./pages/dashboard/verify-payment/verify-payment').then(m => m.VerifyPayment) },
 
   { path: 'subscription-test', loadComponent: () => import('./pages/dashboard/subscription/subscription').then(m => m.Subscription) },
 

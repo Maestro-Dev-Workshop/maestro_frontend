@@ -7,7 +7,7 @@ import { Plan, SubscriptionStatus } from '../models/subscription.model';
 export class SubscriptionService {
   http = inject(HttpBaseService);
 
-  getPlans(): Observable<any[]> {
+  getPlans(): Observable<any> {
     return this.http.get('subscription/plans');
   }
 

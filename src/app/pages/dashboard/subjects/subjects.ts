@@ -66,6 +66,7 @@ export class Subjects implements OnInit {
     this.subscriptionService.getSubscription().subscribe({
       next: (response) => {
         this.subscriptionData = response.subscription;
+        console.log(this.subscriptionData)
         this.cdr.detectChanges();
       },
       error: (res) => {

@@ -55,11 +55,10 @@ export class QuestionSettings implements OnInit {
   ngOnInit(): void {
     this.loading = true;
     this.subscriptionService.getSubscription().subscribe({
-      next: (data) => {
-        if (data && data.plan) {
-          this.maxExerciseQuestions = data.plan.max_exercise_questions_per_lesson || 3;
-          this.maxExamQuestions = data.plan.max_exam_questions_per_lesson || 10;
-        }
+      next: (response) => {
+        console.log(response);
+        this.maxExerciseQuestions = response.subscription.plan.exercise_question_count || 3;
+        this.maxExamQuestions = response.subscription.plan.exam_question_count || 10;
       },
       error: (err) => {
         console.error("Failed to fetch subscription data", err);
