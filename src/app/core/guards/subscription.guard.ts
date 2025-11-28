@@ -14,14 +14,15 @@ export class SubscriptionGuard implements CanActivate {
   ) {}
 
   canActivate() {
-    return this.subSvc.getStatus().pipe(
-      map(st => {
-        if (!st.isActive) {
-          this.router.navigate(['/dashboard/subscription']);
-          return false;
-        }
-        return true;
-      })
-    );
+    // return this.subSvc.getStatus().pipe(
+    //   map(st => {
+    //     if (!st.isActive) {
+    //       this.router.navigate(['/dashboard/subscription']);
+    //       return false;
+    //     }
+    //     return true;
+    //   })
+    // );
+    return true;
   }
 }

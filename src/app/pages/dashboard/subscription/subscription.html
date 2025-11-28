@@ -1,18 +1,35 @@
 <app-header class="z-10"></app-header>
 
+@if (pageLoading) {
+  <div class="fixed inset-0 bg-white bg-opacity-90 z-50 flex items-center justify-center">
+    <div class="flex flex-col items-center">
+      <img src="images/spinner.gif" alt="" class="w-24 mb-4">
+      <span class="text-4xl">{{loadText}}</span>
+    </div>
+  </div>
+}
+
 <div class="flex flex-row w-full min-h-[calc(100vh-80px)] bg-gray-50 border-t border-gray-300">
 
+  <!-- ======================= -->
   <!-- SIDEBAR -->
-  <aside class="w-64 bg-white border-r border-gray-300 p-6">
+  <!-- ======================= -->
+  <aside class="w-64 bg-white border-r border-gray-300 p-6 hidden md:block">
 
     <div class="flex flex-row items-center">
       <button class="rounded-full p-3 bg-prussian-blue-800 lg:hover:bg-prussian-blue-500" routerLink="/dashboard">
         <img src="images/subject-icon-white.svg" alt="" class="w-5">
       </button>
-      <span class="text-prussian-blue-900 lg:hover:text-prussian-blue-500 mx-4 cursor-pointer font-medium" routerLink="/dashboard">Back to Subjects</span>
+      <span class="text-prussian-blue-900 lg:hover:text-prussian-blue-500 mx-4 cursor-pointer font-medium"
+            routerLink="/dashboard">
+        Back to Subjects
+      </span>
     </div>
 
     <nav class="flex flex-col space-y-3 mt-4">
+
+      <!-- ACCOUNT REMOVED — COMMENTED OUT -->
+      <!--
       <button
         class="text-left px-3 py-2 lg:hover:bg-gray-100"
         [ngClass]="{'border-l-4 border-prussian-blue-900': activeTab() === 'account'}"
@@ -20,6 +37,7 @@
       >
         Account
       </button>
+      -->
 
       <button
         class="text-left px-3 py-2 lg:hover:bg-gray-100"
@@ -29,108 +47,66 @@
         Billing & Usage
       </button>
     </nav>
+
   </aside>
 
 
 
-  <!-- MAIN -->
-  <main class="flex-1 p-10 overflow-y-auto">
-
-    <!-- ACCOUNT TAB -->
-    @if (activeTab() === 'account') {
-
-      <h2 class="text-xl font-semibold mb-8">Your Profile</h2>
-
-      <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-300">
-
-        <div class="flex items-center mb-8">
-          <img src="images/profile-icon.svg" class="w-28 h-28 rounded-xl border object-cover">
-          <button class="ml-6 px-4 py-2 bg-prussian-blue-900 text-white rounded-md">
-            Upload Picture
-          </button>
-        </div>
-
-        <div class="grid grid-cols-2 gap-6 mb-6">
-          <div>
-            <label class="text-sm font-medium block mb-1">First Name</label>
-            <input [(ngModel)]="firstname" class="border rounded-md px-3 py-2 w-full">
-          </div>
-
-          <div>
-            <label class="text-sm font-medium block mb-1">Last Name</label>
-            <input [(ngModel)]="lastname" class="border rounded-md px-3 py-2 w-full">
-          </div>
-        </div>
-
-        <div class="mb-6">
-          <label class="text-sm font-medium block mb-1">Email</label>
-          <input [(ngModel)]="email" type="email" class="border rounded-md px-3 py-2 w-full">
-        </div>
-
-        <button 
-          class="px-6 py-2 bg-prussian-blue-900 text-white rounded-md"
-          (click)="saveProfile()"
-        >
-          Save Changes
-        </button>
-
-      </div>
-    }
+  <!-- ======================= -->
+  <!-- MAIN CONTENT -->
+  <!-- ======================= -->
+  <main class="flex-1 p-6 sm:p-10 overflow-y-auto">
 
 
-
-    <!-- BILLING TAB -->
+    <!-- ============================================================ -->
+    <!-- BILLING TAB CONTENT (ACCOUNT TAB HIDDEN) -->
+    <!-- ============================================================ -->
     @if (activeTab() === 'billing') {
 
-      @let st = status();
-
-
-      <!-- USAGE -->
+      <!-- ======================= -->
+      <!-- USAGE SECTION -->
+      <!-- ======================= -->
       <h2 class="text-xl font-semibold mb-6">Usage</h2>
       <div class="p-[1px] bg-prussian-blue-800 mb-10"></div>
-      <div class="bg-prussian-blue-100 border border-gray-300 p-10 rounded-xl shadow-sm border flex items-center gap-10 mb-14">
 
-        <!-- DONUT -->
-        <div class="relative w-56 h-56">
-          <svg width="200" height="200" class="transform -rotate-90">
+      <div class="bg-prussian-blue-100 border border-gray-300 p-6 sm:p-10 rounded-xl shadow-sm  
+                  flex flex-col md:flex-row items-center md:items-start gap-10 mb-14">
 
-            <!-- OUTER BACKGROUND -->
+        <!-- ===== DONUT CHART (Responsive + Animated) ===== -->
+        <div class="relative w-40 h-40 sm:w-56 sm:h-56">
+          <svg viewBox="0 0 200 200" class="w-full h-full transform -rotate-90">
+
+            <!-- OUTER BG -->
             <circle cx="100" cy="100" r="80"
-                    stroke="#E5E7EB" stroke-width="12"
-                    fill="none" />
+                    stroke="#E5E7EB" stroke-width="12" fill="none" />
 
             <!-- OUTER PROGRESS -->
             <circle
               cx="100" cy="100" r="80"
-              stroke="#0D1B2A"
-              stroke-width="12"
-              fill="none"
-              stroke-linecap="round"
+              stroke="#0D1B2A" stroke-width="12" fill="none" stroke-linecap="round"
               [attr.stroke-dasharray]="outerDashArray"
               [attr.stroke-dashoffset]="outerDashOffset"
+              class="transition-all duration-[1200ms] ease-out"
             />
 
-            <!-- INNER BACKGROUND -->
+            <!-- INNER BG -->
             <circle cx="100" cy="100" r="55"
-                    stroke="#E5E7EB" stroke-width="12"
-                    fill="none" />
+                    stroke="#E5E7EB" stroke-width="12" fill="none" />
 
             <!-- INNER PROGRESS -->
             <circle
               cx="100" cy="100" r="55"
-              stroke="#D4A401"
-              stroke-width="12"
-              fill="none"
-              stroke-linecap="round"
+              stroke="#D4A401" stroke-width="12" fill="none" stroke-linecap="round"
               [attr.stroke-dasharray]="innerDashArray"
               [attr.stroke-dashoffset]="innerDashOffset"
+              class="transition-all duration-[1200ms] ease-out"
             />
 
           </svg>
         </div>
 
-        <!-- TEXT -->
-        <div class="flex flex-col space-y-6">
+        <!-- ===== USAGE TEXT ===== -->
+        <div class="flex flex-col space-y-6 sm:space-y-8">
 
           <div>
             <p class="font-semibold text-gray-900 flex items-center">
@@ -151,110 +127,50 @@
               {{ savedLessons }}/{{ savedLimit }} personalized lessons saved
             </p>
           </div>
-
         </div>
 
       </div>
 
 
-      <!-- YOUR PLAN -->
+
+
+      <!-- ======================= -->
+      <!-- PLAN SECTION -->
+      <!-- ======================= -->
       <h2 class="text-xl font-semibold mb-8">Your Plan</h2>
       <div class="p-[1px] bg-prussian-blue-800 mb-10"></div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
 
-        <!-- STARTER -->
-        <div class="rounded-xl border border-gray-300 shadow-sm p-8 bg-[#e8eef2] min-h-[450px] flex flex-col">
-          <img src="images/starblack.svg" class="w-4 mr-2">
-          <h3 class="text-lg font-semibold mb-2">Starter</h3>
+      <!-- ======================= -->
+      <!-- PLANS -->
+      <!-- ======================= -->
+      <div class="overflow-x-auto scrollbar-hide mb-10">
+        <div class="flex space-x-4 min-w-max">
 
-          <p class="text-3xl font-bold">₦0 <span class="text-sm font-light">/per month</span></p>
-          <p class="text-sm text-gray-600 mt-1">For curious learners.</p>
-          <hr class="mt-4 w-full border-t gradient-border-purple" />
-
-          <ul class="mt-6 space-y-3 text-sm text-gray-700 flex-1">
-            <li class="flex"><img src="images/check.svg" class="w-4 mr-2">2 lessons / month</li>
-            <li class="flex"><img src="images/check.svg" class="w-4 mr-2">Store 5 lessons</li>
-            <li class="flex"><img src="images/check.svg" class="w-4 mr-2">Upload 3MB</li>
-          </ul>
-
-          @if (st?.plan?.id === 'starter') {
-            <button class="mt-8 w-full py-2 bg-prussian-blue-900 text-white rounded-md">
-              Current Plan
-            </button>
-          } @else {
-            <button 
-              class="mt-8 w-full py-2 border border-prussian-blue-900 text-prussian-blue-900 rounded-md"
-              (click)="onSubscribe('starter')"
-            >
-              Switch to Starter
-            </button>
-          }
-        </div>
-
-
-
-        <!-- PRO -->
-        <div class="rounded-xl border shadow-sm p-8 bg-black text-white min-h-[450px] flex flex-col">
-          <img src="images/starwhite.svg" class="w-4 mr-2">
-          <h3 class="text-lg font-semibold mb-2">Pro</h3>
-
-          <p class="text-3xl font-bold">₦8,000 
-            <span class="text-sm text-gray-300 font-light">/per month</span>
-          </p>
-          <p class="text-sm text-gray-300 mt-1">For consistent learners.</p>
-          <hr class="mt-4 w-full border-t gradient-border-white" />
-
-          <ul class="mt-6 space-y-3 text-sm text-gray-200 flex-1">
-            <li class="flex"><img src="images/whitecheck.svg" class="w-4 mr-2">8 lessons / month</li>
-            <li class="flex"><img src="images/whitecheck.svg" class="w-4 mr-2">Store 20 lessons</li>
-            <li class="flex"><img src="images/whitecheck.svg" class="w-4 mr-2">Upload 10MB</li>
-          </ul>
-
-          @if (st?.plan?.id !== 'pro') {
-            <button 
-              class="mt-8 w-full py-2 bg-white text-black rounded-md"
-              (click)="onSubscribe('pro')"
-            >
-              Upgrade to Pro
-            </button>
-          } @else {
-            <button class="mt-8 w-full py-2 bg-gray-700 text-gray-300 rounded-md">
-              Current Plan
-            </button>
-          }
-        </div>
-
-
-
-        <!-- PREMIUM -->
-        <div class="rounded-xl border shadow-sm p-8 bg-black text-white min-h-[450px] flex flex-col">
-          <img src="images/premiumwhite.svg" class="w-4 mr-2">  
-          <h3 class="text-lg font-semibold mb-2">Premium</h3>
-
-          <p class="text-3xl font-bold">₦20,000 
-            <span class="text-sm text-gray-300 font-light">/per month</span>
-          </p>
-          <p class="text-sm text-gray-300 mt-1">For serious learners.</p>
-          <hr class="mt-4 w-full border-t gradient-border-white" />
-
-          <ul class="mt-6 space-y-3 text-sm text-gray-200 flex-1">
-            <li class="flex"><img src="images/whitecheck.svg" class="w-4 mr-2">25 lessons / month</li>
-            <li class="flex"><img src="images/whitecheck.svg" class="w-4 mr-2">Store 100 lessons</li>
-            <li class="flex"><img src="images/whitecheck.svg" class="w-4 mr-2">Upload 20MB</li>
-          </ul>
-
-          @if (st?.plan?.id !== 'premium') {
-            <button 
-              class="mt-8 w-full py-2 bg-white text-black rounded-md"
-              (click)="onSubscribe('premium')"
-            >
-              Upgrade to Premium
-            </button>
-          } @else {
-            <button class="mt-8 w-full py-2 bg-gray-700 text-gray-300 rounded-md">
-              Current Plan
-            </button>
+          @for (plan of plans(); track $index) {
+            <!-- PLAN CARD TEMPLATE -->
+            <div [class]="`rounded-xl w-64 border border-gray-300 shadow-sm p-8 min-h-[450px] flex flex-col 
+              ${status()?.plan_code == plan.code ? 'bg-[#e8eef2] text-black' : 'bg-black text-white'}`">
+              <img [src]="`images/${status()?.plan_code == plan.code ? 'starblack' : 'starwhite'}.svg`" class="w-4 mb-2">  
+              <h3 class="text-lg font-semibold">{{plan.name}}</h3>
+              <!-- ${status()?.plan_code == plan.code ? '' : ''} -->
+              <p class="text-3xl font-bold mt-1">₦{{plan.price | number:'1.0-0'}} <span [class]="`text-sm font-light ${status()?.plan_code == plan.code ? '' : 'text-gray-300'}`">/month</span></p>
+              <p [class]="`text-sm ${status()?.plan_code == plan.code ? '' : 'text-gray-300'} mt-1`">{{plan.description}}</p>
+    
+              <hr class="mt-4 border-t border-gray-600" />
+    
+              <ul [class]="`mt-6 space-y-3 text-sm ${status()?.plan_code == plan.code ? '' : 'text-gray-100'} flex-1`">
+                <li class="flex"><img [src]="`images/${status()?.plan_code == plan.code ? 'check' : 'whitecheck'}.svg`" class="w-4 mr-2">{{plan.monthly_subject_creations}} lessons / month</li>
+                <li class="flex"><img [src]="`images/${status()?.plan_code == plan.code ? 'check' : 'whitecheck'}.svg`" class="w-4 mr-2">Store {{plan.subject_capacity}} lessons</li>
+                <li class="flex"><img [src]="`images/${status()?.plan_code == plan.code ? 'check' : 'whitecheck'}.svg`" class="w-4 mr-2">Upload {{plan.single_file_size}}MB</li>
+              </ul>
+    
+              @if (status()?.plan_code !== plan.code) {
+                <button class="mt-6 w-full py-2 bg-white text-black rounded-md" (click)="switchPlan(plan.code)">Switch to {{plan.name}}</button>
+              } @else {
+                <button class="mt-6 w-full py-2 border border-prussian-blue-900 text-prussian-blue-900 rounded-md cursor-default">Current Plan</button>
+              }
+            </div>
           }
         </div>
 
