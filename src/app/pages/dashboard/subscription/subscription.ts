@@ -74,18 +74,15 @@ export class Subscription implements OnInit {
 
     this.subscriptionService.getPlans().subscribe({
       next: (response) => {
-        console.log(response)
         this.plans.set(response.plans)
       }, 
       error: (err) => {
-        console.error('Error fetching plans:', err);
         this.notify.showError(err.error.message || "Failed to load subscription plans. Please try again later.");
       }
     });
 
     this.subscriptionService.getSubscription().subscribe({
       next: (response) => {
-        console.log(response)
         this.status.set(response.subscription);
 
         this.generatedLessons = this.status()?.subjects_created_this_month || 0
@@ -97,7 +94,6 @@ export class Subscription implements OnInit {
         this.pageLoading = false;
       },
       error: (err) => {
-        console.error('Error fetching subscription status:', err);
         this.notify.showError(err.error.message || "Failed to load subscription status. Please try again later.");
         this.pageLoading = false;
       },
@@ -155,7 +151,6 @@ export class Subscription implements OnInit {
           window.location.reload();
         },
         error: (err) => {
-          console.error('Error cancelling subscription:', err);
           this.notify.showError(err.error.message || "Failed to cancel subscription. Please try again later.");
         },
         complete: () => {
@@ -189,7 +184,6 @@ export class Subscription implements OnInit {
           });
         },
         error: (err) => {
-          console.error('Error initiating subscription:', err);
           this.notify.showError(err.error.message || "Failed to initiate subscription. Please try again later.");
           this.pageLoading = false;
           this.cdr.detectChanges();

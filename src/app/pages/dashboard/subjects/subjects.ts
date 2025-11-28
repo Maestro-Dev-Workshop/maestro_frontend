@@ -66,11 +66,9 @@ export class Subjects implements OnInit {
     this.subscriptionService.getSubscription().subscribe({
       next: (response) => {
         this.subscriptionData = response.subscription;
-        console.log(this.subscriptionData)
         this.cdr.detectChanges();
       },
       error: (res) => {
-        console.error('Error fetching subscription data:', res);
         this.notify.showError(res.error.message || "Failed to load subscription data. Please try again later.");
         this.cdr.detectChanges();
       }
@@ -78,14 +76,11 @@ export class Subjects implements OnInit {
 
     this.subjectService.getAllSubjects().subscribe({
       next: (response) => {
-        console.log(response)
         this.subjects = response.sessions;
-        console.log(this.subjects)
         this.loadingSubjects = false;
         this.cdr.detectChanges();
       },
       error: (res) => {
-        console.error('Error fetching subjects:', res);
         this.notify.showError(res.error.message || "Failed to load subjects. Please try again later.");
         this.loadingSubjects = false;
         this.cdr.detectChanges();
@@ -134,7 +129,6 @@ export class Subjects implements OnInit {
         this.cdr.detectChanges();
       },
       error: (res) => {
-        console.error('Error creating subject:', res);
         this.notify.showError(res.error.message || "Failed to create a new subject. Please try again later.");
         this.loadingCreate = false;
         this.cdr.detectChanges();
@@ -169,7 +163,6 @@ export class Subjects implements OnInit {
         this.cdr.detectChanges();
       },
       error: (res) => {
-        console.error('Error deleting subject:', res);
         this.notify.showError(res.error.message || "Failed to delete subject. Please try again later.");
         this.rightClickSubject = null;
         this.showDeleteConfirmation = false;

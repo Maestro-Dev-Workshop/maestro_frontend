@@ -22,7 +22,6 @@ export class VerifyEmail {
     if (token) {
       this.authService.verifyEmail(token || '').subscribe({
         next: (response) => {
-          console.log('Email verification successful', response);
           this.verified = true;
           this.cdr.detectChanges();
           // Close this tab after a short delay
@@ -31,7 +30,6 @@ export class VerifyEmail {
           }, 1000);
         },
         error: (res) => {
-          console.error('Email verification failed', res);
           this.notify.showError(res.error.message || 'Email verification failed. Please try again.');
           this.router.navigateByUrl('/signup');
         }

@@ -87,13 +87,10 @@ export class TopicPreferences implements OnInit {
     // Fetch topics from backend
     this.lessonService.getAllTopics(this.subjectId).subscribe({
       next: (response) => {
-        console.log(response)
         this.topics = response.topics
-        console.log(this.topics)
         this.cdr.detectChanges();
       },
       error: (res) => {
-        console.error('Error fetching topics:', res);
         this.notify.showError(res.error.message || "Failed to load topics. Please try again later.");
       }
     });
@@ -113,19 +110,13 @@ export class TopicPreferences implements OnInit {
       return
     }
 
-    // Here you would typically send the data to the backend
-    console.log(selectedTopics);
-    console.log(this.learningStyle);
-
     // Select topics
     this.subjectService.selectTopics(this.subjectId, selectedTopics.map((topic) => topic.id)).subscribe({
       next: (response) => {
-        console.log("Topics selected:", response);
         
         // Generate lesson
         this.subjectService.generateLesson(this.subjectId, this.learningStyle).subscribe({
           next: (response) => {
-            console.log("Lesson generated:", response);
             this.notify.showSuccess("Successfully generated lesson.")
             this.router.navigate([`/subject-create/${this.subjectId}/question-settings`])
             this.loading = false;
@@ -133,7 +124,6 @@ export class TopicPreferences implements OnInit {
 
           error: (res) => {
             this.loading = false;
-            console.error('Error generating lesson:', res);
             this.notify.showError(res.error.message || "Failed to generate lesson. Please try again later.");
             this.loading = false;
             this.cdr.detectChanges();
@@ -143,7 +133,6 @@ export class TopicPreferences implements OnInit {
       
       error: (res) => {
         this.loading = false;
-        console.error('Error selecting topics:', res);
         this.notify.showError(res.error.message || "Failed to select topics. Please try again later.");
         this.loading = false;
         this.cdr.detectChanges();

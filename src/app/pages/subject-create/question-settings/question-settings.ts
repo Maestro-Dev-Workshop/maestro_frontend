@@ -56,12 +56,10 @@ export class QuestionSettings implements OnInit {
     this.loading = true;
     this.subscriptionService.getSubscription().subscribe({
       next: (response) => {
-        console.log(response);
         this.maxExerciseQuestions = response.subscription.plan.exercise_question_count || 3;
         this.maxExamQuestions = response.subscription.plan.exam_question_count || 10;
       },
       error: (err) => {
-        console.error("Failed to fetch subscription data", err);
         this.notify.showError("Failed to fetch subscription data. Using default limits.");
       },
       complete: () => {
@@ -167,15 +165,12 @@ export class QuestionSettings implements OnInit {
     if (requests.length > 0) {
       forkJoin(requests).subscribe({
         next: (responses) => {
-          console.log("Generation responses:", responses);
           this.notify.showSuccess("Sucessfully generated practice questions.")
           this.subjectService.updateSessionStatus(this.subjectId, "In Progress").subscribe({
             next: () => {
-              console.log("Session status updated");
               this.router.navigate([`/lesson/${this.subjectId}`]);
             },
             error: (err) => {
-              console.error("Failed to update session status", err);
               this.notify.showError("Failed to update session status.");
               this.router.navigate([`/lesson/${this.subjectId}`]);
             },
@@ -183,7 +178,6 @@ export class QuestionSettings implements OnInit {
           });
         },
         error: (res) => {
-          console.error("Error during generation:", res);
           this.notify.showError(res.error.message || "Failed to generate practice questions. Please try again later.");
           this.loading = false;
           this.cdr.detectChanges();
@@ -197,7 +191,6 @@ export class QuestionSettings implements OnInit {
           this.router.navigate([`/lesson/${this.subjectId}`]);
         },
         error: (res) => {
-          console.error("Failed to update session status", res);
           this.notify.showError(res.error.message || "Failed to update session status.");
           this.router.navigate([`/lesson/${this.subjectId}`]);
         },

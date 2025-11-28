@@ -41,17 +41,14 @@ export class Login {
     } else {
       this.authService.login({ email: this.email.toLowerCase(), password: this.password }).subscribe({
         next: (response) => {
-          console.log('Login successful', response);
           localStorage.setItem('accessToken', response.accessToken);
           localStorage.setItem('refreshToken', response.refreshToken);
           const user = response.user;
-          console.log('Logged in user:', user);
           localStorage.setItem('userEmail', user.email);
           this.loading = false;
           this.router.navigateByUrl('/dashboard');
         },
         error: (res) => {
-          console.error('Login failed', res);
           this.notify.showError(res.error.message || 'Login failed. Please try again.');
           this.loading = false;
           this.cdr.detectChanges();

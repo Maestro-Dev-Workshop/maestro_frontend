@@ -61,13 +61,11 @@ export class Signup {
       this.authService.signup({ 
         first_name: this.firstname, last_name: this.lastname, email: this.email.toLowerCase(), password: this.password }).subscribe({
         next: (response) => {
-          console.log('Signup successful', response);
           this.notify.showSuccess('Verification email sent. Please check your inbox.');
           this.loading = false;
           this.router.navigateByUrl('/check-email', { state: { email: this.email.toLowerCase() } });
         },
         error: (res) => {
-          console.error('Signup failed', res);
           this.notify.showError(res.error.message || 'Signup failed. Please try again.');
           this.loading = false;
           this.cdr.detectChanges();

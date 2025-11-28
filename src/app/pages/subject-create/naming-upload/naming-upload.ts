@@ -148,7 +148,6 @@ export class NamingUpload implements OnInit {
         this.cdr.detectChanges();
       },
       error: (res) => {
-        console.error('Error fetching subscription data:', res);
         this.notify.showError(res.error.message || "Failed to load subscription data. Please try again later.");
         this.cdr.detectChanges();
       }
@@ -157,7 +156,6 @@ export class NamingUpload implements OnInit {
     // Fetch details of the subject if needed
     this.subjectService.getSubject(this.subjectId).subscribe({
       next: (response) => {
-        console.log(response);
         this.subject = response.session;
         this.subjectName = this.subject.name || '';
         if (this.subject.status !== 'pending naming' && this.subject.status !== 'pending document upload') {
@@ -166,7 +164,6 @@ export class NamingUpload implements OnInit {
         this.cdr.detectChanges();
       },
       error: (res) => {
-        console.error('Error fetching subject details:', res);
         this.notify.showError(res.error.message || 'Failed to load subject details. Please try again later.');
       }
     });
@@ -187,17 +184,12 @@ export class NamingUpload implements OnInit {
       return;
     }
   
-    console.log('Subject Name:', this.subjectName);
-    console.log('Files:', this.files);
-    console.log('Stage 0' + this.loading);
-  
     // 👉 Decide whether to name subject or skip directly
     iif(
       () => this.subject.status === 'pending naming',
       // ✅ Case 1: Subject needs naming → call nameSubject first
       this.subjectService.nameSubject(this.subjectId, this.subjectName).pipe(
         tap((response) => {
-          console.log('Stage 1 (naming)', this.loading, response);
           this.subject.status = 'pending document upload'; // Update status locally
         })
       ),
@@ -210,7 +202,6 @@ export class NamingUpload implements OnInit {
           // ✅ Skip ingest → label only
           this.subjectService.labelDocuments(this.subjectId).pipe(
             tap((labelResponse) => {
-              console.log('Stage 2 (skipped ingest)', this.loading, labelResponse);
               this.notify.showSuccess("Topics successfully identified.");
               this.router.navigate([`/subject-create/${this.subjectId}/topic-preferences`]);
             })
@@ -218,7 +209,6 @@ export class NamingUpload implements OnInit {
           // ✅ Ingest then label
           this.subjectService.ingestDocuments(this.subjectId, this.files).pipe(
             tap(() => {
-              console.log('Stage 2 (ingest)', this.loading);
               this.subject.status = 'pending topic labelling'; // Update status locally
               this.uploadedDocs = true; // Prevent further uploads
               this.notify.showSuccess('Successfully ingested documents. Identifying topics...');
@@ -226,7 +216,6 @@ export class NamingUpload implements OnInit {
             switchMap(() =>
               this.subjectService.labelDocuments(this.subjectId).pipe(
                 tap((labelResponse) => {
-                  console.log('Stage 3 (label)', this.loading, labelResponse);
                   this.notify.showSuccess("Topics successfully identified.");
                   this.router.navigate([`/subject-create/${this.subjectId}/topic-preferences`]);
                 })
@@ -236,7 +225,6 @@ export class NamingUpload implements OnInit {
         )
       ),
       catchError((res) => {
-        console.error('Error in subject creation flow:', res);
         this.notify.showError(res.error.message || 'Something went wrong. Please try again later.');
         return EMPTY;
       }),

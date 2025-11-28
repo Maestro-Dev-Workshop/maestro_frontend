@@ -22,7 +22,6 @@ export class CheckEmail implements OnInit {
   constructor(private router: Router, private cdr: ChangeDetectorRef) {
     const nav = this.router.getCurrentNavigation();
     this.email = nav?.extras?.state?.['email'];
-    console.log('Got email:', this.email);
     this.startResendTimer();
   }
 
@@ -61,14 +60,12 @@ export class CheckEmail implements OnInit {
     }
     this.authService.resendVerificationEmail(this.email || '').subscribe({
       next: (response) => {
-        console.log('Resend verification email successful', response);
         this.notify.showSuccess('Verification email resent! Please check your inbox.');
         this.startResendTimer();
         this.loading = false;
         this.cdr.detectChanges();
       },
       error: (res) => {
-        console.error('Resend verification email failed', res);
         this.notify.showError(res.error.message || 'Failed to resend verification email. Please try again.');
         this.loading = false;
         this.cdr.detectChanges();
