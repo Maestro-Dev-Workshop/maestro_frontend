@@ -169,13 +169,12 @@ export class Subscription implements OnInit {
         next: (response) => {
           window.open(response.transaction.authorization_url, '_blank');
           this.loadText = "Waiting for payment verification...";
+          this.cdr.detectChanges();
           this.socket = io(environment.apiUrl.slice(0, -4), {
             withCredentials: true
           });
       
-          if (this.email) {
-            this.socket.emit("join-email-room", this.email);
-          }
+          this.socket.emit("join-email-room", this.email());
         
           this.socket.on("payment-successful", () => {
             this.notify.showSuccess("Payment successfully processed.");
