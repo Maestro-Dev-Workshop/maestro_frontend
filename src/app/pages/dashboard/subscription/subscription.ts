@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -63,7 +63,8 @@ export class Subscription implements OnInit {
   constructor(
     private subscriptionService: SubscriptionService,
     private notify: NotificationService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -102,6 +103,7 @@ export class Subscription implements OnInit {
       },
       complete: () => {
         this.pageLoading = false;
+        this.cdr.detectChanges();
       }
     });
 
@@ -158,6 +160,7 @@ export class Subscription implements OnInit {
         },
         complete: () => {
           this.pageLoading = false;
+          this.cdr.detectChanges();
         }
       });
     } else {
@@ -183,12 +186,14 @@ export class Subscription implements OnInit {
           this.socket.on("payment-failed", () => {
             this.notify.showError("Payment failed. Please try again.");
             this.pageLoading = false;
+            this.cdr.detectChanges();
           });
         },
         error: (err) => {
           console.error('Error initiating subscription:', err);
           this.notify.showError(err.error.message || "Failed to initiate subscription. Please try again later.");
           this.pageLoading = false;
+          this.cdr.detectChanges();
         }
       });
     }

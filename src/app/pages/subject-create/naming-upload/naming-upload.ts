@@ -88,11 +88,11 @@ export class NamingUpload implements OnInit {
           largeFiles.push(file.name);
         // Count check
         } else if (totalFilesCount == this.max_file_count) {
-          this.notify.showError("You can upload a maximum of 15 files per subject.");
+          this.notify.showError(`You can upload a maximum of ${this.max_file_count} files per subject for your current plan.`);
           break;
         // Total size check
         } else if (totalFilesSize + file.size > this.total_files_size *(1024 ** 2)) { // 50MB total cap
-          this.notify.showError("Total upload size cannot exceed 50MB per subject.");
+          this.notify.showError(`Total upload size cannot exceed ${this.total_files_size}MB per subject for your current plan.`);
           break;
         // All checks passed
         } else {
@@ -106,7 +106,7 @@ export class NamingUpload implements OnInit {
         this.notify.showError(`Unsupported file types: ${invalidFiles.join(', ')}`);
       }
       if (largeFiles.length) {
-        this.notify.showError(`Files too large: ${largeFiles.join(", ")}`);
+        this.notify.showError(`Files too large for your current plan: ${largeFiles.join(", ")}`);
       }
       if (validFiles.length) {
         this.files = [...this.files, ...validFiles];
