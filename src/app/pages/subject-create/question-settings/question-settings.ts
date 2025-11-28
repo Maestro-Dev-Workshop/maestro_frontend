@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, ViewChild } from '@angular/core';
 import { Header } from '../../../shared/components/header/header';
 import { CreationStepTab } from '../creation-step-tab/creation-step-tab';
 import { FormsModule, NgModel } from '@angular/forms';
@@ -7,6 +7,7 @@ import { SubjectsService } from '../../../core/services/subjects.service';
 import { forkJoin, Observable } from 'rxjs';
 import { NotificationService } from '../../../core/services/notification.service'; // <-- Add this import
 import { PreferenceValidator } from '../../../shared/directives/preference-validator';
+import { SubscriptionService } from '../../../core/services/subscription.service';
 
 class ExerciseSettings {
   include: boolean = false
@@ -28,15 +29,16 @@ class ExamSettings {
   templateUrl: './question-settings.html',
   styleUrl: './question-settings.css'
 })
-export class QuestionSettings {
+export class QuestionSettings implements OnInit {
   exerciseSettings = new ExerciseSettings();
   examSettings = new ExamSettings();
   loading = false;
   subjectId = '';
-  maxExerciseQuestions = 10;
-  maxExamQuestions = 40;
+  maxExerciseQuestions = 3;
+  maxExamQuestions = 10;
   subjectService = inject(SubjectsService)
-  notify = inject(NotificationService); // <-- Inject notification service
+  notify = inject(NotificationService);
+  subscriptionService = inject(SubscriptionService)
 
   @ViewChild('exercisePreferenceCtrl') exercisePreferenceCtrl!: NgModel;
   // @ViewChild('exerciseCountCtrl') exerciseCountCtrl!: NgModel;
@@ -48,6 +50,26 @@ export class QuestionSettings {
     const url = window.location.pathname;
     const parts = url.split('/');
     this.subjectId = parts[parts.length - 2]; // Assuming the last part is the subjectId
+  }
+
+  ngOnInit(): void {
+    this.loading = true;
+    this.subscriptionService.getSubscription().subscribe({
+      next: (data) => {
+        if (data && data.plan) {
+          this.maxExerciseQuestions = data.plan.max_exercise_questions_per_lesson || 3;
+          this.maxExamQuestions = data.plan.max_exam_questions_per_lesson || 10;
+        }
+      },
+      error: (err) => {
+        console.error("Failed to fetch subscription data", err);
+        this.notify.showError("Failed to fetch subscription data. Using default limits.");
+      },
+      complete: () => {
+        this.loading = false;
+        this.cdr.detectChanges();
+      }
+    })
   }
 
   toggleExerciseType(event: any) {

@@ -6,6 +6,8 @@ import { SubjectModel } from '../../../core/models/subject.model';
 import { SubjectsService } from '../../../core/services/subjects.service';
 import { NotificationService } from '../../../core/services/notification.service';
 import { Confirmation } from '../../../shared/components/confirmation/confirmation';
+import { SubscriptionService } from '../../../core/services/subscription.service';
+import { SubscriptionStatus } from '../../../core/models/subscription.model';
 
 @Component({
   selector: 'app-subjects',
@@ -48,9 +50,11 @@ export class Subjects implements OnInit {
   loadingCreate = false;
   subjects: SubjectModel[] = [];
   subjectService = inject(SubjectsService)
+  subscriptionService = inject(SubscriptionService)
   notify = inject(NotificationService);
   rightClickSubject : SubjectModel | null = null;
   showDeleteConfirmation = false;
+  subscriptionData: SubscriptionStatus | null = null;
   popup = {
     x: 0,
     y: 0,
@@ -59,6 +63,18 @@ export class Subjects implements OnInit {
   constructor(private router: Router, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
+    this.subscriptionService.getSubscription().subscribe({
+      next: (response) => {
+        this.subscriptionData = response.subscription;
+        this.cdr.detectChanges();
+      },
+      error: (res) => {
+        console.error('Error fetching subscription data:', res);
+        this.notify.showError(res.error.message || "Failed to load subscription data. Please try again later.");
+        this.cdr.detectChanges();
+      }
+    })
+
     this.subjectService.getAllSubjects().subscribe({
       next: (response) => {
         console.log(response)
@@ -88,6 +104,27 @@ export class Subjects implements OnInit {
 
   createNewSubject() {
     this.loadingCreate = true;
+
+    // Check subscription limits
+    if (
+      (this.subscriptionData?.subjects_created_this_month ?? 0) >=
+      (this.subscriptionData?.plan?.monthly_subject_creations ?? Infinity)
+    ) {
+      this.notify.showError("You have reached the monthly subject creation limit for your current subscription plan.");
+      this.loadingCreate = false;
+      this.cdr.detectChanges();
+      return;
+    }
+    if (
+      this.subjects.length >= 
+      (this.subscriptionData?.plan?.subject_capacity ?? Infinity)
+    ) {
+      this.notify.showError("You have reached the total subject limit for your current subscription plan.");
+      this.loadingCreate = false;
+      this.cdr.detectChanges();
+      return;
+    }
+
     this.subjectService.createSubject().subscribe({
       next: (response) => {
         const newSubjectId = response.session.id;

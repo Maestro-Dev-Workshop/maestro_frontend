@@ -7,6 +7,8 @@ import { SubjectsService } from '../../../core/services/subjects.service';
 import { NotificationService } from '../../../core/services/notification.service'; // <-- Add this import
 import { catchError, EMPTY, finalize, iif, of, switchMap, tap } from 'rxjs';
 import { SubjectNameValidator } from '../../../shared/directives/subject-name-validator';
+import { SubscriptionStatus } from '../../../core/models/subscription.model';
+import { SubscriptionService } from '../../../core/services/subscription.service';
 
 @Component({
   selector: 'app-naming-upload',
@@ -22,8 +24,12 @@ export class NamingUpload implements OnInit {
   isDragging = false;
   loading = false;
   uploadedDocs = false;
+  single_file_size = 3; // in MB
+  total_files_size = 10; // in MB
+  max_file_count = 5;
   subjectService = inject(SubjectsService);
-  notify = inject(NotificationService); // <-- Inject notification service
+  notify = inject(NotificationService);
+  subscriptionService = inject(SubscriptionService)
   allowedExtensions = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'epub'];
   acceptString = this.allowedExtensions.map(ext => '.' + ext).join(', ')
 
@@ -78,14 +84,14 @@ export class NamingUpload implements OnInit {
         if (!ext || !this.allowedExtensions.includes(ext)) {
           invalidFiles.push(file.name);
         // Size check
-        } else if (file.size > 20 * (1024 ** 2)) { // 20MB cap for now
+        } else if (file.size > this.single_file_size * (1024 ** 2)) { // 20MB cap for now
           largeFiles.push(file.name);
         // Count check
-        } else if (totalFilesCount == 15) {
+        } else if (totalFilesCount == this.max_file_count) {
           this.notify.showError("You can upload a maximum of 15 files per subject.");
           break;
         // Total size check
-        } else if (totalFilesSize + file.size > 50 *(1024 ** 2)) { // 50MB total cap
+        } else if (totalFilesSize + file.size > this.total_files_size *(1024 ** 2)) { // 50MB total cap
           this.notify.showError("Total upload size cannot exceed 50MB per subject.");
           break;
         // All checks passed
@@ -131,6 +137,23 @@ export class NamingUpload implements OnInit {
   }
 
   ngOnInit(): void {
+    this.subscriptionService.getSubscription().subscribe({
+      next: (response) => {
+        const subscriptionData: SubscriptionStatus | null = response.subscription;
+        if (subscriptionData && subscriptionData.plan) {
+          this.single_file_size = subscriptionData.plan.single_file_size || 3;
+          this.total_files_size = subscriptionData.plan.subject_total_files_size || 10;
+          this.max_file_count = subscriptionData.plan.subject_file_count || 5;
+        }
+        this.cdr.detectChanges();
+      },
+      error: (res) => {
+        console.error('Error fetching subscription data:', res);
+        this.notify.showError(res.error.message || "Failed to load subscription data. Please try again later.");
+        this.cdr.detectChanges();
+      }
+    })
+
     // Fetch details of the subject if needed
     this.subjectService.getSubject(this.subjectId).subscribe({
       next: (response) => {
