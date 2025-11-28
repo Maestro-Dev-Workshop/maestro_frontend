@@ -193,7 +193,6 @@ export class LessonPage implements OnInit {
       next: (response) => {
         this.chatHistory = response.history;
       }, error: (res) => {
-        console.error(`Error fetching chat history ${res}`)
         this.notify.showError(res.error.message || "Failed to load chat history. Please try again later.")
       },
     });
@@ -242,7 +241,6 @@ export class LessonPage implements OnInit {
             map((res) => {
               topic.subtopics = res.subtopics;
               topic.exercise = res.exercise;
-              console.log(topic.exercise)
               return topic;
             })
           )
@@ -289,7 +287,6 @@ export class LessonPage implements OnInit {
         this.cdr.detectChanges();
       },
       error: (res) => {
-        console.error('Failed to initialize subject content:', res);
         this.notify.showError(res.error.message || 'Failed to load lesson content. Please try again later.');
         this.subjectLoading = false;
         this.cdr.detectChanges();
@@ -335,7 +332,6 @@ export class LessonPage implements OnInit {
           this.updateProgress()
           this.checkForTopicCompleteness(topic_id)
         }, error: (res) => {
-          console.error(`Failed to mark subtopic as read: ${res}`)
           this.notify.showError(res.error.message || 'Failed to mark subtopic as read.')
         },
       });
@@ -343,7 +339,6 @@ export class LessonPage implements OnInit {
       this.chatOpen = false;
     }
     this.scrollToTop();
-    console.log(this.currentView)
   }
 
   updateProgress() {
@@ -379,11 +374,9 @@ export class LessonPage implements OnInit {
     const fraction = (completed / total)
     this.subjectService.updateSessionProgress(this.subjectId, fraction).subscribe({
       next: () => {
-        console.log("Progress updated successfully")
         const percentage = total > 0 ? Math.round(fraction * 100) : 0;
         console.log(`Progress: ${completed}/${total} (${percentage}%)`);
       }, error: (res) => {
-        console.error(`Failed to update progress: ${res}`)
         this.notify.showError(res.error.message || 'Failed to update progress.')
       },
     });
@@ -482,7 +475,6 @@ export class LessonPage implements OnInit {
   //
   toggleChatPopup() {
     this.chatOpen = !this.chatOpen
-    console.log("chat toggled")
   }
 
   capitalizeFirstLetter(str: string) {

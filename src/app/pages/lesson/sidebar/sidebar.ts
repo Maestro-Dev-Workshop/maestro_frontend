@@ -14,7 +14,7 @@ export class Sidebar {
   closeSidebar = output<void>();
 
   logContent() {
-    console.log(this.content());
+    return;
   }
 
   toggleExpandTopic(topic_id: string) {
@@ -25,7 +25,6 @@ export class Sidebar {
   }
 
   selectView(id: string, type: string) {
-    console.log(`Selected view: ${type} with ID: ${id}`);
     this.updateView.emit({ id, type });
     this.closeSidebar.emit();
   }

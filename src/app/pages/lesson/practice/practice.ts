@@ -47,7 +47,6 @@ export class Practice {
   goToQuestion(index: number) {
     this.currentIndex = index;
     this.question = this.currentView().content.questions[this.currentIndex];
-    console.log(this.question)
     this.changeQuestion.emit({id: this.question.id})
   }
 
@@ -75,7 +74,6 @@ export class Practice {
         option.selected = !option.selected;
       }
     }
-    console.log(this.currentView()?.content?.questions.find((q: any) => q.id === this.question.id)?.options);
   }
 
   toggleSubmit() {
@@ -118,7 +116,6 @@ export class Practice {
         essayCalls.push(
           this.lessonService.scoreEssayQuestion(this.subjectId(), question.id, question.essay_answer).pipe(
             tap((value) => {
-              console.log(value)
               if (value.correct) {
                 q.scored = true;
                 this.currentView().content.questions.find((q: any) => q.id === question.id).scored = true;
@@ -128,7 +125,6 @@ export class Practice {
               q.essay_feedback = question.essay_feedback = value.feedback;
             }),
             catchError(res => {
-              console.error(`Error scoring essay question: ${res}`);
               this.notify.showError(res.error.message || 'Failed to score an essay question.');
               return of(null);
             })
@@ -142,12 +138,10 @@ export class Practice {
     // save score observable
     let saveCall$: Observable<any>;
     if (this.currentView().type === 'exercise') {
-      console.log(questionData)
       saveCall$ = this.lessonService.saveExerciseScore(this.topicId(), this.currentView().id, correctCount, questionData).pipe(
         tap(() => this.exerciseCompleted.emit(this.topicId()))
         );
     } else if (this.currentView().type === 'exam') {
-      console.log(questionData)
       saveCall$ = this.lessonService.saveExamScore(this.subjectId(), this.currentView().id, correctCount, questionData);
     } else {
       saveCall$ = of(null);
@@ -167,7 +161,6 @@ export class Practice {
         this.cdr.detectChanges();
       },
       error: (res) => {
-        console.error('Failed to submit answers:', res);
         this.notify.showError(res.error.message || 'Failed to submit answers. Please try again.');
         this.loading = false;
         this.cdr.detectChanges();

@@ -10,7 +10,7 @@
     <!-- Subtopic Navigation -->
     <div class="flex flex-row ml-auto">
       <button 
-        [class]="`flex flex-row items-center mx-4 text-prussian-blue-900 hover:text-prussian-blue-500 disabled:text-prussian-blue-500 ${getPosition().includes('top') ? 'invisible' : ''}`" 
+        [class]="`flex flex-row items-center mx-4 text-prussian-blue-900 lg:hover:text-prussian-blue-500 disabled:text-prussian-blue-500 ${getPosition().includes('top') ? 'invisible' : ''}`" 
         (click)="prevSubtopic()"
         [disabled]="getPosition() === 'top'"
       >
@@ -18,7 +18,7 @@
         Previous
       </button>
       <button 
-        [class]="`flex flex-row items-center mx-4 text-prussian-blue-900 hover:text-prussian-blue-500 disabled:text-prussian-blue-500 ${getPosition().includes('bottom') ? 'invisible' : ''}`" 
+        [class]="`flex flex-row items-center mx-4 text-prussian-blue-900 lg:hover:text-prussian-blue-500 disabled:text-prussian-blue-500 ${getPosition().includes('bottom') ? 'invisible' : ''}`" 
         (click)="nextSubtopic()"
         [disabled]="getPosition() === 'bottom'"
       >
