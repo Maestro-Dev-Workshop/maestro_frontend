@@ -20,6 +20,8 @@ export class Subscription implements OnInit {
   firstname = signal('');
   lastname = signal('');
   email = signal('');
+  showMobileMenu = false;
+
 
   // --------------------------
   // SUBSCRIPTION SIGNALS

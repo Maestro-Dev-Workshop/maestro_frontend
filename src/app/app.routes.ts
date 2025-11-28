@@ -14,6 +14,8 @@ export const routes: Routes = [
   { path: 'dashboard', loadComponent: () => import('./pages/dashboard/subjects/subjects').then(m => m.Subjects) },
   { path: 'dashboard/subscription', loadComponent: () => import('./pages/dashboard/subscription/subscription').then(m => m.Subscription) },
 
+  { path: 'subscription-test', loadComponent: () => import('./pages/dashboard/subscription/subscription').then(m => m.Subscription) },
+
   // Subject Creation (stepper flow, could be nested later if you want)
   { path: 'subject-create/:sessionId/naming-upload', loadComponent: () => import('./pages/subject-create/naming-upload/naming-upload').then(m => m.NamingUpload) },
   { path: 'subject-create/:sessionId/topic-preferences', loadComponent: () => import('./pages/subject-create/topic-preferences/topic-preferences').then(m => m.TopicPreferences) },
