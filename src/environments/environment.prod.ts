@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://maestro-backend-staging.onrender.com/api', // deployed API
+  apiUrl: 'http://maestrobackend-production.up.railway.app/api', // deployed API
   beta: false
 };
