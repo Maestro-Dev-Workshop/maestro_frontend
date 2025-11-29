@@ -145,11 +145,11 @@
       <!-- PLANS -->
       <!-- ======================= -->
       <div class="overflow-x-auto scrollbar-hide mb-10">
-        <div class="flex space-x-4 min-w-max">
+        <div class="flex space-x-8 min-w-max">
 
           @for (plan of plans(); track $index) {
             <!-- PLAN CARD TEMPLATE -->
-            <div [class]="`rounded-xl w-64 border border-gray-300 shadow-sm p-8 min-h-[450px] flex flex-col 
+            <div [class]="`rounded-xl w-80 border border-gray-300 shadow-sm p-8 min-h-[450px] flex flex-col 
               ${status()?.plan_code == plan.code ? 'bg-[#e8eef2] text-black' : 'bg-black text-white'}`">
               <img [src]="`images/${status()?.plan_code == plan.code ? 'starblack' : 'starwhite'}.svg`" class="w-4 mb-2">  
               <h3 class="text-lg font-semibold">{{plan.name}}</h3>
@@ -162,7 +162,20 @@
               <ul [class]="`mt-6 space-y-3 text-sm ${status()?.plan_code == plan.code ? '' : 'text-gray-100'} flex-1`">
                 <li class="flex"><img [src]="`images/${status()?.plan_code == plan.code ? 'check' : 'whitecheck'}.svg`" class="w-4 mr-2">{{plan.monthly_subject_creations}} lessons / month</li>
                 <li class="flex"><img [src]="`images/${status()?.plan_code == plan.code ? 'check' : 'whitecheck'}.svg`" class="w-4 mr-2">Store {{plan.subject_capacity}} lessons</li>
-                <li class="flex"><img [src]="`images/${status()?.plan_code == plan.code ? 'check' : 'whitecheck'}.svg`" class="w-4 mr-2">Upload {{plan.single_file_size}}MB</li>
+                <li class="flex"><img [src]="`images/${status()?.plan_code == plan.code ? 'check' : 'whitecheck'}.svg`" class="w-4 mr-2">Upload {{plan.single_file_size}}MB files</li>
+                <li class="flex"><img [src]="`images/${status()?.plan_code == plan.code ? 'check' : 'whitecheck'}.svg`" class="w-4 mr-2">Total file sizes {{plan.subject_total_files_size}}MB</li>
+                <li class="flex"><img [src]="`images/${status()?.plan_code == plan.code ? 'check' : 'whitecheck'}.svg`" class="w-4 mr-2">{{plan.subject_file_count}} files per subject</li>
+                <li class="flex"><img [src]="`images/${status()?.plan_code == plan.code ? 'check' : 'whitecheck'}.svg`" class="w-4 mr-2">{{plan.exercise_question_count}} exercise questions</li>
+                <li class="flex"><img [src]="`images/${status()?.plan_code == plan.code ? 'check' : 'whitecheck'}.svg`" class="w-4 mr-2">{{plan.exam_question_count}} exam questions</li>
+                <li class="flex"><img [src]="`images/${status()?.plan_code == plan.code ? 'check' : 'whitecheck'}.svg`" class="w-4 mr-2">
+                  @if ((plan.chatbot_token_count ?? 0) <= 500000) {
+                    Limited Chatbot Interactions
+                  } @else if ((plan.chatbot_token_count ?? 0) <= 1000000) {
+                    Moderate Chatbot Interactions
+                  } @else {
+                    Extensive Chatbot Interactions
+                  }
+                </li>
               </ul>
     
               @if (status()?.plan_code !== plan.code) {
