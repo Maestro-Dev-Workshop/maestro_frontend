@@ -163,8 +163,9 @@ export class Subscription implements OnInit {
       this.subscriptionService.subscribe(planCode).subscribe({
         next: (response) => {
           window.open(response.transaction.authorization_url, '_blank');
-          this.loadText = "Waiting for payment verification...";
+          this.pageLoading = false;
           this.cdr.detectChanges();
+
           this.socket = io(environment.apiUrl.slice(0, -4), {
             withCredentials: true
           });
@@ -173,13 +174,14 @@ export class Subscription implements OnInit {
         
           this.socket.on("payment-successful", () => {
             this.notify.showSuccess("Payment successfully processed.");
-            window.location.reload();
-            this.pageLoading = false;
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
+              
           });
 
           this.socket.on("payment-failed", () => {
             this.notify.showError("Payment failed. Please try again.");
-            this.pageLoading = false;
             this.cdr.detectChanges();
           });
         },
