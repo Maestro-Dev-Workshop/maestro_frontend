@@ -5,11 +5,11 @@ import { LessonService } from '../../../core/services/lesson.service';
 import { catchError, forkJoin, Observable, of, switchMap, take, tap } from 'rxjs';
 import { MarkdownPipe } from '../../../shared/pipes/markdown-pipe';
 import { NotificationService } from '../../../core/services/notification.service';
-import { Confirmation } from '../../../shared/components/confirmation/confirmation';
+import { ConfirmService } from '../../../core/services/confirm';
 
 @Component({
   selector: 'app-practice',
-  imports: [FormsModule, MarkdownPipe, Confirmation],
+  imports: [FormsModule, MarkdownPipe],
   templateUrl: './practice.html',
   styleUrl: './practice.css'
 })
@@ -26,6 +26,7 @@ export class Practice {
   showSubmitConfirmation = false;
   notify = inject(NotificationService);
   lessonService = inject(LessonService);
+  confirmation = inject(ConfirmService);
 
   constructor(private cdr: ChangeDetectorRef) {}
 
@@ -76,13 +77,20 @@ export class Practice {
     }
   }
 
-  toggleSubmit() {
-    this.showSubmitConfirmation = !this.showSubmitConfirmation;
+  openSubmit() {
+    this.confirmation.open({
+      title: 'Submit Answers',
+      message: 'Are you sure you want to submit your answers? You will not be able to change them afterwards.',
+      okText: 'Submit',
+      cancelText: 'Cancel'
+    }).subscribe((confirmed) => {
+      if (confirmed) {
+        this.submitAnswers();
+      }
+    });
   }
 
   submitAnswers() {
-    this.toggleSubmit();
-
     this.loading = true;
 
     let correctCount = 0;

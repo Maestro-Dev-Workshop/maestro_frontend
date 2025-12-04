@@ -2,13 +2,13 @@ import { ChangeDetectorRef, Component, computed, inject, OnInit, signal } from '
 import { RouterLink, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../core/services/auth.service';
-import { Confirmation } from '../confirmation/confirmation';
 import { SubscriptionService } from '../../../core/services/subscription.service';
+import { ConfirmService } from '../../../core/services/confirm';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterLink, Confirmation],
+  imports: [CommonModule, RouterLink],
   templateUrl: './header.html'
 })
 export class Header implements OnInit {
@@ -22,6 +22,7 @@ export class Header implements OnInit {
   subjectsTotal = signal (10);
 
   subscriptionService = inject(SubscriptionService);
+  confirmation = inject(ConfirmService)
 
   subjectPercent = computed (() => {
     return (this.subjectsCreated() / this.subjectsTotal()) * 100;
@@ -40,8 +41,19 @@ export class Header implements OnInit {
     });
   }
 
-  openLogout() { this.showLogout.set(true); }
-  cancelLogout() { this.showLogout.set(false); }
+  openLogout() { 
+    this.confirmation.open({
+      title: 'Confirm Logout',
+      message: 'Are you sure you want to logout?',
+      okText: 'Logout',
+      cancelText: 'Cancel'
+    }).subscribe((confirmed) => {
+      if (confirmed) {
+        this.confirmLogout();
+      }
+    });
+  }
+
   confirmLogout() {
     this.auth.logout();
     this.showLogout.set(false);
