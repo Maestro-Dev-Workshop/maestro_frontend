@@ -65,17 +65,3 @@
   </div>
 }
 
-
-<!-- Confirm logout modal / component (Angular) -->
-@if (showLogout()) {
-  <app-confirmation
-    (cancel)="cancelLogout()"
-    (confirm)="confirmLogout()"
-    [title]="'Logout'"
-    [message]="'Are you sure you want to log out?'"
-    [acceptText]="'Yes, Logout'"
-    [cancelText]="'Cancel'"
-  >
-  </app-confirmation>
-}
-

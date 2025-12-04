@@ -5,13 +5,13 @@ import { CommonModule } from '@angular/common';
 import { SubjectModel } from '../../../core/models/subject.model';
 import { SubjectsService } from '../../../core/services/subjects.service';
 import { NotificationService } from '../../../core/services/notification.service';
-import { Confirmation } from '../../../shared/components/confirmation/confirmation';
 import { SubscriptionService } from '../../../core/services/subscription.service';
 import { SubscriptionStatus } from '../../../core/models/subscription.model';
+import { ConfirmService } from '../../../core/services/confirm';
 
 @Component({
   selector: 'app-subjects',
-  imports: [Header, CommonModule, Confirmation],
+  imports: [Header, CommonModule],
   templateUrl: './subjects.html',
   styleUrl: './subjects.css'
 })
@@ -52,6 +52,7 @@ export class Subjects implements OnInit {
   subjectService = inject(SubjectsService)
   subscriptionService = inject(SubscriptionService)
   notify = inject(NotificationService);
+  confirmation = inject(ConfirmService);
   rightClickSubject : SubjectModel | null = null;
   showDeleteConfirmation = false;
   subscriptionData: SubscriptionStatus | null = null;
@@ -148,8 +149,22 @@ export class Subjects implements OnInit {
     }
   }
 
-  openDelete() { this.showDeleteConfirmation = true; }
-  cancelDelete() { this.showDeleteConfirmation = false; }
+  openDelete() { 
+    this.notify.showSuccess("YS")
+    this.confirmation.open({
+      title: "Delete Subject",
+      message: `Are you sure you want to delete the subject "${this.rightClickSubject?.name}"? This action cannot be undone.`,
+      okText: "Delete",
+      cancelText: "Cancel"
+    }).subscribe((confirmed) => {
+      if (confirmed) {
+        this.deleteSubject();
+      } else {
+        this.rightClickSubject = null;
+      }
+    });
+  }
+  
   deleteSubject() {
     if (!this.rightClickSubject) {
       return;

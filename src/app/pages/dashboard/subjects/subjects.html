@@ -91,15 +91,3 @@
     </button>
   </div>
 }
-
-@if (showDeleteConfirmation) {
-  <app-confirmation
-    (cancel)="cancelDelete()"
-    (confirm)="deleteSubject()"
-    [title]="'Delete Subject'"
-    [message]="`Are you sure you want to delete '${rightClickSubject?.name}'?`"
-    [acceptText]="'Yes'"
-    [cancelText]="'No'"
-  >
-  </app-confirmation>
-}

@@ -1,4 +1,6 @@
-import { Component, EventEmitter, input, Output } from '@angular/core';
+import { Component, EventEmitter, input, OnInit, Output } from '@angular/core';
+import { ConfirmOptions, ConfirmService } from '../../../core/services/confirm';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-confirmation',
@@ -6,12 +8,30 @@ import { Component, EventEmitter, input, Output } from '@angular/core';
   templateUrl: './confirmation.html',
   styleUrl: './confirmation.css',
 })
-export class Confirmation {
-  @Output() confirm = new EventEmitter<void>();
-  @Output() cancel = new EventEmitter<void>();
+export class Confirmation implements OnInit {
+  show = false;
+  options!: ConfirmOptions;
+  response$!: Subject<boolean>;
 
-  title = input.required<string>();
-  message = input<string>("Are you sure?");
-  acceptText = input<string>("Yes");
-  cancelText = input<string>("No");
+  constructor(private confirmService: ConfirmService) {}
+
+  ngOnInit() {
+    this.confirmService.confirmation$.subscribe(({ options, response }) => {
+      this.options = {
+        okText: "Yes",
+        cancelText: "No",
+        title: "Are you sure?",
+        message: "Do you want to proceed?",
+        ...options
+      };
+      this.response$ = response;
+      this.show = true;
+    });
+  }
+
+  confirm(result: boolean) {
+    this.show = false;
+    this.response$.next(result);
+    this.response$.complete();
+  }
 }

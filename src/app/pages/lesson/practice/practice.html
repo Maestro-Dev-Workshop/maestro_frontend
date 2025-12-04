@@ -29,7 +29,7 @@
             [type]="`${question.type === 'multiple choice' ? 'radio' : 'checkbox'}`" 
             [name]="question.id" 
             [id]="option.id" 
-            class="m-2 accent-blue-900 cursor-pointer" 
+            class="m-2 accent-blue-900 cursor-pointer h-3" 
             [value]="option.id"
             [checked]="option.selected"
             (change)="toggleSelectOption(option.id)"
@@ -92,7 +92,7 @@
   <div class="flex flex-row items-center">
     <button 
       class="self-start w-max text-sm text-white bg-prussian-blue-800 m-4 px-12 py-3 rounded-lg lg:hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500 transition duration-100" 
-      (click)="toggleSubmit()"
+      (click)="openSubmit()"
       [disabled]="loading || !(currentView().content.score == null)"
     >
       Submit
@@ -103,15 +103,3 @@
     </div>
   </div>
 </div>
-
-@if (showSubmitConfirmation) {
-  <app-confirmation
-    [title]="'Submit '+currentView().type"
-    [message]="'Are you sure you want to submit your answers? Once submitted, you will not be able to change them.'"
-    [acceptText]="'Submit'"
-    [cancelText]="'Cancel'"
-    (confirm)="submitAnswers()"
-    (cancel)="toggleSubmit()"
-  >
-  </app-confirmation>
-}

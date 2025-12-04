@@ -54,7 +54,7 @@ export class Signup {
       errors.push("Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.");
     }
     if (errors.length > 0) {
-      this.notify.showError(errors.join('<br>'));
+      this.notify.showError(errors.join('\n'));
       this.loading = false;
       return;
     } else {
