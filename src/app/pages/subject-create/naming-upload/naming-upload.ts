@@ -1,14 +1,15 @@
-import { ChangeDetectorRef, Component, inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, NgZone, OnInit, ViewChild } from '@angular/core';
 import { Header } from '../../../shared/components/header/header';
 import { Router } from '@angular/router';
 import { CreationStepTab } from '../creation-step-tab/creation-step-tab';
 import { FormsModule, NgModel } from '@angular/forms';
 import { SubjectsService } from '../../../core/services/subjects.service';
 import { NotificationService } from '../../../core/services/notification.service'; // <-- Add this import
-import { catchError, EMPTY, finalize, iif, of, switchMap, tap } from 'rxjs';
+import { catchError, EMPTY, finalize, iif, of, switchMap, takeWhile, tap } from 'rxjs';
 import { SubjectNameValidator } from '../../../shared/directives/subject-name-validator';
 import { SubscriptionStatus } from '../../../core/models/subscription.model';
 import { SubscriptionService } from '../../../core/services/subscription.service';
+import { ConfirmService } from '../../../core/services/confirm';
 
 @Component({
   selector: 'app-naming-upload',
@@ -29,13 +30,14 @@ export class NamingUpload implements OnInit {
   max_file_count = 5;
   subjectService = inject(SubjectsService);
   notify = inject(NotificationService);
-  subscriptionService = inject(SubscriptionService)
+  subscriptionService = inject(SubscriptionService);
+  confirmation = inject(ConfirmService);
   allowedExtensions = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'epub'];
   acceptString = this.allowedExtensions.map(ext => '.' + ext).join(', ')
 
   @ViewChild('nameCtrl') nameCtrl!: NgModel;
 
-  constructor(private router: Router, private cdr: ChangeDetectorRef) {
+  constructor(private router: Router, private cdr: ChangeDetectorRef,private zone: NgZone,) {
     // Extract subjectId from the route parameters
     const url = window.location.pathname;
     const parts = url.split('/');
@@ -183,56 +185,76 @@ export class NamingUpload implements OnInit {
       this.loading = false;
       return;
     }
-  
-    // 👉 Decide whether to name subject or skip directly
+
+    // Helper observable: only name the subject if its status requires it
+    const nameSubjectIfPending$ = () =>
     iif(
-      () => this.subject.status === 'pending naming',
-      // ✅ Case 1: Subject needs naming → call nameSubject first
+      () => this.subject.status !== 'pending naming',
+      of(null), // Already named, skip
       this.subjectService.nameSubject(this.subjectId, this.subjectName).pipe(
-        tap((response) => {
-          this.subject.status = 'pending document upload'; // Update status locally
+        tap(() => {
+          this.subject.status = 'pending document upload';
         })
-      ),
-      // ✅ Case 2: Skip naming → just emit a dummy observable so chain continues
-      of({ session: { id: this.subjectId } })
-    ).pipe(
-      switchMap(() =>
-        iif(
-          () => this.uploadedDocs,
-          // ✅ Skip ingest → label only
-          this.subjectService.labelDocuments(this.subjectId).pipe(
-            tap((labelResponse) => {
-              this.notify.showSuccess("Topics successfully identified.");
-              this.router.navigate([`/subject-create/${this.subjectId}/topic-preferences`]);
-            })
-          ),
-          // ✅ Ingest then label
-          this.subjectService.ingestDocuments(this.subjectId, this.files).pipe(
-            tap(() => {
-              this.subject.status = 'pending topic labelling'; // Update status locally
-              this.uploadedDocs = true; // Prevent further uploads
-              this.notify.showSuccess('Successfully ingested documents. Identifying topics...');
-            }),
-            switchMap(() =>
-              this.subjectService.labelDocuments(this.subjectId).pipe(
-                tap((labelResponse) => {
-                  this.notify.showSuccess("Topics successfully identified.");
-                  this.router.navigate([`/subject-create/${this.subjectId}/topic-preferences`]);
-                })
-              )
-            )
-          )
-        )
-      ),
-      catchError((res) => {
-        this.notify.showError(res.error.message || 'Something went wrong. Please try again later.');
-        return EMPTY;
-      }),
-      finalize(() => {
-        this.loading = false;
-        this.cdr.detectChanges();
+      )
+    );
+
+    // Helper observable: ingest documents if not already uploaded
+    const ingestDocumentsIfNeeded$ = () =>
+    iif(
+      () => this.uploadedDocs,
+      of(true), // Documents already uploaded, skip
+      this.subjectService.ingestDocuments(this.subjectId, this.files).pipe(
+        switchMap((res: any) => {
+          if (res.warning) {
+            // Fix lowDocs and docsCount mapping
+            const lowDocs = res.documents
+              .filter((doc: any) => doc.belowThreshold)
+              .map((doc: any) => `"${doc.document.name}${doc.document.extension}"`);
+            const docsCount = res.documents
+              .filter((doc: any) => doc.belowThreshold)
+              .map((doc: any) => doc.avgPageWordCount);
+
+            // Show confirmation modal and return Observable<boolean>
+            return this.confirmation.open({
+              title: "Low Content Threshold Warning!",
+              message: `Not enough text content was detected in the following documents: ${lowDocs.join(", ")}.
+              There is a possibility the parser failed to read the documents properly. Do you still wish to proceed?`,
+              okText: "Proceed",
+              cancelText: "Go back"
+            });
+          } else {
+            return of(true); // No warning, proceed
+          }
+        })
+      )
+    );
+
+    // Helper observable: label documents
+    const labelDocuments$ = () =>
+    this.subjectService.labelDocuments(this.subjectId).pipe(
+      tap(() => {
+        this.notify.showSuccess("Topics successfully identified.");
+        this.router.navigate([`/subject-create/${this.subjectId}/topic-preferences`]);
       })
+    );
+
+    // Main execution flow
+    nameSubjectIfPending$().pipe(
+    switchMap(() => ingestDocumentsIfNeeded$()),
+    // Stop the chain if the result is false (user canceled warning)
+    takeWhile(result => result === true),
+    switchMap(() => { 
+      this.notify.showSuccess("Successfully ingested documents. Identifying topics...");
+      return labelDocuments$()
+    }),
+    catchError((res) => {
+      this.notify.showError(res.error.message || 'Something went wrong. Please try again later.');
+      return EMPTY;
+    }),
+    finalize(() => {
+      this.loading = false;
+      this.cdr.detectChanges();
+    })
     ).subscribe();
   }
-  
 }
