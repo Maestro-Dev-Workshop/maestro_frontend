@@ -1,4 +1,4 @@
-import { Component, EventEmitter, input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, input, OnInit, Output } from '@angular/core';
 import { ConfirmOptions, ConfirmService } from '../../../core/services/confirm';
 import { Subject } from 'rxjs';
 
@@ -13,7 +13,7 @@ export class Confirmation implements OnInit {
   options!: ConfirmOptions;
   response$!: Subject<boolean>;
 
-  constructor(private confirmService: ConfirmService) {}
+  constructor(private confirmService: ConfirmService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.confirmService.confirmation$.subscribe(({ options, response }) => {
@@ -26,6 +26,7 @@ export class Confirmation implements OnInit {
       };
       this.response$ = response;
       this.show = true;
+      this.cdr.detectChanges();
     });
   }
 

@@ -78,6 +78,7 @@ export class Subjects implements OnInit {
     this.subjectService.getAllSubjects().subscribe({
       next: (response) => {
         this.subjects = response.sessions;
+        console.log(this.subjects)
         this.loadingSubjects = false;
         this.cdr.detectChanges();
       },
@@ -150,7 +151,6 @@ export class Subjects implements OnInit {
   }
 
   openDelete() { 
-    this.notify.showSuccess("YS")
     this.confirmation.open({
       title: "Delete Subject",
       message: `Are you sure you want to delete the subject "${this.rightClickSubject?.name}"? This action cannot be undone.`,

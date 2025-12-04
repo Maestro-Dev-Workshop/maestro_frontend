@@ -48,7 +48,13 @@
             (contextmenu)="onSubjectRightClick($event, subject)"
           >
             <div class="flex flex-row justify-between items-center">
-              <span class="font-medium text-prussian-blue-900">{{subject.name}}</span>
+              <span class="font-medium text-prussian-blue-900">
+                @if (subject.name) {
+                  {{subject.name}}
+                } @else {
+                  <em class="font-bold">Untitled</em>
+                }
+              </span>
               <span [class]="`text-xs py-1 px-3 rounded-full ${getStatusColours(subject.status)}`">
                 {{(subject.status.toLowerCase() != "in progress" && subject.status.toLocaleLowerCase() != "completed") ? "Setup Incomplete" : subject.status}}
               </span>
