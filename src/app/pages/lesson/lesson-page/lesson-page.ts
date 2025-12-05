@@ -418,7 +418,7 @@ export class LessonPage implements OnInit {
     const subtopicIndex = topic.subtopics.findIndex((s: any) => s.id === this.currentView.id);
     let pos = [];
     if (subtopicIndex === 0) pos.push("top")
-    if (subtopicIndex === topic.subtopics.length - 1) pos.push("bottom")
+    if ((subtopicIndex === topic.subtopics.length - 1) && (!topic.exercise)) pos.push("bottom")
     return pos;
   }
 
@@ -436,7 +436,14 @@ export class LessonPage implements OnInit {
 
     let newIndex = currentIndex + (direction === 'next' ? 1 : -1);
     if (newIndex < 0) newIndex = 0; // Caps previous subtopic at first subtopic
-    if (newIndex >= subtopics.length) newIndex = subtopics.length - 1; // Caps next subtopic at last subtopic
+    if (newIndex >= subtopics.length) {
+      if (topic.exercise) {
+        this.updatecurrentView({ id: topic.exercise.id, type: 'exercise' })
+        return
+      } else {
+        newIndex = subtopics.length - 1; // Caps next subtopic at last subtopic
+      }
+    } 
 
     this.updatecurrentView({ id: subtopics[newIndex].id, type: 'subtopic'})
   }

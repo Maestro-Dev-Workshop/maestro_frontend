@@ -18,7 +18,7 @@
       @if (currentView().content.score) {
         <div class="w-full my-2 text-gray-500">
           <strong><em>Feedback: </em></strong>
-          <span class="prose prose-math" [innerHTML]="question.essay_feedback | markdown"></span>
+          <span class="block prose prose-math" [innerHTML]="question.essay_feedback | markdown"></span>
         </div>
       }
     } @else {
@@ -45,7 +45,7 @@
         </div>
         @if (!(currentView().content.score == null)) {
           <div class="w-full my-1 text-gray-500">
-            <strong><em><span class="prose prose-math" [innerHTML]="option.explanation | markdown"></span></em></strong>
+            <strong><em><span class="block prose prose-math" [innerHTML]="option.explanation | markdown"></span></em></strong>
           </div>
         }
       }
