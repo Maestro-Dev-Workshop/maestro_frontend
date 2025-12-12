@@ -41,12 +41,18 @@ export class Login {
     } else {
       this.authService.login({ email: this.email.toLowerCase(), password: this.password }).subscribe({
         next: (response) => {
-          localStorage.setItem('accessToken', response.accessToken);
-          localStorage.setItem('refreshToken', response.refreshToken);
-          const user = response.user;
-          localStorage.setItem('userEmail', user.email);
-          this.loading = false;
-          this.router.navigateByUrl('/dashboard');
+          if (response.verifyRedirect) {
+            this.notify.showInfo('Please verify your email to continue. We have sent you a new verification link.');
+            this.loading = false;
+            this.router.navigateByUrl('/check-email', { state: { email: this.email.toLowerCase() } });
+          } else {
+            localStorage.setItem('accessToken', response.accessToken);
+            localStorage.setItem('refreshToken', response.refreshToken);
+            const user = response.user;
+            localStorage.setItem('userEmail', user.email);
+            this.loading = false;
+            this.router.navigateByUrl('/dashboard');
+          }
         },
         error: (res) => {
           this.notify.showError(res.error.message || 'Login failed. Please try again.');
