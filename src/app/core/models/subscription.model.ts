@@ -5,6 +5,9 @@ export interface Plan {
   price: number;
   duration_months: number | null;
   visible: boolean;
+  display_price: number;
+  country_code: string | null;
+  currency: string | null;
 
   monthly_subject_creations: number;
   subject_capacity: number | null;
