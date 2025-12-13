@@ -8,11 +8,12 @@ import { Plan, SubscriptionStatus } from '../../../core/models/subscription.mode
 import { NotificationService } from '../../../core/services/notification.service';
 import { io, Socket } from 'socket.io-client';
 import { environment } from '../../../../environments/environment';
+import { CurrencyLocalizerPipe } from '../../../shared/pipes/currency-localizer-pipe';
 
 @Component({
   selector: 'app-subscription',
   standalone: true,
-  imports: [CommonModule, FormsModule, Header, RouterLink],
+  imports: [CommonModule, FormsModule, Header, RouterLink, CurrencyLocalizerPipe],
   templateUrl: './subscription.html'
 })
 export class Subscription implements OnInit {
@@ -34,6 +35,7 @@ export class Subscription implements OnInit {
   // --------------------------
   plans = signal<Plan[]>([]);
   status = signal<SubscriptionStatus | null>(null);
+  countryCode = signal('US');
 
   activeTab = signal<'account' | 'billing'>('billing');
 
@@ -75,6 +77,7 @@ export class Subscription implements OnInit {
     this.subscriptionService.getPlans().subscribe({
       next: (response) => {
         this.plans.set(response.plans)
+        this.countryCode.set(response.country_code);
       }, 
       error: (err) => {
         this.notify.showError(err.error.message || "Failed to load subscription plans. Please try again later.");
