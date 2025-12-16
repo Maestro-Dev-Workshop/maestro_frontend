@@ -2,7 +2,7 @@
   <!-- Top Section -->
   <div class="flex flex-row justify-between lg:pt-4 lg:pb-2 sticky z-[9] top-0 bg-white">
     <!-- Topic tree display -->
-    <div class="hidden lg:flex flex-row items-center text-prussian-blue-800">
+    <div class="hidden lg:flex flex-row items-center text-prussian-blue-700">
       {{ currentTopic().title }}
       <img src="images/dropdown-icon-closed.svg" alt="" class="w-2 m-4">
       {{ currentView().content.title }}
@@ -10,7 +10,7 @@
     <!-- Subtopic Navigation -->
     <div class="flex flex-row ml-auto">
       <button 
-        [class]="`flex flex-row items-center mr-4 lg:mx-4 text-prussian-blue-900 lg:hover:text-prussian-blue-500 disabled:text-prussian-blue-500 ${getPosition().includes('top') ? 'invisible' : ''}`" 
+        [class]="`flex flex-row items-center mr-4 lg:mx-4 text-prussian-blue-900 lg:hover:text-prussian-blue-400 disabled:text-prussian-blue-400 ${getPosition().includes('top') ? 'invisible' : ''}`" 
         (click)="prevSubtopic()"
         [disabled]="getPosition() === 'top'"
       >
@@ -18,7 +18,7 @@
         Previous
       </button>
       <button 
-        [class]="`flex flex-row items-center ml-4 lg:mx-4 text-prussian-blue-900 lg:hover:text-prussian-blue-500 disabled:text-prussian-blue-500 ${getPosition().includes('bottom') ? 'invisible' : ''}`" 
+        [class]="`flex flex-row items-center ml-4 lg:mx-4 text-prussian-blue-900 lg:hover:text-prussian-blue-400 disabled:text-prussian-blue-400 ${getPosition().includes('bottom') ? 'invisible' : ''}`" 
         (click)="nextSubtopic()"
         [disabled]="getPosition() === 'bottom'"
       >

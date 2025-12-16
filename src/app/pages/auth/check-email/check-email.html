@@ -14,7 +14,7 @@
         <p>A verification mail has been sent to <span class="font-bold">{{email}}</span></p>
       </div>
       <button 
-        class="text-left font-bold text-prussian-blue-900 disabled:text-prussian-blue-500 lg:hover:text-prussian-blue-500"
+        class="text-left font-bold text-prussian-blue-900 disabled:text-prussian-blue-400 lg:hover:text-prussian-blue-400"
         [disabled]="(resendTimer > 0) || (loading)"
         (click)="resendVerificationEmail()"
       >

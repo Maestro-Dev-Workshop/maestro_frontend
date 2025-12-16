@@ -7,7 +7,7 @@
     @if (question.type === 'essay') {
       <!-- Essay Answering -->
       <textarea
-        class="w-full p-2 text-gray-600 border-b-2 border-gray-300 resize-none overflow-hidden focus:outline-none focus:border-b-2 focus:border-prussian-blue-800"
+        class="w-full p-2 text-gray-600 border-b-2 border-gray-300 resize-none overflow-hidden focus:outline-none focus:border-b-2 focus:border-prussian-blue-700"
         rows="1"
         placeholder="Type your answer here..."
         [(ngModel)]="question.essay_answer"
@@ -55,7 +55,7 @@
   <!-- Question Cycling -->
   <div class="flex flex-row">
     <button 
-      [class]="`flex flex-row items-center mx-4 text-prussian-blue-900 lg:hover:text-prussian-blue-500 disabled:text-prussian-blue-500 ${currentIndex === 0 ? 'invisible' : ''}`" 
+      [class]="`flex flex-row items-center mx-4 text-prussian-blue-900 lg:hover:text-prussian-blue-400 disabled:text-prussian-blue-400 ${currentIndex === 0 ? 'invisible' : ''}`" 
       (click)="cycleQuestion('prev')"
       [disabled]="currentIndex === 0"
     >
@@ -63,7 +63,7 @@
       Previous
     </button>
     <button 
-      [class]="`flex flex-row items-center mx-4 text-prussian-blue-900 lg:hover:text-prussian-blue-500 disabled:text-prussian-blue-500 ${currentIndex === (currentView().content.questions.length - 1) ? 'invisible' : ''}`" 
+      [class]="`flex flex-row items-center mx-4 text-prussian-blue-900 lg:hover:text-prussian-blue-400 disabled:text-prussian-blue-400 ${currentIndex === (currentView().content.questions.length - 1) ? 'invisible' : ''}`" 
       (click)="cycleQuestion('next')"
       [disabled]="currentIndex === (currentView().content.questions.length - 1)"
     >
@@ -76,8 +76,8 @@
   <div class="flex flex-row flex-wrap w-full p-4">
     @for (question of currentView().content.questions; track $index) {
       <button 
-        [class]="`w-8 h-8 m-1 rounded-md lg:hover:bg-prussian-blue-500
-        ${(currentIndex === $index) ? 'bg-prussian-blue-800 text-white' : 
+        [class]="`w-8 h-8 m-1 rounded-md lg:hover:bg-prussian-blue-400
+        ${(currentIndex === $index) ? 'bg-prussian-blue-700 text-white' : 
           ((question.scored == null) ? 'bg-gray-300 text-gray-600' :
             (question.scored ? 'bg-green-600 text-white lg:hover:bg-green-400' : 'bg-red-600 text-white lg:hover:bg-red-400'))}`"
         (click)="goToQuestion($index)"
@@ -91,7 +91,7 @@
   <!-- Submission Button -->
   <div class="flex flex-row items-center">
     <button 
-      class="self-start w-max text-sm text-white bg-prussian-blue-800 m-4 px-12 py-3 rounded-lg lg:hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500 transition duration-100" 
+      class="self-start w-max text-sm text-white bg-prussian-blue-700 m-4 px-12 py-3 rounded-lg lg:hover:bg-prussian-blue-400 disabled:bg-prussian-blue-400 transition duration-100" 
       (click)="openSubmit()"
       [disabled]="loading || !(currentView().content.score == null)"
     >

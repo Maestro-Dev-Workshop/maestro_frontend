@@ -19,7 +19,7 @@
       <h1 class="lg:hidden text-3xl font-medium text-prussian-blue-900">
         {{capitalizeFirstLetter(currentView.type)}}
       </h1>
-      <h2 class="text-xl font-medium text-prussian-blue-500">
+      <h2 class="text-xl font-medium text-prussian-blue-400">
         {{ currentView.content.questions.length }} Question{{(currentView.content.questions.length > 1) ? 's' : '' }}
       </h2>
       <span class="hidden lg:block mt-4 text-gray-600">These questions will help reinforce your understanding. Take your time to answer all the questions.</span>
@@ -40,7 +40,7 @@
 <div class="w-full flex flex-row flex-grow overflow-hidden mt-2 relative">
   <!-- Sidebar Toggle -->
   <button 
-    [class]="`absolute z-20 top-0 ${sidebarOpen ? 'hidden' : 'left-0 rounded-r-full'} p-3 bg-prussian-blue-800 lg:hidden`"
+    [class]="`absolute z-20 top-0 ${sidebarOpen ? 'hidden' : 'left-0 rounded-r-full'} p-3 bg-prussian-blue-700 lg:hidden`"
     (click)="toggleSidebar()"
   >
     <img src="images/subject-icon-white.svg" alt="" class="w-6">
@@ -95,7 +95,7 @@
 
 <!-- Chatbot Popup -->
 <button 
-  [class]="`absolute right-6 lg:right-16 bottom-6 lg:bottom-16 rounded-full p-4 lg:p-5 bg-prussian-blue-200 lg:hover:bg-prussian-blue-250 
+  [class]="`absolute right-6 lg:right-16 bottom-6 lg:bottom-16 rounded-full p-4 lg:p-5 bg-prussian-blue-200 lg:hover:bg-prussian-blue-300 
   ${(chatOpen || (currentView.type !== 'subtopic' && (currentView.content.score == null))) ? 'hidden' : ''}`" 
   (click)="toggleChatPopup()"
   [disabled]="(currentView.type !== 'subtopic' && (currentView.content.score == null))"

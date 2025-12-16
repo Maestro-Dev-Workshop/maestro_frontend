@@ -12,7 +12,7 @@
       <h1 class="m-2 text-xl md:text-3xl font-medium">Start Your Learning Journey</h1>
       <p class="w-full md:w-6/12 text-center px-4">Create subjects to keep your study materials neatly categorized and easy to find.</p>
       <button 
-        class="rounded-md m-4 md:m-8 px-5 py-3 text-white bg-prussian-blue-800 lg:hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500 flex flex-row justify-center" 
+        class="rounded-md m-4 md:m-8 px-5 py-3 text-white bg-prussian-blue-700 lg:hover:bg-prussian-blue-400 disabled:bg-prussian-blue-400 flex flex-row justify-center" 
         (click)="createNewSubject()"
         [disabled]="loadingCreate"
       >
@@ -29,7 +29,7 @@
           <span class="font-medium text-prussian-blue-900">My Subjects</span>
         </div>
         <button 
-          class="w-max rounded-md px-5 py-3 text-white bg-prussian-blue-800 lg:hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500 flex flex-row justify-center text-xs" 
+          class="w-max rounded-md px-5 py-3 text-white bg-prussian-blue-700 lg:hover:bg-prussian-blue-400 disabled:bg-prussian-blue-400 flex flex-row justify-center text-xs" 
           (click)="createNewSubject()"
           [disabled]="loadingCreate"
         >
@@ -43,7 +43,7 @@
         @for (subject of subjects; track subject.id) {
           <!-- Subjects Item -->
           <button 
-            class="relative flex flex-col justify-between overflow-hidden rounded-lg w-full sm:w-56 h-28 p-4 m-4 bg-prussian-blue-150 lg:hover:bg-prussian-blue-200 lg:hover:top-2"
+            class="relative flex flex-col justify-between overflow-hidden rounded-lg w-full sm:w-56 h-28 p-4 m-4 bg-prussian-blue-100 lg:hover:bg-prussian-blue-200 lg:hover:top-2"
             (click)="navigateSubject(subject)"
             (contextmenu)="onSubjectRightClick($event, subject)"
           >
@@ -63,7 +63,7 @@
               <!-- Progress Bar -->
               <div class="w-full">
                 <div class="w-11/12 h-1 bg-gray-300 rounded-full">
-                  <div class="h-full bg-prussian-blue-800 rounded-full" [ngStyle]="{ width: subject.completion*100 + '%' }"></div>
+                  <div class="h-full bg-prussian-blue-700 rounded-full" [ngStyle]="{ width: subject.completion*100 + '%' }"></div>
                 </div>
               </div>
               <span>{{(subject.completion*100).toFixed(0)}}%</span>
@@ -76,7 +76,7 @@
       <a 
         href="https://forms.gle/y6B3ReSJXCstUAE89" 
         target="_blank"
-        class="absolute bottom-4 left-4 lg:bottom-8 lg:left-8 rounded-full bg-prussian-blue-200 lg:hover:bg-prussian-blue-250 p-3 lg:p-4"
+        class="absolute bottom-4 left-4 lg:bottom-8 lg:left-8 rounded-full bg-prussian-blue-200 lg:hover:bg-prussian-blue-300 p-3 lg:p-4"
       >
         <!-- <img src="images/feedback.png" alt="" class="w-6 lg:w-8">  -->
         <img src="images/chat-popup-icon.svg" alt="" class="w-6 lg:w-8"> 
