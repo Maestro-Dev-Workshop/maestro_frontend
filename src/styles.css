@@ -79,10 +79,75 @@
   font-style: normal;
 }
 
+:root {
+  /* SURFACES */
+  --bg-page: #1A2B37;        /* prussian-blue-900 */
+  --bg-hover: #2B4459;        /* prussian-blue-700 */
+  --bg-card: #C6D2DD;
+  --bg-card-hover: #7591A5;
+  --bg-element: #2B4459;
+  --bg-element-hover: #7591A5;
+  --bg-alt: ;
+  --bg-alt-hover: #2B4459;
+
+  /* TEXT */
+  --text-primary: #FFFFFF;    /* white */
+  --text-primary-hover: #C6D2DD;    /* prussian-blue-200 */
+  --text-secondary: #E0E5EA;
+  --text-alt: #E0E5EA;
+  --text-alt-hover: #A4ADB5;
+
+  /* BORDERS */
+}
+
+.light {
+  /* SURFACES */
+  --bg-page: #FFFFFF;        /* prussian-blue-50 */
+  --bg-hover: #E0E5EA;        /* prussian-blue-300 */
+  --bg-card: #E8ECF1;
+  --bg-card-hover: #E0E5EA;
+  --bg-element: #2B4459;
+  --bg-element-hover: #7591A5;
+  --bg-alt: ;
+  --bg-alt-hover: #F3F4F6;
+
+  /* TEXT */
+  --text-primary: #002D4B;    /* white */
+  --text-primary-hover: #7591A5;    /* prussian-blue-200 */
+  --text-secondary: #2B4459;
+  --text-alt: #374151;
+  --text-alt-hover: #6B7280;
+
+  /* BORDERS */
+}
+
+.dark {
+  /* SURFACES */
+  --bg-page: #1A2B37;        /* prussian-blue-900 */
+  --bg-hover: #2B4459;        /* prussian-blue-700 */
+  --bg-card: #C6D2DD;
+  --bg-card-hover: #7591A5;
+  --bg-element: #2B4459;
+  --bg-element-hover: #7591A5;
+  --bg-alt: ;
+  --bg-alt-hover: #2B4459;
+
+  /* TEXT */
+  --text-primary: #FFFFFF;    /* white */
+  --text-primary-hover: #C6D2DD;    /* prussian-blue-200 */
+  --text-secondary: #E0E5EA;
+  --text-alt: #E0E5EA;
+  --text-alt-hover: #A4ADB5;
+
+  /* BORDERS */
+}
+
 html,
 body {
   @apply font-sans;
   height: 100%;
+  background-color: var(--bg-page);
+  color: var(--text-primary);
 }
 
 .gradient-border-purple {

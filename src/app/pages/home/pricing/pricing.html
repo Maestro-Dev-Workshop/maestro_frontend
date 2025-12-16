@@ -12,7 +12,7 @@
   <!-- Pricing Tiers -->
   <div class="mx-auto mt-12 sm:mt-16 flex w-full flex-col justify-center space-y-12 md:flex-row md:items-start md:space-x-8 md:space-y-0 lg:max-w-screen-lg px-4">
     <!-- Basic Tier -->
-    <div class="self-center md:self-end flex h-full md:flex-1 w-5/6 flex-col items-start rounded-[32px] border border-[#BFBFBF] bg-white p-6 sm:p-8 text-center shadow-lg md:mt-24">
+    <div class="self-center md:self-end flex h-full md:flex-1 w-5/6 flex-col items-start rounded-[32px] border border-[#BFBFBF] bg-[var(--bg-page)] p-6 sm:p-8 text-center shadow-lg md:mt-24">
       <h3 class="text-xl sm:text-2xl font-semibold text-[#264653]">Basic</h3>
       <div class="mt-2 text-3xl sm:text-4xl font-bold text-[#264653]">
         <span>{{ countryCode | currencyLocalizer }}</span>{{ basicPrice | number:'1.0-0' }}<span class="text-xs sm:text-sm font-normal text-gray-500">/per month</span>
@@ -54,7 +54,7 @@
         <span>{{ countryCode | currencyLocalizer }}</span>{{ standardPrice | number:'1.0-0' }}<span class="text-xs sm:text-sm font-normal text-gray-400">/per month</span>
         <!-- <span>$</span>5<span class="text-xs sm:text-sm font-normal text-gray-400">/per month</span> -->
       </div>
-      <button class="mt-6 w-full rounded-full bg-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold text-[#262626] transition lg:hover:bg-gray-200" routerLink="/login">
+      <button class="mt-6 w-full rounded-full bg-[var(--bg-page)] px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold text-[#262626] transition lg:hover:bg-gray-200" routerLink="/login">
         Get Started
       </button>
       <p class="mt-4 text-xs sm:text-sm text-gray-400">
@@ -81,7 +81,7 @@
     </div>
 
     <!-- Premium Tier -->
-    <div class="self-center md:self-start flex h-full md:flex-1 w-5/6 flex-col items-start rounded-[36px] border border-[#BFBFBF] bg-white p-6 sm:p-8 text-center shadow-lg md:mt-24">
+    <div class="self-center md:self-start flex h-full md:flex-1 w-5/6 flex-col items-start rounded-[36px] border border-[#BFBFBF] bg-[var(--bg-page)] p-6 sm:p-8 text-center shadow-lg md:mt-24">
       <h3 class="text-xl sm:text-2xl font-semibold text-[#264653]">Premium</h3>
       <div class="mt-2 text-3xl sm:text-4xl font-bold text-[#264653]">
         <span>{{ countryCode | currencyLocalizer }}</span>{{ premiumPrice | number:'1.0-0' }}<span class="text-xs sm:text-sm font-normal text-gray-500">/per month</span>

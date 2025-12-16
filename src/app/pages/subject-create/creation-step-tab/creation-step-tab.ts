@@ -18,11 +18,11 @@ export class CreationStepTab implements OnInit {
 
   ngOnInit () {
     if (this.active()) {
-      this.bgColour = 'bg-prussian-blue-800';
-      this.textColour = 'text-prussian-blue-900';
+      this.bgColour = 'bg-prussian-blue-700';
+      this.textColour = 'text-[var(--text-primary)]';
     } else {
-      this.bgColour = 'bg-prussian-blue-250';
-      this.textColour = 'text-prussian-blue-500';
+      this.bgColour = 'bg-prussian-blue-300';
+      this.textColour = 'text-[var(--text-primary-hover)]';
     }
   }
 }

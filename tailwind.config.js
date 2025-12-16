@@ -11,15 +11,17 @@ module.exports = {
       },
       colors: {
         "prussian-blue": {
-          100: "#EFF2F4",
-          150: "#E7EBEE",
-          200: "#DFE5E8",
-          250: "#CFD7DD",
-          500: "#7F96A5",
-          700: "#4F6E83",
-          800: "#2F546C",
-          900: "#002D4B"
-        }
+          '50': '#F2F5F8',    // Replaces Old 100
+          '100': '#E8ECF1',   // Replaces Old 150
+          '200': '#E0E5EA',   // New, visually close to Old 200
+          '300': '#C6D2DD',   // Replaces Old 250
+          '400': '#7591A5',   // Replaces Old 500
+          '500': '#4F6E83',   // Replaces Old 700
+          '600': '#3C586D',   // New shade (unused)
+          '700': '#2B4459',   // Replaces Old 800
+          '800': '#2F546C',   // New shade (unused)
+          '900': '#002D4B',   // Original darkest color
+        },
       }
     },
   },

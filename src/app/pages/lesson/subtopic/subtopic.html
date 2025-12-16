@@ -1,8 +1,8 @@
 <div class="w-full flex flex-col">
   <!-- Top Section -->
-  <div class="flex flex-row justify-between lg:pt-4 lg:pb-2 sticky z-[9] top-0 bg-white">
+  <div class="flex flex-row justify-between lg:pt-4 lg:pb-2 sticky z-[9] top-0 bg-[var(--bg-page)]">
     <!-- Topic tree display -->
-    <div class="hidden lg:flex flex-row items-center text-prussian-blue-800">
+    <div class="hidden lg:flex flex-row items-center text-[var(--text-secondary)]">
       {{ currentTopic().title }}
       <img src="images/dropdown-icon-closed.svg" alt="" class="w-2 m-4">
       {{ currentView().content.title }}
@@ -10,7 +10,7 @@
     <!-- Subtopic Navigation -->
     <div class="flex flex-row ml-auto">
       <button 
-        [class]="`flex flex-row items-center mr-4 lg:mx-4 text-prussian-blue-900 lg:hover:text-prussian-blue-500 disabled:text-prussian-blue-500 ${getPosition().includes('top') ? 'invisible' : ''}`" 
+        [class]="`flex flex-row items-center mr-4 lg:mx-4 text-[var(--text-primary)] lg:hover:text-[var(--text-primary-hover)] disabled:text-[var(--text-primary-hover)] ${getPosition().includes('top') ? 'invisible' : ''}`" 
         (click)="prevSubtopic()"
         [disabled]="getPosition() === 'top'"
       >
@@ -18,7 +18,7 @@
         Previous
       </button>
       <button 
-        [class]="`flex flex-row items-center ml-4 lg:mx-4 text-prussian-blue-900 lg:hover:text-prussian-blue-500 disabled:text-prussian-blue-500 ${getPosition().includes('bottom') ? 'invisible' : ''}`" 
+        [class]="`flex flex-row items-center ml-4 lg:mx-4 text-[var(--text-primary)] lg:hover:text-[var(--text-primary-hover)] disabled:text-[var(--text-primary-hover)] ${getPosition().includes('bottom') ? 'invisible' : ''}`" 
         (click)="nextSubtopic()"
         [disabled]="getPosition() === 'bottom'"
       >
@@ -30,7 +30,7 @@
 
   <!-- Subtopic Name -->
   <h1 class="flex flex-row items-center my-6">
-    <div class="rounded-full bg-prussian-blue-200 p-3">
+    <div class="rounded-full bg-[var(--bg-card)] p-3">
       <img src="images/subject-icon.svg" alt="" class="w-6">
     </div>
     <span class="text-3xl font-medium mx-4">{{ currentView().content.title }}</span>
@@ -41,7 +41,15 @@
     @for (cell of currentView().content.cells; track $index) {
       @if (cell.type === "text") {
         <!-- Markdown Text Cells -->
-        <div class="prose prose-math" [innerHTML]="cell.content | markdown"></div>
+        <div class="prose prose-math bg-[var(--bg-page)]
+        text-[var(--text-primary)]
+        prose-headings:text-[var(--text-heading)]
+        prose-p:text-[var(--text-primary)]
+        prose-li:text-[var(--text-primary)]
+        prose-strong:text-[var(--text-heading)]
+        prose-code:text-[var(--text-secondary)]
+        prose-blockquote:text-[var(--text-secondary)]
+        dark:prose-invert" [innerHTML]="cell.content | markdown"></div>
       } @else {
         <!-- Default Fallback Cells -->
         <div class="prose prose-math" [innerHTML]="cell.content | markdown"></div>

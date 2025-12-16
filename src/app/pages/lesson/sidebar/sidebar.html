@@ -1,13 +1,13 @@
 <div class="mx-6 mb-6 h-max relative">
   <!-- Return to Dashboard -->
-  <div class="flex flex-row mb-2 lg:pt-6 items-center justify-between sticky top-0 bg-white z-10">
+  <div class="flex flex-row mb-2 lg:pt-6 items-center justify-between sticky top-0 bg-[var(--bg-page)] z-10">
     <div class="flex flex-row items-center">
-      <button class="rounded-full p-3 bg-prussian-blue-800 lg:hover:bg-prussian-blue-500" routerLink="/dashboard">
+      <button class="rounded-full p-3 bg-prussian-blue-700 lg:hover:bg-prussian-blue-400" routerLink="/dashboard">
         <img src="images/subject-icon-white.svg" alt="" class="w-5">
       </button>
-      <span class="text-prussian-blue-900 lg:hover:text-prussian-blue-500 mx-4 cursor-pointer font-medium" routerLink="/dashboard">Back to Subjects</span>
+      <span class="text-[var(--text-primary)] lg:hover:text-prussian-blue-400 mx-4 cursor-pointer font-medium" routerLink="/dashboard">Back to Subjects</span>
     </div>
-    <button class="block lg:hidden p-3 rounded-full bg-prussian-blue-800 lg:hover:bg-prussian-blue-500" (click)="closeBar()">
+    <button class="block lg:hidden p-3 rounded-full bg-prussian-blue-700 lg:hover:bg-prussian-blue-400" (click)="closeBar()">
       <img src="images/x-icon.svg" alt="">
     </button>
   </div>
@@ -16,14 +16,14 @@
   <div class="p-2">
     <!-- Topic List -->
     @for (topic of content().topics; track topic.id) {
-      <button [class]="`flex flex-row items-center lg:hover:text-gray-600 text-left ${!topic.completed ? 'font-bold' : ''}`" (click)="toggleExpandTopic(topic.id)">
+      <button [class]="`flex flex-row items-center text-[var(--text-primary)] lg:hover:text-[var(--text-primary-hover)] text-left ${!topic.completed ? 'font-bold' : ''}`" (click)="toggleExpandTopic(topic.id)">
         <img src="images/dropdown-icon-closed.svg" alt="" [class]="`w-2 m-4 z-0 ${topic.expanded ? 'rotate-90' : ''}`">
         {{ topic.title }}
       </button>
       @if (topic.expanded) {
         <!-- Subtopic List -->
         @for (subtopic of topic.subtopics; track subtopic.id) {
-          <button [class]="`py-2 px-2 pl-8 text-gray-600 w-full text-left lg:hover:bg-prussian-blue-200 border-prussian-blue-900 
+          <button [class]="`py-2 px-2 pl-8 text-[var(--text-secondary)] w-full text-left lg:hover:bg-[var(--bg-hover)] border-[var(--text-primary)]
             ${(subtopic.id === currentView().id && currentView().type === 'subtopic') ? 'border-l-4' : ''}
             ${!subtopic.read ? 'font-bold' : ''}`"
             (click)="selectView(subtopic.id, 'subtopic')"
@@ -33,7 +33,7 @@
         }
         <!-- Exercise -->
         @if (topic.exercise) {
-          <button [class]="`py-2 px-2 pl-8 text-gray-600 w-full text-left lg:hover:bg-prussian-blue-200 border-prussian-blue-900 
+          <button [class]="`py-2 px-2 pl-8 text-[var(--text-secondary)] w-full text-left lg:hover:bg-[var(--bg-hover)] border-[var(--text-primary)]
             ${(topic.exercise.id === currentView().id && currentView().type === 'exercise') ? 'border-l-4' : ''}
             ${!topic.exercise.score ? 'font-bold' : ''}`"
             (click)="selectView(topic.exercise.id, 'exercise')">
@@ -44,7 +44,7 @@
     }
     <!-- Exam -->
     @if (content().exam) {
-      <button [class]="`py-2 px-2 pl-8 text-gray-600 w-full text-left lg:hover:bg-prussian-blue-200 border-prussian-blue-900 
+      <button [class]="`py-2 px-2 pl-8 text-[var(--text-secondary)] w-full text-left lg:hover:bg-[var(--bg-hover)] border-[var(--text-primary)] 
         ${(content().exam.id === currentView().id && currentView().type === 'exam') ? 'border-l-4' : ''}
         ${!content().exam.score ? 'font-bold' : ''}`"
         (click)="selectView(content().exam.id, 'exam')">
