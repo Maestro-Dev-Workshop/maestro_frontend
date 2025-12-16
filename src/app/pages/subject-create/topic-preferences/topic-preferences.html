@@ -22,7 +22,7 @@
   </div>
 
   <h1 class="text-2xl mb-2 font-medium">Create Your Personalized Lesson</h1>
-  <p class="mb-4 text-gray-600">
+  <p class="mb-4 text-[var(--text-alt)]">
     Select the specific topics from your document that you want Maestro to focus on for your lesson.
   </p>
 
@@ -30,7 +30,7 @@
   <div class="flex flex-row flex-wrap mb-16">
     @for (topic of topics; track topic.id) {
       <button
-        [class]="'flex flex-row rounded-full py-4 px-6 text-sm text-white mx-2 my-1 transition duration-300 ease-in-out ' + ( topic.selected? 'bg-prussian-blue-900' : 'bg-gray-500')"
+        [class]="'flex flex-row rounded-full py-2 px-3 lg:py-4 lg:px-6 text-sm text-white mx-2 my-1 transition duration-300 ease-in-out ' + ( topic.selected? 'bg-prussian-blue-900' : 'bg-gray-500')"
         (click)="toggleTopicSelection(topic.id)"
         [disabled]="loading"
       >
@@ -46,12 +46,12 @@
   <!-- Learning Preferences Form -->
   <h1 class="text-2xl font-medium">Learning Style</h1>
   <form #form="ngForm" class="flex flex-col w-full md:w-2/4">
-    <label class="text-gray-700 my-2">How would you like this lesson to be?</label>
+    <label class="text-[var(--text-alt)] my-2">How would you like this lesson to be?</label>
     <textarea
       type="text" 
       name="learningStyle" 
       placeholder="This helps Maestro tailor the content delivery to your unique style, you can provide your custom instructions here." 
-      class="bg-gray-50 p-4 rounded-lg border border-2 h-48 text-sm" 
+      class="p-4 rounded-lg border border-2 h-48 text-sm bg-[var(--bg-page)]" 
       [(ngModel)]="learningStyle"
       required
       learningStyle

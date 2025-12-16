@@ -29,7 +29,7 @@
       type="text" 
       name="subjectName" 
       placeholder="Name of the subject" 
-      class="bg-gray-100 p-4 my-1 rounded-lg border border-prussian-blue-300 text-sm" 
+      class="bg-[var(--bg-page)] p-4 my-1 rounded-lg border border-prussian-blue-300 text-sm" 
       [(ngModel)]="subjectName"
       required
       subjectName
@@ -47,7 +47,8 @@
 
     <!-- Drag and drop area here -->
     <div
-      class="my-4 flex flex-col items-center justify-center w-full border-2 border-dashed border-gray-400 rounded-2xl px-6 py-10 cursor-pointer transition lg:hover:border-prussian-blue-300 bg-gray-50"
+      class="my-4 flex flex-col items-center justify-center w-full border-2 border-dashed border-gray-400 
+      rounded-2xl px-6 py-10 cursor-pointer transition lg:hover:border-prussian-blue-300 bg-[var(--bg-hover)]"
       (drop)="onFileDrop($event)"
       (dragover)="onDragOver($event)"
       (dragleave)="onDragLeave($event)"
@@ -67,8 +68,8 @@
         multiple
         [accept]="acceptString"
       />
-      <p class="text-gray-600 text-sm text-center">Upload your files here to start generating personalized lessons for this subject.</p>
-      <p class="text-gray-400 text-xs my-2 text-center">
+      <p class="text-[var(--text-alt)] text-sm text-center">Upload your files here to start generating personalized lessons for this subject.</p>
+      <p class="text-[var(--text-alt-hover)] text-xs my-2 text-center">
         {{allowedExtensions.join(", ").toUpperCase()}}. Max file size: {{single_file_size}}MB. Max total files size: {{total_files_size}}MB. Maximum of {{max_file_count}} files.
       </p>
     </div>
@@ -76,12 +77,12 @@
     <!-- Show selected files -->
     @if (files.length > 0) {
       <div class="mb-4 space-y-1">
-        <p class="text-sm font-medium text-gray-700">Selected files:</p>
-        <ul class="list-disc list-inside text-sm text-gray-600">
+        <p class="text-sm font-medium text-[var(--text-alt)]">Selected files:</p>
+        <ul class="list-disc list-inside text-sm text-[var(--text-alt)]">
           @for (file of files; track $index) {
             <li>
               {{ file.name }}
-              <span class="text-gray-400 text-xs">({{formatFileSize(file)}})</span>
+              <span class="text-[var(--text-alt-hover)] text-xs">({{formatFileSize(file)}})</span>
               <button
                 class="ml-2 text-red-500 lg:hover:text-red-700"
                 (click)="removeFile(file)"

@@ -5,20 +5,20 @@
     <!-- Header -->
     <div class="flex flex-row my-8 items-center">
       <img src="images/logo-coloured.svg" alt="Maestro Logo" class="w-12 mr-2">
-      <span class="font-serif text-3xl h-max text-prussian-blue-900">Maestro</span>
+      <span class="font-serif text-3xl h-max text-[var(--text-primary)]">Maestro</span>
     </div>
-    <h1 class="font-bold text-2xl text-gray-700 my-2">Meet Maestro</h1>
+    <h1 class="font-bold text-2xl text-[var(--text-alt)] my-2">Meet Maestro</h1>
     <p class="">Your AI-powered assistant for mastering complex subjects, simplified.</p>
     <form class="mt-6" #form="ngForm">
       <div class="flex flex-row justify-between">
         <!-- First Name Input -->
         <div class="flex flex-col font-medium relative w-2/4 mr-2">
-          <label class="text-gray-400">First Name</label>
+          <label class="text-[var(--text-alt-hover)]">First Name</label>
           <input 
             type="text" 
             name="firstname" 
             placeholder="First Name" 
-            class="bg-gray-100 p-4 rounded-md" 
+            class="bg-gray-100 p-4 rounded-md text-gray-900" 
             [(ngModel)]="firstname"
             required
             firstname
@@ -33,12 +33,12 @@
         </div>
         <!-- Last Name Input -->
         <div class="flex flex-col font-medium relative w-2/4 ml-2">
-          <label class="text-gray-400">Last Name</label>
+          <label class="text-[var(--text-alt-hover)]">Last Name</label>
           <input 
             type="text" 
             name="lastname" 
             placeholder="Last Name" 
-            class="bg-gray-100 p-4 rounded-md" 
+            class="bg-gray-100 p-4 rounded-md text-gray-900" 
             [(ngModel)]="lastname"
             required
             lastname
@@ -55,12 +55,12 @@
 
       <!-- Email Input -->
       <div class="flex flex-col my-6 font-medium">
-        <label class="text-gray-400">Email Address</label>
+        <label class="text-[var(--text-alt-hover)]">Email Address</label>
         <input
           type="email"
           name="email"
           placeholder="Email Address"
-          class="bg-gray-100 p-4 rounded-md"
+          class="bg-gray-100 p-4 rounded-md text-gray-900"
           [(ngModel)]="email"
           required
           email
@@ -77,12 +77,12 @@
 
       <!-- Password Input -->
       <div class="flex flex-col my-6 font-medium relative">
-        <label class="text-gray-400">Password</label>
+        <label class="text-[var(--text-alt-hover)]">Password</label>
         <input 
           [type]="passwordVisible" 
           name="password" 
           placeholder="Password" 
-          class="bg-gray-100 p-4 rounded-md" 
+          class="bg-gray-100 p-4 rounded-md text-gray-900" 
           [(ngModel)]="password"
           required
           password
@@ -103,7 +103,7 @@
 
       <button 
         type="submit" 
-        class="w-full rounded-md p-4 text-white font-bold bg-prussian-blue-900 lg:hover:bg-prussian-blue-400 disabled:bg-prussian-blue-400 relative" 
+        class="w-full rounded-md p-4 text-white font-bold bg-prussian-blue-700 lg:hover:bg-prussian-blue-400 disabled:bg-prussian-blue-400 relative" 
         (click)="onSubmit()"
         [disabled]="loading"
       >
@@ -112,7 +112,7 @@
       </button>
     </form>
     <div class="self-center m-4 pb-4">
-      Have a Maestro account? <a href="/login" class="font-medium text-prussian-blue-900 lg:hover:text-prussian-blue-400">Log In</a>
+      Have a Maestro account? <a href="/login" class="font-medium text-[var(--text-primary)] lg:hover:text-[var(--text-primary-hover)]">Log In</a>
     </div>
   </div>
   <!-- right panel -->

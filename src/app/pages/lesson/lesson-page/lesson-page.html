@@ -1,7 +1,7 @@
 <app-header class="z-40"/>
 
 @if (subjectLoading) {
-  <div class="flex flex-row items-center justify-center h-full w-full bg-white z-30 absolute">
+  <div class="flex flex-row items-center justify-center h-full w-full bg-[var(--bg-page)] z-30 absolute">
     <div class="flex flex-row items-center">
       <img src="images/spinner.gif" alt="" class="w-24 m-4">
       <span class="text-4xl">Retrieving Subject Content...</span>
@@ -11,20 +11,20 @@
 
 <!-- Practice (Exercise/Exam) Header -->
 @if (currentView.type === 'exercise' || currentView.type === 'exam') {
-  <div class="w-full bg-gray-100 flex flex-row items-center justify-between px-6 lg:px-12 py-3 lg:py-6">
+  <div class="w-full bg-[var(--bg-hover)] flex flex-row items-center justify-between px-6 lg:px-12 py-3 lg:py-6">
     <div class="">
-      <h1 class="hidden lg:block text-3xl font-medium text-prussian-blue-900">
+      <h1 class="hidden lg:block text-3xl font-medium text-[var(--text-primary)]">
         Practice {{capitalizeFirstLetter(currentView.type)}} for {{(currentView.type === 'exercise') ? getTopicDataFromExercise().title : subjectContent.subject_name}}
       </h1>
-      <h1 class="lg:hidden text-3xl font-medium text-prussian-blue-900">
+      <h1 class="lg:hidden text-3xl font-medium text-[var(--text-primary)]">
         {{capitalizeFirstLetter(currentView.type)}}
       </h1>
-      <h2 class="text-xl font-medium text-prussian-blue-400">
+      <h2 class="text-xl font-medium text-[var(--text-primary-hover)]">
         {{ currentView.content.questions.length }} Question{{(currentView.content.questions.length > 1) ? 's' : '' }}
       </h2>
-      <span class="hidden lg:block mt-4 text-gray-600">These questions will help reinforce your understanding. Take your time to answer all the questions.</span>
+      <span class="hidden lg:block mt-4 text-[var(--text-secondary)]">These questions will help reinforce your understanding. Take your time to answer all the questions.</span>
     </div>
-    <div class="text-3xl flex flex-col text-gray-800 text-right tracking-wider font-medium">
+    <div class="text-3xl flex flex-col text-[var(--text-primary)] text-right tracking-wider font-medium">
       <span>Score:</span>
       <span>
         @if (!(currentView.content.score == null)) {
@@ -49,7 +49,7 @@
   <!-- Sidebar Container -->
   <app-sidebar 
     [class]="`w-5/6 lg:w-3/12 h-full absolute lg:relative ${sidebarOpen ? '' : 'hidden'} lg:block 
-    overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 lg:hover:scrollbar-thumb-gray-500 bg-white z-[19]`"
+    overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 lg:hover:scrollbar-thumb-gray-500 bg-[var(--bg-page)] z-[19]`"
     [content]="subjectContent" 
     [currentView]="currentView" 
     (updateView)="updatecurrentView($event)" 
@@ -95,7 +95,7 @@
 
 <!-- Chatbot Popup -->
 <button 
-  [class]="`absolute right-6 lg:right-16 bottom-6 lg:bottom-16 rounded-full p-4 lg:p-5 bg-prussian-blue-200 lg:hover:bg-prussian-blue-300 
+  [class]="`absolute right-6 lg:right-16 bottom-6 lg:bottom-16 rounded-full p-4 lg:p-5 bg-[var(--bg-card)] lg:hover:bg-[var(--bg-card-hover)]
   ${(chatOpen || (currentView.type !== 'subtopic' && (currentView.content.score == null))) ? 'hidden' : ''}`" 
   (click)="toggleChatPopup()"
   [disabled]="(currentView.type !== 'subtopic' && (currentView.content.score == null))"
