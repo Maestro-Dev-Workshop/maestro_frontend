@@ -79,67 +79,58 @@
   font-style: normal;
 }
 
-:root {
-  /* SURFACES */
-  --bg-page: #1A2B37;        /* prussian-blue-900 */
-  --bg-hover: #2B4459;        /* prussian-blue-700 */
-  --bg-card: #C6D2DD;
-  --bg-card-hover: #7591A5;
-  --bg-element: #2B4459;
-  --bg-element-hover: #7591A5;
-  --bg-alt: ;
-  --bg-alt-hover: #2B4459;
-
-  /* TEXT */
-  --text-primary: #FFFFFF;    /* white */
-  --text-primary-hover: #C6D2DD;    /* prussian-blue-200 */
-  --text-secondary: #E0E5EA;
-  --text-alt: #E0E5EA;
-  --text-alt-hover: #A4ADB5;
-
-  /* BORDERS */
+* {
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.light {
+/* =========================
+   DEFAULT (LIGHT MODE)
+   ========================= */
+:root {
   /* SURFACES */
-  --bg-page: #FFFFFF;        /* prussian-blue-50 */
-  --bg-hover: #E0E5EA;        /* prussian-blue-300 */
+  --bg-page: #FFFFFF;
+  --bg-hover: #E0E5EA;
   --bg-card: #E8ECF1;
   --bg-card-hover: #E0E5EA;
   --bg-element: #2B4459;
   --bg-element-hover: #7591A5;
-  --bg-alt: ;
+  --bg-alt: #F3F4F6;
   --bg-alt-hover: #F3F4F6;
 
   /* TEXT */
-  --text-primary: #002D4B;    /* white */
-  --text-primary-hover: #7591A5;    /* prussian-blue-200 */
-  --text-secondary: #2B4459;
+  --text-primary: #002D4B;
+  --text-primary-hover: #7591A5;
+  --text-secondary: #002D48;
   --text-alt: #374151;
   --text-alt-hover: #6B7280;
 
   /* BORDERS */
+  --border-default: #D1D5DB;
 }
 
+/* =========================
+   DARK MODE
+   ========================= */
 .dark {
   /* SURFACES */
-  --bg-page: #1A2B37;        /* prussian-blue-900 */
-  --bg-hover: #2B4459;        /* prussian-blue-700 */
-  --bg-card: #C6D2DD;
-  --bg-card-hover: #7591A5;
-  --bg-element: #2B4459;
-  --bg-element-hover: #7591A5;
-  --bg-alt: ;
+  --bg-page: #162532;          /* Slightly darker page */
+  --bg-card: #21384A;          /* Brighter cards */
+  --bg-card-hover: #2B4459;
+  --bg-hover: #2F4E67;         /* Hover is now visible */
+  --bg-element: #355F7A;       /* Buttons stand out */
+  --bg-element-hover: #4F6E83;
+  --bg-alt: #1C2F3D;
   --bg-alt-hover: #2B4459;
 
   /* TEXT */
-  --text-primary: #FFFFFF;    /* white */
-  --text-primary-hover: #C6D2DD;    /* prussian-blue-200 */
-  --text-secondary: #E0E5EA;
-  --text-alt: #E0E5EA;
-  --text-alt-hover: #A4ADB5;
+  --text-primary: #FFFFFF;
+  --text-primary-hover: #E8ECF1;
+  --text-secondary: #C6D2DD;   /* Less bright than primary */
+  --text-alt: #A4ADB5;         /* Metadata text */
+  --text-alt-hover: #E0E5EA;
 
   /* BORDERS */
+  --border-default: #3C586D;   /* Visible but subtle */
 }
 
 html,

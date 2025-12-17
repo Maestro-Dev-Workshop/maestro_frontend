@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: 'class',
   content: [
     "./src/**/*.{html,ts}",   // Scan Angular templates + components
   ],
@@ -22,6 +23,16 @@ module.exports = {
           '800': '#2F546C',   // New shade (unused)
           '900': '#002D4B',   // Original darkest color
         },
+        page: 'var(--bg-page)',
+        card: 'var(--bg-card)',
+        hover: 'var(--bg-hover)',
+        element: 'var(--bg-element)',
+        'element-hover': 'var(--bg-element-hover)',
+        
+        text: 'var(--text-primary)',
+        'text-secondary': 'var(--text-secondary)',
+        'text-alt': 'var(--text-alt)',
+        border: 'var(--border-default)',
       }
     },
   },

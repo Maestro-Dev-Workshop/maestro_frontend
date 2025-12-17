@@ -1,67 +1,125 @@
-<header class="flex flex-row justify-between items-center px-4 py-2 lg:px-12 lg:py-10 space-y-0 md:space-y-0">
-  <!-- Left: logo + title (styling follows first block) -->
-  <a routerLink="/" class="flex flex-row items-center no-underline mx-4 md:mx-8">
-    <img src="images/logo-coloured.svg" alt="Maestro Logo" class="w-8 md:w-12 mr-2">
-    <span class="text-lg md:text-2xl h-max text-[var(--text-primary)] font-serif">Maestro</span>
+<header
+  class="flex flex-row justify-between items-center px-4 py-2 lg:px-12 lg:py-10"
+>
+  <!-- Left: Logo -->
+  <a
+    routerLink="/"
+    class="flex flex-row items-center no-underline mx-4 md:mx-8"
+  >
+    <img
+      src="images/logo-coloured.svg"
+      alt="Maestro Logo"
+      class="w-8 md:w-12 mr-2"
+    />
+    <span
+      class="text-lg md:text-2xl h-max font-serif text-[var(--text-primary)]"
+    >
+      Maestro
+    </span>
   </a>
 
-  <!-- Center / Right: nav + actions -->
-  <div class="flex flex-row items-center mx-4 md:mx-8 space-x-4 md:space-x-8">
-    <!-- Actions: Logout button + profile image -->
-  </div>
+  <!-- Right: Profile Button -->
   <button
-    class="rounded-full p-1 px-2 lg:hover:bg-[var(--bg-alt-hover)] text-[var(--text-primary)] font-bold"
+    class="rounded-full p-1 px-2 hover:bg-[var(--bg-alt-hover)] text-[var(--text-primary)] font-bold"
     (click)="popout()"
   >
-    Profile <img src="images/profile-icon.svg" alt="Profile" class="inline w-8 md:w-12 border border-gray-300 rounded-full">
+    Profile
+    <img
+      src="images/profile-icon.svg"
+      alt="Profile"
+      class="inline w-8 md:w-12 border border-gray-300 rounded-full"
+    />
   </button>
 </header>
 
 <!-- Account Menu -->
 @if (showAccount()) {
-  <div class="absolute top-16 lg:top-24 right-4 lg:right-8 flex flex-col items-start p-4 rounded-xl text-[var(--text-primary)] bg-[var(--bg-page)] shadow-lg w-[90vw] max-w-sm space-y-4">
+  <div
+    class="absolute top-16 lg:top-24 right-4 lg:right-8 flex flex-col items-start p-4 rounded-xl
+           text-[var(--text-primary)] bg-[var(--bg-page)] shadow-lg
+           w-[90vw] max-w-sm space-y-4 z-50"
+  >
 
-    <!-- Account info -->
+    <!-- Account Info -->
     <div class="flex flex-row items-center">
-      <img src="images/profile-icon.svg" alt="" class="w-6 mr-2">
+      <img src="images/profile-icon.svg" alt="" class="w-6 mr-2" />
       <div>
         <h3 class="font-semibold text-[var(--text-alt)]">Account</h3>
-        <span class="text-sm font-light text-[var(--text-alt-hover)]">{{ email() }}</span>
+        <span class="text-sm font-light text-[var(--text-alt-hover)]">
+          {{ email() }}
+        </span>
       </div>
     </div>
 
-    <!-- PLAN BOX — NEW SECTION -->
+    <!-- Plan Box -->
     <div class="w-full border border-[var(--bg-hover)]/40 rounded-xl p-4">
       <div class="flex justify-between items-center mb-2">
         <div class="flex items-center space-x-2">
-          <img src="images/coin.svg" class="w-5 h-5" alt="">
-          <span class="font-medium">{{planName()}}</span>
+          <img src="images/coin.svg" class="w-5 h-5" alt="" />
+          <span class="font-medium">{{ planName() }}</span>
         </div>
 
-        <button class="text-[var(--text-primary)] lg:hover:text-[var(--text-primary-hover)] underline text-sm" (click)="goToUpgrade()">
+        <button
+          class="underline text-sm hover:text-[var(--text-primary-hover)]"
+          (click)="goToUpgrade()"
+        >
           Upgrade
         </button>
       </div>
 
-      <!-- PROGRESS BAR -->
+      <!-- Progress Bar -->
       <div>
         <div class="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
-          <div class="h-full bg-prussian-blue-700 rounded-full" 
-               [style.width.%]="subjectPercent()">
-          </div>
+          <div
+            class="h-full bg-prussian-blue-700 rounded-full"
+            [style.width.%]="subjectPercent()"
+          ></div>
         </div>
-        <p class="text-xs mt-1">{{ subjectsCreated() }}/{{ subjectsTotal() }} Subjects Created</p>
+        <p class="text-xs mt-1">
+          {{ subjectsCreated() }}/{{ subjectsTotal() }} Subjects Created
+        </p>
+      </div>
+    </div>
+
+    <!-- Theme Switch -->
+    <div class="w-full border border-[var(--bg-hover)]/40 rounded-xl p-3">
+      <p class="text-xs mb-2 text-[var(--text-alt-hover)]">Theme</p>
+
+      <div class="flex gap-2">
+        <button
+          class="flex-1 py-1 text-xs rounded-md border transition"
+          [class.bg-[var(--bg-card)]]="currentTheme() === 'light'"
+          (click)="setTheme('light')"
+        >
+          Light
+        </button>
+
+        <button
+          class="flex-1 py-1 text-xs rounded-md border transition"
+          [class.bg-[var(--bg-card)]]="currentTheme() === 'dark'"
+          (click)="setTheme('dark')"
+        >
+          Dark
+        </button>
+
+        <button
+          class="flex-1 py-1 text-xs rounded-md border transition"
+          [class.bg-[var(--bg-card)]]="currentTheme() === 'system'"
+          (click)="setTheme('system')"
+        >
+          System
+        </button>
       </div>
     </div>
 
     <!-- Logout -->
     <button
-      class="flex flex-row items-center w-full text-[var(--text-alt)] lg:hover:bg-[var(--bg-alt-hover)] py-2 rounded-lg"
+      class="flex flex-row items-center w-full text-[var(--text-alt)]
+             hover:bg-[var(--bg-alt-hover)] py-2 rounded-lg"
       (click)="openLogout()"
     >
-      <img src="images/logout-icon.svg" alt="" class="w-6 mx-1">
+      <img src="images/logout-icon.svg" alt="" class="w-6 mx-1" />
       Logout
     </button>
   </div>
 }
-
