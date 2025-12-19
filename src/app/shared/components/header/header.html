@@ -87,8 +87,7 @@
 
       <div class="flex gap-2">
         <button
-          class="flex-1 py-1 text-xs rounded-md border transition"
-          [class.bg-[var(--bg-card)]]="currentTheme() === 'light'"
+          [class]="`flex-1 py-1 text-xs rounded-md border transition lg:hover:bg-[var(--bg-hover)] ${currentTheme === 'light' ? 'bg-[var(--bg-hover)]' : ''}`"
           (click)="setTheme('light')"
         >
           Light
@@ -96,7 +95,7 @@
 
         <button
           class="flex-1 py-1 text-xs rounded-md border transition"
-          [class.bg-[var(--bg-card)]]="currentTheme() === 'dark'"
+          [class]="`flex-1 py-1 text-xs rounded-md border transition lg:hover:bg-[var(--bg-hover)] ${currentTheme === 'dark' ? 'bg-[var(--bg-hover)]' : ''}`"
           (click)="setTheme('dark')"
         >
           Dark
@@ -104,7 +103,7 @@
 
         <button
           class="flex-1 py-1 text-xs rounded-md border transition"
-          [class.bg-[var(--bg-card)]]="currentTheme() === 'system'"
+          [class]="`flex-1 py-1 text-xs rounded-md border transition lg:hover:bg-[var(--bg-hover)] ${currentTheme === 'system' ? 'bg-[var(--bg-hover)]' : ''}`"
           (click)="setTheme('system')"
         >
           System
