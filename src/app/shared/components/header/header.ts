@@ -41,7 +41,7 @@ export class Header implements OnInit {
     return (this.subjectsCreated() / this.subjectsTotal()) * 100;
   });
 
-  currentTheme = computed<ThemeMode>(() => this.themeService.getTheme());
+  currentTheme = this.themeService.getTheme();
 
   constructor(
     private auth: AuthService,
@@ -50,6 +50,7 @@ export class Header implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.themeService.init();
     this.subscriptionService.getSubscription().subscribe({
       next: (response) => {
         this.subjectsCreated.set(
@@ -70,6 +71,8 @@ export class Header implements OnInit {
 
   setTheme(mode: ThemeMode) {
     this.themeService.setTheme(mode);
+    this.currentTheme = this.themeService.getTheme();
+    this.cdr.detectChanges();
   }
 
   openLogout() {
