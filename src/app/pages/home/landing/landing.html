@@ -1,7 +1,7 @@
 <!-- Page Container -->
-<div class="relative min-h-screen bg-cover bg-center bg-no-repeat bg-[url(/images/landing_background.png)]">
+<div class="relative min-h-screen noisy-gradient">
   <!-- Dark Overlay for readability -->
-  <div class="absolute inset-0 bg-black bg-opacity-60"></div>
+  <!-- <div class="absolute inset-0 bg-black bg-opacity-60"></div> -->
 
   <!-- Main Content Wrapper -->
   <div class="relative z-10 mx-auto px-4 sm:px-8 md:px-20">
@@ -19,44 +19,58 @@
 
       <!-- Nav Bar -->
       <nav class="hidden md:flex items-center space-x-6 sm:space-x-10 text-base sm:text-lg text-white">
-        <a (click)="onHomeClick()" class="font-medium lg:hover:text-prussian-blue-500 cursor-pointer">Home</a>
-        <a (click)="onFeaturesClick()" class="font-medium lg:hover:text-prussian-blue-500 cursor-pointer">Features</a>
-        <a (click)="onPricingClick()" class="font-medium lg:hover:text-prussian-blue-500 cursor-pointer">Pricing</a>
-        <a (click)="onContactClick()" class="font-medium lg:hover:text-prussian-blue-500 cursor-pointer">Contact us</a>
+        <a (click)="onHomeClick()" class="font-medium lg:hover:text-prussian-blue-400 cursor-pointer">Home</a>
+        <a (click)="onFeaturesClick()" class="font-medium lg:hover:text-prussian-blue-400 cursor-pointer">Features</a>
+        <a (click)="onPricingClick()" class="font-medium lg:hover:text-prussian-blue-400 cursor-pointer">Pricing</a>
+        <a (click)="onContactClick()" class="font-medium lg:hover:text-prussian-blue-400 cursor-pointer">Contact us</a>
       </nav>
 
       <button
         (click)="onGetStartedClick()"
-        class="rounded-md bg-prussian-blue-900 px-4 sm:px-6 md:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold text-white transition lg:hover:bg-prussian-blue-700"
+        class="rounded-full bg-prussian-blue-900 px-4 sm:px-6 md:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold text-white transition lg:hover:bg-prussian-blue-500"
       >
         Try Maestro
       </button>
     </header>
 
     <!-- Primary Headline -->
-    <main class="flex min-h-screen flex-col items-start justify-center text-white">
-      <div class="flex max-w-2xl flex-col items-start space-y-4 px-2 sm:px-0">
-        <h1 class="text-3xl sm:text-4xl md:text-6xl font-normal leading-snug md:leading-[72px] text-white">
-          Unlock Your Learning Potential with Maestro
+    <main class="flex flex-col items-center justify-center text-white mt-24">
+      <div class="flex max-w-2xl flex-col items-center text-center space-y-4 px-2 sm:px-0">
+        <h1 class="text-3xl sm:text-4xl md:text-6xl font-medium tracking-tighter leading-snug md:leading-[72px] text-white">
+          Master Anything, Faster.
         </h1>
         <p class="text-base sm:text-lg md:text-xl leading-relaxed text-gray-300">
-          Upload your materials, customize how you learn, and get AI-crafted
-          lessons, quizzes, and study plans tailored just for you.
+          Turn complex documents into simple lessons, quizzes, and study plans—personalized to how you learn.
         </p>
-        <button
-          (click)="onGetStartedClick()"
-          class="rounded-md bg-prussian-blue-900 px-4 sm:px-6 md:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold transition lg:hover:bg-prussian-blue-700"
-        >
-          Get Started
-        </button>
+        <!-- <div class="flex items-center">
+          <button
+            (click)="onGetStartedClick()"
+            class="rounded-full bg-prussian-blue-900 mx-2 px-4 sm:px-6 md:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold transition lg:hover:bg-prussian-blue-500"
+          >
+            Try Maestro Free
+          </button>
+          <button
+            class="rounded-full bg-white text-prussian-blue-900 mx-2 px-4 sm:px-6 md:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold transition lg:hover:bg-prussian-blue-400"
+          >
+            Watch The Demo
+          </button>
+        </div> -->
       </div>
+      <iframe
+        class="w-full md:w-2/3 aspect-video rounded-xl my-16"
+        src="https://www.youtube.com/embed/UV2-oyH5erU?si=GSmXf1vQPwrk_pSG"
+        title="Product demo video"
+        frameborder="0"
+        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
     </main>
 
     <!-- Footer -->
-    <footer class="absolute bottom-24 w-full text-center px-4">
+    <!-- <footer class="absolute bottom-24 w-full text-center px-4">
       <p class="font-normal italic text-sm sm:text-base md:text-xl leading-6 sm:leading-7 text-gray-100">
         Be among the first to shape the future of learning.
       </p>
-    </footer>
+    </footer> -->
   </div>
 </div>
