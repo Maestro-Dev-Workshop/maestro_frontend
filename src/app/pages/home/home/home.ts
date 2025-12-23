@@ -5,10 +5,11 @@ import { Landing } from '../landing/landing';
 import { Features } from '../features/features';
 import { Pricing } from '../pricing/pricing';
 import { Contact } from '../contact/contact';
+import { Team } from '../team/team';
 
 @Component({
   selector: 'app-home',
-  imports: [Landing, Features, Pricing, Contact],
+  imports: [Landing, Features, Pricing, Contact, Team],
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
