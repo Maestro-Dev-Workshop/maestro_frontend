@@ -41,18 +41,10 @@
     @for (cell of currentView().content.cells; track $index) {
       @if (cell.type === "text") {
         <!-- Markdown Text Cells -->
-        <div class="prose prose-math bg-[var(--bg-page)]
-        text-[var(--text-primary)]
-        prose-headings:text-[var(--text-heading)]
-        prose-p:text-[var(--text-primary)]
-        prose-li:text-[var(--text-primary)]
-        prose-strong:text-[var(--text-heading)]
-        prose-code:text-[var(--text-secondary)]
-        prose-blockquote:text-[var(--text-secondary)]
-        dark:prose-invert" [innerHTML]="cell.content | markdown"></div>
+        <app-markdown-cell [data]="cell"></app-markdown-cell>
       } @else {
         <!-- Default Fallback Cells -->
-        <div class="prose prose-math" [innerHTML]="cell.content | markdown"></div>
+        <app-markdown-cell [data]="cell"></app-markdown-cell>
       }
     }
   </div>
