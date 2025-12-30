@@ -95,7 +95,7 @@
 
 <!-- Chatbot Popup -->
 <button 
-  [class]="`absolute right-6 lg:right-16 bottom-6 lg:bottom-16 rounded-full p-4 lg:p-5 bg-[var(--bg-card)] lg:hover:bg-[var(--bg-card-hover)]
+  [class]="`absolute shadow-lg right-6 lg:right-16 bottom-6 lg:bottom-16 rounded-full p-4 lg:p-5 bg-[var(--bg-card)] lg:hover:bg-[var(--bg-card-hover)]
   ${(chatOpen || (currentView.type !== 'subtopic' && (currentView.content.score == null))) ? 'hidden' : ''}`" 
   (click)="toggleChatPopup()"
   [disabled]="(currentView.type !== 'subtopic' && (currentView.content.score == null))"
