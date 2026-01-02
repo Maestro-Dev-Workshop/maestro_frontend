@@ -1,0 +1,218 @@
+<div
+  class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 h-screen"
+  (click)="save()"
+>
+  <div
+    class="bg-[var(--bg-page)] rounded-lg p-6 md:p-10 w-4/5 md:w-1/2 shadow-lg md:text-xl 
+    max-h-[80%] overflow-y-auto scrollbar-none"
+    (click)="$event.stopPropagation()"
+  >
+    <!-- Exercise Configuration -->
+    @if (config.exercise.enabled) {
+      <form #form="ngForm">
+        <!-- Header -->
+        <div class="flex flex-row w-full justify-between items-center border-b-2 p-2 border-[var(--text-primary)]">
+          <div class="flex flex-row">
+            <img src="images/exercise-icon.svg" alt="" class="mr-2">
+            Exercise
+          </div>
+          <button (click)="toggleExtensionVisibility('exercise')" class="p-2">
+            <img src="images/dropdown-icon-closed.svg" alt="" [class]="`w-2 ${extensionVisibility['exercise'] ? 'rotate-90' : 'rotate-180'}`">
+          </button>
+        </div>
+
+        <div [class]="extensionVisibility['exercise'] ? '' : 'hidden'">
+          <!-- Number of Questions -->
+          <div class="px-2 pt-4 md:pt-8">
+            <label for="" class="my-2">Number of Questions (per Topic):</label>
+            <input 
+              type="number" 
+              name="exerciseCount" 
+              class="bg-[var(--bg-page)] p-2 border-b-2 border-[var(--text-primary-hover)] focus:border-[var(--text-primary)] focus:outline-none text-sm w-12 mx-4" 
+              [(ngModel)]="config.exercise.numQuestions"
+              min="1"
+              max="10"
+            >
+          </div>
+  
+          <!-- Question Types -->
+          <div class="px-2 pt-2 md:pt-6 flex flex-col md:flex-row">
+            <label for="" class="my-2">Questions Types:</label>
+            <div class="flex flex-row items-start text-sm p-2 pt-3">
+              <div class="flex flex-row items-start">
+                <input 
+                  type="checkbox" 
+                  id="exercise-mc" 
+                  class="mx-2 my-1 accent-blue-900" 
+                  value="multiple choice" 
+                  [checked]="config.exercise.types.includes('multiple choice')" 
+                  (change)="toggleType($event, 'exercise')"
+                >
+                <label for="exercise-mc">Single Choice</label>
+              </div>
+              <div class="flex flex-row items-start">
+                <input 
+                  type="checkbox" 
+                  id="exercise-ms" 
+                  class="mx-2 my-1 accent-blue-900" 
+                  value="multiple selection" 
+                  [checked]="config.exercise.types.includes('multiple selection')" 
+                  (change)="toggleType($event, 'exercise')"
+                >
+                <label for="exercise-ms">Multiple Choice</label>
+              </div>
+              <div class="flex flex-row items-start">
+                <input 
+                  type="checkbox" 
+                  id="exercise-ess" 
+                  class="mx-2 my-1 accent-blue-900" 
+                  value="essay" 
+                  [checked]="config.exercise.types.includes('essay')" 
+                  (change)="toggleType($event, 'exercise')"
+                >
+                <label for="exercise-ess">Essay</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    }
+
+
+    <!-- Exam Configuration -->
+    @if (config.exam.enabled) {
+      <form #form="ngForm" class="my-4 md:my-8">
+        <!-- Header -->
+        <div class="flex flex-row w-full justify-between items-center border-b-2 p-2 border-[var(--text-primary)]">
+          <div class="flex flex-row">
+            <img src="images/exam-icon.svg" alt="" class="mr-2">
+            Exam
+          </div>
+          <button (click)="toggleExtensionVisibility('exam')" class="p-2">
+            <img src="images/dropdown-icon-closed.svg" alt="" [class]="`w-2 ${extensionVisibility['exam'] ? 'rotate-90' : 'rotate-180'}`">
+          </button>
+        </div>
+
+        <div [class]="extensionVisibility['exam'] ? '' : 'hidden'">
+          <!-- Number of Questions -->
+          <div class="px-2 pt-4 md:pt-8">
+            <label for="" class="my-2">Number of Questions:</label>
+            <input 
+              type="number" 
+              name="examCount" 
+              class="bg-[var(--bg-page)] p-2 border-b-2 border-[var(--text-primary-hover)] focus:border-[var(--text-primary)] focus:outline-none text-sm w-12 mx-4" 
+              [(ngModel)]="config.exam.numQuestions"
+              min="1"
+              max="30"
+            >
+          </div>
+  
+          <!-- Question Types -->
+          <div class="px-2 pt-2 md:pt-6 flex flex-col md:flex-row">
+            <label for="" class="my-2">Questions Types:</label>
+            <div class="flex flex-row items-start text-sm p-2 pt-3">
+              <div class="flex flex-row items-start">
+                <input 
+                  type="checkbox" 
+                  id="exam-mc" 
+                  class="mx-2 my-1 accent-blue-900" 
+                  value="multiple choice" 
+                  [checked]="config.exam.types.includes('multiple choice')" 
+                  (change)="toggleType($event, 'exam')"
+                >
+                <label for="exam-mc">Single Choice</label>
+              </div>
+              <div class="flex flex-row items-start">
+                <input 
+                  type="checkbox" 
+                  id="exam-ms" 
+                  class="mx-2 my-1 accent-blue-900" 
+                  value="multiple selection" 
+                  [checked]="config.exam.types.includes('multiple selection')" 
+                  (change)="toggleType($event, 'exam')"
+                >
+                <label for="exam-ms">Multiple Choice</label>
+              </div>
+              <div class="flex flex-row items-start">
+                <input 
+                  type="checkbox" 
+                  id="exam-ess" 
+                  class="mx-2 my-1 accent-blue-900" 
+                  value="essay" 
+                  [checked]="config.exam.types.includes('essay')" 
+                  (change)="toggleType($event, 'exam')"
+                >
+                <label for="exam-ess">Essay</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    }
+
+
+    <!-- Flashcards Configuration -->
+    @if (config.flashcards.enabled) {
+      <form #form="ngForm" class="my-4 md:my-8">
+        <!-- Header -->
+        <div class="flex flex-row w-full justify-between items-center border-b-2 p-2 border-[var(--text-primary)]">
+          <div class="flex flex-row">
+            <img src="images/flashcards-icon.svg" alt="" class="mr-2">
+            Flashcards
+          </div>
+          <button (click)="toggleExtensionVisibility('flashcards')" class="p-2">
+            <img src="images/dropdown-icon-closed.svg" alt="" [class]="`w-2 ${extensionVisibility['flashcards'] ? 'rotate-90' : 'rotate-180'}`">
+          </button>
+        </div>
+
+        <div [class]="extensionVisibility['flashcards'] ? '' : 'hidden'">
+          <!-- Number of Questions -->
+          <div class="px-2 pt-4 md:pt-8">
+            <label for="" class="my-2">Number of Cards (per Topic):</label>
+            <input 
+              type="number" 
+              name="cardCount" 
+              class="bg-[var(--bg-page)] p-2 border-b-2 border-[var(--text-primary-hover)] focus:border-[var(--text-primary)] focus:outline-none text-sm w-12 mx-4" 
+              [(ngModel)]="config.flashcards.numCards"
+              min="1"
+              max="10"
+            >
+          </div>
+  
+          <!-- Question Types -->
+          <div class="px-2 pt-2 md:pt-6 flex flex-col md:flex-row">
+            <label for="" class="my-2">Card Types:</label>
+            <div class="flex flex-row items-start text-sm p-2 pt-3">
+              <div class="flex flex-row items-start">
+                <input 
+                  type="checkbox" 
+                  id="flashcard-basic" 
+                  class="mx-2 my-1 accent-blue-900" 
+                  value="basic" 
+                  [checked]="config.exam.types.includes('basic')" 
+                  (change)="toggleType($event, 'flashcards')"
+                >
+                <label for="flashcard-basic">Basic</label>
+              </div>
+              <div class="flex flex-row items-start">
+                <input 
+                  type="checkbox" 
+                  id="flashcard-basic-reversed" 
+                  class="mx-2 my-1 accent-blue-900" 
+                  value="basic reversed" 
+                  [checked]="config.exam.types.includes('basic reversed')" 
+                  (change)="toggleType($event, 'flashcards')"
+                >
+                <label for="flashcard-basic-reversed">Basic (Reversed)</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    }
+
+    <button class="text-sm px-5 py-4 rounded-full bg-[var(--text-primary)] text-[var(--bg-page)] md:hover:bg-[var(--text-primary-hover)]" (click)="save()">
+      Save Configuration
+    </button>
+  </div>
+</div>

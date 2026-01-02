@@ -21,6 +21,7 @@ export const routes: Routes = [
 
   // Subject Creation (stepper flow, could be nested later if you want)
   { path: 'subject-create/:sessionId/naming-upload', loadComponent: () => import('./pages/subject-create/naming-upload/naming-upload').then(m => m.NamingUpload) },
+  { path: 'subject-create/:sessionId/lesson-generation', loadComponent: () => import('./pages/subject-create/lesson-generation/lesson-generation').then(m => m.LessonGeneration) },
   { path: 'subject-create/:sessionId/topic-preferences', loadComponent: () => import('./pages/subject-create/topic-preferences/topic-preferences').then(m => m.TopicPreferences) },
   { path: 'subject-create/:sessionId/question-settings', loadComponent: () => import('./pages/subject-create/question-settings/question-settings').then(m => m.QuestionSettings) },
 
