@@ -11,7 +11,8 @@ import { FormsModule } from '@angular/forms';
 export class ExtensionConfigOverlay {
   show = false;
   close = output<any>();
-  configuration = model<any>();
+  configuration = input<any>();
+  constraints = input<any>();
   config: any;
   extensionVisibility: any = {};
 

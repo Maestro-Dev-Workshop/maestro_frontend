@@ -46,7 +46,7 @@
     type="text" 
     name="learningStyle" 
     placeholder="How would you like to learn and generate extensions?" 
-    class="w-full rounded-lg border-0 focus:outline-none resize-none overflow-hidden bg-[var(--bg-page)]" 
+    class="w-full border-0 focus:outline-none resize-none overflow-hidden bg-[var(--bg-page)]" 
     rows="1"
     cols="1"
     oninput="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px';"
@@ -67,6 +67,7 @@
           [class]="`flex flex-row md:mr-4 rounded-full md:hover:shadow-lg p-2
           ${settingsPopup ? 'bg-[var(--bg-hover)] shadow-lg p-2' : ''}`"
           (click)="toggleSettingsPopup()"
+          [disabled]="loading"
         >
           <img src="images/extension-icon.svg" alt="Enable" class="w-4 md:w-6 mr-1">
           <span class="hidden md:block">Enable Extensions</span>
@@ -75,7 +76,7 @@
           [class]="`flex flex-row md:mr-4 rounded-full md:hover:shadow-lg p-2
           ${configOverlay ? 'bg-[var(--bg-hover)] shadow-lg p-2' : ''}`"
           (click)="toggleConfigOverlay()"
-          [disabled]="!extensionsEnabled"
+          [disabled]="!extensionsEnabled || loading"
         >
           <img src="images/config-icon.svg" alt="Configure" class="w-6 md:w-6 mr-1">
           <span class="hidden md:block">Configure Extensions</span>
@@ -144,12 +145,13 @@
         </div>
       </div>
 
-      <button (click)="go()">
+      <button (click)="go()" [disabled]="loading">
         <img src="images/send-instruction-icon.svg" alt="Send" class="w-6 md:w-8">
       </button>
     </div>
   </form>
 
+  <!-- Selected Extensions Display -->
   <div class="text-gray-400 text-center mt-4 mb-2">
     {{ extensionsEnabled ? 'Selected Extensions:' : 'No Extensions Selected' }}
   </div>
@@ -168,7 +170,8 @@
 @if (configOverlay) {
   <app-extension-config-overlay
     (close)="saveConfig($event)"
-    [(configuration)]="extensionSettings"
+    [configuration]="extensionSettings"
+    [constraints]="constraints"
   >
   </app-extension-config-overlay>
 }

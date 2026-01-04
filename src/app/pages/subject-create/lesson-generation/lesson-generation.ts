@@ -9,6 +9,7 @@ import { LessonService } from '../../../core/services/lesson.service';
 import { NotificationService } from '../../../core/services/notification.service'; // <-- Add this import
 import { PreferenceValidator } from '../../../shared/directives/preference-validator';
 import { ExtensionConfigOverlay } from '../extension-config-overlay/extension-config-overlay';
+import { max } from 'rxjs';
 
 
 @Component({
@@ -25,6 +26,7 @@ export class LessonGeneration {
   settingsPopup = false
   configOverlay = false
   extensionsEnabled = false
+  notify = inject(NotificationService)
   
   subjectName = 'Algebra';
   topics = [
@@ -114,6 +116,17 @@ export class LessonGeneration {
       name: 'glossary'
     }
   }
+  constraints = {
+    excercise: {
+      maxQuestions: 10
+    },
+    exam: {
+      maxQuestions: 50
+    },
+    flashcards: {
+      maxCards: 20
+    }
+  }
 
   constructor(private cdr: ChangeDetectorRef) {}
 
@@ -147,7 +160,98 @@ export class LessonGeneration {
     return Object.values(this.extensionSettings).filter((ext: any) => ext.enabled);
   }
 
+  validateSettings() {
+    // Check if any topics have been selected
+    const selectedTopics = this.topics.filter(topic => topic.selected);
+    if (selectedTopics.length === 0) {
+      return {
+        status: false,
+        message: 'Please select at least one topic.'
+      };
+    }
+
+    // Check if learning style is empty
+    if (!this.learningStyle || this.learningStyle.trim() === '') {
+      return {
+        status: false,
+        message: 'Learning style cannot be empty.'
+      };
+    }
+    if (this.learningStyle.length > 2000) {
+      return {
+        status: false,
+        message: 'Learning style cannot exceed 2000 characters.'
+      };
+    }
+
+    // Exercise checks
+    if (this.extensionSettings.exercise.enabled) {
+      if (this.extensionSettings.exercise.numQuestions <= 0 || this.extensionSettings.exercise.numQuestions > this.constraints.excercise.maxQuestions) {
+        return {
+          status: false,
+          message: `Number of exercise questions must be between 1 and ${this.constraints.excercise.maxQuestions}.`
+        };
+      }
+      if (this.extensionSettings.exercise.types.length === 0) {
+        return {
+          status: false,
+          message: 'Please select at least one question type for exercise.'
+        };
+      }
+    }
+
+    // Exam checks
+    if (this.extensionSettings.exam.enabled) {
+      if (this.extensionSettings.exam.numQuestions <= 0 || this.extensionSettings.exam.numQuestions > this.constraints.exam.maxQuestions) {
+        return {
+          status: false,
+          message: `Number of exam questions must be between 1 and ${this.constraints.exam.maxQuestions}.`
+        };
+      }
+      if (this.extensionSettings.exam.types.length === 0) {
+        return {
+          status: false,
+          message: 'Please select at least one question type for exam.'
+        };
+      }
+    }
+
+    // Flashcards checks
+    if (this.extensionSettings.flashcards.enabled) {
+      if (this.extensionSettings.flashcards.numCards <= 0 || this.extensionSettings.flashcards.numCards > this.constraints.flashcards.maxCards) {
+        return {
+          status: false,
+          message: `Number of flashcards must be between 1 and ${this.constraints.flashcards.maxCards}.`
+        };
+      }
+      if (this.extensionSettings.flashcards.types.length === 0) {
+        return {
+          status: false,
+          message: 'Please select at least one type for flashcards.'
+        };
+      }
+    }
+
+    return {
+      status: true,
+      message: 'Settings are valid.'
+    };
+  }
+
   go() {
+    this.loading = true;
+    this.settingsPopup = false
+    this.configOverlay = false
+
+    const validation = this.validateSettings();
+    if (!validation.status) {
+      this.notify.showError(validation.message);
+      this.loading = false;
+      return;
+    }
+
+    this.notify.showSuccess(validation.message);
     console.log(this.extensionSettings)
+    this.loading = false;
   }
 }
