@@ -1,12 +1,10 @@
 import { Component, input, output } from '@angular/core';
-import { MarkdownPipe } from '../../../shared/pipes/markdown-pipe';
 import { MarkdownCell } from '../cells/markdown-cell/markdown-cell';
-import { ChartCell } from '../cells/chart-cell/chart-cell';
-// import { MarkdownModule } from 'ngx-markdown';
+// import { ChartCell } from '../cells/chart-cell/chart-cell';
 
 @Component({
   selector: 'app-subtopic',
-  imports: [MarkdownPipe, MarkdownCell, ChartCell],
+  imports: [MarkdownCell],
   templateUrl: './subtopic.html',
   styleUrl: './subtopic.css'
 })
