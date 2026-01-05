@@ -120,6 +120,10 @@
                 role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
         <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
             <a href="#tree" class="nav-link"
                 role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
         </li>
@@ -174,12 +178,20 @@
                 <td class="col-md-3">imports</td>
                 <td class="col-md-9">
                             <code>CommonModule</code>
+                            <code>FormsModule</code>
+                                <code><a href="../components/Header.html" target="_self" >Header</a></code>
+                            <code>RouterLink</code>
+                            <code>CurrencyLocalizerPipe</code>
                 </td>
             </tr>
 
 
 
 
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./subscription.html</code></td>
+            </tr>
 
 
 
@@ -205,7 +217,70 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                <a href="#activeTab" >activeTab</a>
+                            </li>
+                            <li>
+                                <a href="#countryCode" >countryCode</a>
+                            </li>
+                            <li>
+                                <a href="#email" >email</a>
+                            </li>
+                            <li>
+                                <a href="#firstname" >firstname</a>
+                            </li>
+                            <li>
+                                <a href="#generatedLessons" >generatedLessons</a>
+                            </li>
+                            <li>
+                                <a href="#generatedLimit" >generatedLimit</a>
+                            </li>
+                            <li>
+                                <a href="#innerCircumference" >innerCircumference</a>
+                            </li>
+                            <li>
+                                <a href="#innerDashArray" >innerDashArray</a>
+                            </li>
+                            <li>
+                                <a href="#innerDashOffset" >innerDashOffset</a>
+                            </li>
+                            <li>
+                                <a href="#innerRadius" >innerRadius</a>
+                            </li>
+                            <li>
+                                <a href="#lastname" >lastname</a>
+                            </li>
+                            <li>
+                                <a href="#loadText" >loadText</a>
+                            </li>
+                            <li>
+                                <a href="#outerCircumference" >outerCircumference</a>
+                            </li>
+                            <li>
+                                <a href="#outerDashArray" >outerDashArray</a>
+                            </li>
+                            <li>
+                                <a href="#outerDashOffset" >outerDashOffset</a>
+                            </li>
+                            <li>
+                                <a href="#outerRadius" >outerRadius</a>
+                            </li>
+                            <li>
+                                <a href="#pageLoading" >pageLoading</a>
+                            </li>
+                            <li>
                                 <a href="#plans" >plans</a>
+                            </li>
+                            <li>
+                                <a href="#savedLessons" >savedLessons</a>
+                            </li>
+                            <li>
+                                <a href="#savedLimit" >savedLimit</a>
+                            </li>
+                            <li>
+                                <a href="#showMobileMenu" >showMobileMenu</a>
+                            </li>
+                            <li>
+                                <a href="#socket" >socket</a>
                             </li>
                             <li>
                                 <a href="#status" >status</a>
@@ -223,17 +298,19 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                <a href="#calculateUsage" >calculateUsage</a>
+                            </li>
+                            <li>
+                                <a href="#goBack" >goBack</a>
+                            </li>
+                            <li>
                                 <a href="#ngOnInit" >ngOnInit</a>
                             </li>
                             <li>
-                                <a href="#onCancel" >onCancel</a>
+                                <a href="#openTab" >openTab</a>
                             </li>
                             <li>
-                                <a href="#onSubscribe" >onSubscribe</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Private</span>
-                                <a href="#refresh" >refresh</a>
+                                <a href="#switchPlan" >switchPlan</a>
                             </li>
                         </ul>
                     </td>
@@ -253,12 +330,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(subSvc: <a href="../injectables/SubscriptionService.html" target="_self">SubscriptionService</a>)</code>
+<code>constructor(subscriptionService: <a href="../injectables/SubscriptionService.html" target="_self">SubscriptionService</a>, notify: <a href="../injectables/NotificationService.html" target="_self">NotificationService</a>, router: Router, cdr: ChangeDetectorRef)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/app/pages/dashboard/subscription/subscription.ts:14</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="63" class="link-to-prism">src/app/pages/dashboard/subscription/subscription.ts:63</a></div>
                             </td>
                         </tr>
 
@@ -276,10 +353,46 @@
                                         </thead>
                                         <tbody>
                                                 <tr>
-                                                        <td>subSvc</td>
+                                                        <td>subscriptionService</td>
                                                   
                                                         <td>
                                                                         <code><a href="../injectables/SubscriptionService.html" target="_self" >SubscriptionService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>notify</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/NotificationService.html" target="_self" >NotificationService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                    <code>Router</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>cdr</td>
+                                                  
+                                                        <td>
+                                                                    <code>ChangeDetectorRef</code>
                                                         </td>
                                                   
                                                     <td>
@@ -309,6 +422,80 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="calculateUsage"></a>
+                    <span class="name">
+                        <span ><b>calculateUsage</b></span>
+                        <a href="#calculateUsage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>calculateUsage()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="130"
+                                    class="link-to-prism">src/app/pages/dashboard/subscription/subscription.ts:130</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="goBack"></a>
+                    <span class="name">
+                        <span ><b>goBack</b></span>
+                        <a href="#goBack"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>goBack()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="116"
+                                    class="link-to-prism">src/app/pages/dashboard/subscription/subscription.ts:116</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="ngOnInit"></a>
                     <span class="name">
                         <span ><b>ngOnInit</b></span>
@@ -325,8 +512,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="18"
-                                    class="link-to-prism">src/app/pages/dashboard/subscription/subscription.ts:18</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="72"
+                                    class="link-to-prism">src/app/pages/dashboard/subscription/subscription.ts:72</a></div>
                         </td>
                     </tr>
 
@@ -346,61 +533,24 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="onCancel"></a>
+                    <a name="openTab"></a>
                     <span class="name">
-                        <span ><b>onCancel</b></span>
-                        <a href="#onCancel"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>openTab</b></span>
+                        <a href="#openTab"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>onCancel()</code>
+<code>openTab(tab: "account" | "billing")</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="27"
-                                    class="link-to-prism">src/app/pages/dashboard/subscription/subscription.ts:27</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                        </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="onSubscribe"></a>
-                    <span class="name">
-                        <span ><b>onSubscribe</b></span>
-                        <a href="#onSubscribe"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>onSubscribe(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="23"
-                                    class="link-to-prism">src/app/pages/dashboard/subscription/subscription.ts:23</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="112"
+                                    class="link-to-prism">src/app/pages/dashboard/subscription/subscription.ts:112</a></div>
                         </td>
                     </tr>
 
@@ -421,9 +571,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>id</td>
+                                                <td>tab</td>
                                             <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                                        <code>&quot;account&quot; | &quot;billing&quot;</code>
                                             </td>
 
                                             <td>
@@ -450,26 +600,24 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="refresh"></a>
+                    <a name="switchPlan"></a>
                     <span class="name">
-                            <span class="modifier">Private</span>
-                        <span ><b>refresh</b></span>
-                        <a href="#refresh"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>switchPlan</b></span>
+                        <a href="#switchPlan"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>refresh()</code>
+<code>switchPlan(planCode: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="31"
-                                    class="link-to-prism">src/app/pages/dashboard/subscription/subscription.ts:31</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="147"
+                                    class="link-to-prism">src/app/pages/dashboard/subscription/subscription.ts:147</a></div>
                         </td>
                     </tr>
 
@@ -477,10 +625,40 @@
             <tr>
                 <td class="col-md-4">
 
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>planCode</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         <div class="io-description">
                             <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
                         </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -491,6 +669,485 @@
     <h3 id="inputs">
         Properties
     </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="activeTab"></a>
+                    <span class="name">
+                        <span ><b>activeTab</b></span>
+                        <a href="#activeTab"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;&#x27;account&#x27; | &#x27;billing&#x27;&gt;(&#x27;billing&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">src/app/pages/dashboard/subscription/subscription.ts:40</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="countryCode"></a>
+                    <span class="name">
+                        <span ><b>countryCode</b></span>
+                        <a href="#countryCode"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(&#x27;US&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/app/pages/dashboard/subscription/subscription.ts:38</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="email"></a>
+                    <span class="name">
+                        <span ><b>email</b></span>
+                        <a href="#email"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(&#x27;&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/app/pages/dashboard/subscription/subscription.ts:29</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="firstname"></a>
+                    <span class="name">
+                        <span ><b>firstname</b></span>
+                        <a href="#firstname"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(&#x27;&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/app/pages/dashboard/subscription/subscription.ts:27</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generatedLessons"></a>
+                    <span class="name">
+                        <span ><b>generatedLessons</b></span>
+                        <a href="#generatedLessons"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>1</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/app/pages/dashboard/subscription/subscription.ts:45</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generatedLimit"></a>
+                    <span class="name">
+                        <span ><b>generatedLimit</b></span>
+                        <a href="#generatedLimit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>2</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/app/pages/dashboard/subscription/subscription.ts:46</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="innerCircumference"></a>
+                    <span class="name">
+                        <span ><b>innerCircumference</b></span>
+                        <a href="#innerCircumference"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>2 * Math.PI * this.innerRadius</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/app/pages/dashboard/subscription/subscription.ts:57</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="innerDashArray"></a>
+                    <span class="name">
+                        <span ><b>innerDashArray</b></span>
+                        <a href="#innerDashArray"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">src/app/pages/dashboard/subscription/subscription.ts:62</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="innerDashOffset"></a>
+                    <span class="name">
+                        <span ><b>innerDashOffset</b></span>
+                        <a href="#innerDashOffset"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="63" class="link-to-prism">src/app/pages/dashboard/subscription/subscription.ts:63</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="innerRadius"></a>
+                    <span class="name">
+                        <span ><b>innerRadius</b></span>
+                        <a href="#innerRadius"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>55</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="54" class="link-to-prism">src/app/pages/dashboard/subscription/subscription.ts:54</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="lastname"></a>
+                    <span class="name">
+                        <span ><b>lastname</b></span>
+                        <a href="#lastname"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(&#x27;&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/pages/dashboard/subscription/subscription.ts:28</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadText"></a>
+                    <span class="name">
+                        <span ><b>loadText</b></span>
+                        <a href="#loadText"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;Loading subscription details...&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="21" class="link-to-prism">src/app/pages/dashboard/subscription/subscription.ts:21</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="outerCircumference"></a>
+                    <span class="name">
+                        <span ><b>outerCircumference</b></span>
+                        <a href="#outerCircumference"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>2 * Math.PI * this.outerRadius</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/app/pages/dashboard/subscription/subscription.ts:56</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="outerDashArray"></a>
+                    <span class="name">
+                        <span ><b>outerDashArray</b></span>
+                        <a href="#outerDashArray"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/app/pages/dashboard/subscription/subscription.ts:60</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="outerDashOffset"></a>
+                    <span class="name">
+                        <span ><b>outerDashOffset</b></span>
+                        <a href="#outerDashOffset"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/app/pages/dashboard/subscription/subscription.ts:61</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="outerRadius"></a>
+                    <span class="name">
+                        <span ><b>outerRadius</b></span>
+                        <a href="#outerRadius"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>80</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">src/app/pages/dashboard/subscription/subscription.ts:53</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pageLoading"></a>
+                    <span class="name">
+                        <span ><b>pageLoading</b></span>
+                        <a href="#pageLoading"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>true</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/app/pages/dashboard/subscription/subscription.ts:20</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -509,7 +1166,120 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">src/app/pages/dashboard/subscription/subscription.ts:13</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/app/pages/dashboard/subscription/subscription.ts:36</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="savedLessons"></a>
+                    <span class="name">
+                        <span ><b>savedLessons</b></span>
+                        <a href="#savedLessons"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>3</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/app/pages/dashboard/subscription/subscription.ts:47</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="savedLimit"></a>
+                    <span class="name">
+                        <span ><b>savedLimit</b></span>
+                        <a href="#savedLimit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>5</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/app/pages/dashboard/subscription/subscription.ts:48</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showMobileMenu"></a>
+                    <span class="name">
+                        <span ><b>showMobileMenu</b></span>
+                        <a href="#showMobileMenu"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/app/pages/dashboard/subscription/subscription.ts:30</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="socket"></a>
+                    <span class="name">
+                        <span ><b>socket</b></span>
+                        <a href="#socket"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Socket</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/app/pages/dashboard/subscription/subscription.ts:22</a></div>
                         </td>
                     </tr>
 
@@ -534,7 +1304,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/app/pages/dashboard/subscription/subscription.ts:14</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/app/pages/dashboard/subscription/subscription.ts:37</a></div>
                         </td>
                     </tr>
 
@@ -547,42 +1317,409 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, signal } from &#x27;@angular/core&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { ChangeDetectorRef, Component, OnInit, signal } from &#x27;@angular/core&#x27;;
 import { CommonModule } from &#x27;@angular/common&#x27;;
+import { FormsModule } from &#x27;@angular/forms&#x27;;
+import { Router, RouterLink } from &#x27;@angular/router&#x27;;
+import { Header } from &#x27;../../../shared/components/header/header&#x27;;
 import { SubscriptionService } from &#x27;../../../core/services/subscription.service&#x27;;
-import {Plan, SubscriptionStatus} from &#x27;../../../core/models/subscription.model&#x27;;
+import { Plan, SubscriptionStatus } from &#x27;../../../core/models/subscription.model&#x27;;
+import { NotificationService } from &#x27;../../../core/services/notification.service&#x27;;
+import { io, Socket } from &#x27;socket.io-client&#x27;;
+import { environment } from &#x27;../../../../environments/environment&#x27;;
+import { CurrencyLocalizerPipe } from &#x27;../../../shared/pipes/currency-localizer-pipe&#x27;;
 
 @Component({
   selector: &#x27;app-subscription&#x27;,
   standalone: true,
-  imports: [CommonModule],
-  template: &#x60; &#x60;
+  imports: [CommonModule, FormsModule, Header, RouterLink, CurrencyLocalizerPipe],
+  templateUrl: &#x27;./subscription.html&#x27;
 })
 export class Subscription implements OnInit {
+  pageLoading &#x3D; true
+  loadText &#x3D; &#x27;Loading subscription details...&#x27;;
+  socket!: Socket;
+
+  // --------------------------
+  // USER PROFILE SIGNALS
+  // --------------------------
+  firstname &#x3D; signal(&#x27;&#x27;);
+  lastname &#x3D; signal(&#x27;&#x27;);
+  email &#x3D; signal(&#x27;&#x27;);
+  showMobileMenu &#x3D; false;
+
+
+  // --------------------------
+  // SUBSCRIPTION SIGNALS
+  // --------------------------
   plans &#x3D; signal&lt;Plan[]&gt;([]);
   status &#x3D; signal&lt;SubscriptionStatus | null&gt;(null);
+  countryCode &#x3D; signal(&#x27;US&#x27;);
 
-  constructor(private subSvc: SubscriptionService) {}
+  activeTab &#x3D; signal&lt;&#x27;account&#x27; | &#x27;billing&#x27;&gt;(&#x27;billing&#x27;);
+
+  // --------------------------
+  // USAGE DATA (Make dynamic later)
+  // --------------------------
+  generatedLessons &#x3D; 1;
+  generatedLimit &#x3D; 2;
+  savedLessons &#x3D; 3;
+  savedLimit &#x3D; 5;
+
+  // --------------------------
+  // DONUT DRAW SETTINGS
+  // --------------------------
+  outerRadius &#x3D; 80;
+  innerRadius &#x3D; 55;
+
+  outerCircumference &#x3D; 2 * Math.PI * this.outerRadius;
+  innerCircumference &#x3D; 2 * Math.PI * this.innerRadius;
+
+  // STRING values (required by Angular 20 for SVG)
+  outerDashArray &#x3D; &#x27;&#x27;;
+  outerDashOffset &#x3D; &#x27;&#x27;;
+  innerDashArray &#x3D; &#x27;&#x27;;
+  innerDashOffset &#x3D; &#x27;&#x27;;
+
+  constructor(
+    private subscriptionService: SubscriptionService,
+    private notify: NotificationService,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
-    this.subSvc.getPlans().subscribe(plans &#x3D;&gt; this.plans.set(plans));
-    this.refresh();
+    this.firstname.set(localStorage.getItem(&#x27;firstname&#x27;) || &#x27;&#x27;);
+    this.lastname.set(localStorage.getItem(&#x27;lastname&#x27;) || &#x27;&#x27;);
+    this.email.set(localStorage.getItem(&#x27;userEmail&#x27;) || &#x27;&#x27;);
+
+    this.subscriptionService.getPlans().subscribe({
+      next: (response) &#x3D;&gt; {
+        this.plans.set(response.plans)
+        this.countryCode.set(response.country_code);
+      }, 
+      error: (err) &#x3D;&gt; {
+        this.notify.showError(err.error.message || &quot;Failed to load subscription plans. Please try again later.&quot;);
+      }
+    });
+
+    this.subscriptionService.getSubscription().subscribe({
+      next: (response) &#x3D;&gt; {
+        this.status.set(response.subscription);
+
+        this.generatedLessons &#x3D; this.status()?.subjects_created_this_month || 0
+        this.generatedLimit &#x3D; this.status()?.plan?.monthly_subject_creations || 0
+        this.savedLessons &#x3D; this.status()?.total_subjects_created || 0
+        this.savedLimit &#x3D; this.status()?.plan?.subject_capacity || 0
+
+        this.calculateUsage();
+        this.pageLoading &#x3D; false;
+      },
+      error: (err) &#x3D;&gt; {
+        this.notify.showError(err.error.message || &quot;Failed to load subscription status. Please try again later.&quot;);
+        this.pageLoading &#x3D; false;
+      },
+      complete: () &#x3D;&gt; {
+        this.pageLoading &#x3D; false;
+        this.cdr.detectChanges();
+      }
+    });
+
+    this.calculateUsage();
   }
 
-  onSubscribe(id: string) {
-    this.subSvc.subscribe(id).subscribe(() &#x3D;&gt; this.refresh());
+  openTab(tab: &#x27;account&#x27; | &#x27;billing&#x27;) {
+    this.activeTab.set(tab);
   }
 
-  onCancel() {
-    this.subSvc.cancel().subscribe(() &#x3D;&gt; this.refresh());
+  goBack() {
+    this.router.navigateByUrl(&#x27;/dashboard&#x27;);
   }
 
-  private refresh() {
-    this.subSvc.getStatus().subscribe(st &#x3D;&gt; this.status.set(st));
+  // saveProfile() {
+  //   localStorage.setItem(&#x27;firstname&#x27;, this.firstname());
+  //   localStorage.setItem(&#x27;lastname&#x27;, this.lastname());
+  //   localStorage.setItem(&#x27;userEmail&#x27;, this.email());
+  //   alert(&quot;Profile saved!&quot;);
+  // }
+
+  // --------------------------
+  // DONUT CALCULATION
+  // --------------------------
+  calculateUsage() {
+    const used &#x3D; this.generatedLessons || 0;
+    const max &#x3D; this.generatedLimit || 1;
+    const saved &#x3D; this.savedLessons || 0;
+    const savedLimit &#x3D; this.savedLimit || 1;
+
+    // OUTER RING — lesson generation
+    const outerPercent &#x3D; Math.min(used / max, 1);
+    this.outerDashArray &#x3D; &#x60;${this.outerCircumference * outerPercent} ${this.outerCircumference * (1 - outerPercent)}&#x60;;
+    this.outerDashOffset &#x3D; &#x60;${this.outerCircumference * outerPercent}&#x60;;
+
+    // INNER RING — saved lessons
+    const innerPercent &#x3D; Math.min(saved / savedLimit, 1);
+    this.innerDashArray &#x3D; &#x60;${this.innerCircumference * innerPercent} ${this.innerCircumference * (1 - innerPercent)}&#x60;;
+    this.innerDashOffset &#x3D; &#x60;${this.innerCircumference * innerPercent}&#x60;;
   }
-}</code></pre>
+
+  switchPlan(planCode: string) {
+    this.pageLoading &#x3D; true;
+    if (planCode &#x3D;&#x3D; &quot;free2play&quot;) {
+      this.loadText &#x3D; &quot;Cancelling subscription...&quot;;
+      this.subscriptionService.cancel().subscribe({
+        next: (response) &#x3D;&gt; {
+          this.notify.showSuccess(&quot;Subscription cancelled successfully.&quot;);
+          window.location.reload();
+        },
+        error: (err) &#x3D;&gt; {
+          this.notify.showError(err.error.message || &quot;Failed to cancel subscription. Please try again later.&quot;);
+        },
+        complete: () &#x3D;&gt; {
+          this.pageLoading &#x3D; false;
+          this.cdr.detectChanges();
+        }
+      });
+    } else {
+      this.loadText &#x3D; &quot;Redirecting to payment gateway...&quot;;
+      this.subscriptionService.subscribe(planCode).subscribe({
+        next: (response) &#x3D;&gt; {
+          window.open(response.transaction.authorization_url, &#x27;_blank&#x27;);
+          this.pageLoading &#x3D; false;
+          this.cdr.detectChanges();
+
+          this.socket &#x3D; io(environment.apiUrl.slice(0, -4), {
+            withCredentials: true
+          });
+      
+          this.socket.emit(&quot;join-email-room&quot;, this.email());
+        
+          this.socket.on(&quot;payment-successful&quot;, () &#x3D;&gt; {
+            this.notify.showSuccess(&quot;Payment successfully processed.&quot;);
+            setTimeout(() &#x3D;&gt; {
+              window.location.reload();
+            }, 2000);
+              
+          });
+
+          this.socket.on(&quot;payment-failed&quot;, () &#x3D;&gt; {
+            this.notify.showError(&quot;Payment failed. Please try again.&quot;);
+            this.cdr.detectChanges();
+          });
+        },
+        error: (err) &#x3D;&gt; {
+          this.notify.showError(err.error.message || &quot;Failed to initiate subscription. Please try again later.&quot;);
+          this.pageLoading &#x3D; false;
+          this.cdr.detectChanges();
+        }
+      });
+    }
+  }
+}
+</code></pre>
     </div>
 
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;app-header class&#x3D;&quot;z-10&quot;&gt;&lt;/app-header&gt;
+
+@if (pageLoading) {
+  &lt;div class&#x3D;&quot;fixed inset-0 bg-[var(--bg-page)] bg-opacity-90 z-50 flex items-center justify-center&quot;&gt;
+    &lt;div class&#x3D;&quot;flex flex-col items-center&quot;&gt;
+      &lt;img src&#x3D;&quot;images/spinner.gif&quot; alt&#x3D;&quot;&quot; class&#x3D;&quot;w-24 mb-4&quot;&gt;
+      &lt;span class&#x3D;&quot;text-4xl&quot;&gt;{{loadText}}&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+}
+
+&lt;div class&#x3D;&quot;flex flex-row w-full min-h-[calc(100vh-80px)] bg-gray-50 border-t border-gray-300&quot;&gt;
+
+  &lt;!-- &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; --&gt;
+  &lt;!-- SIDEBAR --&gt;
+  &lt;!-- &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; --&gt;
+  &lt;aside class&#x3D;&quot;w-64 bg-[var(--bg-page)] border-r border-gray-300 p-6 hidden md:block&quot;&gt;
+
+    &lt;div class&#x3D;&quot;flex flex-row items-center&quot;&gt;
+      &lt;button class&#x3D;&quot;rounded-full p-3 bg-prussian-blue-700 lg:hover:bg-prussian-blue-400&quot; routerLink&#x3D;&quot;/dashboard&quot;&gt;
+        &lt;img src&#x3D;&quot;images/subject-icon-white.svg&quot; alt&#x3D;&quot;&quot; class&#x3D;&quot;w-5&quot;&gt;
+      &lt;/button&gt;
+      &lt;span class&#x3D;&quot;text-[var(--text-primary)] lg:hover:text-[var(--text-primary-hover)] mx-4 cursor-pointer font-medium&quot;
+            routerLink&#x3D;&quot;/dashboard&quot;&gt;
+        Back to Subjects
+      &lt;/span&gt;
+    &lt;/div&gt;
+
+    &lt;nav class&#x3D;&quot;flex flex-col space-y-3 mt-4&quot;&gt;
+
+      &lt;!-- ACCOUNT REMOVED — COMMENTED OUT --&gt;
+      &lt;!--
+      &lt;button
+        class&#x3D;&quot;text-left px-3 py-2 lg:hover:bg-gray-100&quot;
+        [ngClass]&#x3D;&quot;{&#x27;border-l-4 border-prussian-blue-900&#x27;: activeTab() &#x3D;&#x3D;&#x3D; &#x27;account&#x27;}&quot;
+        (click)&#x3D;&quot;openTab(&#x27;account&#x27;)&quot;
+      &gt;
+        Account
+      &lt;/button&gt;
+      --&gt;
+
+      &lt;button
+        class&#x3D;&quot;text-left px-3 py-2 lg:hover:bg-[var(--bg-hover)]&quot;
+        [ngClass]&#x3D;&quot;{&#x27;border-l-4 border-[var(--text-primary)]&#x27;: activeTab() &#x3D;&#x3D;&#x3D; &#x27;billing&#x27;}&quot;
+        (click)&#x3D;&quot;openTab(&#x27;billing&#x27;)&quot;
+      &gt;
+        Billing &amp; Usage
+      &lt;/button&gt;
+    &lt;/nav&gt;
+
+  &lt;/aside&gt;
+
+
+
+  &lt;!-- &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; --&gt;
+  &lt;!-- MAIN CONTENT --&gt;
+  &lt;!-- &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; --&gt;
+  &lt;main class&#x3D;&quot;flex-1 p-6 sm:p-10 overflow-y-auto bg-[var(--bg-page)]&quot;&gt;
+
+
+    &lt;!-- &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; --&gt;
+    &lt;!-- BILLING TAB CONTENT (ACCOUNT TAB HIDDEN) --&gt;
+    &lt;!-- &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; --&gt;
+    @if (activeTab() &#x3D;&#x3D;&#x3D; &#x27;billing&#x27;) {
+
+      &lt;!-- &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; --&gt;
+      &lt;!-- USAGE SECTION --&gt;
+      &lt;!-- &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; --&gt;
+      &lt;h2 class&#x3D;&quot;text-xl font-semibold mb-6&quot;&gt;Usage&lt;/h2&gt;
+      &lt;div class&#x3D;&quot;p-[1px] bg-prussian-blue-700 mb-10&quot;&gt;&lt;/div&gt;
+
+      &lt;div class&#x3D;&quot;bg-[var(--bg-page) border border-gray-300 p-6 sm:p-10 rounded-xl shadow-sm  
+                  flex flex-col md:flex-row items-center md:items-start gap-10 mb-14&quot;&gt;
+
+        &lt;!-- &#x3D;&#x3D;&#x3D;&#x3D;&#x3D; DONUT CHART (Responsive + Animated) &#x3D;&#x3D;&#x3D;&#x3D;&#x3D; --&gt;
+        &lt;div class&#x3D;&quot;relative w-40 h-40 sm:w-56 sm:h-56&quot;&gt;
+          &lt;svg viewBox&#x3D;&quot;0 0 200 200&quot; class&#x3D;&quot;w-full h-full transform -rotate-90&quot;&gt;
+
+            &lt;!-- OUTER BG --&gt;
+            &lt;circle cx&#x3D;&quot;100&quot; cy&#x3D;&quot;100&quot; r&#x3D;&quot;80&quot;
+                    stroke&#x3D;&quot;#E5E7EB&quot; stroke-width&#x3D;&quot;12&quot; fill&#x3D;&quot;none&quot; /&gt;
+
+            &lt;!-- OUTER PROGRESS --&gt;
+            &lt;circle
+              cx&#x3D;&quot;100&quot; cy&#x3D;&quot;100&quot; r&#x3D;&quot;80&quot;
+              stroke&#x3D;&quot;#0D1B2A&quot; stroke-width&#x3D;&quot;12&quot; fill&#x3D;&quot;none&quot; stroke-linecap&#x3D;&quot;round&quot;
+              [attr.stroke-dasharray]&#x3D;&quot;outerDashArray&quot;
+              [attr.stroke-dashoffset]&#x3D;&quot;outerDashOffset&quot;
+              class&#x3D;&quot;transition-all duration-[1200ms] ease-out&quot;
+            /&gt;
+
+            &lt;!-- INNER BG --&gt;
+            &lt;circle cx&#x3D;&quot;100&quot; cy&#x3D;&quot;100&quot; r&#x3D;&quot;55&quot;
+                    stroke&#x3D;&quot;#E5E7EB&quot; stroke-width&#x3D;&quot;12&quot; fill&#x3D;&quot;none&quot; /&gt;
+
+            &lt;!-- INNER PROGRESS --&gt;
+            &lt;circle
+              cx&#x3D;&quot;100&quot; cy&#x3D;&quot;100&quot; r&#x3D;&quot;55&quot;
+              stroke&#x3D;&quot;#D4A401&quot; stroke-width&#x3D;&quot;12&quot; fill&#x3D;&quot;none&quot; stroke-linecap&#x3D;&quot;round&quot;
+              [attr.stroke-dasharray]&#x3D;&quot;innerDashArray&quot;
+              [attr.stroke-dashoffset]&#x3D;&quot;innerDashOffset&quot;
+              class&#x3D;&quot;transition-all duration-[1200ms] ease-out&quot;
+            /&gt;
+
+          &lt;/svg&gt;
+        &lt;/div&gt;
+
+        &lt;!-- &#x3D;&#x3D;&#x3D;&#x3D;&#x3D; USAGE TEXT &#x3D;&#x3D;&#x3D;&#x3D;&#x3D; --&gt;
+        &lt;div class&#x3D;&quot;flex flex-col space-y-6 sm:space-y-8&quot;&gt;
+
+          &lt;div&gt;
+            &lt;p class&#x3D;&quot;font-semibold text-[var(--text-primary)] flex items-center&quot;&gt;
+              &lt;span class&#x3D;&quot;w-3 h-3 bg-[#0D1B2A] rounded-full mr-2&quot;&gt;&lt;/span&gt;
+              Lesson Generation
+            &lt;/p&gt;
+            &lt;p class&#x3D;&quot;text-sm text-[var(--text-primary-hover)]&quot;&gt;
+              {{ generatedLessons }}/{{ generatedLimit }} personalized lessons generated
+            &lt;/p&gt;
+          &lt;/div&gt;
+
+          &lt;div&gt;
+            &lt;p class&#x3D;&quot;font-semibold text-[var(--text-primary)] flex items-center&quot;&gt;
+              &lt;span class&#x3D;&quot;w-3 h-3 bg-yellow-600 rounded-full mr-2&quot;&gt;&lt;/span&gt;
+              Saved Lessons
+            &lt;/p&gt;
+            &lt;p class&#x3D;&quot;text-sm text-[var(--text-primary-hover)]&quot;&gt;
+              {{ savedLessons }}/{{ savedLimit }} personalized lessons saved
+            &lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+      &lt;/div&gt;
+
+
+
+
+      &lt;!-- &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; --&gt;
+      &lt;!-- PLAN SECTION --&gt;
+      &lt;!-- &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; --&gt;
+      &lt;h2 class&#x3D;&quot;text-xl font-semibold mb-8&quot;&gt;Your Plan&lt;/h2&gt;
+      &lt;div class&#x3D;&quot;p-[1px] bg-prussian-blue-700 mb-10&quot;&gt;&lt;/div&gt;
+
+
+      &lt;!-- &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; --&gt;
+      &lt;!-- PLANS --&gt;
+      &lt;!-- &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; --&gt;
+      &lt;div class&#x3D;&quot;overflow-x-auto scrollbar-hide mb-10&quot;&gt;
+        &lt;div class&#x3D;&quot;flex space-x-8 min-w-max&quot;&gt;
+
+          @for (plan of plans(); track $index) {
+            &lt;!-- PLAN CARD TEMPLATE --&gt;
+            &lt;div [class]&#x3D;&quot;&#x60;rounded-xl w-80 border border-gray-300 shadow-sm p-8 min-h-[450px] flex flex-col 
+              ${status()?.plan_code &#x3D;&#x3D; plan.code ? &#x27;bg-[#e8eef2] text-black&#x27; : &#x27;bg-black text-white&#x27;}&#x60;&quot;&gt;
+              &lt;img [src]&#x3D;&quot;&#x60;images/${status()?.plan_code &#x3D;&#x3D; plan.code ? &#x27;starblack&#x27; : &#x27;starwhite&#x27;}.svg&#x60;&quot; class&#x3D;&quot;w-4 mb-2&quot;&gt;  
+              &lt;h3 class&#x3D;&quot;text-lg font-semibold&quot;&gt;{{plan.name}}&lt;/h3&gt;
+              &lt;!-- ${status()?.plan_code &#x3D;&#x3D; plan.code ? &#x27;&#x27; : &#x27;&#x27;} --&gt;
+              &lt;p class&#x3D;&quot;text-3xl font-bold mt-1&quot;&gt;{{ countryCode() | currencyLocalizer}}{{plan.display_price | number:&#x27;1.0-0&#x27;}} &lt;span [class]&#x3D;&quot;&#x60;text-sm font-light ${status()?.plan_code &#x3D;&#x3D; plan.code ? &#x27;&#x27; : &#x27;text-gray-300&#x27;}&#x60;&quot;&gt;/month&lt;/span&gt;&lt;/p&gt;
+              &lt;p [class]&#x3D;&quot;&#x60;text-sm ${status()?.plan_code &#x3D;&#x3D; plan.code ? &#x27;&#x27; : &#x27;text-gray-300&#x27;} mt-1&#x60;&quot;&gt;{{plan.description}}&lt;/p&gt;
+    
+              &lt;hr class&#x3D;&quot;mt-4 border-t border-gray-600&quot; /&gt;
+    
+              &lt;ul [class]&#x3D;&quot;&#x60;mt-6 space-y-3 text-sm ${status()?.plan_code &#x3D;&#x3D; plan.code ? &#x27;&#x27; : &#x27;text-gray-100&#x27;} flex-1&#x60;&quot;&gt;
+                &lt;li class&#x3D;&quot;flex&quot;&gt;&lt;img [src]&#x3D;&quot;&#x60;images/${status()?.plan_code &#x3D;&#x3D; plan.code ? &#x27;check&#x27; : &#x27;whitecheck&#x27;}.svg&#x60;&quot; class&#x3D;&quot;w-4 mr-2&quot;&gt;{{plan.monthly_subject_creations}} lessons / month&lt;/li&gt;
+                &lt;li class&#x3D;&quot;flex&quot;&gt;&lt;img [src]&#x3D;&quot;&#x60;images/${status()?.plan_code &#x3D;&#x3D; plan.code ? &#x27;check&#x27; : &#x27;whitecheck&#x27;}.svg&#x60;&quot; class&#x3D;&quot;w-4 mr-2&quot;&gt;Store {{plan.subject_capacity}} lessons&lt;/li&gt;
+                &lt;li class&#x3D;&quot;flex&quot;&gt;&lt;img [src]&#x3D;&quot;&#x60;images/${status()?.plan_code &#x3D;&#x3D; plan.code ? &#x27;check&#x27; : &#x27;whitecheck&#x27;}.svg&#x60;&quot; class&#x3D;&quot;w-4 mr-2&quot;&gt;Upload {{plan.single_file_size}}MB files&lt;/li&gt;
+                &lt;li class&#x3D;&quot;flex&quot;&gt;&lt;img [src]&#x3D;&quot;&#x60;images/${status()?.plan_code &#x3D;&#x3D; plan.code ? &#x27;check&#x27; : &#x27;whitecheck&#x27;}.svg&#x60;&quot; class&#x3D;&quot;w-4 mr-2&quot;&gt;Total file sizes {{plan.subject_total_files_size}}MB&lt;/li&gt;
+                &lt;li class&#x3D;&quot;flex&quot;&gt;&lt;img [src]&#x3D;&quot;&#x60;images/${status()?.plan_code &#x3D;&#x3D; plan.code ? &#x27;check&#x27; : &#x27;whitecheck&#x27;}.svg&#x60;&quot; class&#x3D;&quot;w-4 mr-2&quot;&gt;{{plan.subject_file_count}} files per subject&lt;/li&gt;
+                &lt;li class&#x3D;&quot;flex&quot;&gt;&lt;img [src]&#x3D;&quot;&#x60;images/${status()?.plan_code &#x3D;&#x3D; plan.code ? &#x27;check&#x27; : &#x27;whitecheck&#x27;}.svg&#x60;&quot; class&#x3D;&quot;w-4 mr-2&quot;&gt;{{plan.exercise_question_count}} exercise questions&lt;/li&gt;
+                &lt;li class&#x3D;&quot;flex&quot;&gt;&lt;img [src]&#x3D;&quot;&#x60;images/${status()?.plan_code &#x3D;&#x3D; plan.code ? &#x27;check&#x27; : &#x27;whitecheck&#x27;}.svg&#x60;&quot; class&#x3D;&quot;w-4 mr-2&quot;&gt;{{plan.exam_question_count}} exam questions&lt;/li&gt;
+                &lt;li class&#x3D;&quot;flex&quot;&gt;&lt;img [src]&#x3D;&quot;&#x60;images/${status()?.plan_code &#x3D;&#x3D; plan.code ? &#x27;check&#x27; : &#x27;whitecheck&#x27;}.svg&#x60;&quot; class&#x3D;&quot;w-4 mr-2&quot;&gt;
+                  @if ((plan.chatbot_token_count ?? 0) &lt;&#x3D; 500000) {
+                    Limited Chatbot Interactions
+                  } @else if ((plan.chatbot_token_count ?? 0) &lt;&#x3D; 1000000) {
+                    Moderate Chatbot Interactions
+                  } @else {
+                    Extensive Chatbot Interactions
+                  }
+                &lt;/li&gt;
+              &lt;/ul&gt;
+    
+              @if (status()?.plan_code !&#x3D;&#x3D; plan.code) {
+                &lt;button class&#x3D;&quot;mt-6 w-full py-2 bg-white text-black rounded-md lg:hover:bg-gray-300&quot; (click)&#x3D;&quot;switchPlan(plan.code)&quot;&gt;Switch to {{plan.name}}&lt;/button&gt;
+              } @else {
+                &lt;button class&#x3D;&quot;mt-6 w-full py-2 border border-prussian-blue-900 bg-[#e8eef2] text-black rounded-md cursor-default&quot;&gt;Current Plan&lt;/button&gt;
+              }
+            &lt;/div&gt;
+          }
+        &lt;/div&gt;
+
+      &lt;/div&gt;
+
+    }
+    @if (countryCode() !&#x3D;&#x3D; &quot;NG&quot;) {
+      &lt;div class&#x3D;&quot;text-sm&quot;&gt;*Prices shown in {{ countryCode() }} currency. Charged in NGN. Your bank converts at their rate.&lt;/div&gt;
+    }
+  &lt;/main&gt;
+
+&lt;/div&gt;
+</code></pre>
+    </div>
 
 
     <div class="tab-pane fade " id="tree">
@@ -610,8 +1747,8 @@ export class Subscription implements OnInit {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div></div>'
-    var COMPONENTS = [{'name': 'About', 'selector': 'app-about'},{'name': 'App', 'selector': 'app-root'},{'name': 'Chatbot', 'selector': 'app-chatbot'},{'name': 'CheckEmail', 'selector': 'app-check-email'},{'name': 'ConfirmLogout', 'selector': 'app-confirm-logout'},{'name': 'Contact', 'selector': 'app-contact'},{'name': 'CreationStepTab', 'selector': 'app-creation-step-tab'},{'name': 'Features', 'selector': 'app-features'},{'name': 'Header', 'selector': 'app-header'},{'name': 'Home', 'selector': 'app-home'},{'name': 'Landing', 'selector': 'app-landing'},{'name': 'LessonPage', 'selector': 'app-lesson-page'},{'name': 'Login', 'selector': 'app-login'},{'name': 'NamingUpload', 'selector': 'app-naming-upload'},{'name': 'NotFound', 'selector': 'app-not-found'},{'name': 'Practice', 'selector': 'app-practice'},{'name': 'Pricing', 'selector': 'app-pricing'},{'name': 'QuestionSettings', 'selector': 'app-question-settings'},{'name': 'Sidebar', 'selector': 'app-sidebar'},{'name': 'Signup', 'selector': 'app-signup'},{'name': 'Subjects', 'selector': 'app-subjects'},{'name': 'Subscription', 'selector': 'app-subscription'},{'name': 'Subtopic', 'selector': 'app-subtopic'},{'name': 'Toast', 'selector': 'app-toast'},{'name': 'TopicPreferences', 'selector': 'app-topic-preferences'},{'name': 'VerifyEmail', 'selector': 'app-verify-email'}];
+        var COMPONENT_TEMPLATE = '<div><app-header class="z-10"></app-header>@if (pageLoading) {  <div class="fixed inset-0 bg-[var(--bg-page)] bg-opacity-90 z-50 flex items-center justify-center">    <div class="flex flex-col items-center">      <img src="images/spinner.gif" alt="" class="w-24 mb-4">      <span class="text-4xl">{{loadText}}</span>    </div>  </div>}<div class="flex flex-row w-full min-h-[calc(100vh-80px)] bg-gray-50 border-t border-gray-300">  <!-- ======================= -->  <!-- SIDEBAR -->  <!-- ======================= -->  <aside class="w-64 bg-[var(--bg-page)] border-r border-gray-300 p-6 hidden md:block">    <div class="flex flex-row items-center">      <button class="rounded-full p-3 bg-prussian-blue-700 lg:hover:bg-prussian-blue-400" routerLink="/dashboard">        <img src="images/subject-icon-white.svg" alt="" class="w-5">      </button>      <span class="text-[var(--text-primary)] lg:hover:text-[var(--text-primary-hover)] mx-4 cursor-pointer font-medium"            routerLink="/dashboard">        Back to Subjects      </span>    </div>    <nav class="flex flex-col space-y-3 mt-4">      <!-- ACCOUNT REMOVED — COMMENTED OUT -->      <!--      <button        class="text-left px-3 py-2 lg:hover:bg-gray-100"        [ngClass]="{\'border-l-4 border-prussian-blue-900\': activeTab() === \'account\'}"        (click)="openTab(\'account\')"      >        Account      </button>      -->      <button        class="text-left px-3 py-2 lg:hover:bg-[var(--bg-hover)]"        [ngClass]="{\'border-l-4 border-[var(--text-primary)]\': activeTab() === \'billing\'}"        (click)="openTab(\'billing\')"      >        Billing & Usage      </button>    </nav>  </aside>  <!-- ======================= -->  <!-- MAIN CONTENT -->  <!-- ======================= -->  <main class="flex-1 p-6 sm:p-10 overflow-y-auto bg-[var(--bg-page)]">    <!-- ============================================================ -->    <!-- BILLING TAB CONTENT (ACCOUNT TAB HIDDEN) -->    <!-- ============================================================ -->    @if (activeTab() === \'billing\') {      <!-- ======================= -->      <!-- USAGE SECTION -->      <!-- ======================= -->      <h2 class="text-xl font-semibold mb-6">Usage</h2>      <div class="p-[1px] bg-prussian-blue-700 mb-10"></div>      <div class="bg-[var(--bg-page) border border-gray-300 p-6 sm:p-10 rounded-xl shadow-sm                    flex flex-col md:flex-row items-center md:items-start gap-10 mb-14">        <!-- ===== DONUT CHART (Responsive + Animated) ===== -->        <div class="relative w-40 h-40 sm:w-56 sm:h-56">          <svg viewBox="0 0 200 200" class="w-full h-full transform -rotate-90">            <!-- OUTER BG -->            <circle cx="100" cy="100" r="80"                    stroke="#E5E7EB" stroke-width="12" fill="none" />            <!-- OUTER PROGRESS -->            <circle              cx="100" cy="100" r="80"              stroke="#0D1B2A" stroke-width="12" fill="none" stroke-linecap="round"              [attr.stroke-dasharray]="outerDashArray"              [attr.stroke-dashoffset]="outerDashOffset"              class="transition-all duration-[1200ms] ease-out"            />            <!-- INNER BG -->            <circle cx="100" cy="100" r="55"                    stroke="#E5E7EB" stroke-width="12" fill="none" />            <!-- INNER PROGRESS -->            <circle              cx="100" cy="100" r="55"              stroke="#D4A401" stroke-width="12" fill="none" stroke-linecap="round"              [attr.stroke-dasharray]="innerDashArray"              [attr.stroke-dashoffset]="innerDashOffset"              class="transition-all duration-[1200ms] ease-out"            />          </svg>        </div>        <!-- ===== USAGE TEXT ===== -->        <div class="flex flex-col space-y-6 sm:space-y-8">          <div>            <p class="font-semibold text-[var(--text-primary)] flex items-center">              <span class="w-3 h-3 bg-[#0D1B2A] rounded-full mr-2"></span>              Lesson Generation            </p>            <p class="text-sm text-[var(--text-primary-hover)]">              {{ generatedLessons }}/{{ generatedLimit }} personalized lessons generated            </p>          </div>          <div>            <p class="font-semibold text-[var(--text-primary)] flex items-center">              <span class="w-3 h-3 bg-yellow-600 rounded-full mr-2"></span>              Saved Lessons            </p>            <p class="text-sm text-[var(--text-primary-hover)]">              {{ savedLessons }}/{{ savedLimit }} personalized lessons saved            </p>          </div>        </div>      </div>      <!-- ======================= -->      <!-- PLAN SECTION -->      <!-- ======================= -->      <h2 class="text-xl font-semibold mb-8">Your Plan</h2>      <div class="p-[1px] bg-prussian-blue-700 mb-10"></div>      <!-- ======================= -->      <!-- PLANS -->      <!-- ======================= -->      <div class="overflow-x-auto scrollbar-hide mb-10">        <div class="flex space-x-8 min-w-max">          @for (plan of plans(); track $index) {            <!-- PLAN CARD TEMPLATE -->            <div [class]="`rounded-xl w-80 border border-gray-300 shadow-sm p-8 min-h-[450px] flex flex-col               ${status()?.plan_code == plan.code ? \'bg-[#e8eef2] text-black\' : \'bg-black text-white\'}`">              <img [src]="`images/${status()?.plan_code == plan.code ? \'starblack\' : \'starwhite\'}.svg`" class="w-4 mb-2">                <h3 class="text-lg font-semibold">{{plan.name}}</h3>              <!-- ${status()?.plan_code == plan.code ? \'\' : \'\'} -->              <p class="text-3xl font-bold mt-1">{{ countryCode() | currencyLocalizer}}{{plan.display_price | number:\'1.0-0\'}} <span [class]="`text-sm font-light ${status()?.plan_code == plan.code ? \'\' : \'text-gray-300\'}`">/month</span></p>              <p [class]="`text-sm ${status()?.plan_code == plan.code ? \'\' : \'text-gray-300\'} mt-1`">{{plan.description}}</p>                  <hr class="mt-4 border-t border-gray-600" />                  <ul [class]="`mt-6 space-y-3 text-sm ${status()?.plan_code == plan.code ? \'\' : \'text-gray-100\'} flex-1`">                <li class="flex"><img [src]="`images/${status()?.plan_code == plan.code ? \'check\' : \'whitecheck\'}.svg`" class="w-4 mr-2">{{plan.monthly_subject_creations}} lessons / month</li>                <li class="flex"><img [src]="`images/${status()?.plan_code == plan.code ? \'check\' : \'whitecheck\'}.svg`" class="w-4 mr-2">Store {{plan.subject_capacity}} lessons</li>                <li class="flex"><img [src]="`images/${status()?.plan_code == plan.code ? \'check\' : \'whitecheck\'}.svg`" class="w-4 mr-2">Upload {{plan.single_file_size}}MB files</li>                <li class="flex"><img [src]="`images/${status()?.plan_code == plan.code ? \'check\' : \'whitecheck\'}.svg`" class="w-4 mr-2">Total file sizes {{plan.subject_total_files_size}}MB</li>                <li class="flex"><img [src]="`images/${status()?.plan_code == plan.code ? \'check\' : \'whitecheck\'}.svg`" class="w-4 mr-2">{{plan.subject_file_count}} files per subject</li>                <li class="flex"><img [src]="`images/${status()?.plan_code == plan.code ? \'check\' : \'whitecheck\'}.svg`" class="w-4 mr-2">{{plan.exercise_question_count}} exercise questions</li>                <li class="flex"><img [src]="`images/${status()?.plan_code == plan.code ? \'check\' : \'whitecheck\'}.svg`" class="w-4 mr-2">{{plan.exam_question_count}} exam questions</li>                <li class="flex"><img [src]="`images/${status()?.plan_code == plan.code ? \'check\' : \'whitecheck\'}.svg`" class="w-4 mr-2">                  @if ((plan.chatbot_token_count ?? 0) <= 500000) {                    Limited Chatbot Interactions                  } @else if ((plan.chatbot_token_count ?? 0) <= 1000000) {                    Moderate Chatbot Interactions                  } @else {                    Extensive Chatbot Interactions                  }                </li>              </ul>                  @if (status()?.plan_code !== plan.code) {                <button class="mt-6 w-full py-2 bg-white text-black rounded-md lg:hover:bg-gray-300" (click)="switchPlan(plan.code)">Switch to {{plan.name}}</button>              } @else {                <button class="mt-6 w-full py-2 border border-prussian-blue-900 bg-[#e8eef2] text-black rounded-md cursor-default">Current Plan</button>              }            </div>          }        </div>      </div>    }    @if (countryCode() !== "NG") {      <div class="text-sm">*Prices shown in {{ countryCode() }} currency. Charged in NGN. Your bank converts at their rate.</div>    }  </main></div></div>'
+    var COMPONENTS = [{'name': 'About', 'selector': 'app-about'},{'name': 'App', 'selector': 'app-root'},{'name': 'ChartCell', 'selector': 'app-chart-cell'},{'name': 'Chatbot', 'selector': 'app-chatbot'},{'name': 'CheckEmail', 'selector': 'app-check-email'},{'name': 'Confirmation', 'selector': 'app-confirmation'},{'name': 'ConfirmLogout', 'selector': 'app-confirm-logout'},{'name': 'Contact', 'selector': 'app-contact'},{'name': 'CreationStepTab', 'selector': 'app-creation-step-tab'},{'name': 'ExtensionConfigOverlay', 'selector': 'app-extension-config-overlay'},{'name': 'Features', 'selector': 'app-features'},{'name': 'Header', 'selector': 'app-header'},{'name': 'Home', 'selector': 'app-home'},{'name': 'Landing', 'selector': 'app-landing'},{'name': 'LessonGeneration', 'selector': 'app-lesson-generation'},{'name': 'LessonPage', 'selector': 'app-lesson-page'},{'name': 'Login', 'selector': 'app-login'},{'name': 'MarkdownCell', 'selector': 'app-markdown-cell'},{'name': 'NamingUpload', 'selector': 'app-naming-upload'},{'name': 'NotFound', 'selector': 'app-not-found'},{'name': 'Practice', 'selector': 'app-practice'},{'name': 'Pricing', 'selector': 'app-pricing'},{'name': 'PrivacyPolicy', 'selector': 'app-privacy-policy'},{'name': 'QuestionSettings', 'selector': 'app-question-settings'},{'name': 'Sidebar', 'selector': 'app-sidebar'},{'name': 'Signup', 'selector': 'app-signup'},{'name': 'Subjects', 'selector': 'app-subjects'},{'name': 'Subscription', 'selector': 'app-subscription'},{'name': 'Subtopic', 'selector': 'app-subtopic'},{'name': 'Team', 'selector': 'app-team'},{'name': 'TermsOfService', 'selector': 'app-terms-of-service'},{'name': 'Toast', 'selector': 'app-toast'},{'name': 'TopicPreferences', 'selector': 'app-topic-preferences'},{'name': 'VerifyEmail', 'selector': 'app-verify-email'},{'name': 'VerifyPayment', 'selector': 'app-verify-payment'}];
     var DIRECTIVES = [{'name': 'FileTypeDirective', 'selector': '[appFileType]'},{'name': 'PasswordValidator', 'selector': '[appPasswordValidator]'},{'name': 'PreferenceValidator', 'selector': '[appPreferenceValidator]'},{'name': 'SubjectNameValidator', 'selector': '[appSubjectNameValidator]'}];
     var ACTUAL_COMPONENT = {'name': 'Subscription'};
 </script>

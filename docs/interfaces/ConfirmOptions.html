@@ -116,7 +116,7 @@
   <li class="breadcrumb-item">Interfaces</li>
   <li class="breadcrumb-item"
   >
-  SubscriptionStatus</li>
+  ConfirmOptions</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -140,7 +140,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/app/core/models/subscription.model.ts</code>
+            <code>src/app/core/services/confirm.ts</code>
         </p>
 
 
@@ -159,75 +159,38 @@
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
-                                        <a href="#customer_code" 
+                                            <span class="modifier">Optional</span>
+                                        <a href="#cancelText" 
 >
-                                            customer_code
+                                            cancelText
                                         </a>
                                 </li>
                                 <li>
-                                        <a href="#customer_id" 
+                                            <span class="modifier">Optional</span>
+                                        <a href="#data" 
 >
-                                            customer_id
+                                            data
                                         </a>
                                 </li>
                                 <li>
-                                        <a href="#end_date" 
+                                            <span class="modifier">Optional</span>
+                                        <a href="#message" 
 >
-                                            end_date
+                                            message
                                         </a>
                                 </li>
                                 <li>
-                                        <a href="#plan" 
+                                            <span class="modifier">Optional</span>
+                                        <a href="#okText" 
 >
-                                            plan
+                                            okText
                                         </a>
                                 </li>
                                 <li>
-                                        <a href="#plan_code" 
+                                            <span class="modifier">Optional</span>
+                                        <a href="#title" 
 >
-                                            plan_code
-                                        </a>
-                                </li>
-                                <li>
-                                        <a href="#start_date" 
->
-                                            start_date
-                                        </a>
-                                </li>
-                                <li>
-                                        <a href="#status" 
->
-                                            status
-                                        </a>
-                                </li>
-                                <li>
-                                        <a href="#subjects_created_this_month" 
->
-                                            subjects_created_this_month
-                                        </a>
-                                </li>
-                                <li>
-                                        <a href="#subscription_code" 
->
-                                            subscription_code
-                                        </a>
-                                </li>
-                                <li>
-                                        <a href="#total_subjects_created" 
->
-                                            total_subjects_created
-                                        </a>
-                                </li>
-                                <li>
-                                        <a href="#user_email" 
->
-                                            user_email
-                                        </a>
-                                </li>
-                                <li>
-                                        <a href="#user_id" 
->
-                                            user_id
+                                            title
                                         </a>
                                 </li>
                             </ul>
@@ -245,9 +208,9 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="customer_code"></a>
-                                        <span class="name "><b>customer_code</b>
-                                            <a href="#customer_code">
+                                        <a name="cancelText"></a>
+                                        <span class="name "><b>cancelText</b>
+                                            <a href="#cancelText">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -255,337 +218,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>customer_code:     <code>string | null</code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>    <code>string | null</code>
-
-                                        </td>
-                                    </tr>
-
-
-
-
-
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="customer_id"></a>
-                                        <span class="name "><b>customer_id</b>
-                                            <a href="#customer_id">
-                                                <span class="icon ion-ios-link"></span>
-                                            </a>
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>customer_id:     <code>string | null</code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>    <code>string | null</code>
-
-                                        </td>
-                                    </tr>
-
-
-
-
-
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="end_date"></a>
-                                        <span class="name "><b>end_date</b>
-                                            <a href="#end_date">
-                                                <span class="icon ion-ios-link"></span>
-                                            </a>
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>end_date:     <code>Date | null</code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>    <code>Date | null</code>
-
-                                        </td>
-                                    </tr>
-
-
-
-
-
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="plan"></a>
-                                        <span class="name "><b>plan</b>
-                                            <a href="#plan">
-                                                <span class="icon ion-ios-link"></span>
-                                            </a>
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>plan:         <code><a href="../interfaces/Plan.html" target="_self" >Plan | null</a></code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="../interfaces/Plan.html" target="_self" >Plan | null</a></code>
-
-                                        </td>
-                                    </tr>
-
-
-
-
-
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="plan_code"></a>
-                                        <span class="name "><b>plan_code</b>
-                                            <a href="#plan_code">
-                                                <span class="icon ion-ios-link"></span>
-                                            </a>
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>plan_code:     <code>string | null</code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>    <code>string | null</code>
-
-                                        </td>
-                                    </tr>
-
-
-
-
-
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="start_date"></a>
-                                        <span class="name "><b>start_date</b>
-                                            <a href="#start_date">
-                                                <span class="icon ion-ios-link"></span>
-                                            </a>
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>start_date:     <code>Date | null</code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>    <code>Date | null</code>
-
-                                        </td>
-                                    </tr>
-
-
-
-
-
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="status"></a>
-                                        <span class="name "><b>status</b>
-                                            <a href="#status">
-                                                <span class="icon ion-ios-link"></span>
-                                            </a>
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>status:     <code>string | null</code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>    <code>string | null</code>
-
-                                        </td>
-                                    </tr>
-
-
-
-
-
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="subjects_created_this_month"></a>
-                                        <span class="name "><b>subjects_created_this_month</b>
-                                            <a href="#subjects_created_this_month">
-                                                <span class="icon ion-ios-link"></span>
-                                            </a>
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>subjects_created_this_month:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-
-                                        </td>
-                                    </tr>
-
-
-
-
-
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="subscription_code"></a>
-                                        <span class="name "><b>subscription_code</b>
-                                            <a href="#subscription_code">
-                                                <span class="icon ion-ios-link"></span>
-                                            </a>
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>subscription_code:     <code>string | null</code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>    <code>string | null</code>
-
-                                        </td>
-                                    </tr>
-
-
-
-
-
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="total_subjects_created"></a>
-                                        <span class="name "><b>total_subjects_created</b>
-                                            <a href="#total_subjects_created">
-                                                <span class="icon ion-ios-link"></span>
-                                            </a>
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>total_subjects_created:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-
-                                        </td>
-                                    </tr>
-
-
-
-
-
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="user_email"></a>
-                                        <span class="name "><b>user_email</b>
-                                            <a href="#user_email">
-                                                <span class="icon ion-ios-link"></span>
-                                            </a>
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>user_email:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                        <code>cancelText:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -598,6 +231,11 @@
                                         </td>
                                     </tr>
 
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
 
 
 
@@ -608,9 +246,9 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="user_id"></a>
-                                        <span class="name "><b>user_id</b>
-                                            <a href="#user_id">
+                                        <a name="data"></a>
+                                        <span class="name "><b>data</b>
+                                            <a href="#data">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -618,7 +256,45 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>user_id:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                        <code>data:         <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="message"></a>
+                                        <span class="name "><b>message</b>
+                                            <a href="#message">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>message:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -631,6 +307,87 @@
                                         </td>
                                     </tr>
 
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="okText"></a>
+                                        <span class="name "><b>okText</b>
+                                            <a href="#okText">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>okText:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="title"></a>
+                                        <span class="name "><b>title</b>
+                                            <a href="#title">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>title:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
 
 
 
@@ -642,46 +399,33 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">export interface Plan {
-  code: string;
-  name: string;
-  description: string | null;
-  price: number;
-  duration_months: number | null;
-  visible: boolean;
-  display_price: number;
-  country_code: string | null;
-  currency: string | null;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@angular/core&#x27;;
+import { Subject } from &#x27;rxjs&#x27;;
 
-  monthly_subject_creations: number;
-  subject_capacity: number | null;
-  single_file_size: number | null;
-  subject_total_files_size: number | null;
-  subject_file_count: number | null;
-  exercise_question_count: number | null;
-  exam_question_count: number | null;
-  chatbot_token_count: number | null;
+export interface ConfirmOptions {
+  title?: string;
+  message?: string;
+  okText?: string;
+  cancelText?: string;
+  data?: any;
 }
 
-export interface SubscriptionStatus {
-  user_id: string;
-  user_email: string;
+@Injectable({
+  providedIn: &#x27;root&#x27;
+})
+export class ConfirmService {
+  private confirmationSubject &#x3D; new Subject&lt;{
+    options: ConfirmOptions,
+    response: Subject&lt;boolean&gt;
+  }&gt;();
 
-  customer_code: string | null;
-  customer_id: string | null;
+  confirmation$ &#x3D; this.confirmationSubject.asObservable();
 
-  plan_code: string | null;
-  subscription_code: string | null;
-
-  status: string | null;
-
-  start_date: Date | null;   // or Date if you prefer: Date | null
-  end_date: Date | null;     // or Date if you prefer: Date | null
-
-  subjects_created_this_month: number;
-  total_subjects_created: number;
-
-  plan: Plan | null;
+  open(options: ConfirmOptions) {
+    const response$ &#x3D; new Subject&lt;boolean&gt;();
+    this.confirmationSubject.next({ options, response: response$ });
+    return response$.asObservable();
+  }
 }
 </code></pre>
     </div>
@@ -720,7 +464,7 @@ export interface SubscriptionStatus {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
-            var COMPODOC_CURRENT_PAGE_URL = 'SubscriptionStatus.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'ConfirmOptions.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

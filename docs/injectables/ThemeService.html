@@ -109,7 +109,7 @@
 
 <ol class="breadcrumb">
   <li class="breadcrumb-item">Injectables</li>
-  <li class="breadcrumb-item" >SubscriptionService</li>
+  <li class="breadcrumb-item" >ThemeService</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -133,7 +133,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/app/core/services/subscription.service.ts</code>
+            <code>src/app/core/services/theme.service.ts</code>
         </p>
 
 
@@ -153,7 +153,8 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#http" >http</a>
+                                    <span class="modifier">Private</span>
+                                <a href="#storageKey" >storageKey</a>
                             </li>
                         </ul>
                     </td>
@@ -168,25 +169,20 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#cancel" >cancel</a>
+                                    <span class="modifier">Private</span>
+                                <a href="#applyTheme" >applyTheme</a>
                             </li>
                             <li>
-                                <a href="#getPlans" >getPlans</a>
+                                <a href="#getTheme" >getTheme</a>
                             </li>
                             <li>
-                                <a href="#getSinglePlan" >getSinglePlan</a>
+                                <a href="#init" >init</a>
                             </li>
                             <li>
-                                <a href="#getSubscription" >getSubscription</a>
+                                <a href="#setTheme" >setTheme</a>
                             </li>
                             <li>
-                                <a href="#manageSubscription" >manageSubscription</a>
-                            </li>
-                            <li>
-                                <a href="#subscribe" >subscribe</a>
-                            </li>
-                            <li>
-                                <a href="#verifyTransaction" >verifyTransaction</a>
+                                <a href="#toggleTheme" >toggleTheme</a>
                             </li>
                         </ul>
                     </td>
@@ -210,98 +206,26 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="cancel"></a>
+                    <a name="applyTheme"></a>
                     <span class="name">
-                        <span ><b>cancel</b></span>
-                        <a href="#cancel"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier">Private</span>
+                        <span ><b>applyTheme</b></span>
+                        <a href="#applyTheme"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>cancel()</code>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>applyTheme(mode: <a href="../undefineds/ThemeMode.html" target="_self">ThemeMode</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="30"
-                                    class="link-to-prism">src/app/core/services/subscription.service.ts:30</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
-
-                        </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getPlans"></a>
-                    <span class="name">
-                        <span ><b>getPlans</b></span>
-                        <a href="#getPlans"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>getPlans()</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="10"
-                                    class="link-to-prism">src/app/core/services/subscription.service.ts:10</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
-
-                        </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getSinglePlan"></a>
-                    <span class="name">
-                        <span ><b>getSinglePlan</b></span>
-                        <a href="#getSinglePlan"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>getSinglePlan(planCode: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="14"
-                                    class="link-to-prism">src/app/core/services/subscription.service.ts:14</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="32"
+                                    class="link-to-prism">src/app/core/services/theme.service.ts:32</a></div>
                         </td>
                     </tr>
 
@@ -322,9 +246,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>planCode</td>
+                                                <td>mode</td>
                                             <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                                            <code><a href="../miscellaneous/typealiases.html#ThemeMode" target="_self" >ThemeMode</a></code>
                                             </td>
 
                                             <td>
@@ -337,7 +261,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
                         </div>
                             <div class="io-description">
@@ -351,157 +275,16 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getSubscription"></a>
+                    <a name="getTheme"></a>
                     <span class="name">
-                        <span ><b>getSubscription</b></span>
-                        <a href="#getSubscription"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>getTheme</b></span>
+                        <a href="#getTheme"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>getSubscription()</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="26"
-                                    class="link-to-prism">src/app/core/services/subscription.service.ts:26</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
-
-                        </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="manageSubscription"></a>
-                    <span class="name">
-                        <span ><b>manageSubscription</b></span>
-                        <a href="#manageSubscription"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>manageSubscription()</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="34"
-                                    class="link-to-prism">src/app/core/services/subscription.service.ts:34</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
-
-                        </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="subscribe"></a>
-                    <span class="name">
-                        <span ><b>subscribe</b></span>
-                        <a href="#subscribe"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>subscribe(planCode: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="18"
-                                    class="link-to-prism">src/app/core/services/subscription.service.ts:18</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>planCode</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="verifyTransaction"></a>
-                    <span class="name">
-                        <span ><b>verifyTransaction</b></span>
-                        <a href="#verifyTransaction"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>verifyTransaction(reference: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+<code>getTheme()</code>
                 </td>
             </tr>
 
@@ -509,7 +292,81 @@
                     <tr>
                         <td class="col-md-4">
                             <div class="io-line">Defined in <a href="" data-line="22"
-                                    class="link-to-prism">src/app/core/services/subscription.service.ts:22</a></div>
+                                    class="link-to-prism">src/app/core/services/theme.service.ts:22</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/typealiases.html#ThemeMode" target="_self" >ThemeMode</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="init"></a>
+                    <span class="name">
+                        <span ><b>init</b></span>
+                        <a href="#init"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>init()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="11"
+                                    class="link-to-prism">src/app/core/services/theme.service.ts:11</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setTheme"></a>
+                    <span class="name">
+                        <span ><b>setTheme</b></span>
+                        <a href="#setTheme"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>setTheme(mode: <a href="../undefineds/ThemeMode.html" target="_self">ThemeMode</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="17"
+                                    class="link-to-prism">src/app/core/services/theme.service.ts:17</a></div>
                         </td>
                     </tr>
 
@@ -530,9 +387,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>reference</td>
+                                                <td>mode</td>
                                             <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                                            <code><a href="../miscellaneous/typealiases.html#ThemeMode" target="_self" >ThemeMode</a></code>
                                             </td>
 
                                             <td>
@@ -545,12 +402,49 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
                         </div>
                             <div class="io-description">
                                 
                             </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleTheme"></a>
+                    <span class="name">
+                        <span ><b>toggleTheme</b></span>
+                        <a href="#toggleTheme"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleTheme()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="26"
+                                    class="link-to-prism">src/app/core/services/theme.service.ts:26</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
                 </td>
             </tr>
         </tbody>
@@ -565,21 +459,28 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="http"></a>
+                    <a name="storageKey"></a>
                     <span class="name">
-                        <span ><b>http</b></span>
-                        <a href="#http"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier">Private</span>
+                        <span ><b>storageKey</b></span>
+                        <a href="#storageKey"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>inject(HttpBaseService)</code>
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;maestro-theme&#x27;</code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="8" class="link-to-prism">src/app/core/services/subscription.service.ts:8</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="9" class="link-to-prism">src/app/core/services/theme.service.ts:9</a></div>
                         </td>
                     </tr>
 
@@ -592,43 +493,54 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { inject, Injectable } from &#x27;@angular/core&#x27;;
-import { Observable } from &#x27;rxjs&#x27;;
-import { HttpBaseService } from &#x27;./http-base.service&#x27;;
-import { Plan, SubscriptionStatus } from &#x27;../models/subscription.model&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, OnInit } from &#x27;@angular/core&#x27;;
 
-@Injectable({ providedIn: &#x27;root&#x27; })
-export class SubscriptionService {
-  http &#x3D; inject(HttpBaseService);
+export type ThemeMode &#x3D; &#x27;light&#x27; | &#x27;dark&#x27; | &#x27;system&#x27;;
 
-  getPlans(): Observable&lt;any&gt; {
-    return this.http.get(&#x27;subscription/plans&#x27;);
+@Injectable({
+  providedIn: &#x27;root&#x27;,
+})
+export class ThemeService {
+  private storageKey &#x3D; &#x27;maestro-theme&#x27;;
+
+  init() {
+    const saved &#x3D; localStorage.getItem(this.storageKey) as ThemeMode | null;
+    const mode: ThemeMode &#x3D; saved ?? &#x27;system&#x27;;
+    this.applyTheme(mode);
   }
 
-  getSinglePlan(planCode: string): Observable&lt;any&gt; {
-    return this.http.get(&#x60;subscription/plans/${planCode}&#x60;);
+  setTheme(mode: ThemeMode) {
+    localStorage.setItem(this.storageKey, mode);
+    this.applyTheme(mode);
   }
 
-  subscribe(planCode: string): Observable&lt;any&gt; {
-    return this.http.post(&#x27;subscription/initialize-transaction&#x27;, { planCode });
+  getTheme(): ThemeMode {
+    return (localStorage.getItem(this.storageKey) as ThemeMode) ?? &#x27;system&#x27;;
   }
 
-  verifyTransaction(reference: string): Observable&lt;any&gt; {
-    return this.http.post(&#x27;subscription/verify-transaction&#x27;, { reference });
+  toggleTheme() {
+    const current &#x3D; this.getTheme();
+    const next &#x3D; current &#x3D;&#x3D;&#x3D; &#x27;dark&#x27; ? &#x27;light&#x27; : &#x27;dark&#x27;;
+    this.setTheme(next);
   }
 
-  getSubscription(): Observable&lt;any&gt; {
-    return this.http.get(&#x27;subscription/get&#x27;);
-  }
+  private applyTheme(mode: ThemeMode) {
+    const root &#x3D; document.documentElement;
 
-  cancel(): Observable&lt;any&gt; {
-    return this.http.post(&#x27;subscription/cancel&#x27;, {});
-  }
+    root.classList.remove(&#x27;dark&#x27;);
 
-  manageSubscription() : Observable&lt;any&gt; {
-    return this.http.get(&#x27;subscription/generate-manage-link&#x27;);
+    if (mode &#x3D;&#x3D;&#x3D; &#x27;dark&#x27;) {
+      root.classList.add(&#x27;dark&#x27;);
+    } 
+    else if (mode &#x3D;&#x3D;&#x3D; &#x27;system&#x27;) {
+      const prefersDark &#x3D; window.matchMedia(&#x27;(prefers-color-scheme: dark)&#x27;).matches;
+      if (prefersDark) {
+        root.classList.add(&#x27;dark&#x27;);
+      }
+    }
   }
-}</code></pre>
+}
+</code></pre>
     </div>
 
 </div>
@@ -671,7 +583,7 @@ export class SubscriptionService {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
-            var COMPODOC_CURRENT_PAGE_URL = 'SubscriptionService.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'ThemeService.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

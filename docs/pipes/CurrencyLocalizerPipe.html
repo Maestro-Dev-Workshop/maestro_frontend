@@ -93,7 +93,7 @@
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
-               <div class="content guard">
+               <div class="content pipe">
                    <div class="content-data">
 
 
@@ -109,9 +109,10 @@
 
 
 
+
 <ol class="breadcrumb">
-    <li class="breadcrumb-item">Guards</li>
-    <li class="breadcrumb-item" >SubscriptionGuard</li>
+  <li class="breadcrumb-item">Pipes</li>
+  <li class="breadcrumb-item" >CurrencyLocalizerPipe</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -130,109 +131,31 @@
 </ul>
 
 <div class="tab-content">
-        <div class="tab-pane fade active in" id="info">
-            <p class="comment">
-                <h3>File</h3>
-            </p>
-            <p class="comment">
-                <code>src/app/core/guards/subscription.guard.ts</code>
-            </p>
+    <div class="tab-pane fade active in" id="info">
+
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/app/shared/pipes/currency-localizer-pipe.ts</code>
+        </p>
 
 
 
 
+        <section data-compodoc="block-metadata">
+            <h3>Metadata</h3>
+            <table class="table table-sm table-hover metadata">
+                <tbody>
+                    <tr>
+                        <td class="col-md-3">Name</td>
+                        <td class="col-md-9">currencyLocalizer</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
 
-
-                <section data-compodoc="block-index">
-    <h3 id="index">Index</h3>
-    <table class="table table-sm table-bordered index-table">
-        <tbody>
-
-                <tr>
-                    <td class="col-md-4">
-                        <h6><b>Methods</b></h6>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <ul class="index-list">
-                            <li>
-                                <a href="#canActivate" >canActivate</a>
-                            </li>
-                        </ul>
-                    </td>
-                </tr>
-
-
-
-
-
-        </tbody>
-    </table>
-</section>
-
-                <section data-compodoc="block-constructor">
-    <h3 id="constructor">Constructor</h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-<code>constructor(subSvc: <a href="../injectables/SubscriptionService.html" target="_self">SubscriptionService</a>, router: Router)</code>
-                    </td>
-                </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">src/app/core/guards/subscription.guard.ts:10</a></div>
-                            </td>
-                        </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                            <div>
-                                    <b>Parameters :</b>
-                                    <table class="params">
-                                        <thead>
-                                            <tr>
-                                                <td>Name</td>
-                                                    <td>Type</td>
-                                                <td>Optional</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                                <tr>
-                                                        <td>subSvc</td>
-                                                  
-                                                        <td>
-                                                                        <code><a href="../injectables/SubscriptionService.html" target="_self" >SubscriptionService</a></code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                </tr>
-                                                <tr>
-                                                        <td>router</td>
-                                                  
-                                                        <td>
-                                                                    <code>Router</code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                </tr>
-                                        </tbody>
-                                    </table>
-                            </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-</section>
-
-                <section data-compodoc="block-methods">
+            <section data-compodoc="block-methods">
     
     <h3 id="methods">
         Methods
@@ -241,24 +164,24 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="canActivate"></a>
+                    <a name="transform"></a>
                     <span class="name">
-                        <span ><b>canActivate</b></span>
-                        <a href="#canActivate"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>transform</b></span>
+                        <a href="#transform"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>canActivate()</code>
+<code>transform(countryCode: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="16"
-                                    class="link-to-prism">src/app/core/guards/subscription.guard.ts:16</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="8"
+                                    class="link-to-prism">src/app/shared/pipes/currency-localizer-pipe.ts:8</a></div>
                         </td>
                     </tr>
 
@@ -266,50 +189,74 @@
             <tr>
                 <td class="col-md-4">
 
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>countryCode</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 
                         </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
     </table>
 </section>
-        </div>
+
+    </div>
 
 
-        <div class="tab-pane fade  tab-source-code" id="source">
-            <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@angular/core&#x27;;
-import {
-  CanActivate,
-  Router
-} from &#x27;@angular/router&#x27;;
-import { map } from &#x27;rxjs&#x27;;
-import { SubscriptionService } from &#x27;../services/subscription.service&#x27;;
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Pipe, PipeTransform } from &#x27;@angular/core&#x27;;
 
-@Injectable({ providedIn: &#x27;root&#x27; })
-export class SubscriptionGuard implements CanActivate {
-  constructor(
-    private subSvc: SubscriptionService,
-    private router: Router
-  ) {}
+@Pipe({
+  name: &#x27;currencyLocalizer&#x27;
+})
+export class CurrencyLocalizerPipe implements PipeTransform {
 
-  canActivate() {
-    // return this.subSvc.getStatus().pipe(
-    //   map(st &#x3D;&gt; {
-    //     if (!st.isActive) {
-    //       this.router.navigate([&#x27;/dashboard/subscription&#x27;]);
-    //       return false;
-    //     }
-    //     return true;
-    //   })
-    // );
-    return true;
+  transform(countryCode: string): string {
+    const countryCurrencyMap: { [key: string]: string } &#x3D; {
+      &#x27;US&#x27;: &#x27;$&#x27;,
+      &#x27;NG&#x27;: &#x27;₦&#x27;,
+    };
+    if (countryCode in countryCurrencyMap) {
+      return countryCurrencyMap[countryCode];
+    } else {
+      return &#x27;$&#x27;;
+    }
   }
-}</code></pre>
-        </div>
-</div>
 
+}
+</code></pre>
+    </div>
+
+</div>
 
 
 
@@ -345,8 +292,8 @@ export class SubscriptionGuard implements CanActivate {
 
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
-            var COMPODOC_CURRENT_PAGE_CONTEXT = 'guard';
-            var COMPODOC_CURRENT_PAGE_URL = 'SubscriptionGuard.html';
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'pipe';
+            var COMPODOC_CURRENT_PAGE_URL = 'CurrencyLocalizerPipe.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

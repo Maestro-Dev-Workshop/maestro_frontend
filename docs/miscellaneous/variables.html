@@ -320,6 +320,8 @@
                         <i>Default value : </i><code>[
   // Home
   { path: &#x27;&#x27;, loadComponent: () &#x3D;&gt; &quot;import(&#x27;./pages/home/home/home&#x27;).then(m &#x3D;&gt; m.Home)&quot; },
+  { path: &#x27;privacy-policy&#x27;, loadComponent: () &#x3D;&gt; &quot;import(&#x27;./pages/home/privacy-policy/privacy-policy&#x27;).then(m &#x3D;&gt; m.PrivacyPolicy)&quot; },
+  { path: &#x27;terms-of-service&#x27;, loadComponent: () &#x3D;&gt; &quot;import(&#x27;./pages/home/terms-of-service/terms-of-service&#x27;).then(m &#x3D;&gt; m.TermsOfService)&quot; },
 
   // Auth
   { path: &#x27;signup&#x27;, loadComponent: () &#x3D;&gt; &quot;import(&#x27;./pages/auth/signup/signup&#x27;).then(m &#x3D;&gt; m.Signup)&quot; },
@@ -330,9 +332,13 @@
   // Dashboard
   { path: &#x27;dashboard&#x27;, loadComponent: () &#x3D;&gt; &quot;import(&#x27;./pages/dashboard/subjects/subjects&#x27;).then(m &#x3D;&gt; m.Subjects)&quot; },
   { path: &#x27;dashboard/subscription&#x27;, loadComponent: () &#x3D;&gt; &quot;import(&#x27;./pages/dashboard/subscription/subscription&#x27;).then(m &#x3D;&gt; m.Subscription)&quot; },
+  { path: &#x27;dashboard/verify-payment&#x27;, loadComponent: () &#x3D;&gt; &quot;import(&#x27;./pages/dashboard/verify-payment/verify-payment&#x27;).then(m &#x3D;&gt; m.VerifyPayment)&quot; },
+
+  { path: &#x27;subscription-test&#x27;, loadComponent: () &#x3D;&gt; &quot;import(&#x27;./pages/dashboard/subscription/subscription&#x27;).then(m &#x3D;&gt; m.Subscription)&quot; },
 
   // Subject Creation (stepper flow, could be nested later if you want)
   { path: &#x27;subject-create/:sessionId/naming-upload&#x27;, loadComponent: () &#x3D;&gt; &quot;import(&#x27;./pages/subject-create/naming-upload/naming-upload&#x27;).then(m &#x3D;&gt; m.NamingUpload)&quot; },
+  { path: &#x27;subject-create/:sessionId/lesson-generation&#x27;, loadComponent: () &#x3D;&gt; &quot;import(&#x27;./pages/subject-create/lesson-generation/lesson-generation&#x27;).then(m &#x3D;&gt; m.LessonGeneration)&quot; },
   { path: &#x27;subject-create/:sessionId/topic-preferences&#x27;, loadComponent: () &#x3D;&gt; &quot;import(&#x27;./pages/subject-create/topic-preferences/topic-preferences&#x27;).then(m &#x3D;&gt; m.TopicPreferences)&quot; },
   { path: &#x27;subject-create/:sessionId/question-settings&#x27;, loadComponent: () &#x3D;&gt; &quot;import(&#x27;./pages/subject-create/question-settings/question-settings&#x27;).then(m &#x3D;&gt; m.QuestionSettings)&quot; },
 

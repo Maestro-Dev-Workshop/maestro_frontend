@@ -107,7 +107,7 @@
   <li class="breadcrumb-item">Components</li>
   <li class="breadcrumb-item"
   >
-  CheckEmail</li>
+  Confirmation</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -134,7 +134,7 @@
     <h3>File</h3>
 </p>
 <p class="comment">
-    <code>src/app/pages/auth/check-email/check-email.ts</code>
+    <code>src/app/shared/components/confirmation/confirmation.ts</code>
 </p>
 
 
@@ -166,7 +166,7 @@
 
             <tr>
                 <td class="col-md-3">selector</td>
-                <td class="col-md-9"><code>app-check-email</code></td>
+                <td class="col-md-9"><code>app-confirmation</code></td>
             </tr>
 
 
@@ -176,14 +176,14 @@
 
             <tr>
                 <td class="col-md-3">templateUrl</td>
-                <td class="col-md-9"><code>./check-email.html</code></td>
+                <td class="col-md-9"><code>./confirmation.html</code></td>
             </tr>
 
 
 
             <tr>
                 <td class="col-md-3">styleUrl</td>
-                <td class="col-md-9"><code>./check-email.css</code></td>
+                <td class="col-md-9"><code>./confirmation.css</code></td>
             </tr>
 
 
@@ -207,22 +207,13 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#authService" >authService</a>
+                                <a href="#options" >options</a>
                             </li>
                             <li>
-                                <a href="#email" >email</a>
+                                <a href="#response$" >response$</a>
                             </li>
                             <li>
-                                <a href="#loading" >loading</a>
-                            </li>
-                            <li>
-                                <a href="#notify" >notify</a>
-                            </li>
-                            <li>
-                                <a href="#resendTimer" >resendTimer</a>
-                            </li>
-                            <li>
-                                <a href="#socket" >socket</a>
+                                <a href="#show" >show</a>
                             </li>
                         </ul>
                     </td>
@@ -237,16 +228,10 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#ngOnDestroy" >ngOnDestroy</a>
+                                <a href="#confirm" >confirm</a>
                             </li>
                             <li>
                                 <a href="#ngOnInit" >ngOnInit</a>
-                            </li>
-                            <li>
-                                <a href="#resendVerificationEmail" >resendVerificationEmail</a>
-                            </li>
-                            <li>
-                                <a href="#startResendTimer" >startResendTimer</a>
                             </li>
                         </ul>
                     </td>
@@ -266,12 +251,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(router: Router, cdr: ChangeDetectorRef)</code>
+<code>constructor(confirmService: <a href="../injectables/ConfirmService.html" target="_self">ConfirmService</a>, cdr: ChangeDetectorRef)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/app/pages/auth/check-email/check-email.ts:20</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/app/shared/components/confirmation/confirmation.ts:14</a></div>
                             </td>
                         </tr>
 
@@ -289,10 +274,10 @@
                                         </thead>
                                         <tbody>
                                                 <tr>
-                                                        <td>router</td>
+                                                        <td>confirmService</td>
                                                   
                                                         <td>
-                                                                    <code>Router</code>
+                                                                        <code><a href="../injectables/ConfirmService.html" target="_self" >ConfirmService</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -334,24 +319,24 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="ngOnDestroy"></a>
+                    <a name="confirm"></a>
                     <span class="name">
-                        <span ><b>ngOnDestroy</b></span>
-                        <a href="#ngOnDestroy"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>confirm</b></span>
+                        <a href="#confirm"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>ngOnDestroy()</code>
+<code>confirm(result: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="76"
-                                    class="link-to-prism">src/app/pages/auth/check-email/check-email.ts:76</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="33"
+                                    class="link-to-prism">src/app/shared/components/confirmation/confirmation.ts:33</a></div>
                         </td>
                     </tr>
 
@@ -359,10 +344,40 @@
             <tr>
                 <td class="col-md-4">
 
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>result</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         <div class="io-description">
                             <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
                         </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -387,82 +402,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="28"
-                                    class="link-to-prism">src/app/pages/auth/check-email/check-email.ts:28</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                        </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="resendVerificationEmail"></a>
-                    <span class="name">
-                        <span ><b>resendVerificationEmail</b></span>
-                        <a href="#resendVerificationEmail"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>resendVerificationEmail()</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="54"
-                                    class="link-to-prism">src/app/pages/auth/check-email/check-email.ts:54</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                        </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="startResendTimer"></a>
-                    <span class="name">
-                        <span ><b>startResendTimer</b></span>
-                        <a href="#startResendTimer"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>startResendTimer()</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="43"
-                                    class="link-to-prism">src/app/pages/auth/check-email/check-email.ts:43</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="18"
+                                    class="link-to-prism">src/app/shared/components/confirmation/confirmation.ts:18</a></div>
                         </td>
                     </tr>
 
@@ -488,21 +429,22 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="authService"></a>
+                    <a name="options"></a>
                     <span class="name">
-                        <span ><b>authService</b></span>
-                        <a href="#authService"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>options</b></span>
+                        <a href="#options"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>inject(AuthService)</code>
+                        <i>Type : </i>        <code><a href="../interfaces/ConfirmOptions.html" target="_self" >ConfirmOptions</a></code>
+
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/app/pages/auth/check-email/check-email.ts:18</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">src/app/shared/components/confirmation/confirmation.ts:13</a></div>
                         </td>
                     </tr>
 
@@ -513,27 +455,22 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="email"></a>
+                    <a name="response$"></a>
                     <span class="name">
-                        <span ><b>email</b></span>
-                        <a href="#email"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>response$</b></span>
+                        <a href="#response$"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>    <code>string | null</code>
+                        <i>Type : </i>    <code>Subject&lt;boolean&gt;</code>
 
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>&#x27;&#x27;</code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/app/pages/auth/check-email/check-email.ts:15</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/app/shared/components/confirmation/confirmation.ts:14</a></div>
                         </td>
                     </tr>
 
@@ -544,10 +481,10 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="loading"></a>
+                    <a name="show"></a>
                     <span class="name">
-                        <span ><b>loading</b></span>
-                        <a href="#loading"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>show</b></span>
+                        <a href="#show"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -558,89 +495,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/app/pages/auth/check-email/check-email.ts:17</a></div>
-                        </td>
-                    </tr>
-
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="notify"></a>
-                    <span class="name">
-                        <span ><b>notify</b></span>
-                        <a href="#notify"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>inject(NotificationService)</code>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/app/pages/auth/check-email/check-email.ts:19</a></div>
-                        </td>
-                    </tr>
-
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="resendTimer"></a>
-                    <span class="name">
-                        <span ><b>resendTimer</b></span>
-                        <a href="#resendTimer"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>0</code>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/app/pages/auth/check-email/check-email.ts:16</a></div>
-                        </td>
-                    </tr>
-
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="socket"></a>
-                    <span class="name">
-                        <span ><b>socket</b></span>
-                        <a href="#socket"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>    <code>Socket</code>
-
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/app/pages/auth/check-email/check-email.ts:20</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">src/app/shared/components/confirmation/confirmation.ts:12</a></div>
                         </td>
                     </tr>
 
@@ -653,127 +508,76 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { ChangeDetectorRef, Component, inject, OnInit } from &#x27;@angular/core&#x27;;
-import { Router } from &#x27;@angular/router&#x27;;
-import { AuthService } from &#x27;../../../core/services/auth.service&#x27;;
-import { NotificationService } from &#x27;../../../core/services/notification.service&#x27;;
-import { environment } from &#x27;../../../../environments/environment&#x27;;
-import { io, Socket } from &#x27;socket.io-client&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { ChangeDetectorRef, Component, EventEmitter, input, OnInit, Output } from &#x27;@angular/core&#x27;;
+import { ConfirmOptions, ConfirmService } from &#x27;../../../core/services/confirm&#x27;;
+import { Subject } from &#x27;rxjs&#x27;;
 
 @Component({
-  selector: &#x27;app-check-email&#x27;,
+  selector: &#x27;app-confirmation&#x27;,
   imports: [],
-  templateUrl: &#x27;./check-email.html&#x27;,
-  styleUrl: &#x27;./check-email.css&#x27;
+  templateUrl: &#x27;./confirmation.html&#x27;,
+  styleUrl: &#x27;./confirmation.css&#x27;,
 })
-export class CheckEmail implements OnInit {
-  email: string | null &#x3D; &#x27;&#x27;;
-  resendTimer &#x3D; 0;
-  loading &#x3D; false;
-  authService &#x3D; inject(AuthService);
-  notify &#x3D; inject(NotificationService);
-  socket!: Socket;
+export class Confirmation implements OnInit {
+  show &#x3D; false;
+  options!: ConfirmOptions;
+  response$!: Subject&lt;boolean&gt;;
 
-  constructor(private router: Router, private cdr: ChangeDetectorRef) {
-    const nav &#x3D; this.router.getCurrentNavigation();
-    this.email &#x3D; nav?.extras?.state?.[&#x27;email&#x27;];
-    this.startResendTimer();
-  }
+  constructor(private confirmService: ConfirmService, private cdr: ChangeDetectorRef) {}
 
-  ngOnInit(): void {
-    this.socket &#x3D; io(environment.apiUrl.slice(0, -4), {
-      withCredentials: true
-    });
-
-    if (this.email) {
-      this.socket.emit(&quot;join-email-room&quot;, this.email);
-    }
-  
-    this.socket.on(&quot;email-verified&quot;, () &#x3D;&gt; {
-      this.notify.showSuccess(&quot;Email verified! Redirecting to login.&quot;);
-      this.router.navigateByUrl(&#x27;/login&#x27;);
-    });
-  }
-
-  startResendTimer() {
-    this.resendTimer &#x3D; 60; // 60 seconds
-    const interval &#x3D; setInterval(() &#x3D;&gt; {
-      this.resendTimer--;
-      if (this.resendTimer &lt;&#x3D; 0) {
-        clearInterval(interval);
-      }
+  ngOnInit() {
+    this.confirmService.confirmation$.subscribe(({ options, response }) &#x3D;&gt; {
+      this.options &#x3D; {
+        okText: &quot;Yes&quot;,
+        cancelText: &quot;No&quot;,
+        title: &quot;Are you sure?&quot;,
+        message: &quot;Do you want to proceed?&quot;,
+        ...options
+      };
+      this.response$ &#x3D; response;
+      this.show &#x3D; true;
       this.cdr.detectChanges();
-    }, 1000);
-  }
-
-  resendVerificationEmail() {
-    this.loading &#x3D; true;
-    if (!this.email) {
-      this.notify.showError(&#x27;Email not available.&#x27;);
-      this.loading &#x3D; false;
-      return;
-    }
-    this.authService.resendVerificationEmail(this.email || &#x27;&#x27;).subscribe({
-      next: (response) &#x3D;&gt; {
-        this.notify.showSuccess(&#x27;Verification email resent! Please check your inbox.&#x27;);
-        this.startResendTimer();
-        this.loading &#x3D; false;
-        this.cdr.detectChanges();
-      },
-      error: (res) &#x3D;&gt; {
-        this.notify.showError(res.error.message || &#x27;Failed to resend verification email. Please try again.&#x27;);
-        this.loading &#x3D; false;
-        this.cdr.detectChanges();
-      }
     });
   }
 
-  ngOnDestroy() {
-    this.socket.disconnect();
+  confirm(result: boolean) {
+    this.show &#x3D; false;
+    this.response$.next(result);
+    this.response$.complete();
   }
 }
 </code></pre>
     </div>
 
     <div class="tab-pane fade " id="templateData">
-        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;flex flex-row w-screen h-screen justify-between&quot;&gt;
-  &lt;!-- left panel --&gt;
-  &lt;div class&#x3D;&quot;w-full lg:w-6/12 h-full flex flex-col p-12&quot;&gt;
-
-    &lt;!-- Header --&gt;
-    &lt;div class&#x3D;&quot;flex flex-row my-8 items-center&quot;&gt;
-      &lt;img src&#x3D;&quot;images/logo-coloured.svg&quot; alt&#x3D;&quot;Maestro Logo&quot; class&#x3D;&quot;w-12 mr-2&quot;&gt;
-      &lt;span class&#x3D;&quot;font-serif text-3xl h-max text-[var(--text-primary)]&quot;&gt;Maestro&lt;/span&gt;
-    &lt;/div&gt;
-
-    &lt;div class&#x3D;&quot;flex flex-col h-3/4 justify-between&quot;&gt;
-      &lt;div&gt;
-        &lt;h1 class&#x3D;&quot;text-2xl font-bold my-4&quot;&gt;Verify Email&lt;/h1&gt;
-        &lt;p&gt;A verification mail has been sent to &lt;span class&#x3D;&quot;font-bold&quot;&gt;{{email}}&lt;/span&gt;&lt;/p&gt;
+        <pre class="line-numbers"><code class="language-html">@if (show) {
+  &lt;div
+    class&#x3D;&quot;fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50&quot;
+    (click)&#x3D;&quot;confirm(false)&quot;
+  &gt;
+    &lt;div
+      class&#x3D;&quot;bg-[var(--bg-page)] rounded-lg p-6 max-w-sm w-full shadow-lg&quot;
+      (click)&#x3D;&quot;$event.stopPropagation()&quot;
+    &gt;
+      &lt;h3 class&#x3D;&quot;text-xl font-semibold mb-2&quot;&gt;{{options.title}}&lt;/h3&gt;
+      &lt;p class&#x3D;&quot;text-[var(--text-secondary)] mb-4&quot;&gt;{{options.message}}&lt;/p&gt;
+      &lt;div class&#x3D;&quot;flex justify-end space-x-3&quot;&gt;
+        &lt;button
+          class&#x3D;&quot;px-4 py-2 bg-[var(--bg-card)] rounded lg:hover:bg-[var(--bg-card-hover)]&quot;
+          (click)&#x3D;&quot;confirm(false)&quot;
+        &gt;
+          {{options.cancelText}}
+        &lt;/button&gt;
+        &lt;button
+          class&#x3D;&quot;px-4 py-2 bg-prussian-blue-700 text-white rounded lg:hover:bg-prussian-blue-400&quot;
+          (click)&#x3D;&quot;confirm(true)&quot;
+        &gt;
+          {{options.okText}}
+        &lt;/button&gt;
       &lt;/div&gt;
-      &lt;button 
-        class&#x3D;&quot;text-left font-bold text-[var(--text-primary)] disabled:text-[var(--text-primary-hover)] lg:hover:text-[var(--text-primary-hover)]&quot;
-        [disabled]&#x3D;&quot;(resendTimer &gt; 0) || (loading)&quot;
-        (click)&#x3D;&quot;resendVerificationEmail()&quot;
-      &gt;
-        Resend mail in {{resendTimer}} seconds
-      &lt;/button&gt;
     &lt;/div&gt;
   &lt;/div&gt;
-  &lt;!-- right panel --&gt;
-  &lt;div class&#x3D;&quot;w-6/12 h-full relative hidden lg:block&quot;&gt;
-    &lt;img src&#x3D;&quot;images/person-studying-1.png&quot; alt&#x3D;&quot;Maestro Logo&quot; class&#x3D;&quot;h-full w-full object-cover&quot;&gt;
-    &lt;div class&#x3D;&quot;flex flex-row m-8 items-center absolute left-0 bottom-0&quot;&gt;
-      &lt;img src&#x3D;&quot;images/logo-white.svg&quot; alt&#x3D;&quot;Maestro Logo&quot; class&#x3D;&quot;w-12 mr-2&quot;&gt;
-      &lt;span class&#x3D;&quot;font-serif text-3xl h-max text-white&quot;&gt;Maestro&lt;/span&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div [class]&#x3D;&quot;&#x60;absolute left-4 bottom-4 flex flex-row items-center ${loading ? &#x27;&#x27; : &#x27;hidden&#x27;}&#x60;&quot;&gt;
-  &lt;img src&#x3D;&quot;images/spinner.gif&quot; alt&#x3D;&quot;&quot; class&#x3D;&quot;w-8 h-8 mx-2&quot;&gt;
-  Resending Email...
-&lt;/div&gt;</code></pre>
+}</code></pre>
     </div>
 
 
@@ -802,10 +606,10 @@ export class CheckEmail implements OnInit {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><div class="flex flex-row w-screen h-screen justify-between">  <!-- left panel -->  <div class="w-full lg:w-6/12 h-full flex flex-col p-12">    <!-- Header -->    <div class="flex flex-row my-8 items-center">      <img src="images/logo-coloured.svg" alt="Maestro Logo" class="w-12 mr-2">      <span class="font-serif text-3xl h-max text-[var(--text-primary)]">Maestro</span>    </div>    <div class="flex flex-col h-3/4 justify-between">      <div>        <h1 class="text-2xl font-bold my-4">Verify Email</h1>        <p>A verification mail has been sent to <span class="font-bold">{{email}}</span></p>      </div>      <button         class="text-left font-bold text-[var(--text-primary)] disabled:text-[var(--text-primary-hover)] lg:hover:text-[var(--text-primary-hover)]"        [disabled]="(resendTimer > 0) || (loading)"        (click)="resendVerificationEmail()"      >        Resend mail in {{resendTimer}} seconds      </button>    </div>  </div>  <!-- right panel -->  <div class="w-6/12 h-full relative hidden lg:block">    <img src="images/person-studying-1.png" alt="Maestro Logo" class="h-full w-full object-cover">    <div class="flex flex-row m-8 items-center absolute left-0 bottom-0">      <img src="images/logo-white.svg" alt="Maestro Logo" class="w-12 mr-2">      <span class="font-serif text-3xl h-max text-white">Maestro</span>    </div>  </div></div><div [class]="`absolute left-4 bottom-4 flex flex-row items-center ${loading ? \'\' : \'hidden\'}`">  <img src="images/spinner.gif" alt="" class="w-8 h-8 mx-2">  Resending Email...</div></div>'
+        var COMPONENT_TEMPLATE = '<div>@if (show) {  <div    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"    (click)="confirm(false)"  >    <div      class="bg-[var(--bg-page)] rounded-lg p-6 max-w-sm w-full shadow-lg"      (click)="$event.stopPropagation()"    >      <h3 class="text-xl font-semibold mb-2">{{options.title}}</h3>      <p class="text-[var(--text-secondary)] mb-4">{{options.message}}</p>      <div class="flex justify-end space-x-3">        <button          class="px-4 py-2 bg-[var(--bg-card)] rounded lg:hover:bg-[var(--bg-card-hover)]"          (click)="confirm(false)"        >          {{options.cancelText}}        </button>        <button          class="px-4 py-2 bg-prussian-blue-700 text-white rounded lg:hover:bg-prussian-blue-400"          (click)="confirm(true)"        >          {{options.okText}}        </button>      </div>    </div>  </div>}</div>'
     var COMPONENTS = [{'name': 'About', 'selector': 'app-about'},{'name': 'App', 'selector': 'app-root'},{'name': 'ChartCell', 'selector': 'app-chart-cell'},{'name': 'Chatbot', 'selector': 'app-chatbot'},{'name': 'CheckEmail', 'selector': 'app-check-email'},{'name': 'Confirmation', 'selector': 'app-confirmation'},{'name': 'ConfirmLogout', 'selector': 'app-confirm-logout'},{'name': 'Contact', 'selector': 'app-contact'},{'name': 'CreationStepTab', 'selector': 'app-creation-step-tab'},{'name': 'ExtensionConfigOverlay', 'selector': 'app-extension-config-overlay'},{'name': 'Features', 'selector': 'app-features'},{'name': 'Header', 'selector': 'app-header'},{'name': 'Home', 'selector': 'app-home'},{'name': 'Landing', 'selector': 'app-landing'},{'name': 'LessonGeneration', 'selector': 'app-lesson-generation'},{'name': 'LessonPage', 'selector': 'app-lesson-page'},{'name': 'Login', 'selector': 'app-login'},{'name': 'MarkdownCell', 'selector': 'app-markdown-cell'},{'name': 'NamingUpload', 'selector': 'app-naming-upload'},{'name': 'NotFound', 'selector': 'app-not-found'},{'name': 'Practice', 'selector': 'app-practice'},{'name': 'Pricing', 'selector': 'app-pricing'},{'name': 'PrivacyPolicy', 'selector': 'app-privacy-policy'},{'name': 'QuestionSettings', 'selector': 'app-question-settings'},{'name': 'Sidebar', 'selector': 'app-sidebar'},{'name': 'Signup', 'selector': 'app-signup'},{'name': 'Subjects', 'selector': 'app-subjects'},{'name': 'Subscription', 'selector': 'app-subscription'},{'name': 'Subtopic', 'selector': 'app-subtopic'},{'name': 'Team', 'selector': 'app-team'},{'name': 'TermsOfService', 'selector': 'app-terms-of-service'},{'name': 'Toast', 'selector': 'app-toast'},{'name': 'TopicPreferences', 'selector': 'app-topic-preferences'},{'name': 'VerifyEmail', 'selector': 'app-verify-email'},{'name': 'VerifyPayment', 'selector': 'app-verify-payment'}];
     var DIRECTIVES = [{'name': 'FileTypeDirective', 'selector': '[appFileType]'},{'name': 'PasswordValidator', 'selector': '[appPasswordValidator]'},{'name': 'PreferenceValidator', 'selector': '[appPreferenceValidator]'},{'name': 'SubjectNameValidator', 'selector': '[appSubjectNameValidator]'}];
-    var ACTUAL_COMPONENT = {'name': 'CheckEmail'};
+    var ACTUAL_COMPONENT = {'name': 'Confirmation'};
 </script>
 <script src="../js/tree.js"></script>
 
@@ -851,7 +655,7 @@ export class CheckEmail implements OnInit {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
-            var COMPODOC_CURRENT_PAGE_URL = 'CheckEmail.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'Confirmation.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

@@ -1,0 +1,1720 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>maestro-frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">maestro-frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  LessonGeneration</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/pages/subject-create/lesson-generation/lesson-generation.ts</code>
+</p>
+
+
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-lesson-generation</code></td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="../components/Header.html" target="_self" >Header</a></code>
+                                <code><a href="../components/CreationStepTab.html" target="_self" >CreationStepTab</a></code>
+                            <code>FormsModule</code>
+                                <code><a href="../components/ExtensionConfigOverlay.html" target="_self" >ExtensionConfigOverlay</a></code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./lesson-generation.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./lesson-generation.css</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#configOverlay" >configOverlay</a>
+                            </li>
+                            <li>
+                                <a href="#constraints" >constraints</a>
+                            </li>
+                            <li>
+                                <a href="#extensionsEnabled" >extensionsEnabled</a>
+                            </li>
+                            <li>
+                                <a href="#extensionSettings" >extensionSettings</a>
+                            </li>
+                            <li>
+                                <a href="#learningStyle" >learningStyle</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                <a href="#learningStyleCtrl" >learningStyleCtrl</a>
+                            </li>
+                            <li>
+                                <a href="#loading" >loading</a>
+                            </li>
+                            <li>
+                                <a href="#notify" >notify</a>
+                            </li>
+                            <li>
+                                <a href="#settingsPopup" >settingsPopup</a>
+                            </li>
+                            <li>
+                                <a href="#subjectName" >subjectName</a>
+                            </li>
+                            <li>
+                                <a href="#topics" >topics</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#getExtensionList" >getExtensionList</a>
+                            </li>
+                            <li>
+                                <a href="#go" >go</a>
+                            </li>
+                            <li>
+                                <a href="#saveConfig" >saveConfig</a>
+                            </li>
+                            <li>
+                                <a href="#toggleConfigOverlay" >toggleConfigOverlay</a>
+                            </li>
+                            <li>
+                                <a href="#toggleExtension" >toggleExtension</a>
+                            </li>
+                            <li>
+                                <a href="#toggleSettingsPopup" >toggleSettingsPopup</a>
+                            </li>
+                            <li>
+                                <a href="#toggleTopicSelection" >toggleTopicSelection</a>
+                            </li>
+                            <li>
+                                <a href="#validateSettings" >validateSettings</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(cdr: ChangeDetectorRef)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="129" class="link-to-prism">src/app/pages/subject-create/lesson-generation/lesson-generation.ts:129</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>cdr</td>
+                                                  
+                                                        <td>
+                                                                    <code>ChangeDetectorRef</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getExtensionList"></a>
+                    <span class="name">
+                        <span ><b>getExtensionList</b></span>
+                        <a href="#getExtensionList"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getExtensionList()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="159"
+                                    class="link-to-prism">src/app/pages/subject-create/lesson-generation/lesson-generation.ts:159</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="go"></a>
+                    <span class="name">
+                        <span ><b>go</b></span>
+                        <a href="#go"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>go()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="241"
+                                    class="link-to-prism">src/app/pages/subject-create/lesson-generation/lesson-generation.ts:241</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="saveConfig"></a>
+                    <span class="name">
+                        <span ><b>saveConfig</b></span>
+                        <a href="#saveConfig"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>saveConfig(config: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="149"
+                                    class="link-to-prism">src/app/pages/subject-create/lesson-generation/lesson-generation.ts:149</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>config</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleConfigOverlay"></a>
+                    <span class="name">
+                        <span ><b>toggleConfigOverlay</b></span>
+                        <a href="#toggleConfigOverlay"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleConfigOverlay()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="145"
+                                    class="link-to-prism">src/app/pages/subject-create/lesson-generation/lesson-generation.ts:145</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleExtension"></a>
+                    <span class="name">
+                        <span ><b>toggleExtension</b></span>
+                        <a href="#toggleExtension"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleExtension(extension: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="154"
+                                    class="link-to-prism">src/app/pages/subject-create/lesson-generation/lesson-generation.ts:154</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>extension</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleSettingsPopup"></a>
+                    <span class="name">
+                        <span ><b>toggleSettingsPopup</b></span>
+                        <a href="#toggleSettingsPopup"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleSettingsPopup()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="141"
+                                    class="link-to-prism">src/app/pages/subject-create/lesson-generation/lesson-generation.ts:141</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleTopicSelection"></a>
+                    <span class="name">
+                        <span ><b>toggleTopicSelection</b></span>
+                        <a href="#toggleTopicSelection"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleTopicSelection(topic_id: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="133"
+                                    class="link-to-prism">src/app/pages/subject-create/lesson-generation/lesson-generation.ts:133</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>topic_id</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="validateSettings"></a>
+                    <span class="name">
+                        <span ><b>validateSettings</b></span>
+                        <a href="#validateSettings"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>validateSettings()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="163"
+                                    class="link-to-prism">src/app/pages/subject-create/lesson-generation/lesson-generation.ts:163</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>{ status: boolean; message: string; }</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="configOverlay"></a>
+                    <span class="name">
+                        <span ><b>configOverlay</b></span>
+                        <a href="#configOverlay"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/app/pages/subject-create/lesson-generation/lesson-generation.ts:27</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="constraints"></a>
+                    <span class="name">
+                        <span ><b>constraints</b></span>
+                        <a href="#constraints"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+    excercise: {
+      maxQuestions: 10
+    },
+    exam: {
+      maxQuestions: 50
+    },
+    flashcards: {
+      maxCards: 20
+    }
+  }</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="119" class="link-to-prism">src/app/pages/subject-create/lesson-generation/lesson-generation.ts:119</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="extensionsEnabled"></a>
+                    <span class="name">
+                        <span ><b>extensionsEnabled</b></span>
+                        <a href="#extensionsEnabled"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/pages/subject-create/lesson-generation/lesson-generation.ts:28</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="extensionSettings"></a>
+                    <span class="name">
+                        <span ><b>extensionSettings</b></span>
+                        <a href="#extensionSettings"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+    exercise: {
+      enabled: false,
+      types: [],
+      numQuestions: 3,
+      name: &#x27;exercise&#x27;
+    },
+    exam: {
+      enabled: false,
+      types: [],
+      numQuestions: 10,
+      timelimit: null,
+      name: &#x27;exam&#x27;
+    },
+    flashcards: {
+      enabled: false,
+      numCards: 5,
+      types: [],
+      name: &#x27;flashcards&#x27;
+    },
+    glossary: {
+      enabled: false,
+      name: &#x27;glossary&#x27;
+    }
+  }</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="94" class="link-to-prism">src/app/pages/subject-create/lesson-generation/lesson-generation.ts:94</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="learningStyle"></a>
+                    <span class="name">
+                        <span ><b>learningStyle</b></span>
+                        <a href="#learningStyle"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/pages/subject-create/lesson-generation/lesson-generation.ts:24</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="learningStyleCtrl"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                        <span ><b>learningStyleCtrl</b></span>
+                        <a href="#learningStyleCtrl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>NgModel</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(&#x27;learningStyleCtrl&#x27;)<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/app/pages/subject-create/lesson-generation/lesson-generation.ts:25</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loading"></a>
+                    <span class="name">
+                        <span ><b>loading</b></span>
+                        <a href="#loading"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/app/pages/subject-create/lesson-generation/lesson-generation.ts:23</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="notify"></a>
+                    <span class="name">
+                        <span ><b>notify</b></span>
+                        <a href="#notify"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(NotificationService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/app/pages/subject-create/lesson-generation/lesson-generation.ts:29</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="settingsPopup"></a>
+                    <span class="name">
+                        <span ><b>settingsPopup</b></span>
+                        <a href="#settingsPopup"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/pages/subject-create/lesson-generation/lesson-generation.ts:26</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="subjectName"></a>
+                    <span class="name">
+                        <span ><b>subjectName</b></span>
+                        <a href="#subjectName"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;Algebra&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/pages/subject-create/lesson-generation/lesson-generation.ts:31</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="topics"></a>
+                    <span class="name">
+                        <span ><b>topics</b></span>
+                        <a href="#topics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-1&quot;,
+      &quot;title&quot;: &quot;Introduction to Matrix&quot;,
+      &quot;selected&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-2&quot;,
+      &quot;title&quot;: &quot;Matrix Operations&quot;,
+      &quot;selected&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-3&quot;,
+      &quot;title&quot;: &quot;Determinants&quot;,
+      &quot;selected&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-4&quot;,
+      &quot;title&quot;: &quot;Dot Products&quot;,
+      &quot;selected&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-5&quot;,
+      &quot;title&quot;: &quot;Eigenvalues and Eigenvectors&quot;,
+      &quot;selected&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-6&quot;,
+      &quot;title&quot;: &quot;Inverse of a Matrix&quot;,
+      &quot;selected&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-7&quot;,
+      &quot;title&quot;: &quot;Singular Value Decomposition&quot;,
+      &quot;selected&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-8&quot;,
+      &quot;title&quot;: &quot;Moore- Penrose Pseudoinverse&quot;,
+      &quot;selected&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-9&quot;,
+      &quot;title&quot;: &quot;Theorems&quot;,
+      &quot;selected&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-10&quot;,
+      &quot;title&quot;: &quot;Matrix Analysis&quot;,
+      &quot;selected&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-11&quot;,
+      &quot;title&quot;: &quot;Out of Topics Ideas&quot;,
+      &quot;selected&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-12&quot;,
+      &quot;title&quot;: &quot;Mehn, why I dey sick like this&quot;,
+      &quot;selected&quot;: false
+    },
+  ]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/app/pages/subject-create/lesson-generation/lesson-generation.ts:32</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { ChangeDetectorRef, Component, inject, NO_ERRORS_SCHEMA, OnInit, ViewChild } from &#x27;@angular/core&#x27;;
+import { Header } from &#x27;../../../shared/components/header/header&#x27;;
+import { CreationStepTab } from &#x27;../creation-step-tab/creation-step-tab&#x27;;
+import { FormsModule, NgModel } from &#x27;@angular/forms&#x27;;
+import { Router } from &#x27;@angular/router&#x27;;
+import { TopicModel } from &#x27;../../../core/models/topic.model&#x27;;
+import { SubjectsService } from &#x27;../../../core/services/subjects.service&#x27;;
+import { LessonService } from &#x27;../../../core/services/lesson.service&#x27;;
+import { NotificationService } from &#x27;../../../core/services/notification.service&#x27;; // &lt;-- Add this import
+import { PreferenceValidator } from &#x27;../../../shared/directives/preference-validator&#x27;;
+import { ExtensionConfigOverlay } from &#x27;../extension-config-overlay/extension-config-overlay&#x27;;
+import { max } from &#x27;rxjs&#x27;;
+
+
+@Component({
+  selector: &#x27;app-lesson-generation&#x27;,
+  imports: [Header, CreationStepTab, FormsModule, ExtensionConfigOverlay],
+  schemas: [NO_ERRORS_SCHEMA],
+  templateUrl: &#x27;./lesson-generation.html&#x27;,
+  styleUrl: &#x27;./lesson-generation.css&#x27;,
+})
+export class LessonGeneration {
+  loading &#x3D; false
+  learningStyle &#x3D; &#x27;&#x27;
+  @ViewChild(&#x27;learningStyleCtrl&#x27;) learningStyleCtrl!: NgModel;
+  settingsPopup &#x3D; false
+  configOverlay &#x3D; false
+  extensionsEnabled &#x3D; false
+  notify &#x3D; inject(NotificationService)
+  
+  subjectName &#x3D; &#x27;Algebra&#x27;;
+  topics &#x3D; [
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-1&quot;,
+      &quot;title&quot;: &quot;Introduction to Matrix&quot;,
+      &quot;selected&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-2&quot;,
+      &quot;title&quot;: &quot;Matrix Operations&quot;,
+      &quot;selected&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-3&quot;,
+      &quot;title&quot;: &quot;Determinants&quot;,
+      &quot;selected&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-4&quot;,
+      &quot;title&quot;: &quot;Dot Products&quot;,
+      &quot;selected&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-5&quot;,
+      &quot;title&quot;: &quot;Eigenvalues and Eigenvectors&quot;,
+      &quot;selected&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-6&quot;,
+      &quot;title&quot;: &quot;Inverse of a Matrix&quot;,
+      &quot;selected&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-7&quot;,
+      &quot;title&quot;: &quot;Singular Value Decomposition&quot;,
+      &quot;selected&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-8&quot;,
+      &quot;title&quot;: &quot;Moore- Penrose Pseudoinverse&quot;,
+      &quot;selected&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-9&quot;,
+      &quot;title&quot;: &quot;Theorems&quot;,
+      &quot;selected&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-10&quot;,
+      &quot;title&quot;: &quot;Matrix Analysis&quot;,
+      &quot;selected&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-11&quot;,
+      &quot;title&quot;: &quot;Out of Topics Ideas&quot;,
+      &quot;selected&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;dksda-daidj2d-a2m90-12&quot;,
+      &quot;title&quot;: &quot;Mehn, why I dey sick like this&quot;,
+      &quot;selected&quot;: false
+    },
+  ];
+  extensionSettings &#x3D; {
+    exercise: {
+      enabled: false,
+      types: [],
+      numQuestions: 3,
+      name: &#x27;exercise&#x27;
+    },
+    exam: {
+      enabled: false,
+      types: [],
+      numQuestions: 10,
+      timelimit: null,
+      name: &#x27;exam&#x27;
+    },
+    flashcards: {
+      enabled: false,
+      numCards: 5,
+      types: [],
+      name: &#x27;flashcards&#x27;
+    },
+    glossary: {
+      enabled: false,
+      name: &#x27;glossary&#x27;
+    }
+  }
+  constraints &#x3D; {
+    excercise: {
+      maxQuestions: 10
+    },
+    exam: {
+      maxQuestions: 50
+    },
+    flashcards: {
+      maxCards: 20
+    }
+  }
+
+  constructor(private cdr: ChangeDetectorRef) {}
+
+  toggleTopicSelection(topic_id: any) {
+    this.topics.map(
+      (topic) &#x3D;&gt; {
+        if (topic.id &#x3D;&#x3D;&#x3D; topic_id) {topic.selected &#x3D; !topic.selected}
+      }
+    )
+  }
+
+  toggleSettingsPopup() {
+    this.settingsPopup &#x3D; !this.settingsPopup
+  }
+
+  toggleConfigOverlay() {
+    this.configOverlay &#x3D; !this.configOverlay
+  }
+
+  saveConfig(config: any) {
+    this.extensionSettings &#x3D; config
+    this.toggleConfigOverlay()
+  }
+
+  toggleExtension(extension: string) {
+    this.extensionSettings[extension as keyof typeof this.extensionSettings].enabled &#x3D; !this.extensionSettings[extension as keyof typeof this.extensionSettings].enabled
+    this.extensionsEnabled &#x3D; Object.values(this.extensionSettings).some((ext: any) &#x3D;&gt; ext.enabled);
+  }
+
+  getExtensionList() {
+    return Object.values(this.extensionSettings).filter((ext: any) &#x3D;&gt; ext.enabled);
+  }
+
+  validateSettings() {
+    // Check if any topics have been selected
+    const selectedTopics &#x3D; this.topics.filter(topic &#x3D;&gt; topic.selected);
+    if (selectedTopics.length &#x3D;&#x3D;&#x3D; 0) {
+      return {
+        status: false,
+        message: &#x27;Please select at least one topic.&#x27;
+      };
+    }
+
+    // Check if learning style is empty
+    if (!this.learningStyle || this.learningStyle.trim() &#x3D;&#x3D;&#x3D; &#x27;&#x27;) {
+      return {
+        status: false,
+        message: &#x27;Learning style cannot be empty.&#x27;
+      };
+    }
+    if (this.learningStyle.length &gt; 2000) {
+      return {
+        status: false,
+        message: &#x27;Learning style cannot exceed 2000 characters.&#x27;
+      };
+    }
+
+    // Exercise checks
+    if (this.extensionSettings.exercise.enabled) {
+      if (this.extensionSettings.exercise.numQuestions &lt;&#x3D; 0 || this.extensionSettings.exercise.numQuestions &gt; this.constraints.excercise.maxQuestions) {
+        return {
+          status: false,
+          message: &#x60;Number of exercise questions must be between 1 and ${this.constraints.excercise.maxQuestions}.&#x60;
+        };
+      }
+      if (this.extensionSettings.exercise.types.length &#x3D;&#x3D;&#x3D; 0) {
+        return {
+          status: false,
+          message: &#x27;Please select at least one question type for exercise.&#x27;
+        };
+      }
+    }
+
+    // Exam checks
+    if (this.extensionSettings.exam.enabled) {
+      if (this.extensionSettings.exam.numQuestions &lt;&#x3D; 0 || this.extensionSettings.exam.numQuestions &gt; this.constraints.exam.maxQuestions) {
+        return {
+          status: false,
+          message: &#x60;Number of exam questions must be between 1 and ${this.constraints.exam.maxQuestions}.&#x60;
+        };
+      }
+      if (this.extensionSettings.exam.types.length &#x3D;&#x3D;&#x3D; 0) {
+        return {
+          status: false,
+          message: &#x27;Please select at least one question type for exam.&#x27;
+        };
+      }
+    }
+
+    // Flashcards checks
+    if (this.extensionSettings.flashcards.enabled) {
+      if (this.extensionSettings.flashcards.numCards &lt;&#x3D; 0 || this.extensionSettings.flashcards.numCards &gt; this.constraints.flashcards.maxCards) {
+        return {
+          status: false,
+          message: &#x60;Number of flashcards must be between 1 and ${this.constraints.flashcards.maxCards}.&#x60;
+        };
+      }
+      if (this.extensionSettings.flashcards.types.length &#x3D;&#x3D;&#x3D; 0) {
+        return {
+          status: false,
+          message: &#x27;Please select at least one type for flashcards.&#x27;
+        };
+      }
+    }
+
+    return {
+      status: true,
+      message: &#x27;Settings are valid.&#x27;
+    };
+  }
+
+  go() {
+    this.loading &#x3D; true;
+    this.settingsPopup &#x3D; false
+    this.configOverlay &#x3D; false
+
+    const validation &#x3D; this.validateSettings();
+    if (!validation.status) {
+      this.notify.showError(validation.message);
+      this.loading &#x3D; false;
+      return;
+    }
+
+    this.notify.showSuccess(validation.message);
+    console.log(this.extensionSettings)
+    this.loading &#x3D; false;
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;app-header&gt;&lt;/app-header&gt;
+&lt;div class&#x3D;&quot;flex flex-col w-full px-12 md:px-32 pb-12&quot;&gt;
+  &lt;div class&#x3D;&quot;flex flex-row mb-8 w-full&quot;&gt;
+    &lt;app-creation-step-tab
+      [text]&#x3D;&quot;&#x27;My Subject and Materials&#x27;&quot;
+      [icon]&#x3D;&quot;&#x27;images/subject-icon.svg&#x27;&quot;
+      [active]&#x3D;&quot;true&quot;
+      class&#x3D;&quot;hidden md:block w-3/6&quot;
+    /&gt;
+    &lt;app-creation-step-tab
+      [text]&#x3D;&quot;&#x27;Lesson Content Generation&#x27;&quot;
+      [icon]&#x3D;&quot;&#x27;images/lesson-generation-icon.svg&#x27;&quot;
+      [active]&#x3D;&quot;true&quot;
+      class&#x3D;&quot;w-full md:w-3/6&quot;
+    /&gt;
+  &lt;/div&gt;
+
+  &lt;h1 class&#x3D;&quot;text-2xl mb-2 font-medium&quot;&gt;{{subjectName}}&lt;/h1&gt;
+  &lt;p class&#x3D;&quot;mb-4 text-[var(--text-alt)]&quot;&gt;
+    Select the specific topics from your document that you want Maestro to focus on for your lesson.
+  &lt;/p&gt;
+
+  &lt;!-- Topic List --&gt;
+  &lt;div class&#x3D;&quot;flex flex-row flex-wrap mb-16&quot;&gt;
+    @for (topic of topics; track topic.id) {
+      &lt;button
+        [class]&#x3D;&quot;
+          &#x27;flex flex-row rounded-full py-2 px-3 lg:py-4 lg:px-6 mr-4 my-1 text-sm text-white transition duration-300 ease-in-out &#x27; 
+          + ( topic.selected? &#x27;bg-prussian-blue-900&#x27; : &#x27;bg-gray-500&#x27;)&quot;
+        (click)&#x3D;&quot;toggleTopicSelection(topic.id)&quot;
+        [disabled]&#x3D;&quot;loading&quot;
+      &gt;
+        @if (topic.selected) {
+          &lt;!-- Replace with X icon --&gt;
+          &lt;img src&#x3D;&quot;images/x-icon.svg&quot; alt&#x3D;&quot;X&quot; class&#x3D;&quot;mr-2 w-3&quot;&gt;
+        }
+        {{topic.title}}
+      &lt;/button&gt;
+    }
+  &lt;/div&gt;
+
+  &lt;!-- Preference and Settings Form --&gt;
+  &lt;form #form&#x3D;&quot;ngForm&quot; class&#x3D;&quot;border-2 border-[var(--text-primary)] text-sm md:text-lg rounded-xl p-3 md:pl-6&quot;&gt;
+    &lt;!-- Preference Text Box --&gt;
+    &lt;textarea 
+    type&#x3D;&quot;text&quot; 
+    name&#x3D;&quot;learningStyle&quot; 
+    placeholder&#x3D;&quot;How would you like to learn and generate extensions?&quot; 
+    class&#x3D;&quot;w-full border-0 focus:outline-none resize-none overflow-hidden bg-[var(--bg-page)]&quot; 
+    rows&#x3D;&quot;1&quot;
+    cols&#x3D;&quot;1&quot;
+    oninput&#x3D;&quot;this.style.height &#x3D; &#x27;auto&#x27;; this.style.height &#x3D; this.scrollHeight + &#x27;px&#x27;;&quot;
+    onmousemove&#x3D;&quot;this.style.height &#x3D; &#x27;auto&#x27;; this.style.height &#x3D; this.scrollHeight + &#x27;px&#x27;;&quot;
+    [(ngModel)]&#x3D;&quot;learningStyle&quot;
+    required
+    learningStyle
+    #learningStyleCtrl&#x3D;&quot;ngModel&quot;
+    appPreferenceValidator
+    [disabled]&#x3D;&quot;loading&quot;
+    &gt;
+    &lt;/textarea&gt;
+
+    &lt;!-- Settings --&gt;
+    &lt;div class&#x3D;&quot;flex flex-row items-center justify-between&quot;&gt;
+      &lt;div class&#x3D;&quot;flex flex-row relative&quot;&gt;
+        &lt;button 
+          [class]&#x3D;&quot;&#x60;flex flex-row md:mr-4 rounded-full md:hover:shadow-lg p-2
+          ${settingsPopup ? &#x27;bg-[var(--bg-hover)] shadow-lg p-2&#x27; : &#x27;&#x27;}&#x60;&quot;
+          (click)&#x3D;&quot;toggleSettingsPopup()&quot;
+          [disabled]&#x3D;&quot;loading&quot;
+        &gt;
+          &lt;img src&#x3D;&quot;images/extension-icon.svg&quot; alt&#x3D;&quot;Enable&quot; class&#x3D;&quot;w-4 md:w-6 mr-1&quot;&gt;
+          &lt;span class&#x3D;&quot;hidden md:block&quot;&gt;Enable Extensions&lt;/span&gt;
+        &lt;/button&gt;
+        &lt;button 
+          [class]&#x3D;&quot;&#x60;flex flex-row md:mr-4 rounded-full md:hover:shadow-lg p-2
+          ${configOverlay ? &#x27;bg-[var(--bg-hover)] shadow-lg p-2&#x27; : &#x27;&#x27;}&#x60;&quot;
+          (click)&#x3D;&quot;toggleConfigOverlay()&quot;
+          [disabled]&#x3D;&quot;!extensionsEnabled || loading&quot;
+        &gt;
+          &lt;img src&#x3D;&quot;images/config-icon.svg&quot; alt&#x3D;&quot;Configure&quot; class&#x3D;&quot;w-6 md:w-6 mr-1&quot;&gt;
+          &lt;span class&#x3D;&quot;hidden md:block&quot;&gt;Configure Extensions&lt;/span&gt;
+        &lt;/button&gt;
+
+        &lt;!-- Extension Settings Popup --&gt;
+        &lt;div 
+          [class]&#x3D;&quot;&#x60;absolute w-64 bottom-10 left-2 md:bottom-auto md:top-12 md:left-12 rounded-lg flex flex-col items-start 
+          border-[1px] border-[var(--text-primary)] bg-[var(--bg-page)] ${!settingsPopup? &#x27;hidden&#x27; : &#x27;&#x27;}&#x60;&quot;
+        &gt;
+          &lt;!-- Exercise Button --&gt;
+          &lt;button 
+            [class]&#x3D;&quot;&#x60;rounded-t-lg flex flex-row w-full items-center px-1 py-2 
+            ${!extensionSettings.exercise.enabled ? &#x27;bg-[var(--bg-page)] md:hover:bg-[var(--bg-hover)]&#x27;
+              : &#x27;bg-[var(--text-secondary)] text-[var(--bg-page)]&#x27;}&#x60;&quot;
+            (click)&#x3D;&quot;toggleExtension(&#x27;exercise&#x27;)&quot;
+          &gt;
+            &lt;img src&#x3D;&quot;images/exercise-icon.svg&quot; alt&#x3D;&quot;&quot; class&#x3D;&quot;mr-2&quot;&gt;
+            Exercise
+            @if (extensionSettings.exercise.enabled) {
+              &lt;img src&#x3D;&quot;images/x-icon.svg&quot; alt&#x3D;&quot;X&quot; class&#x3D;&quot;m-2 w-2 ml-auto&quot;&gt;
+            }
+          &lt;/button&gt;
+
+          &lt;!-- Exam Button --&gt;
+          &lt;button 
+            [class]&#x3D;&quot;&#x60;flex flex-row w-full items-center px-1 py-2 
+            ${!extensionSettings.exam.enabled ? &#x27;bg-[var(--bg-page)] md:hover:bg-[var(--bg-hover)]&#x27;
+              : &#x27;bg-[var(--text-secondary)] text-[var(--bg-page)]&#x27;}&#x60;&quot;
+            (click)&#x3D;&quot;toggleExtension(&#x27;exam&#x27;)&quot;
+          &gt;
+            &lt;img src&#x3D;&quot;images/exam-icon.svg&quot; alt&#x3D;&quot;&quot; class&#x3D;&quot;mr-2&quot;&gt;
+            Exam
+            @if (extensionSettings.exam.enabled) {
+              &lt;img src&#x3D;&quot;images/x-icon.svg&quot; alt&#x3D;&quot;X&quot; class&#x3D;&quot;m-2 w-2 ml-auto&quot;&gt;
+            }
+          &lt;/button&gt;
+
+          &lt;!-- Flashcards Button --&gt;
+          &lt;button 
+            [class]&#x3D;&quot;&#x60;flex flex-row w-full items-center px-1 py-2 
+            ${!extensionSettings.flashcards.enabled ? &#x27;bg-[var(--bg-page)] md:hover:bg-[var(--bg-hover)]&#x27;
+              : &#x27;bg-[var(--text-secondary)] text-[var(--bg-page)]&#x27;}&#x60;&quot;
+            (click)&#x3D;&quot;toggleExtension(&#x27;flashcards&#x27;)&quot;
+          &gt;
+            &lt;img src&#x3D;&quot;images/flashcards-icon.svg&quot; alt&#x3D;&quot;&quot; class&#x3D;&quot;mr-2&quot;&gt;
+            Flashcards
+            @if (extensionSettings.flashcards.enabled) {
+              &lt;img src&#x3D;&quot;images/x-icon.svg&quot; alt&#x3D;&quot;X&quot; class&#x3D;&quot;m-2 w-2 ml-auto&quot;&gt;
+            }
+          &lt;/button&gt;
+
+          &lt;!-- Glossary Button --&gt;
+          &lt;button 
+            [class]&#x3D;&quot;&#x60;rounded-b-lg flex flex-row w-full items-center px-1 py-2 
+            ${!extensionSettings.glossary.enabled ? &#x27;bg-[var(--bg-page)] md:hover:bg-[var(--bg-hover)]&#x27;
+              : &#x27;bg-[var(--text-secondary)] text-[var(--bg-page)]&#x27;}&#x60;&quot;
+            (click)&#x3D;&quot;toggleExtension(&#x27;glossary&#x27;)&quot;
+          &gt;
+            &lt;img src&#x3D;&quot;images/glossary-icon.svg&quot; alt&#x3D;&quot;&quot; class&#x3D;&quot;mr-2&quot;&gt;
+            Glossary
+            @if (extensionSettings.glossary.enabled) {
+              &lt;img src&#x3D;&quot;images/x-icon.svg&quot; alt&#x3D;&quot;X&quot; class&#x3D;&quot;m-2 w-2 ml-auto&quot;&gt;
+            }
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;button (click)&#x3D;&quot;go()&quot; [disabled]&#x3D;&quot;loading&quot;&gt;
+        &lt;img src&#x3D;&quot;images/send-instruction-icon.svg&quot; alt&#x3D;&quot;Send&quot; class&#x3D;&quot;w-6 md:w-8&quot;&gt;
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/form&gt;
+
+  &lt;!-- Selected Extensions Display --&gt;
+  &lt;div class&#x3D;&quot;text-gray-400 text-center mt-4 mb-2&quot;&gt;
+    {{ extensionsEnabled ? &#x27;Selected Extensions:&#x27; : &#x27;No Extensions Selected&#x27; }}
+  &lt;/div&gt;
+  &lt;div class&#x3D;&quot;self-center w-full md:w-1/2 flex flex-row items-center justify-center flex-wrap&quot;&gt;
+    @for (extension of getExtensionList(); track $index) {
+      @if (extension.enabled) {
+        &lt;div class&#x3D;&quot;flex flex-row items-center rounded-lg px-2 py-2 m-1 md:m-2 shadow-lg border-2 border-[1px] border-[var(--text-primary)] bg-[var(--bg-page)] cursor-default&quot;&gt;
+          &lt;img [src]&#x3D;&quot;&#x60;images/${extension.name}-icon.svg&#x60;&quot; alt&#x3D;&quot;&quot; class&#x3D;&quot;mr-1&quot;&gt;
+          {{ extension.name.charAt(0).toUpperCase() + extension.name.slice(1) }}
+        &lt;/div&gt;
+      }
+    }
+  &lt;/div&gt;
+&lt;/div&gt;
+
+@if (configOverlay) {
+  &lt;app-extension-config-overlay
+    (close)&#x3D;&quot;saveConfig($event)&quot;
+    [configuration]&#x3D;&quot;extensionSettings&quot;
+    [constraints]&#x3D;&quot;constraints&quot;
+  &gt;
+  &lt;/app-extension-config-overlay&gt;
+}</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><app-header></app-header><div class="flex flex-col w-full px-12 md:px-32 pb-12">  <div class="flex flex-row mb-8 w-full">    <app-creation-step-tab      [text]="\'My Subject and Materials\'"      [icon]="\'images/subject-icon.svg\'"      [active]="true"      class="hidden md:block w-3/6"    />    <app-creation-step-tab      [text]="\'Lesson Content Generation\'"      [icon]="\'images/lesson-generation-icon.svg\'"      [active]="true"      class="w-full md:w-3/6"    />  </div>  <h1 class="text-2xl mb-2 font-medium">{{subjectName}}</h1>  <p class="mb-4 text-[var(--text-alt)]">    Select the specific topics from your document that you want Maestro to focus on for your lesson.  </p>  <!-- Topic List -->  <div class="flex flex-row flex-wrap mb-16">    @for (topic of topics; track topic.id) {      <button        [class]="          \'flex flex-row rounded-full py-2 px-3 lg:py-4 lg:px-6 mr-4 my-1 text-sm text-white transition duration-300 ease-in-out \'           + ( topic.selected? \'bg-prussian-blue-900\' : \'bg-gray-500\')"        (click)="toggleTopicSelection(topic.id)"        [disabled]="loading"      >        @if (topic.selected) {          <!-- Replace with X icon -->          <img src="images/x-icon.svg" alt="X" class="mr-2 w-3">        }        {{topic.title}}      </button>    }  </div>  <!-- Preference and Settings Form -->  <form #form="ngForm" class="border-2 border-[var(--text-primary)] text-sm md:text-lg rounded-xl p-3 md:pl-6">    <!-- Preference Text Box -->    <textarea     type="text"     name="learningStyle"     placeholder="How would you like to learn and generate extensions?"     class="w-full border-0 focus:outline-none resize-none overflow-hidden bg-[var(--bg-page)]"     rows="1"    cols="1"    oninput="this.style.height = \'auto\'; this.style.height = this.scrollHeight + \'px\';"    onmousemove="this.style.height = \'auto\'; this.style.height = this.scrollHeight + \'px\';"    [(ngModel)]="learningStyle"    required    learningStyle    #learningStyleCtrl="ngModel"    appPreferenceValidator    [disabled]="loading"    >    </textarea>    <!-- Settings -->    <div class="flex flex-row items-center justify-between">      <div class="flex flex-row relative">        <button           [class]="`flex flex-row md:mr-4 rounded-full md:hover:shadow-lg p-2          ${settingsPopup ? \'bg-[var(--bg-hover)] shadow-lg p-2\' : \'\'}`"          (click)="toggleSettingsPopup()"          [disabled]="loading"        >          <img src="images/extension-icon.svg" alt="Enable" class="w-4 md:w-6 mr-1">          <span class="hidden md:block">Enable Extensions</span>        </button>        <button           [class]="`flex flex-row md:mr-4 rounded-full md:hover:shadow-lg p-2          ${configOverlay ? \'bg-[var(--bg-hover)] shadow-lg p-2\' : \'\'}`"          (click)="toggleConfigOverlay()"          [disabled]="!extensionsEnabled || loading"        >          <img src="images/config-icon.svg" alt="Configure" class="w-6 md:w-6 mr-1">          <span class="hidden md:block">Configure Extensions</span>        </button>        <!-- Extension Settings Popup -->        <div           [class]="`absolute w-64 bottom-10 left-2 md:bottom-auto md:top-12 md:left-12 rounded-lg flex flex-col items-start           border-[1px] border-[var(--text-primary)] bg-[var(--bg-page)] ${!settingsPopup? \'hidden\' : \'\'}`"        >          <!-- Exercise Button -->          <button             [class]="`rounded-t-lg flex flex-row w-full items-center px-1 py-2             ${!extensionSettings.exercise.enabled ? \'bg-[var(--bg-page)] md:hover:bg-[var(--bg-hover)]\'              : \'bg-[var(--text-secondary)] text-[var(--bg-page)]\'}`"            (click)="toggleExtension(\'exercise\')"          >            <img src="images/exercise-icon.svg" alt="" class="mr-2">            Exercise            @if (extensionSettings.exercise.enabled) {              <img src="images/x-icon.svg" alt="X" class="m-2 w-2 ml-auto">            }          </button>          <!-- Exam Button -->          <button             [class]="`flex flex-row w-full items-center px-1 py-2             ${!extensionSettings.exam.enabled ? \'bg-[var(--bg-page)] md:hover:bg-[var(--bg-hover)]\'              : \'bg-[var(--text-secondary)] text-[var(--bg-page)]\'}`"            (click)="toggleExtension(\'exam\')"          >            <img src="images/exam-icon.svg" alt="" class="mr-2">            Exam            @if (extensionSettings.exam.enabled) {              <img src="images/x-icon.svg" alt="X" class="m-2 w-2 ml-auto">            }          </button>          <!-- Flashcards Button -->          <button             [class]="`flex flex-row w-full items-center px-1 py-2             ${!extensionSettings.flashcards.enabled ? \'bg-[var(--bg-page)] md:hover:bg-[var(--bg-hover)]\'              : \'bg-[var(--text-secondary)] text-[var(--bg-page)]\'}`"            (click)="toggleExtension(\'flashcards\')"          >            <img src="images/flashcards-icon.svg" alt="" class="mr-2">            Flashcards            @if (extensionSettings.flashcards.enabled) {              <img src="images/x-icon.svg" alt="X" class="m-2 w-2 ml-auto">            }          </button>          <!-- Glossary Button -->          <button             [class]="`rounded-b-lg flex flex-row w-full items-center px-1 py-2             ${!extensionSettings.glossary.enabled ? \'bg-[var(--bg-page)] md:hover:bg-[var(--bg-hover)]\'              : \'bg-[var(--text-secondary)] text-[var(--bg-page)]\'}`"            (click)="toggleExtension(\'glossary\')"          >            <img src="images/glossary-icon.svg" alt="" class="mr-2">            Glossary            @if (extensionSettings.glossary.enabled) {              <img src="images/x-icon.svg" alt="X" class="m-2 w-2 ml-auto">            }          </button>        </div>      </div>      <button (click)="go()" [disabled]="loading">        <img src="images/send-instruction-icon.svg" alt="Send" class="w-6 md:w-8">      </button>    </div>  </form>  <!-- Selected Extensions Display -->  <div class="text-gray-400 text-center mt-4 mb-2">    {{ extensionsEnabled ? \'Selected Extensions:\' : \'No Extensions Selected\' }}  </div>  <div class="self-center w-full md:w-1/2 flex flex-row items-center justify-center flex-wrap">    @for (extension of getExtensionList(); track $index) {      @if (extension.enabled) {        <div class="flex flex-row items-center rounded-lg px-2 py-2 m-1 md:m-2 shadow-lg border-2 border-[1px] border-[var(--text-primary)] bg-[var(--bg-page)] cursor-default">          <img [src]="`images/${extension.name}-icon.svg`" alt="" class="mr-1">          {{ extension.name.charAt(0).toUpperCase() + extension.name.slice(1) }}        </div>      }    }  </div></div>@if (configOverlay) {  <app-extension-config-overlay    (close)="saveConfig($event)"    [configuration]="extensionSettings"    [constraints]="constraints"  >  </app-extension-config-overlay>}</div>'
+    var COMPONENTS = [{'name': 'About', 'selector': 'app-about'},{'name': 'App', 'selector': 'app-root'},{'name': 'ChartCell', 'selector': 'app-chart-cell'},{'name': 'Chatbot', 'selector': 'app-chatbot'},{'name': 'CheckEmail', 'selector': 'app-check-email'},{'name': 'Confirmation', 'selector': 'app-confirmation'},{'name': 'ConfirmLogout', 'selector': 'app-confirm-logout'},{'name': 'Contact', 'selector': 'app-contact'},{'name': 'CreationStepTab', 'selector': 'app-creation-step-tab'},{'name': 'ExtensionConfigOverlay', 'selector': 'app-extension-config-overlay'},{'name': 'Features', 'selector': 'app-features'},{'name': 'Header', 'selector': 'app-header'},{'name': 'Home', 'selector': 'app-home'},{'name': 'Landing', 'selector': 'app-landing'},{'name': 'LessonGeneration', 'selector': 'app-lesson-generation'},{'name': 'LessonPage', 'selector': 'app-lesson-page'},{'name': 'Login', 'selector': 'app-login'},{'name': 'MarkdownCell', 'selector': 'app-markdown-cell'},{'name': 'NamingUpload', 'selector': 'app-naming-upload'},{'name': 'NotFound', 'selector': 'app-not-found'},{'name': 'Practice', 'selector': 'app-practice'},{'name': 'Pricing', 'selector': 'app-pricing'},{'name': 'PrivacyPolicy', 'selector': 'app-privacy-policy'},{'name': 'QuestionSettings', 'selector': 'app-question-settings'},{'name': 'Sidebar', 'selector': 'app-sidebar'},{'name': 'Signup', 'selector': 'app-signup'},{'name': 'Subjects', 'selector': 'app-subjects'},{'name': 'Subscription', 'selector': 'app-subscription'},{'name': 'Subtopic', 'selector': 'app-subtopic'},{'name': 'Team', 'selector': 'app-team'},{'name': 'TermsOfService', 'selector': 'app-terms-of-service'},{'name': 'Toast', 'selector': 'app-toast'},{'name': 'TopicPreferences', 'selector': 'app-topic-preferences'},{'name': 'VerifyEmail', 'selector': 'app-verify-email'},{'name': 'VerifyPayment', 'selector': 'app-verify-payment'}];
+    var DIRECTIVES = [{'name': 'FileTypeDirective', 'selector': '[appFileType]'},{'name': 'PasswordValidator', 'selector': '[appPasswordValidator]'},{'name': 'PreferenceValidator', 'selector': '[appPreferenceValidator]'},{'name': 'SubjectNameValidator', 'selector': '[appSubjectNameValidator]'}];
+    var ACTUAL_COMPONENT = {'name': 'LessonGeneration'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'LessonGeneration.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
