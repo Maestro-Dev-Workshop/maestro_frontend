@@ -28,7 +28,7 @@
           'flex flex-row rounded-full py-2 px-3 lg:py-4 lg:px-6 mr-4 my-1 text-sm text-white transition duration-300 ease-in-out ' 
           + ( topic.selected? 'bg-prussian-blue-900' : 'bg-gray-500')"
         (click)="toggleTopicSelection(topic.id)"
-        [disabled]="loading"
+        [disabled]="loading || (subjectStatus !== 'pending topic selection')"
       >
         @if (topic.selected) {
           <!-- Replace with X icon -->
@@ -53,10 +53,7 @@
     onmousemove="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px';"
     [(ngModel)]="learningStyle"
     required
-    learningStyle
-    #learningStyleCtrl="ngModel"
-    appPreferenceValidator
-    [disabled]="loading"
+    [disabled]="loading || (subjectStatus === 'pending lesson generation')"
     >
     </textarea>
 
@@ -93,6 +90,7 @@
             ${!extensionSettings.exercise.enabled ? 'bg-[var(--bg-page)] md:hover:bg-[var(--bg-hover)]'
               : 'bg-[var(--text-secondary)] text-[var(--bg-page)]'}`"
             (click)="toggleExtension('exercise')"
+            [disabled]="loading  || (subjectStatus === 'pending lesson generation')"
           >
             <img src="images/exercise-icon.svg" alt="" class="mr-2">
             Exercise
@@ -107,6 +105,7 @@
             ${!extensionSettings.exam.enabled ? 'bg-[var(--bg-page)] md:hover:bg-[var(--bg-hover)]'
               : 'bg-[var(--text-secondary)] text-[var(--bg-page)]'}`"
             (click)="toggleExtension('exam')"
+            [disabled]="loading  || (subjectStatus === 'pending lesson generation')"
           >
             <img src="images/exam-icon.svg" alt="" class="mr-2">
             Exam
@@ -121,6 +120,7 @@
             ${!extensionSettings.flashcards.enabled ? 'bg-[var(--bg-page)] md:hover:bg-[var(--bg-hover)]'
               : 'bg-[var(--text-secondary)] text-[var(--bg-page)]'}`"
             (click)="toggleExtension('flashcards')"
+            [disabled]="loading  || (subjectStatus === 'pending lesson generation')"
           >
             <img src="images/flashcards-icon.svg" alt="" class="mr-2">
             Flashcards
@@ -135,6 +135,7 @@
             ${!extensionSettings.glossary.enabled ? 'bg-[var(--bg-page)] md:hover:bg-[var(--bg-hover)]'
               : 'bg-[var(--text-secondary)] text-[var(--bg-page)]'}`"
             (click)="toggleExtension('glossary')"
+            [disabled]="loading  || (subjectStatus === 'pending lesson generation')"
           >
             <img src="images/glossary-icon.svg" alt="" class="mr-2">
             Glossary
@@ -152,10 +153,10 @@
   </form>
 
   <!-- Selected Extensions Display -->
-  <div class="text-gray-400 text-center mt-4 mb-2">
+  <div class="text-gray-400 text-center mt-4">
     {{ extensionsEnabled ? 'Selected Extensions:' : 'No Extensions Selected' }}
   </div>
-  <div class="self-center w-full md:w-1/2 flex flex-row items-center justify-center flex-wrap">
+  <div class="self-center w-full md:w-1/2 my-2 flex flex-row items-center justify-center flex-wrap">
     @for (extension of getExtensionList(); track $index) {
       @if (extension.enabled) {
         <div class="flex flex-row items-center rounded-lg px-2 py-2 m-1 md:m-2 shadow-lg border-2 border-[1px] border-[var(--text-primary)] bg-[var(--bg-page)] cursor-default">
@@ -165,6 +166,12 @@
       }
     }
   </div>
+  @if (loading) {
+    <div [class]="`self-center flex flex-row items-center`">
+      <img src="images/spinner.gif" alt="" class="w-8 h-8 mx-2">
+      loading...
+    </div>
+  }
 </div>
 
 @if (configOverlay) {

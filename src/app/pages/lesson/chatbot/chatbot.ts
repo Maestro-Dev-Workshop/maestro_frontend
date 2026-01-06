@@ -90,7 +90,7 @@ export class Chatbot implements OnInit {
         this.cdr.detectChanges();
       }, error: (res) => {
         this.loading = false;
-        this.notify.showError(res.error.message || 'Failed to send message. Please try again.');
+        this.notify.showError(res.error.displayMessage || 'Failed to send message. Please try again.');
         this.cdr.detectChanges();
       },
     });
