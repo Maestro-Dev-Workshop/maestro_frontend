@@ -66,7 +66,7 @@ export class Signup {
           this.router.navigateByUrl('/check-email', { state: { email: this.email.toLowerCase() } });
         },
         error: (res) => {
-          this.notify.showError(res.error.message || 'Signup failed. Please try again.');
+          this.notify.showError(res.error.displayMessage || 'Signup failed. Please try again.');
           this.loading = false;
           this.cdr.detectChanges();
         }

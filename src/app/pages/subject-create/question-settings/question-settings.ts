@@ -178,7 +178,7 @@ export class QuestionSettings implements OnInit {
           });
         },
         error: (res) => {
-          this.notify.showError(res.error.message || "Failed to generate practice questions. Please try again later.");
+          this.notify.showError(res.error.displayMessage || "Failed to generate practice questions. Please try again later.");
           this.loading = false;
           this.cdr.detectChanges();
         }
@@ -191,7 +191,7 @@ export class QuestionSettings implements OnInit {
           this.router.navigate([`/lesson/${this.subjectId}`]);
         },
         error: (res) => {
-          this.notify.showError(res.error.message || "Failed to update session status.");
+          this.notify.showError(res.error.displayMessage || "Failed to update session status.");
           this.router.navigate([`/lesson/${this.subjectId}`]);
         },
         complete: () => (this.loading = false),

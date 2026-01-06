@@ -193,7 +193,7 @@ export class LessonPage implements OnInit {
       next: (response) => {
         this.chatHistory = response.history;
       }, error: (res) => {
-        this.notify.showError(res.error.message || "Failed to load chat history. Please try again later.")
+        this.notify.showError(res.error.displayMessage || "Failed to load chat history. Please try again later.")
       },
     });
 
@@ -287,7 +287,7 @@ export class LessonPage implements OnInit {
         this.cdr.detectChanges();
       },
       error: (res) => {
-        this.notify.showError(res.error.message || 'Failed to load lesson content. Please try again later.');
+        this.notify.showError(res.error.displayMessage || 'Failed to load lesson content. Please try again later.');
         this.subjectLoading = false;
         this.cdr.detectChanges();
       }
@@ -332,7 +332,7 @@ export class LessonPage implements OnInit {
           this.updateProgress()
           this.checkForTopicCompleteness(topic_id)
         }, error: (res) => {
-          this.notify.showError(res.error.message || 'Failed to mark subtopic as read.')
+          this.notify.showError(res.error.displayMessage || 'Failed to mark subtopic as read.')
         },
       });
     } else if (this.chatOpen && (this.currentView.content.score == null)){
@@ -377,7 +377,7 @@ export class LessonPage implements OnInit {
         const percentage = total > 0 ? Math.round(fraction * 100) : 0;
         console.log(`Progress: ${completed}/${total} (${percentage}%)`);
       }, error: (res) => {
-        this.notify.showError(res.error.message || 'Failed to update progress.')
+        this.notify.showError(res.error.displayMessage || 'Failed to update progress.')
       },
     });
   }  
