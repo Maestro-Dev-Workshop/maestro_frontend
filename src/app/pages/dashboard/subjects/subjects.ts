@@ -70,7 +70,7 @@ export class Subjects implements OnInit {
         this.cdr.detectChanges();
       },
       error: (res) => {
-        this.notify.showError(res.error.message || "Failed to load subscription data. Please try again later.");
+        this.notify.showError(res.error.displayMessage || "Failed to load subscription data. Please try again later.");
         this.cdr.detectChanges();
       }
     })
@@ -83,7 +83,7 @@ export class Subjects implements OnInit {
         this.cdr.detectChanges();
       },
       error: (res) => {
-        this.notify.showError(res.error.message || "Failed to load subjects. Please try again later.");
+        this.notify.showError(res.error.displayMessage || "Failed to load subjects. Please try again later.");
         this.loadingSubjects = false;
         this.cdr.detectChanges();
       }
@@ -131,7 +131,7 @@ export class Subjects implements OnInit {
         this.cdr.detectChanges();
       },
       error: (res) => {
-        this.notify.showError(res.error.message || "Failed to create a new subject. Please try again later.");
+        this.notify.showError(res.error.displayMessage || "Failed to create a new subject. Please try again later.");
         this.loadingCreate = false;
         this.cdr.detectChanges();
       }
@@ -178,7 +178,7 @@ export class Subjects implements OnInit {
         this.cdr.detectChanges();
       },
       error: (res) => {
-        this.notify.showError(res.error.message || "Failed to delete subject. Please try again later.");
+        this.notify.showError(res.error.displayMessage || "Failed to delete subject. Please try again later.");
         this.rightClickSubject = null;
         this.showDeleteConfirmation = false;
         this.cdr.detectChanges();
@@ -193,12 +193,19 @@ export class Subjects implements OnInit {
     }
     if (subject.status === 'pending naming' || subject.status === 'pending document upload' || subject.status === 'pending topic labelling') {
       this.router.navigate([`/subject-create/${subject.id}/naming-upload`])
-    } else if (subject.status === 'pending topic selection' || subject.status === 'pending lesson generation') {
-      this.router.navigate([`/subject-create/${subject.id}/topic-preferences`])
-    } else if (subject.status === 'pending practice question generation') {
-      this.router.navigate([`/subject-create/${subject.id}/question-settings`])
+    } else if (subject.status === 'pending topic selection' || subject.status === 'pending extension configuration' || subject.status === 'pending lesson generation') {
+      this.router.navigate([`/subject-create/${subject.id}/lesson-generation`])
     } else {
       this.router.navigate([`/lesson/${subject.id}`])
     }
+    // if (subject.status === 'pending naming' || subject.status === 'pending document upload' || subject.status === 'pending topic labelling') {
+    //   this.router.navigate([`/subject-create/${subject.id}/naming-upload`])
+    // } else if (subject.status === 'pending topic selection' || subject.status === 'pending lesson generation') {
+    //   this.router.navigate([`/subject-create/${subject.id}/topic-preferences`])
+    // } else if (subject.status === 'pending practice question generation') {
+    //   this.router.navigate([`/subject-create/${subject.id}/question-settings`])
+    // } else {
+    //   this.router.navigate([`/lesson/${subject.id}`])
+    // }
   }
 }

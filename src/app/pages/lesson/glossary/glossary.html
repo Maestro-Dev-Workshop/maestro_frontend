@@ -1,0 +1,54 @@
+<div class="relative pb-16 w-full">
+  <h1 class="flex flex-row items-center my-6">
+    <div class="rounded-full bg-[var(--bg-card)] p-3">
+      <img src="images/subject-icon.svg" alt="" class="w-6">
+    </div>
+    <span class="text-4xl font-medium mx-4">Glossary</span>
+  </h1>
+
+  <div class="relative w-full flex flex-row">
+    <!-- Main Glossary List -->
+    <div class="relative flex-grow">
+      @for (group of arrangedGlossary(); track group.letter) {
+        <div class="pt-2 mb-8" [id]="group.letter">
+          <h2 class="text-3xl font-bold text-[var(--text-primary)] mb-4">{{ group.letter }}</h2>
+          @for (item of group.terms; track $index) {
+            <div class="mb-4" [id]="group.letter + $index">
+              <h3 class="text-lg font-semibold text-[var(--text-primary)]">{{ item.term }}</h3>
+              <div 
+                class="prose prose-math bg-[var(--bg-page)]
+                text-[var(--text-primary)]
+                prose-headings:text-[var(--text-heading)]
+                prose-p:text-[var(--text-primary)]
+                prose-li:text-[var(--text-primary)]
+                prose-strong:text-[var(--text-heading)]
+                prose-code:text-[var(--text-secondary)]
+                prose-blockquote:text-[var(--text-secondary)]
+                dark:prose-invert" [innerHTML]="item.definition | markdown"></div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Alphabetical Navigation -->
+    <div class="w-1/5 hidden md:flex flex-col self-start">
+      @for (group of arrangedGlossary(); track $index) {
+        <a 
+          class="text-[var(--text-link)] hover:underline font-medium cursor-pointer" 
+          (click)="scrollToElement(group.letter)"
+        >
+          {{ group.letter }}
+        </a>
+        @for (item of group.terms; track $index) {
+          <a 
+            class="text-[var(--text-link)] hover:underline cursor-pointer text-sm ml-2" 
+            (click)="scrollToElement(group.letter + $index)"
+          >
+            {{ item.term }}
+          </a>
+        }
+      }
+    </div>
+  </div>
+</div>

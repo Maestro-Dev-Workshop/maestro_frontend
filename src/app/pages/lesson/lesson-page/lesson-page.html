@@ -81,11 +81,24 @@
         (changeProgress)="updateProgress()"
       ></app-practice>
     }
+    @if (currentView.type === 'glossary') {
+      <app-glossary 
+        class="w-full px-8 lg:pl-12"
+        [glossaryItems]="subjectContent.glossary"
+        (scroll)="scrollToPosition($event)"
+      ></app-glossary>
+    }
   </div>
 
   <!-- Chatbot Container -->
   <app-chatbot 
-    [class]="`w-5/6 lg:w-3/12 absolute z-30 right-0 top-0 h-full ${(chatOpen && !(currentView.type !== 'subtopic' && (currentView.content.score == null))) ? '' : 'hidden'}`" 
+    [class]="`w-5/6 lg:w-3/12 absolute z-30 right-0 top-0 h-full 
+    ${(
+        !chatOpen || 
+        (['exercise', 'exam'].includes(currentView.type)  && (currentView.content.score == null)) ||
+        (currentView.type === 'glossary') ||
+        (currentView.type === 'flashcards')
+      ) ? 'hidden' : ''}`" 
     [chatHistory]="chatHistory" 
     [subjectId]="subjectId"
     [metadata]="chatMetadata"
@@ -96,7 +109,12 @@
 <!-- Chatbot Popup -->
 <button 
   [class]="`absolute shadow-lg right-6 lg:right-16 bottom-6 lg:bottom-16 rounded-full p-4 lg:p-5 bg-[var(--bg-card)] lg:hover:bg-[var(--bg-card-hover)]
-  ${(chatOpen || (currentView.type !== 'subtopic' && (currentView.content.score == null))) ? 'hidden' : ''}`" 
+  ${(
+      chatOpen || 
+      (['exercise', 'exam'].includes(currentView.type)  && (currentView.content.score == null)) ||
+      (currentView.type === 'glossary') ||
+      (currentView.type === 'flashcards')
+    ) ? 'hidden' : ''}`" 
   (click)="toggleChatPopup()"
   [disabled]="(currentView.type !== 'subtopic' && (currentView.content.score == null))"
 >

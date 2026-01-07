@@ -11,10 +11,11 @@ import { ChatbotService } from '../../../core/services/chatbot.service';
 import { forkJoin, map, switchMap } from 'rxjs';
 import { ChatMessage } from '../../../core/models/chat-message.model';
 import { NotificationService } from '../../../core/services/notification.service';
+import { Glossary } from '../glossary/glossary';
 
 @Component({
   selector: 'app-lesson-page',
-  imports: [Header, Sidebar, Chatbot, Subtopic, Practice],
+  imports: [Header, Sidebar, Chatbot, Subtopic, Practice, Glossary],
   templateUrl: './lesson-page.html',
   styleUrl: './lesson-page.css'
 })
@@ -23,7 +24,7 @@ export class LessonPage implements OnInit {
   chatMetadata: ChatMetadata = {};
   subjectContent: any = {};
   currentView: any = {
-    type: 'subtopic', // 'subtopic', 'exercise', or 'exam'
+    type: 'subtopic', // 'subtopic', 'exercise', 'exam', 'glossary', 'flashcards'
     id: '', // ID of the current subtopic, exercise question, or exam question
     content: {} // Content to display based on the current view
   }
@@ -180,7 +181,9 @@ export class LessonPage implements OnInit {
   //   },
   // ]
 
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor(
+    private cdr: ChangeDetectorRef,
+  ) {
     // Extract subjectId from the route parameters
     const url = window.location.pathname;
     const parts = url.split('/');
@@ -193,7 +196,7 @@ export class LessonPage implements OnInit {
       next: (response) => {
         this.chatHistory = response.history;
       }, error: (res) => {
-        this.notify.showError(res.error.message || "Failed to load chat history. Please try again later.")
+        this.notify.showError(res.error.displayMessage || "Failed to load chat history. Please try again later.")
       },
     });
 
@@ -249,11 +252,20 @@ export class LessonPage implements OnInit {
         return forkJoin(topicRequests); // wait for all topics to finish loading
       }),
       switchMap(() => {
-        // 4. Finally fetch exam
+        // 4. Fetch exam
         return this.lessonService.getExam(this.subjectId).pipe(
           map((res: any) => {
             this.subjectContent.exam = res.exam || null; // unwrap exam
             return res.exam;
+          })
+        );
+      }),
+      switchMap(() => {
+        // 5. Fetch glossary
+        return this.lessonService.getGlossary(this.subjectId).pipe(
+          map((res: any) => {
+            this.subjectContent.glossary = res.glossary || []; // unwrap glossary
+            return res.glossary;
           })
         );
       })
@@ -287,7 +299,7 @@ export class LessonPage implements OnInit {
         this.cdr.detectChanges();
       },
       error: (res) => {
-        this.notify.showError(res.error.message || 'Failed to load lesson content. Please try again later.');
+        this.notify.showError(res.error.displayMessage || 'Failed to load lesson content. Please try again later.');
         this.subjectLoading = false;
         this.cdr.detectChanges();
       }
@@ -301,16 +313,17 @@ export class LessonPage implements OnInit {
 
     if (event.type === 'subtopic') {
       content = this.subjectContent.topics
-        .flatMap((topic: any) => topic.subtopics)
-        .find((subtopic: any)=> subtopic.id === event.id) || {};
-      // check for completed topic
-      } else if (event.type === 'exercise') {
-        content = this.subjectContent.topics
-        .flatMap((topic: any) => topic.exercise)
-        .find((exercise: any) => exercise.id === event.id) || {};
-      } else if (event.type === 'exam') {
-        content = this.subjectContent.exam
-      }
+      .flatMap((topic: any) => topic.subtopics)
+      .find((subtopic: any)=> subtopic.id === event.id) || {};
+    } else if (event.type === 'exercise') {
+      content = this.subjectContent.topics
+      .flatMap((topic: any) => topic.exercise)
+      .find((exercise: any) => exercise.id === event.id) || {};
+    } else if (event.type === 'exam') {
+      content = this.subjectContent.exam
+    } else if (event.type === 'glossary') {
+      content = this.subjectContent.glossary
+    }
       
     this.currentView = {
       id: event.id,
@@ -332,7 +345,7 @@ export class LessonPage implements OnInit {
           this.updateProgress()
           this.checkForTopicCompleteness(topic_id)
         }, error: (res) => {
-          this.notify.showError(res.error.message || 'Failed to mark subtopic as read.')
+          this.notify.showError(res.error.displayMessage || 'Failed to mark subtopic as read.')
         },
       });
     } else if (this.chatOpen && (this.currentView.content.score == null)){
@@ -377,7 +390,7 @@ export class LessonPage implements OnInit {
         const percentage = total > 0 ? Math.round(fraction * 100) : 0;
         console.log(`Progress: ${completed}/${total} (${percentage}%)`);
       }, error: (res) => {
-        this.notify.showError(res.error.message || 'Failed to update progress.')
+        this.notify.showError(res.error.displayMessage || 'Failed to update progress.')
       },
     });
   }  
@@ -492,6 +505,12 @@ export class LessonPage implements OnInit {
     const el = this.contentContainer?.nativeElement;
     if (!el) return;
     el.scrollTop = 0;
+  }
+
+  scrollToPosition(pos: any) {
+    const el = this.contentContainer?.nativeElement;
+    if (!el) return;
+    el.scrollTo({ top: pos - el.getBoundingClientRect().top + el.scrollTop, behavior: 'smooth' });
   }
 
   toggleSidebar() {

@@ -6,10 +6,12 @@ import { Router } from '@angular/router';
 import { TopicModel } from '../../../core/models/topic.model';
 import { SubjectsService } from '../../../core/services/subjects.service';
 import { LessonService } from '../../../core/services/lesson.service';
-import { NotificationService } from '../../../core/services/notification.service'; // <-- Add this import
+import { NotificationService } from '../../../core/services/notification.service';
 import { PreferenceValidator } from '../../../shared/directives/preference-validator';
 import { ExtensionConfigOverlay } from '../extension-config-overlay/extension-config-overlay';
 import { max } from 'rxjs';
+import { SubscriptionService } from '../../../core/services/subscription.service';
+import { SubscriptionStatus } from '../../../core/models/subscription.model';
 
 
 @Component({
@@ -19,14 +21,17 @@ import { max } from 'rxjs';
   templateUrl: './lesson-generation.html',
   styleUrl: './lesson-generation.css',
 })
-export class LessonGeneration {
+export class LessonGeneration implements OnInit {
   loading = false
   learningStyle = ''
-  @ViewChild('learningStyleCtrl') learningStyleCtrl!: NgModel;
   settingsPopup = false
   configOverlay = false
   extensionsEnabled = false
+  subjectId = ''
+  subjectStatus = ''
   notify = inject(NotificationService)
+  subjectService = inject(SubjectsService)
+  subscriptionService = inject(SubscriptionService)
   
   subjectName = 'Algebra';
   topics = [
@@ -118,17 +123,22 @@ export class LessonGeneration {
   }
   constraints = {
     excercise: {
-      maxQuestions: 10
+      maxQuestions: 3
     },
     exam: {
-      maxQuestions: 50
+      maxQuestions: 10
     },
     flashcards: {
-      maxCards: 20
+      maxCards: 10
     }
   }
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef, private router: Router) {
+    // Extract subjectId from the route parameters
+    const url = window.location.pathname;
+    const parts = url.split('/');
+    this.subjectId = parts[parts.length - 2]; // Assuming the last part is the subjectId
+  }
 
   toggleTopicSelection(topic_id: any) {
     this.topics.map(
@@ -147,7 +157,11 @@ export class LessonGeneration {
   }
 
   saveConfig(config: any) {
-    this.extensionSettings = config
+    if (this.subjectStatus === 'pending lesson generation') {
+      this.notify.show('info', 'Extensions have already been configured and cannot be changed')
+    } else {
+      this.extensionSettings = config
+    }
     this.toggleConfigOverlay()
   }
 
@@ -249,9 +263,88 @@ export class LessonGeneration {
       this.loading = false;
       return;
     }
-
     this.notify.showSuccess(validation.message);
     console.log(this.extensionSettings)
-    this.loading = false;
+
+    const selectedTopicIds = this.topics.filter((topic) => topic.selected).map((topic) => topic.id);
+    this.subjectService.generateFullLesson(this.subjectId, selectedTopicIds, this.learningStyle, this.extensionSettings).subscribe({
+      next: (response) => {
+        this.notify.showSuccess("Successfully generated lesson.")
+        this.router.navigate([`/lesson/${this.subjectId}`])
+      },
+      error: (res) => {
+        this.notify.showError(res.error.displayMessage || "Failed to generate lesson. Please try again later.");
+        this.loading = false
+        this.cdr.detectChanges();
+      },
+      complete: () => {
+        this.loading = false
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  configureExtensions(extensions: any) {
+    for (let ext of extensions) {
+      if (ext.type == 'exercise') {
+        this.extensionSettings.exercise.enabled = true
+        this.extensionSettings.exercise.numQuestions = ext.configuration.no_of_questions
+        this.extensionSettings.exercise.types = ext.configuration.question_types
+        this.extensionsEnabled = true
+      }
+      if (ext.type == 'exam') {
+        this.extensionSettings.exam.enabled = true
+        this.extensionSettings.exam.numQuestions = ext.configuration.no_of_questions
+        this.extensionSettings.exam.types = ext.configuration.question_types
+        this.extensionsEnabled = true
+      }
+      if (ext.type == 'flashcards') {
+        this.extensionSettings.flashcards.enabled = true
+        this.extensionSettings.flashcards.numCards = ext.configuration.no_of_cards
+        this.extensionSettings.flashcards.types = ext.configuration.card_types
+        this.extensionsEnabled = true
+      }
+      if (ext.type == 'glossary') {
+        this.extensionSettings.glossary.enabled = true
+        this.extensionsEnabled = true
+      }
+    }
+  }
+
+  ngOnInit() {
+    this.loading = true
+    this.subjectService.getSubjectDetails(this.subjectId).subscribe({
+      next: (response) => {
+        this.subjectName = response.session.name || 'Untitled';
+        this.subjectStatus = response.session.status || '';
+        this.topics = response.topics;
+        this.learningStyle = response.session.user_preference || '';
+        this.configureExtensions(response.extensions)
+
+        this.subscriptionService.getSubscription().subscribe({
+          next: (response) => {
+            const subscriptionData: SubscriptionStatus | null = response.subscription;
+            if (subscriptionData && subscriptionData.plan) {
+              this.constraints.excercise.maxQuestions = subscriptionData.plan.exercise_question_count || 3;
+              this.constraints.exam.maxQuestions = subscriptionData.plan.exam_question_count || 10;
+            }
+          },
+          error: (res) => {
+            this.notify.showError(res.error.displayMessage || "Failed to load subscription data. Please try again later.");
+            this.loading = false
+            this.cdr.detectChanges();
+          }
+        })
+      },
+      error: (res) => {
+        this.notify.showError(res.error.displayMessage || 'Failed to load subject details. Please try again later.');
+        this.loading = false
+        this.cdr.detectChanges();
+      },
+      complete: () => {
+        this.loading = false
+        this.cdr.detectChanges();
+      }
+    })
   }
 }
