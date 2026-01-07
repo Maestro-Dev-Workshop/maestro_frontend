@@ -181,7 +181,9 @@ export class LessonPage implements OnInit {
   //   },
   // ]
 
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor(
+    private cdr: ChangeDetectorRef,
+  ) {
     // Extract subjectId from the route parameters
     const url = window.location.pathname;
     const parts = url.split('/');
@@ -503,6 +505,12 @@ export class LessonPage implements OnInit {
     const el = this.contentContainer?.nativeElement;
     if (!el) return;
     el.scrollTop = 0;
+  }
+
+  scrollToPosition(pos: any) {
+    const el = this.contentContainer?.nativeElement;
+    if (!el) return;
+    el.scrollTo({ top: pos - el.getBoundingClientRect().top + el.scrollTop, behavior: 'smooth' });
   }
 
   toggleSidebar() {
