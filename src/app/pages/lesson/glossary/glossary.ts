@@ -210,7 +210,7 @@ export class Glossary {
     // create an array of objects for each letter with corresponding terms, use # to represent non-alphabetical starting terms
     const arranged: { letter: string, terms: any[] }[] = [];
     const groupedTerms: { [key: string]: any[] } = {};
-    this.glossaryStuff().forEach((item: any) => {
+    this.glossaryItems().forEach((item: any) => {
       const firstChar = item.term.charAt(0).toUpperCase();
       const key = /[A-Z]/.test(firstChar) ? firstChar : '#';
       if (!groupedTerms[key]) {
