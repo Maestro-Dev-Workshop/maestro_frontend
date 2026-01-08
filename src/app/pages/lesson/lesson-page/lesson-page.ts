@@ -12,10 +12,11 @@ import { forkJoin, map, switchMap } from 'rxjs';
 import { ChatMessage } from '../../../core/models/chat-message.model';
 import { NotificationService } from '../../../core/services/notification.service';
 import { Glossary } from '../glossary/glossary';
+import { Flashcards } from '../flashcards/flashcards';
 
 @Component({
   selector: 'app-lesson-page',
-  imports: [Header, Sidebar, Chatbot, Subtopic, Practice, Glossary],
+  imports: [Header, Sidebar, Chatbot, Subtopic, Practice, Glossary, Flashcards],
   templateUrl: './lesson-page.html',
   styleUrl: './lesson-page.css'
 })
@@ -25,7 +26,7 @@ export class LessonPage implements OnInit {
   subjectContent: any = {};
   currentView: any = {
     type: 'subtopic', // 'subtopic', 'exercise', 'exam', 'glossary', 'flashcards'
-    id: '', // ID of the current subtopic, exercise question, or exam question
+    id: 's1-t1', // ID of the current subtopic, exercise question, or exam question
     content: {} // Content to display based on the current view
   }
   chatHistory: ChatMessage[] = [];
@@ -98,7 +99,21 @@ export class LessonPage implements OnInit {
   //             question_type: 'essay',
   //           }
   //         ]
-  //       }
+  //       },
+  //       flashcards: [
+  //         // {
+  //         //   id: 'f1-t1',
+  //         //   front: 'What is Latitude?',
+  //         //   back: 'Latitude is the distance north or south of the Equator, measured in degrees.',
+  //         //   hint: 'Think horizontal lines on a globe.'
+  //         // },
+  //         // {
+  //         //   id: 'f2-t1',
+  //         //   front: 'What is Longitude?',
+  //         //   back: 'Longitude is the distance east or west of the Prime Meridian, measured in degrees.',
+  //         //   hint: 'Think vertical lines on a globe.'
+  //         // }
+  //       ]
   //     },
   //     {
   //       expanded: false,
@@ -141,7 +156,39 @@ export class LessonPage implements OnInit {
   //             answer: 'Human activities such as deforestation, pollution, and urbanization significantly impact the environment by altering ecosystems, contributing to climate change, and reducing biodiversity.'
   //           }
   //         ]
-  //       }
+  //       },
+  //       flashcards: [
+  //         {
+  //           id: 'f1-t2',
+  //           front: 'What is Latitude?',
+  //           back: 'Latitude is the distance north or south of the Equator, measured in degrees.',
+  //           hint: 'Think horizontal lines on a globe.'
+  //         },
+  //         {
+  //           id: 'f2-t2',
+  //           front: 'What is Longitude?',
+  //           back: 'Longitude is the distance east or west of the Prime Meridian, measured in degrees.',
+  //           hint: 'Think vertical lines on a globe.'
+  //         },
+  //         {
+  //           id: 'f3-t2',
+  //           front: 'What is the Equator?',
+  //           back: 'The Equator is an imaginary line around the Earth, equidistant from the North and South Poles.',
+  //           hint: 'It divides the Earth into Northern and Southern Hemispheres.'
+  //         },
+  //         {            
+  //           id: 'f4-t2',
+  //           front: 'What is the Prime Meridian?',
+  //           back: 'The Prime Meridian is the planet\'s line of zero degrees longitude, which passes through Greenwich, England.',
+  //           hint: 'It divides the Earth into Eastern and Western Hemispheres.'
+  //         },
+  //         {            
+  //           id: 'f5-t2',
+  //           front: 'Define "Topography".',
+  //           back: 'Topography refers to the arrangement of the natural and artificial physical features of an area.',
+  //           hint: 'Think about the shape and features of the land.'
+  //         }
+  //       ]
   //     }
   //   ],
   //   exam: {
@@ -191,6 +238,10 @@ export class LessonPage implements OnInit {
   }
 
   ngOnInit(): void {
+    // // Testing
+    // this.subjectLoading = false;
+    // this.cdr.detectChanges();
+
     // Fetch chat history
     this.chatbotService.getChatHistory(this.subjectId).subscribe({
       next: (response) => {
@@ -239,11 +290,15 @@ export class LessonPage implements OnInit {
             ),
             exercise: this.lessonService.getExercise(topic.id).pipe(
               map((r: any) => r.exercise || null)
+            ),
+            flashcards: this.lessonService.getFlashcards(topic.id).pipe(
+              map((r: any) => r.flashcards || [])
             )
           }).pipe(
             map((res) => {
               topic.subtopics = res.subtopics;
               topic.exercise = res.exercise;
+              topic.flashcards = res.flashcards;
               return topic;
             })
           )
@@ -323,6 +378,8 @@ export class LessonPage implements OnInit {
       content = this.subjectContent.exam
     } else if (event.type === 'glossary') {
       content = this.subjectContent.glossary
+    } else if (event.type === 'flashcards') {
+      content = this.subjectContent.topics.find((topic: any) => topic.id === event.id)?.flashcards || [];
     }
       
     this.currentView = {
