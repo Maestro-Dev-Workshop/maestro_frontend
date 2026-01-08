@@ -88,6 +88,13 @@
         (scroll)="scrollToPosition($event)"
       ></app-glossary>
     }
+    @if (currentView.type === 'flashcards') {
+      <app-flashcards 
+        class="w-full px-8 lg:pl-12"
+        [topicId]="currentView.id"
+        [cards]="currentView.content"
+      ></app-flashcards>
+    }
   </div>
 
   <!-- Chatbot Container -->
