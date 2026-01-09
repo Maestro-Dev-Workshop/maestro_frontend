@@ -263,8 +263,6 @@ export class LessonGeneration implements OnInit {
       this.loading = false;
       return;
     }
-    this.notify.showSuccess(validation.message);
-    console.log(this.extensionSettings)
 
     const selectedTopicIds = this.topics.filter((topic) => topic.selected).map((topic) => topic.id);
     this.subjectService.generateFullLesson(this.subjectId, selectedTopicIds, this.learningStyle, this.extensionSettings).subscribe({

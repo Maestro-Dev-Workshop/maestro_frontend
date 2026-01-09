@@ -1,4 +1,4 @@
-<div class="w-full h-full flex flex-col relative items-center justify-center text-center">
+<div class="w-full h-full flex flex-col relative items-center justify-center text-center px-8 lg:pl-12">
   <h1 class="text-4xl font-bold absolute top-0 w-full text-center">
     Test Your Knowledge
   </h1>
@@ -9,13 +9,14 @@
     class="bg-[var(--bg-hover)] rounded-2xl py-3 px-6 mb-6 w-full md:w-1/2 min-h-[40%] flex flex-col items-center justify-between"
   >
     <h3 class="font-bold">{{ `${showAnswer ? 'Answer' : 'Question'} #${currentIndex + 1}` }}</h3>
-    <div [class]="`font-medium my-4 ${showAnswer ? 'text-lg' : 'text-3xl'}`">
+    <div [class]="`font-medium my-4 min-w-0 w-full ${showAnswer ? 'text-lg' : 'text-2xl'}`">
       {{ showAnswer ? cards()[currentIndex].back : cards()[currentIndex].front }}
     </div>
     <div>
       <button
         class="lg:hover:underline"
         (click)="toggleAnswer()"
+        [disabled]="currentAnim"
       >
         Flip Card
       </button>
@@ -28,6 +29,7 @@
     <div>
       <button
         (click)="previousCard()"
+        [disabled]="currentAnim"
         [class]="`${(currentIndex == 0) ? 'invisible' : ''} lg:hover:underline flex flex-row items-center rounded-full bg-[var(--bg-hover)] py-2 px-4`"
       >
         <img src="images/dropdown-icon-closed.svg" alt="" class="w-2 mr-2 rotate-180">
@@ -63,6 +65,7 @@
     <div>
       <button
         (click)="nextCard()"
+        [disabled]="currentAnim"
         [class]="`${currentIndex === (cards().length - 1) ? 'invisible' : ''} lg:hover:underline flex flex-row items-center rounded-full bg-[var(--bg-hover)] py-2 px-4`"
       >
         Next
