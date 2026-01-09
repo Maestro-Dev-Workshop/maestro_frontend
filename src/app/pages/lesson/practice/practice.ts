@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, effect, inject, input, OnInit, output, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, ElementRef, inject, input, OnInit, output, SimpleChanges, untracked, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { QuestionModel, SaveQuestionData } from '../../../core/models/question.model';
 import { LessonService } from '../../../core/services/lesson.service';
@@ -27,6 +27,7 @@ export class Practice {
   notify = inject(NotificationService);
   lessonService = inject(LessonService);
   confirmation = inject(ConfirmService);
+  viewContainer = viewChild<ElementRef>('viewContainer');
 
   constructor(private cdr: ChangeDetectorRef) {}
 
@@ -34,9 +35,19 @@ export class Practice {
   private updateOnInputChange = effect(() => {
     const view = this.currentView(); // <-- THIS is reactive
     if (view?.content?.questions?.length) {
+      untracked(() => {
+        setTimeout(() => this.scrollToTop(), 0);
+      });
       this.goToQuestion(0);
     }
   });
+
+  scrollToTop() {
+    const element = this.viewContainer();
+    if (element?.nativeElement) {
+      element.nativeElement.scrollTop = 0;
+    }
+  }
 
   // Not necessary
   autoResize(event: Event) {
@@ -49,6 +60,7 @@ export class Practice {
     this.currentIndex = index;
     this.question = this.currentView().content.questions[this.currentIndex];
     this.changeQuestion.emit({id: this.question.id})
+    this.scrollToTop();
   }
 
   cycleQuestion(direction: string) {

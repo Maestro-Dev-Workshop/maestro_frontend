@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, input, viewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, ElementRef, input, viewChild } from '@angular/core';
 
 @Component({
   selector: 'app-flashcards',
@@ -16,6 +16,15 @@ export class Flashcards {
   cardElement = viewChild<ElementRef>('card')
 
   constructor(private cdr: ChangeDetectorRef) {}
+
+  private updateOnInputChange = effect(() => {
+    const viewCards = this.cards();
+    if (viewCards?.length) {
+      this.currentIndex = 0;
+      this.showAnswer = false;
+      this.showHint = false;
+    }
+  });
 
   nextCard() {
     if (this.currentIndex < this.cards().length - 1) {
@@ -53,7 +62,6 @@ export class Flashcards {
         this.cardElement()?.nativeElement.classList.remove('flip-start');
         this.cardElement()?.nativeElement.classList.add('flip-end');
         this.currentAnim = 'flip-end';
-        this.cdr.detectChanges();
         break;
       case 'flip-end':
         this.cardElement()?.nativeElement.classList.remove('flip-end');
@@ -67,7 +75,6 @@ export class Flashcards {
         this.cardElement()?.nativeElement.classList.remove('move-left-start');
         this.cardElement()?.nativeElement.classList.add('move-left-end');
         this.currentAnim = 'move-left-end';
-        this.cdr.detectChanges();
         break;
       case 'move-left-end':
         this.cardElement()?.nativeElement.classList.remove('move-left-end');
@@ -81,12 +88,12 @@ export class Flashcards {
         this.cardElement()?.nativeElement.classList.remove('move-right-start');
         this.cardElement()?.nativeElement.classList.add('move-right-end');
         this.currentAnim = 'move-right-end';
-        this.cdr.detectChanges();
         break;
       case 'move-right-end':
         this.cardElement()?.nativeElement.classList.remove('move-right-end');
         this.currentAnim = '';
         break;
     }
+    this.cdr.detectChanges();
   }
 }

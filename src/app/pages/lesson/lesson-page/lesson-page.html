@@ -59,11 +59,11 @@
   <!-- Main View Container -->
   <div 
     #contentContainer 
-    [class]="`flex overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 lg:hover:scrollbar-thumb-gray-500 flex-grow lg:${chatOpen ? 'w-6/12' : 'w-9/12'}`"
+    [class]="`overflow-hidden flex flex-grow lg:${chatOpen ? 'w-6/12' : 'w-9/12'}`"
   >
     @if (currentView.type === 'subtopic') {
       <app-subtopic 
-        class="w-full px-8 lg:pl-12"
+        class="w-full overflow-hidden flex flex-col"
         [currentView]="currentView" 
         [currentTopic]="getTopicDataFromSubtopic()" 
         [getPosition]="getSubtopicPosition()"
@@ -72,7 +72,7 @@
     }
     @if (currentView.type === 'exercise' || currentView.type === 'exam') {
       <app-practice 
-        class="w-full px-8 lg:pl-12"
+        class="w-full overflow-hidden flex flex-col"
         [currentView]="currentView" 
         [subjectId]="subjectId"
         [topicId]="(currentView.type == 'exercise') ? getTopicDataFromExercise().id : null"
@@ -83,14 +83,14 @@
     }
     @if (currentView.type === 'glossary') {
       <app-glossary 
-        class="w-full px-8 lg:pl-12"
+        class="w-full overflow-hidden flex flex-col"
         [glossaryItems]="subjectContent.glossary"
         (scroll)="scrollToPosition($event)"
       ></app-glossary>
     }
     @if (currentView.type === 'flashcards') {
       <app-flashcards 
-        class="w-full px-8 lg:pl-12"
+        class="w-full overflow-hidden flex flex-col"
         [topicId]="currentView.id"
         [cards]="currentView.content"
       ></app-flashcards>

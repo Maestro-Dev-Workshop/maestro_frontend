@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, effect, ElementRef, input, output, untracked, viewChild, ViewChild } from '@angular/core';
 import { MarkdownCell } from '../cells/markdown-cell/markdown-cell';
 // import { ChartCell } from '../cells/chart-cell/chart-cell';
 
@@ -13,7 +13,23 @@ export class Subtopic {
   currentView = input<any>();
   cycleSubtopic = output<any>();
   getPosition = input<any>();
+  viewContainer = viewChild<ElementRef>('viewContainer');
 
+  private updateOnInputChange = effect(() => {
+    const view = this.currentView();
+    if (view?.content) {
+      untracked(() => {
+        setTimeout(() => this.scrollToTop(), 0);
+      });
+    }
+  });
+
+  scrollToTop() {
+    const element = this.viewContainer();
+    if (element?.nativeElement) {
+      element.nativeElement.scrollTop = 0;
+    }
+  }
 
   prevSubtopic() {
     this.cycleSubtopic.emit({ id: this.currentTopic().id, direction: 'prev' });
