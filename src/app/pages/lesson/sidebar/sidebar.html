@@ -31,6 +31,7 @@
             {{ subtopic.title }}
           </button>
         }
+
         <!-- Exercise -->
         @if (topic.exercise) {
           <button [class]="`py-2 px-2 pl-8 text-[var(--text-secondary)] w-full text-left lg:hover:bg-[var(--bg-hover)] border-[var(--text-primary)]
@@ -38,6 +39,15 @@
             ${!topic.exercise.score ? 'font-bold' : ''}`"
             (click)="selectView(topic.exercise.id, 'exercise')">
             Exercise
+          </button>
+        }
+
+        <!-- Flashcards -->
+        @if (topic.flashcards && (topic.flashcards?.length > 0)) {
+          <button [class]="`py-2 px-2 pl-8 text-[var(--text-secondary)] w-full text-left lg:hover:bg-[var(--bg-hover)] border-[var(--text-primary)]
+            ${(topic.flashcards.id === currentView().id && currentView().type === 'flashcards') ? 'border-l-4' : ''}`"
+            (click)="selectView(topic.id, 'flashcards')">
+            Flashcards
           </button>
         }
       }

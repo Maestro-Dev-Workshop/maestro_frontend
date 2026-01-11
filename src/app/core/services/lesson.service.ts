@@ -44,4 +44,8 @@ export class LessonService {
   getGlossary(sessionId: string): Observable<any> {
     return this.http.get<any>(`session/${sessionId}/glossary`);
   }
+
+  getFlashcards(topicId: string): Observable<any> {
+    return this.http.get<any>(`topic/${topicId}/get-flashcards`);
+  }
 }
