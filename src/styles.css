@@ -88,11 +88,14 @@
   --bg-page: #FFFFFF;        /* prussian-blue-50 */
   --bg-hover: #E0E5EA;        /* prussian-blue-300 */
   --bg-card: #E8ECF1;
+  --bg-banner: #E9EEF3;
   --bg-card-hover: #E0E5EA;
   --bg-element: #2B4459;
   --bg-element-hover: #7591A5;
   --bg-alt: ;
   --bg-alt-hover: #F3F4F6;
+  --bg-button: #FFFFFF;
+  --bg-button-hover: #F3F4F6;
 
   /* TEXT */
   --text-primary: #002D4B;    /* white */
@@ -109,11 +112,14 @@
   --bg-page: #FFFFFF;        /* prussian-blue-50 */
   --bg-hover: #E0E5EA;        /* prussian-blue-300 */
   --bg-card: #E8ECF1;
+  --bg-banner: #E9EEF3;
   --bg-card-hover: #E0E5EA;
   --bg-element: #2B4459;
   --bg-element-hover: #7591A5;
   --bg-alt: ;
   --bg-alt-hover: #F3F4F6;
+  --bg-button: #FFFFFF;
+  --bg-button-hover: #F3F4F6;
 
   /* TEXT */
   --text-primary: #002D4B;    /* white */
@@ -130,11 +136,14 @@
   --bg-page: #1A2B37;        /* prussian-blue-900 */
   --bg-hover: #2B4459;        /* prussian-blue-700 */
   --bg-card: #C6D2DD;
+  --bg-banner: #162632;
   --bg-card-hover: #7591A5;
   --bg-element: #2B4459;
   --bg-element-hover: #7591A5;
   --bg-alt: ;
   --bg-alt-hover: #2B4459;
+  --bg-button: #1F3445;
+  --bg-button-hover: #2B4459;
 
   /* TEXT */
   --text-primary: #FFFFFF;    /* white */

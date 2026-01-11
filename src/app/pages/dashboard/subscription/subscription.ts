@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { Header } from '../../../shared/components/header/header';
+import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-icon';
 import { SubscriptionService } from '../../../core/services/subscription.service';
 import { Plan, SubscriptionStatus } from '../../../core/models/subscription.model';
 import { NotificationService } from '../../../core/services/notification.service';
@@ -13,7 +14,7 @@ import { CurrencyLocalizerPipe } from '../../../shared/pipes/currency-localizer-
 @Component({
   selector: 'app-subscription',
   standalone: true,
-  imports: [CommonModule, FormsModule, Header, RouterLink, CurrencyLocalizerPipe],
+  imports: [CommonModule, FormsModule, Header, RouterLink, CurrencyLocalizerPipe, ThemeIconComponent],
   templateUrl: './subscription.html'
 })
 export class Subscription implements OnInit {

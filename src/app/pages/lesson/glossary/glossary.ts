@@ -1,10 +1,11 @@
 import { Component, computed, input, output, signal } from '@angular/core';
 import { MarkdownPipe } from '../../../shared/pipes/markdown-pipe';
 import { ViewportScroller } from '@angular/common';
+import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-icon';
 
 @Component({
   selector: 'app-glossary',
-  imports: [MarkdownPipe],
+  imports: [MarkdownPipe, ThemeIconComponent],
   templateUrl: './glossary.html',
   styleUrl: './glossary.css',
 })

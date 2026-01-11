@@ -5,6 +5,7 @@ import { Chatbot } from '../chatbot/chatbot';
 import { Subtopic } from '../subtopic/subtopic';
 import { Practice } from "../practice/practice";
 import { SubjectsService } from '../../../core/services/subjects.service';
+import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-icon';
 import { LessonService } from '../../../core/services/lesson.service';
 import { ChatMetadata } from '../../../core/models/chat-metadata.model';
 import { ChatbotService } from '../../../core/services/chatbot.service';
@@ -15,7 +16,7 @@ import { Glossary } from '../glossary/glossary';
 
 @Component({
   selector: 'app-lesson-page',
-  imports: [Header, Sidebar, Chatbot, Subtopic, Practice, Glossary],
+  imports: [Header, Sidebar, Chatbot, Subtopic, Practice, Glossary, ThemeIconComponent],
   templateUrl: './lesson-page.html',
   styleUrl: './lesson-page.css'
 })

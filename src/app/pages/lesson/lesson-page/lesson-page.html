@@ -43,7 +43,7 @@
     [class]="`absolute z-20 top-0 ${sidebarOpen ? 'hidden' : 'left-0 rounded-r-full'} p-3 bg-prussian-blue-700 lg:hidden`"
     (click)="toggleSidebar()"
   >
-    <img src="images/subject-icon-white.svg" alt="" class="w-6">
+    <app-theme-icon name="subject-icon" className="w-6" />
   </button>
 
   <!-- Sidebar Container -->
@@ -118,5 +118,5 @@
   (click)="toggleChatPopup()"
   [disabled]="(currentView.type !== 'subtopic' && (currentView.content.score == null))"
 >
-  <img src="images/chatbot-speech-bubble.png" alt="Chat" class="w-8 lg:w-10">
+  <img src="images/Chat-Button.png" alt="Chat" class="w-8 lg:w-10">
 </button>
