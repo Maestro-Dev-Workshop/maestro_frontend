@@ -267,7 +267,7 @@
                 <td class="col-md-4">
 
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
 
                         </div>
                 </td>
@@ -295,15 +295,16 @@ export class SubscriptionGuard implements CanActivate {
   ) {}
 
   canActivate() {
-    return this.subSvc.getStatus().pipe(
-      map(st &#x3D;&gt; {
-        if (!st.isActive) {
-          this.router.navigate([&#x27;/dashboard/subscription&#x27;]);
-          return false;
-        }
-        return true;
-      })
-    );
+    // return this.subSvc.getStatus().pipe(
+    //   map(st &#x3D;&gt; {
+    //     if (!st.isActive) {
+    //       this.router.navigate([&#x27;/dashboard/subscription&#x27;]);
+    //       return false;
+    //     }
+    //     return true;
+    //   })
+    // );
+    return true;
   }
 }</code></pre>
         </div>

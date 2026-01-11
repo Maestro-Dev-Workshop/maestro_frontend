@@ -10,10 +10,11 @@ import { SubjectNameValidator } from '../../../shared/directives/subject-name-va
 import { SubscriptionStatus } from '../../../core/models/subscription.model';
 import { SubscriptionService } from '../../../core/services/subscription.service';
 import { ConfirmService } from '../../../core/services/confirm';
+import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-icon';
 
 @Component({
   selector: 'app-naming-upload',
-  imports: [Header, CreationStepTab, FormsModule, SubjectNameValidator],
+  imports: [Header, CreationStepTab, FormsModule, SubjectNameValidator, ThemeIconComponent],
   templateUrl: './naming-upload.html',
   styleUrl: './naming-upload.css',
 })
@@ -150,7 +151,7 @@ export class NamingUpload implements OnInit {
         this.cdr.detectChanges();
       },
       error: (res) => {
-        this.notify.showError(res.error.message || "Failed to load subscription data. Please try again later.");
+        this.notify.showError(res.error.displayMessage || "Failed to load subscription data. Please try again later.");
         this.cdr.detectChanges();
       }
     })
@@ -166,7 +167,7 @@ export class NamingUpload implements OnInit {
         this.cdr.detectChanges();
       },
       error: (res) => {
-        this.notify.showError(res.error.message || 'Failed to load subject details. Please try again later.');
+        this.notify.showError(res.error.displayMessage || 'Failed to load subject details. Please try again later.');
       }
     });
   }
@@ -234,7 +235,7 @@ export class NamingUpload implements OnInit {
     this.subjectService.labelDocuments(this.subjectId).pipe(
       tap(() => {
         this.notify.showSuccess("Topics successfully identified.");
-        this.router.navigate([`/subject-create/${this.subjectId}/topic-preferences`]);
+        this.router.navigate([`/subject-create/${this.subjectId}/lesson-generation`]);
       })
     );
 
@@ -248,7 +249,7 @@ export class NamingUpload implements OnInit {
       return labelDocuments$()
     }),
     catchError((res) => {
-      this.notify.showError(res.error.message || 'Something went wrong. Please try again later.');
+      this.notify.showError(res.error.displayMessage || 'Something went wrong. Please try again later.');
       return EMPTY;
     }),
     finalize(() => {

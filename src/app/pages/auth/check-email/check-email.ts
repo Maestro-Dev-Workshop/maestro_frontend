@@ -66,7 +66,7 @@ export class CheckEmail implements OnInit {
         this.cdr.detectChanges();
       },
       error: (res) => {
-        this.notify.showError(res.error.message || 'Failed to resend verification email. Please try again.');
+        this.notify.showError(res.error.displayMessage || 'Failed to resend verification email. Please try again.');
         this.loading = false;
         this.cdr.detectChanges();
       }

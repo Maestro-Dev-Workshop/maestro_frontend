@@ -212,7 +212,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">src/app/pages/subject-create/question-settings/question-settings.ts:12</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">src/app/pages/subject-create/question-settings/question-settings.ts:13</a></div>
                         </td>
                     </tr>
 
@@ -243,7 +243,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/app/pages/subject-create/question-settings/question-settings.ts:15</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/app/pages/subject-create/question-settings/question-settings.ts:16</a></div>
                         </td>
                     </tr>
 
@@ -274,7 +274,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/app/pages/subject-create/question-settings/question-settings.ts:14</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/app/pages/subject-create/question-settings/question-settings.ts:15</a></div>
                         </td>
                     </tr>
 
@@ -305,7 +305,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">src/app/pages/subject-create/question-settings/question-settings.ts:13</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/app/pages/subject-create/question-settings/question-settings.ts:14</a></div>
                         </td>
                     </tr>
 
@@ -324,7 +324,7 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { ChangeDetectorRef, Component, inject, ViewChild } from &#x27;@angular/core&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { ChangeDetectorRef, Component, inject, OnInit, ViewChild } from &#x27;@angular/core&#x27;;
 import { Header } from &#x27;../../../shared/components/header/header&#x27;;
 import { CreationStepTab } from &#x27;../creation-step-tab/creation-step-tab&#x27;;
 import { FormsModule, NgModel } from &#x27;@angular/forms&#x27;;
@@ -333,6 +333,7 @@ import { SubjectsService } from &#x27;../../../core/services/subjects.service&#x
 import { forkJoin, Observable } from &#x27;rxjs&#x27;;
 import { NotificationService } from &#x27;../../../core/services/notification.service&#x27;; // &lt;-- Add this import
 import { PreferenceValidator } from &#x27;../../../shared/directives/preference-validator&#x27;;
+import { SubscriptionService } from &#x27;../../../core/services/subscription.service&#x27;;
 
 class ExerciseSettings {
   include: boolean &#x3D; false
@@ -354,15 +355,16 @@ class ExamSettings {
   templateUrl: &#x27;./question-settings.html&#x27;,
   styleUrl: &#x27;./question-settings.css&#x27;
 })
-export class QuestionSettings {
+export class QuestionSettings implements OnInit {
   exerciseSettings &#x3D; new ExerciseSettings();
   examSettings &#x3D; new ExamSettings();
   loading &#x3D; false;
   subjectId &#x3D; &#x27;&#x27;;
-  maxExerciseQuestions &#x3D; 10;
-  maxExamQuestions &#x3D; 40;
+  maxExerciseQuestions &#x3D; 3;
+  maxExamQuestions &#x3D; 10;
   subjectService &#x3D; inject(SubjectsService)
-  notify &#x3D; inject(NotificationService); // &lt;-- Inject notification service
+  notify &#x3D; inject(NotificationService);
+  subscriptionService &#x3D; inject(SubscriptionService)
 
   @ViewChild(&#x27;exercisePreferenceCtrl&#x27;) exercisePreferenceCtrl!: NgModel;
   // @ViewChild(&#x27;exerciseCountCtrl&#x27;) exerciseCountCtrl!: NgModel;
@@ -374,6 +376,23 @@ export class QuestionSettings {
     const url &#x3D; window.location.pathname;
     const parts &#x3D; url.split(&#x27;/&#x27;);
     this.subjectId &#x3D; parts[parts.length - 2]; // Assuming the last part is the subjectId
+  }
+
+  ngOnInit(): void {
+    this.loading &#x3D; true;
+    this.subscriptionService.getSubscription().subscribe({
+      next: (response) &#x3D;&gt; {
+        this.maxExerciseQuestions &#x3D; response.subscription.plan.exercise_question_count || 3;
+        this.maxExamQuestions &#x3D; response.subscription.plan.exam_question_count || 10;
+      },
+      error: (err) &#x3D;&gt; {
+        this.notify.showError(&quot;Failed to fetch subscription data. Using default limits.&quot;);
+      },
+      complete: () &#x3D;&gt; {
+        this.loading &#x3D; false;
+        this.cdr.detectChanges();
+      }
+    })
   }
 
   toggleExerciseType(event: any) {
@@ -472,15 +491,12 @@ export class QuestionSettings {
     if (requests.length &gt; 0) {
       forkJoin(requests).subscribe({
         next: (responses) &#x3D;&gt; {
-          console.log(&quot;Generation responses:&quot;, responses);
           this.notify.showSuccess(&quot;Sucessfully generated practice questions.&quot;)
           this.subjectService.updateSessionStatus(this.subjectId, &quot;In Progress&quot;).subscribe({
             next: () &#x3D;&gt; {
-              console.log(&quot;Session status updated&quot;);
               this.router.navigate([&#x60;/lesson/${this.subjectId}&#x60;]);
             },
             error: (err) &#x3D;&gt; {
-              console.error(&quot;Failed to update session status&quot;, err);
               this.notify.showError(&quot;Failed to update session status.&quot;);
               this.router.navigate([&#x60;/lesson/${this.subjectId}&#x60;]);
             },
@@ -488,7 +504,6 @@ export class QuestionSettings {
           });
         },
         error: (res) &#x3D;&gt; {
-          console.error(&quot;Error during generation:&quot;, res);
           this.notify.showError(res.error.message || &quot;Failed to generate practice questions. Please try again later.&quot;);
           this.loading &#x3D; false;
           this.cdr.detectChanges();
@@ -502,7 +517,6 @@ export class QuestionSettings {
           this.router.navigate([&#x60;/lesson/${this.subjectId}&#x60;]);
         },
         error: (res) &#x3D;&gt; {
-          console.error(&quot;Failed to update session status&quot;, res);
           this.notify.showError(res.error.message || &quot;Failed to update session status.&quot;);
           this.router.navigate([&#x60;/lesson/${this.subjectId}&#x60;]);
         },

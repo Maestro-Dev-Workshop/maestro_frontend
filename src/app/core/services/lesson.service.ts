@@ -40,4 +40,12 @@ export class LessonService {
   saveExamScore(sessionId?: string, examId?: string, score?: number, questionData?: SaveQuestionData[]): Observable<any> {
     return this.http.put<any>(`session/${sessionId}/save-exam-score`, { exam_id: examId, score, question_data: questionData });
   }
+
+  getGlossary(sessionId: string): Observable<any> {
+    return this.http.get<any>(`session/${sessionId}/glossary`);
+  }
+
+  getFlashcards(topicId: string): Observable<any> {
+    return this.http.get<any>(`topic/${topicId}/get-flashcards`);
+  }
 }
