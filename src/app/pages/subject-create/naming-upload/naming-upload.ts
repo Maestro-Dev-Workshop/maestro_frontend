@@ -10,10 +10,11 @@ import { SubjectNameValidator } from '../../../shared/directives/subject-name-va
 import { SubscriptionStatus } from '../../../core/models/subscription.model';
 import { SubscriptionService } from '../../../core/services/subscription.service';
 import { ConfirmService } from '../../../core/services/confirm';
+import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-icon';
 
 @Component({
   selector: 'app-naming-upload',
-  imports: [Header, CreationStepTab, FormsModule, SubjectNameValidator],
+  imports: [Header, CreationStepTab, FormsModule, SubjectNameValidator, ThemeIconComponent],
   templateUrl: './naming-upload.html',
   styleUrl: './naming-upload.css',
 })

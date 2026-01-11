@@ -1,10 +1,10 @@
 import { AfterViewInit, Component, effect, input, model, NO_ERRORS_SCHEMA, OnInit, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-icon';
 
 @Component({
   selector: 'app-extension-config-overlay',
-  imports: [FormsModule],
-  // schemas: [NO_ERRORS_SCHEMA],
+  imports: [FormsModule, ThemeIconComponent],
   templateUrl: './extension-config-overlay.html',
   styleUrl: './extension-config-overlay.css',
 })

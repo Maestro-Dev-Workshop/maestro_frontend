@@ -86,7 +86,7 @@
       (click)="cycleQuestion('prev')"
       [disabled]="currentIndex === 0"
     >
-      <img src="images/dropdown-icon-closed.svg" alt="" class="w-2 m-4 rotate-180">
+      <app-theme-icon name="dropdown-icon" className="w-2 m-4 rotate-180"></app-theme-icon>
       Previous
     </button>
     <button 
@@ -95,7 +95,7 @@
       [disabled]="currentIndex === (currentView().content.questions.length - 1)"
     >
       Next
-      <img src="images/dropdown-icon-closed.svg" alt="" class="w-2 m-4">
+      <app-theme-icon name="dropdown-icon" className="w-2 m-4"></app-theme-icon>
     </button>
   </div>
 

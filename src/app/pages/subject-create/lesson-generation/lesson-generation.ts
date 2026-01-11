@@ -12,11 +12,12 @@ import { ExtensionConfigOverlay } from '../extension-config-overlay/extension-co
 import { max } from 'rxjs';
 import { SubscriptionService } from '../../../core/services/subscription.service';
 import { SubscriptionStatus } from '../../../core/models/subscription.model';
+import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-icon';
 
 
 @Component({
   selector: 'app-lesson-generation',
-  imports: [Header, CreationStepTab, FormsModule, ExtensionConfigOverlay],
+  imports: [Header, CreationStepTab, FormsModule, ExtensionConfigOverlay, ThemeIconComponent],
   schemas: [NO_ERRORS_SCHEMA],
   templateUrl: './lesson-generation.html',
   styleUrl: './lesson-generation.css',

@@ -2,14 +2,14 @@
 <div class="flex flex-col w-full px-12 md:px-32 pb-12">
   <div class="flex flex-row mb-8 w-full">
     <app-creation-step-tab
-      [text]="'My Subject and Materials'"
-      [icon]="'images/subject-icon.svg'"
+      text="My Subject and Materials"
+      icon="subject-icon"
       [active]="true"
       class="hidden md:block w-3/6"
     />
     <app-creation-step-tab
-      [text]="'Lesson Content Generation'"
-      [icon]="'images/lesson-generation-icon.svg'"
+      text="Lesson Content Generation"
+      icon="lesson-generation-icon"
       [active]="true"
       class="w-full md:w-3/6"
     />
@@ -61,21 +61,21 @@
     <div class="flex flex-row items-center justify-between">
       <div class="flex flex-row relative">
         <button 
-          [class]="`flex flex-row md:mr-4 rounded-full md:hover:shadow-lg p-2
+          [class]="`flex flex-row items-center md:mr-4 rounded-full md:hover:shadow-lg p-2
           ${settingsPopup ? 'bg-[var(--bg-hover)] shadow-lg p-2' : ''}`"
           (click)="toggleSettingsPopup()"
           [disabled]="loading"
         >
-          <img src="images/extension-icon.svg" alt="Enable" class="w-4 md:w-6 mr-1">
+          <app-theme-icon name="extension-icon" className="w-4 md:w-6 mr-1"></app-theme-icon>
           <span class="hidden md:block">Enable Extensions</span>
         </button>
         <button 
-          [class]="`flex flex-row md:mr-4 rounded-full md:hover:shadow-lg p-2
+          [class]="`flex flex-row items-center md:mr-4 rounded-full md:hover:shadow-lg p-2
           ${configOverlay ? 'bg-[var(--bg-hover)] shadow-lg p-2' : ''}`"
           (click)="toggleConfigOverlay()"
           [disabled]="!extensionsEnabled || loading"
         >
-          <img src="images/config-icon.svg" alt="Configure" class="w-6 md:w-6 mr-1">
+          <app-theme-icon name="config-icon" className="w-6 md:w-6 mr-1"></app-theme-icon>
           <span class="hidden md:block">Configure Extensions</span>
         </button>
 
@@ -86,68 +86,68 @@
         >
           <!-- Exercise Button -->
           <button 
-            [class]="`rounded-t-lg flex flex-row w-full items-center px-1 py-2 
+            [class]="`rounded-t-lg flex flex-row w-full items-center px-2 py-2 
             ${!extensionSettings.exercise.enabled ? 'bg-[var(--bg-page)] md:hover:bg-[var(--bg-hover)]'
               : 'bg-[var(--text-secondary)] text-[var(--bg-page)]'}`"
             (click)="toggleExtension('exercise')"
             [disabled]="loading  || (subjectStatus === 'pending lesson generation')"
           >
-            <img src="images/exercise-icon.svg" alt="" class="mr-2">
+            <app-theme-icon name="exercise-icon" class="w-5 mr-2" [invert]="extensionSettings.exercise.enabled"/>
             Exercise
             @if (extensionSettings.exercise.enabled) {
-              <img src="images/x-icon.svg" alt="X" class="m-2 w-2 ml-auto">
+              <app-theme-icon name="x-icon" class="m-2 w-2 ml-auto" [invert]="true"/>
             }
           </button>
 
           <!-- Exam Button -->
           <button 
-            [class]="`flex flex-row w-full items-center px-1 py-2 
+            [class]="`flex flex-row w-full items-center px-2 py-2 
             ${!extensionSettings.exam.enabled ? 'bg-[var(--bg-page)] md:hover:bg-[var(--bg-hover)]'
               : 'bg-[var(--text-secondary)] text-[var(--bg-page)]'}`"
             (click)="toggleExtension('exam')"
             [disabled]="loading  || (subjectStatus === 'pending lesson generation')"
           >
-            <img src="images/exam-icon.svg" alt="" class="mr-2">
+            <app-theme-icon name="exam-icon" class="w-5 mr-2" [invert]="extensionSettings.exam.enabled"/>
             Exam
             @if (extensionSettings.exam.enabled) {
-              <img src="images/x-icon.svg" alt="X" class="m-2 w-2 ml-auto">
+              <app-theme-icon name="x-icon" class="m-2 w-2 ml-auto" [invert]="true"/>
             }
           </button>
 
           <!-- Flashcards Button -->
           <button 
-            [class]="`flex flex-row w-full items-center px-1 py-2 
+            [class]="`flex flex-row w-full items-center px-2 py-2 
             ${!extensionSettings.flashcards.enabled ? 'bg-[var(--bg-page)] md:hover:bg-[var(--bg-hover)]'
               : 'bg-[var(--text-secondary)] text-[var(--bg-page)]'}`"
             (click)="toggleExtension('flashcards')"
             [disabled]="loading  || (subjectStatus === 'pending lesson generation')"
           >
-            <img src="images/flashcards-icon.svg" alt="" class="mr-2">
+            <app-theme-icon name="flashcards-icon" class="w-5 mr-2" [invert]="extensionSettings.flashcards.enabled"/>
             Flashcards
             @if (extensionSettings.flashcards.enabled) {
-              <img src="images/x-icon.svg" alt="X" class="m-2 w-2 ml-auto">
+              <app-theme-icon name="x-icon" class="m-2 w-2 ml-auto" [invert]="true"/>
             }
           </button>
 
           <!-- Glossary Button -->
           <button 
-            [class]="`rounded-b-lg flex flex-row w-full items-center px-1 py-2 
+            [class]="`rounded-b-lg flex flex-row w-full items-center px-2 py-2 
             ${!extensionSettings.glossary.enabled ? 'bg-[var(--bg-page)] md:hover:bg-[var(--bg-hover)]'
               : 'bg-[var(--text-secondary)] text-[var(--bg-page)]'}`"
             (click)="toggleExtension('glossary')"
             [disabled]="loading  || (subjectStatus === 'pending lesson generation')"
           >
-            <img src="images/glossary-icon.svg" alt="" class="mr-2">
+            <app-theme-icon name="glossary-icon" class="w-5 mr-2" [invert]="extensionSettings.glossary.enabled"/>
             Glossary
             @if (extensionSettings.glossary.enabled) {
-              <img src="images/x-icon.svg" alt="X" class="m-2 w-2 ml-auto">
+              <app-theme-icon name="x-icon" class="m-2 w-2 ml-auto" [invert]="true"/>
             }
           </button>
         </div>
       </div>
 
       <button (click)="go()" [disabled]="loading">
-        <img src="images/send-instruction-icon.svg" alt="Send" class="w-6 md:w-8">
+        <app-theme-icon name="send-icon" className="w-6 md:w-8"></app-theme-icon>
       </button>
     </div>
   </form>
@@ -160,7 +160,7 @@
     @for (extension of getExtensionList(); track $index) {
       @if (extension.enabled) {
         <div class="flex flex-row items-center rounded-lg px-2 py-2 m-1 md:m-2 shadow-lg border-2 border-[1px] border-[var(--text-primary)] bg-[var(--bg-page)] cursor-default">
-          <img [src]="`images/${extension.name}-icon.svg`" alt="" class="mr-1">
+          <app-theme-icon [name]="`${extension.name}-icon`" class="w-5 mr-1"/>
           {{ extension.name.charAt(0).toUpperCase() + extension.name.slice(1) }}
         </div>
       }

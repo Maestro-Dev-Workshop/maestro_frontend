@@ -4,7 +4,7 @@ import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-
 
 @Component({
   selector: 'app-glossary',
-  imports: [MarkdownPipe, ThemeIconComponent],
+  imports: [MarkdownPipe],
   templateUrl: './glossary.html',
   styleUrl: './glossary.css',
 })

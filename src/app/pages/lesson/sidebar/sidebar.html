@@ -17,7 +17,7 @@
     <!-- Topic List -->
     @for (topic of content().topics; track topic.id) {
       <button [class]="`flex flex-row items-center text-[var(--text-primary)] lg:hover:text-[var(--text-primary-hover)] text-left ${!topic.completed ? 'font-bold' : ''}`" (click)="toggleExpandTopic(topic.id)">
-        <img src="images/dropdown-icon-closed.svg" alt="" [class]="`w-2 m-4 z-0 ${topic.expanded ? 'rotate-90' : ''}`">
+        <app-theme-icon name="dropdown-icon" className="w-2 m-4 z-0" [class.rotate-90]="topic.expanded"></app-theme-icon>
         {{ topic.title }}
       </button>
       @if (topic.expanded) {
