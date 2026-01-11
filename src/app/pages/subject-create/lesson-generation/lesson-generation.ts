@@ -34,69 +34,8 @@ export class LessonGeneration implements OnInit {
   subjectService = inject(SubjectsService)
   subscriptionService = inject(SubscriptionService)
   
-  subjectName = 'Algebra';
-  topics = [
-    {
-      "id": "dksda-daidj2d-a2m90-1",
-      "title": "Introduction to Matrix",
-      "selected": false
-    },
-    {
-      "id": "dksda-daidj2d-a2m90-2",
-      "title": "Matrix Operations",
-      "selected": false
-    },
-    {
-      "id": "dksda-daidj2d-a2m90-3",
-      "title": "Determinants",
-      "selected": false
-    },
-    {
-      "id": "dksda-daidj2d-a2m90-4",
-      "title": "Dot Products",
-      "selected": false
-    },
-    {
-      "id": "dksda-daidj2d-a2m90-5",
-      "title": "Eigenvalues and Eigenvectors",
-      "selected": false
-    },
-    {
-      "id": "dksda-daidj2d-a2m90-6",
-      "title": "Inverse of a Matrix",
-      "selected": false
-    },
-    {
-      "id": "dksda-daidj2d-a2m90-7",
-      "title": "Singular Value Decomposition",
-      "selected": false
-    },
-    {
-      "id": "dksda-daidj2d-a2m90-8",
-      "title": "Moore- Penrose Pseudoinverse",
-      "selected": false
-    },
-    {
-      "id": "dksda-daidj2d-a2m90-9",
-      "title": "Theorems",
-      "selected": false
-    },
-    {
-      "id": "dksda-daidj2d-a2m90-10",
-      "title": "Matrix Analysis",
-      "selected": false
-    },
-    {
-      "id": "dksda-daidj2d-a2m90-11",
-      "title": "Out of Topics Ideas",
-      "selected": false
-    },
-    {
-      "id": "dksda-daidj2d-a2m90-12",
-      "title": "Mehn, why I dey sick like this",
-      "selected": false
-    },
-  ];
+  subjectName = '';
+  topics: any = [];
   extensionSettings = {
     exercise: {
       enabled: false,
@@ -143,7 +82,7 @@ export class LessonGeneration implements OnInit {
 
   toggleTopicSelection(topic_id: any) {
     this.topics.map(
-      (topic) => {
+      (topic: any) => {
         if (topic.id === topic_id) {topic.selected = !topic.selected}
       }
     )
@@ -177,7 +116,7 @@ export class LessonGeneration implements OnInit {
 
   validateSettings() {
     // Check if any topics have been selected
-    const selectedTopics = this.topics.filter(topic => topic.selected);
+    const selectedTopics = this.topics.filter((topic: any) => topic.selected);
     if (selectedTopics.length === 0) {
       return {
         status: false,
@@ -265,7 +204,7 @@ export class LessonGeneration implements OnInit {
       return;
     }
 
-    const selectedTopicIds = this.topics.filter((topic) => topic.selected).map((topic) => topic.id);
+    const selectedTopicIds = this.topics.filter((topic: any) => topic.selected).map((topic: any) => topic.id);
     this.subjectService.generateFullLesson(this.subjectId, selectedTopicIds, this.learningStyle, this.extensionSettings).subscribe({
       next: (response) => {
         this.notify.showSuccess("Successfully generated lesson.")
