@@ -6,10 +6,11 @@ import { catchError, forkJoin, Observable, of, switchMap, take, tap } from 'rxjs
 import { MarkdownPipe } from '../../../shared/pipes/markdown-pipe';
 import { NotificationService } from '../../../core/services/notification.service';
 import { ConfirmService } from '../../../core/services/confirm';
+import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-icon';
 
 @Component({
   selector: 'app-practice',
-  imports: [FormsModule, MarkdownPipe],
+  imports: [FormsModule, MarkdownPipe, ThemeIconComponent],
   templateUrl: './practice.html',
   styleUrl: './practice.css'
 })

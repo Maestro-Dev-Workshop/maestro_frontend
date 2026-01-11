@@ -1,8 +1,9 @@
 import { ChangeDetectorRef, Component, effect, ElementRef, input, viewChild } from '@angular/core';
+import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-icon';
 
 @Component({
   selector: 'app-flashcards',
-  imports: [],
+  imports: [ThemeIconComponent],
   templateUrl: './flashcards.html',
   styleUrl: './flashcards.css'
 })

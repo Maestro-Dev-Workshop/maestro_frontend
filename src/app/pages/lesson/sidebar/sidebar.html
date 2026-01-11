@@ -17,7 +17,7 @@
     <!-- Topic List -->
     @for (topic of content().topics; track topic.id) {
       <button [class]="`flex flex-row items-center text-[var(--text-primary)] lg:hover:text-[var(--text-primary-hover)] text-left ${!topic.completed ? 'font-bold' : ''}`" (click)="toggleExpandTopic(topic.id)">
-        <img src="images/dropdown-icon-closed.svg" alt="" [class]="`w-2 m-4 z-0 ${topic.expanded ? 'rotate-90' : ''}`">
+        <app-theme-icon name="dropdown-icon" className="w-2 m-4 z-0" [class.rotate-90]="topic.expanded"></app-theme-icon>
         {{ topic.title }}
       </button>
       @if (topic.expanded) {
@@ -64,7 +64,7 @@
     }
 
     <!-- Glossary -->
-    @if (content().glossary) {
+    @if (content().glossary && (content().glossary.length > 0)) {
       <button [class]="`py-2 px-2 pl-8 text-[var(--text-secondary)] w-full text-left lg:hover:bg-[var(--bg-hover)] border-[var(--text-primary)] 
         ${(content().glossary.id === currentView().id && currentView().type === 'glossary') ? 'border-l-4' : ''}`"
         (click)="selectView('glossary', 'glossary')">

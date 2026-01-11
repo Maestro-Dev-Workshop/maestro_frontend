@@ -1,16 +1,17 @@
 import { CommonModule, NgClass } from '@angular/common';
 import { Component, input, OnInit } from '@angular/core';
+import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-icon';
 
 @Component({
   selector: 'app-creation-step-tab',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ThemeIconComponent],
   templateUrl: './creation-step-tab.html',
   styleUrl: './creation-step-tab.css'
 })
 export class CreationStepTab implements OnInit {
   text = input.required<string>();
-  icon = input<string | null>(null);
+  icon = input<string>('');
   active = input();
 
   bgColour = '';

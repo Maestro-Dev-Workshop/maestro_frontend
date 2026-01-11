@@ -13,11 +13,12 @@ import { AuthService } from '../../../core/services/auth.service';
 import { SubscriptionService } from '../../../core/services/subscription.service';
 import { ConfirmService } from '../../../core/services/confirm';
 import { ThemeService, ThemeMode } from '../../../core/services/theme.service';
+import { ThemeIconComponent } from '../theme-icon/theme-icon';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, ThemeIconComponent],
   templateUrl: './header.html'
 })
 export class Header implements OnInit {

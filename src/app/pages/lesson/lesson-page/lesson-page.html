@@ -43,7 +43,7 @@
     [class]="`absolute z-20 top-0 ${sidebarOpen ? 'hidden' : 'left-0 rounded-r-full'} p-3 bg-prussian-blue-700 lg:hidden`"
     (click)="toggleSidebar()"
   >
-    <app-theme-icon name="subject-icon" className="w-6" />
+    <img src="images/subject-icon-white.svg" class="w-6">
   </button>
 
   <!-- Sidebar Container -->
@@ -115,7 +115,7 @@
 
 <!-- Chatbot Popup -->
 <button 
-  [class]="`absolute shadow-lg right-6 lg:right-16 bottom-6 lg:bottom-16 rounded-full p-4 lg:p-5 bg-[var(--bg-card)] lg:hover:bg-[var(--bg-card-hover)]
+  [class]="`absolute right-6 lg:right-16 bottom-6 lg:bottom-12 bg-transparent lg:hover:opacity-70
   ${(
       chatOpen || 
       (['exercise', 'exam'].includes(currentView.type)  && (currentView.content.score == null)) ||
@@ -125,5 +125,5 @@
   (click)="toggleChatPopup()"
   [disabled]="(currentView.type !== 'subtopic' && (currentView.content.score == null))"
 >
-  <img src="images/Chat-Button.png" alt="Chat" class="w-8 lg:w-10">
+  <img src="images/Chat-Button.png" alt="Chat" class="w-16 lg:w-20">
 </button>

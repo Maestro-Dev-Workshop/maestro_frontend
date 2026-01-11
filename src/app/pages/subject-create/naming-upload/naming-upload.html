@@ -3,14 +3,14 @@
   <!-- Creation step tabs -->
   <div class="flex flex-row mb-8 w-full">
     <app-creation-step-tab
-      [text]="'My Subject and Materials'"
-      [icon]="'images/subject-icon.svg'"
+      text="My Subject and Materials"
+      icon="subject-icon"
       [active]="true"
       class="hidden md:block w-3/6"
     />
     <app-creation-step-tab
-      [text]="'Lesson Content Generation'"
-      [icon]="'images/lesson-generation-icon.svg'"
+      text="Lesson Content Generation"
+      icon="lesson-generation-icon"
       [active]="false"
       class="w-full md:w-3/6"
     />
@@ -50,9 +50,9 @@
     >
       <label
         for="fileInput"
-        class="border border-gray-200 lg:hover:border-gray-300 p-2 rounded-md cursor-pointer "
+        class="border border-[var(--text-primary-hover)] lg:hover:border-[var(--text-primary)] p-2 rounded-md cursor-pointer "
       >
-        <img src="images/upload-file-icon.svg" alt="" class="w-4">
+        <app-theme-icon name="upload-file-icon" className="w-4"></app-theme-icon>
       </label>
       <input
         type="file"

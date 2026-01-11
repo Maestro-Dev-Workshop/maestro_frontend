@@ -4,6 +4,7 @@ import {
   inject,
   OnInit,
   OnDestroy,
+  AfterViewInit,
 } from '@angular/core';
 import { Header } from '../../../shared/components/header/header';
 import { Router } from '@angular/router';
@@ -27,7 +28,7 @@ import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-
 export class Subjects implements OnInit, OnDestroy {
   loadingSubjects = true;
   loadingCreate = false;
-  subjects: SubjectModel[] = [];
+  subjects: any[] = [];
   subjectService = inject(SubjectsService);
   subscriptionService = inject(SubscriptionService);
   notify = inject(NotificationService);
@@ -78,18 +79,19 @@ export class Subjects implements OnInit, OnDestroy {
     );
     this.showFeedbackBanner = dismissed !== 'true';
 
-    this.subjectService.getAllSubjects().subscribe({
+    this.subjectService.getAllSubjectsDetails().subscribe({
       next: (response: any) => {
         // Map backend response into SubjectModel and preserve optional UI fields
         this.subjects = (response.sessions || []).map((s: any) => ({
-          id: s.id,
-          name: s.name ?? '',
-          created_at: s.created_at ? new Date(s.created_at) : new Date(),
-          status: s.status ?? 'pending naming',
+          id: s.session.id,
+          name: s.session.name ?? '',
+          created_at: s.session.created_at ? new Date(s.created_at) : new Date(),
+          status: s.session.status ?? 'pending naming',
           // Normalize completion to 0..100 (handles 0..1 or 0..100)
-          completion: this.normalizeCompletion(s.completion),
+          completion: this.normalizeCompletion(s.session.completion),
           // preserve any UI-only fields if present (tags, pinned, topicCount)
-          ...(s as any),
+          topics: s.topics.filter((t: any) => t.selected),
+          extensions: s.extensions.filter((e: any) => e.type !== 'lesson'),
         }));
         this.loadingSubjects = false;
         this.cdr.detectChanges();
@@ -135,6 +137,10 @@ export class Subjects implements OnInit, OnDestroy {
 
   trackById(index: number, item: SubjectModel) {
     return item.id;
+  }
+
+  getExtensionsString(subject: any) {
+    return subject.extensions.map(((ext: any) => ext.type)).join(', ');
   }
 
   /**
@@ -208,7 +214,7 @@ export class Subjects implements OnInit, OnDestroy {
     });
   }
 
-  onSubjectRightClick(event: MouseEvent, subject: SubjectModel) {
+  onSubjectRightClick(event: MouseEvent, subject: any) {
     event.preventDefault();
     event.stopPropagation();
     if (this.rightClickSubject?.id === subject.id) {
@@ -351,6 +357,12 @@ export class Subjects implements OnInit, OnDestroy {
   submitRating() {
     if (!this.rightClickSubject) {
       this.notify.showError('No subject selected for rating.');
+      this.closeRateModal();
+      return;
+    }
+
+    if (!this.rating || this.rating < 1) {
+      this.notify.showError('Select a valid rating.');
       this.closeRateModal();
       return;
     }

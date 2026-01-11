@@ -32,7 +32,7 @@
         [disabled]="currentAnim"
         [class]="`${(currentIndex == 0) ? 'invisible' : ''} lg:hover:underline flex flex-row items-center rounded-full bg-[var(--bg-hover)] py-2 px-4`"
       >
-        <img src="images/dropdown-icon-closed.svg" alt="" class="w-2 mr-2 rotate-180">
+        <app-theme-icon name="dropdown-icon" class="w-2 mr-2 rotate-180"/>
         Previous
       </button>
     </div>
@@ -69,7 +69,7 @@
         [class]="`${currentIndex === (cards().length - 1) ? 'invisible' : ''} lg:hover:underline flex flex-row items-center rounded-full bg-[var(--bg-hover)] py-2 px-4`"
       >
         Next
-        <img src="images/dropdown-icon-closed.svg" alt="" class="w-2 ml-2">
+        <app-theme-icon name="dropdown-icon" class="w-2 ml-2"/>
       </button>
     </div>
 
