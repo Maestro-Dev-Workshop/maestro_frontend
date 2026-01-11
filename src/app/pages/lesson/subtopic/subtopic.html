@@ -1,10 +1,14 @@
-<div class="w-full flex flex-col">
+<div 
+  #viewContainer 
+  class="w-full flex flex-col 
+  px-8 lg:pl-12 min-h-0 flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 lg:hover:scrollbar-thumb-gray-500"
+>
   <!-- Top Section -->
   <div class="flex flex-row justify-between lg:pt-4 lg:pb-2 sticky z-[9] top-0 bg-[var(--bg-page)]">
     <!-- Topic tree display -->
     <div class="hidden lg:flex flex-row items-center text-[var(--text-secondary)]">
       {{ currentTopic().title }}
-      <img src="images/dropdown-icon-closed.svg" alt="" class="w-2 m-4">
+      <app-theme-icon name="dropdown-icon" className="w-2 m-4"></app-theme-icon>
       {{ currentView().content.title }}
     </div>
     <!-- Subtopic Navigation -->
@@ -14,7 +18,7 @@
         (click)="prevSubtopic()"
         [disabled]="getPosition() === 'top'"
       >
-        <img src="images/dropdown-icon-closed.svg" alt="" class="w-2 m-4 rotate-180">
+      <app-theme-icon name="dropdown-icon" className="w-2 m-4 rotate-180"></app-theme-icon>
         Previous
       </button>
       <button 
@@ -23,7 +27,7 @@
         [disabled]="getPosition() === 'bottom'"
       >
         Next
-        <img src="images/dropdown-icon-closed.svg" alt="" class="w-2 m-4">
+        <app-theme-icon name="dropdown-icon" className="w-2 m-4"></app-theme-icon>
       </button>
     </div>
   </div>
@@ -31,7 +35,7 @@
   <!-- Subtopic Name -->
   <h1 class="flex flex-row items-center my-6">
     <div class="rounded-full bg-[var(--bg-card)] p-3">
-      <img src="images/subject-icon.svg" alt="" class="w-6">
+      <img src="images/subject-icon.svg" class="w-6">
     </div>
     <span class="text-3xl font-medium mx-4">{{ currentView().content.title }}</span>
   </h1>

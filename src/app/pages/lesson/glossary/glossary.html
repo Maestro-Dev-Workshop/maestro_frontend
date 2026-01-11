@@ -1,0 +1,64 @@
+<div class="h-full flex flex-col overflow-hidden">
+  <!-- Fixed Header -->
+  <h1 class="px-8 lg:px-0 lg:pl-12 flex flex-row items-center my-6 flex-shrink-0">
+    <div class="rounded-full bg-[var(--bg-card)] p-3">
+      <img src="images/subject-icon.svg" class="w-6">
+    </div>
+    <span class="text-4xl font-medium mx-4">Glossary</span>
+  </h1>
+
+  <!-- Scrollable Content Area -->
+  <div class="flex-1 min-h-0 w-full flex flex-row gap-4">
+    <!-- Main Glossary List (Scrollable) -->
+    <div 
+      #mainGlossary
+      class="px-8 lg:px-0 lg:pl-12 flex-grow overflow-y-auto pb-16 scrollbar-thin scrollbar-thumb-gray-400 hover:scrollbar-thumb-gray-500"
+    >
+      @for (group of arrangedGlossary(); track group.letter) {
+        <div class="pt-2 mb-8" [id]="group.letter">
+          <h2 class="text-3xl font-bold text-[var(--text-primary)] mb-4">{{ group.letter }}</h2>
+          @for (item of group.terms; track $index) {
+            <div class="mb-4" [id]="group.letter + $index">
+              <h3 class="text-lg font-semibold text-[var(--text-primary)]">{{ item.term }}</h3>
+              <div 
+                class="prose prose-math bg-[var(--bg-page)]
+                text-[var(--text-primary)]
+                prose-headings:text-[var(--text-heading)]
+                prose-p:text-[var(--text-primary)]
+                prose-li:text-[var(--text-primary)]
+                prose-strong:text-[var(--text-heading)]
+                prose-code:text-[var(--text-secondary)]
+                prose-blockquote:text-[var(--text-secondary)]
+                dark:prose-invert" [innerHTML]="item.definition | markdown"></div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Alphabetical Navigation (Scrollable & Sticky) -->
+    <div 
+      #sideNavigation
+      class="w-1/5 hidden md:block flex-shrink-0 pb-8 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 hover:scrollbar-thumb-gray-500"
+    >
+      <div class="sticky top-0">
+        @for (group of arrangedGlossary(); track $index) {
+          <a 
+            class="block text-[var(--text-link)] hover:underline font-medium cursor-pointer mb-1" 
+            (click)="scrollToElementSmooth(group.letter)"
+          >
+            {{ group.letter }}
+          </a>
+          @for (item of group.terms; track $index) {
+            <a 
+              class="block text-[var(--text-link)] hover:underline cursor-pointer text-sm ml-2 mb-1" 
+              (click)="scrollToElementSmooth(group.letter + $index)"
+            >
+              {{ item.term }}
+            </a>
+          }
+        }
+      </div>
+    </div>
+  </div>
+</div>

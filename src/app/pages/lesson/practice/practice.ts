@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, effect, inject, input, OnInit, output, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, ElementRef, inject, input, OnInit, output, SimpleChanges, untracked, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { QuestionModel, SaveQuestionData } from '../../../core/models/question.model';
 import { LessonService } from '../../../core/services/lesson.service';
@@ -6,10 +6,11 @@ import { catchError, forkJoin, Observable, of, switchMap, take, tap } from 'rxjs
 import { MarkdownPipe } from '../../../shared/pipes/markdown-pipe';
 import { NotificationService } from '../../../core/services/notification.service';
 import { ConfirmService } from '../../../core/services/confirm';
+import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-icon';
 
 @Component({
   selector: 'app-practice',
-  imports: [FormsModule, MarkdownPipe],
+  imports: [FormsModule, MarkdownPipe, ThemeIconComponent],
   templateUrl: './practice.html',
   styleUrl: './practice.css'
 })
@@ -27,6 +28,7 @@ export class Practice {
   notify = inject(NotificationService);
   lessonService = inject(LessonService);
   confirmation = inject(ConfirmService);
+  viewContainer = viewChild<ElementRef>('viewContainer');
 
   constructor(private cdr: ChangeDetectorRef) {}
 
@@ -34,9 +36,19 @@ export class Practice {
   private updateOnInputChange = effect(() => {
     const view = this.currentView(); // <-- THIS is reactive
     if (view?.content?.questions?.length) {
+      untracked(() => {
+        setTimeout(() => this.scrollToTop(), 0);
+      });
       this.goToQuestion(0);
     }
   });
+
+  scrollToTop() {
+    const element = this.viewContainer();
+    if (element?.nativeElement) {
+      element.nativeElement.scrollTop = 0;
+    }
+  }
 
   // Not necessary
   autoResize(event: Event) {
@@ -49,6 +61,7 @@ export class Practice {
     this.currentIndex = index;
     this.question = this.currentView().content.questions[this.currentIndex];
     this.changeQuestion.emit({id: this.question.id})
+    this.scrollToTop();
   }
 
   cycleQuestion(direction: string) {
@@ -133,7 +146,7 @@ export class Practice {
               q.essay_feedback = question.essay_feedback = value.feedback;
             }),
             catchError(res => {
-              this.notify.showError(res.error.message || 'Failed to score an essay question.');
+              this.notify.showError(res.error.displayMessage || 'Failed to score an essay question.');
               return of(null);
             })
           )
@@ -169,7 +182,7 @@ export class Practice {
         this.cdr.detectChanges();
       },
       error: (res) => {
-        this.notify.showError(res.error.message || 'Failed to submit answers. Please try again.');
+        this.notify.showError(res.error.displayMessage || 'Failed to submit answers. Please try again.');
         this.loading = false;
         this.cdr.detectChanges();
       }

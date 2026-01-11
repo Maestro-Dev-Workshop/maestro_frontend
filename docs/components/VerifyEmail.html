@@ -228,7 +228,7 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(router: Router)</code>
+<code>constructor(router: Router, cdr: ChangeDetectorRef)</code>
                     </td>
                 </tr>
                         <tr>
@@ -255,6 +255,18 @@
                                                   
                                                         <td>
                                                                     <code>Router</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>cdr</td>
+                                                  
+                                                        <td>
+                                                                    <code>ChangeDetectorRef</code>
                                                         </td>
                                                   
                                                     <td>
@@ -362,7 +374,7 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, inject } from &#x27;@angular/core&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { ChangeDetectorRef, Component, inject } from &#x27;@angular/core&#x27;;
 import { AuthService } from &#x27;../../../core/services/auth.service&#x27;;
 import { Router } from &#x27;@angular/router&#x27;;
 import { NotificationService } from &#x27;../../../core/services/notification.service&#x27;;
@@ -378,7 +390,7 @@ export class VerifyEmail {
   authService &#x3D; inject(AuthService);
   notify &#x3D; inject(NotificationService);
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private cdr: ChangeDetectorRef) {
     // Extract token from URL query params then call verifyEmail
     const urlParams &#x3D; new URLSearchParams(window.location.search);
     const token &#x3D; urlParams.get(&#x27;token&#x27;);
@@ -386,12 +398,14 @@ export class VerifyEmail {
     if (token) {
       this.authService.verifyEmail(token || &#x27;&#x27;).subscribe({
         next: (response) &#x3D;&gt; {
-          console.log(&#x27;Email verification successful&#x27;, response);
           this.verified &#x3D; true;
-          this.router.navigateByUrl(&#x27;/login&#x27;);
+          this.cdr.detectChanges();
+          // Close this tab after a short delay
+          setTimeout(() &#x3D;&gt; {
+            window.close();
+          }, 1000);
         },
         error: (res) &#x3D;&gt; {
-          console.error(&#x27;Email verification failed&#x27;, res);
           this.notify.showError(res.error.message || &#x27;Email verification failed. Please try again.&#x27;);
           this.router.navigateByUrl(&#x27;/signup&#x27;);
         }
@@ -413,12 +427,12 @@ export class VerifyEmail {
     &lt;!-- Header --&gt;
     &lt;div class&#x3D;&quot;flex flex-row my-8 items-center&quot;&gt;
       &lt;img src&#x3D;&quot;images/logo-coloured.svg&quot; alt&#x3D;&quot;Maestro Logo&quot; class&#x3D;&quot;w-12 mr-2&quot;&gt;
-      &lt;span class&#x3D;&quot;font-serif text-3xl h-max text-prussian-blue-900&quot;&gt;Maestro&lt;/span&gt;
+      &lt;span class&#x3D;&quot;font-serif text-3xl h-max text-[var(--text-primary)]&quot;&gt;Maestro&lt;/span&gt;
     &lt;/div&gt;
 
     @if (verified) {
       &lt;div&gt;
-        Email verified successfully!&lt;br&gt;Now redirecting to login...
+        Email verified successfully!&lt;br&gt;You can now close this tab.
       &lt;/div&gt;
     } @else {
       &lt;div class&#x3D;&quot;flex flex-row items-center&quot;&gt;
@@ -464,8 +478,8 @@ export class VerifyEmail {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><div class="flex flex-row w-screen h-screen justify-between">  <!-- left panel -->  <div class="w-full lg:w-6/12 h-full flex flex-col p-12">    <!-- Header -->    <div class="flex flex-row my-8 items-center">      <img src="images/logo-coloured.svg" alt="Maestro Logo" class="w-12 mr-2">      <span class="font-serif text-3xl h-max text-prussian-blue-900">Maestro</span>    </div>    @if (verified) {      <div>        Email verified successfully!<br>Now redirecting to login...      </div>    } @else {      <div class="flex flex-row items-center">        <img src="images/spinner.gif" alt="" class="w-8 h-8 mx-2">        Please wait, verifying email...      </div>    }  </div>  <!-- right panel -->  <div class="w-6/12 h-full relative hidden lg:block">    <img src="images/person-studying-1.png" alt="Maestro Logo" class="h-full w-full object-cover">    <div class="flex flex-row m-8 items-center absolute left-0 bottom-0">      <img src="images/logo-white.svg" alt="Maestro Logo" class="w-12 mr-2">      <span class="font-serif text-3xl h-max text-white">Maestro</span>    </div>  </div></div></div>'
-    var COMPONENTS = [{'name': 'About', 'selector': 'app-about'},{'name': 'App', 'selector': 'app-root'},{'name': 'Chatbot', 'selector': 'app-chatbot'},{'name': 'CheckEmail', 'selector': 'app-check-email'},{'name': 'ConfirmLogout', 'selector': 'app-confirm-logout'},{'name': 'Contact', 'selector': 'app-contact'},{'name': 'CreationStepTab', 'selector': 'app-creation-step-tab'},{'name': 'Features', 'selector': 'app-features'},{'name': 'Header', 'selector': 'app-header'},{'name': 'Home', 'selector': 'app-home'},{'name': 'Landing', 'selector': 'app-landing'},{'name': 'LessonPage', 'selector': 'app-lesson-page'},{'name': 'Login', 'selector': 'app-login'},{'name': 'NamingUpload', 'selector': 'app-naming-upload'},{'name': 'NotFound', 'selector': 'app-not-found'},{'name': 'Practice', 'selector': 'app-practice'},{'name': 'Pricing', 'selector': 'app-pricing'},{'name': 'QuestionSettings', 'selector': 'app-question-settings'},{'name': 'Sidebar', 'selector': 'app-sidebar'},{'name': 'Signup', 'selector': 'app-signup'},{'name': 'Subjects', 'selector': 'app-subjects'},{'name': 'Subscription', 'selector': 'app-subscription'},{'name': 'Subtopic', 'selector': 'app-subtopic'},{'name': 'Toast', 'selector': 'app-toast'},{'name': 'TopicPreferences', 'selector': 'app-topic-preferences'},{'name': 'VerifyEmail', 'selector': 'app-verify-email'}];
+        var COMPONENT_TEMPLATE = '<div><div class="flex flex-row w-screen h-screen justify-between">  <!-- left panel -->  <div class="w-full lg:w-6/12 h-full flex flex-col p-12">    <!-- Header -->    <div class="flex flex-row my-8 items-center">      <img src="images/logo-coloured.svg" alt="Maestro Logo" class="w-12 mr-2">      <span class="font-serif text-3xl h-max text-[var(--text-primary)]">Maestro</span>    </div>    @if (verified) {      <div>        Email verified successfully!<br>You can now close this tab.      </div>    } @else {      <div class="flex flex-row items-center">        <img src="images/spinner.gif" alt="" class="w-8 h-8 mx-2">        Please wait, verifying email...      </div>    }  </div>  <!-- right panel -->  <div class="w-6/12 h-full relative hidden lg:block">    <img src="images/person-studying-1.png" alt="Maestro Logo" class="h-full w-full object-cover">    <div class="flex flex-row m-8 items-center absolute left-0 bottom-0">      <img src="images/logo-white.svg" alt="Maestro Logo" class="w-12 mr-2">      <span class="font-serif text-3xl h-max text-white">Maestro</span>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'About', 'selector': 'app-about'},{'name': 'App', 'selector': 'app-root'},{'name': 'ChartCell', 'selector': 'app-chart-cell'},{'name': 'Chatbot', 'selector': 'app-chatbot'},{'name': 'CheckEmail', 'selector': 'app-check-email'},{'name': 'Confirmation', 'selector': 'app-confirmation'},{'name': 'ConfirmLogout', 'selector': 'app-confirm-logout'},{'name': 'Contact', 'selector': 'app-contact'},{'name': 'CreationStepTab', 'selector': 'app-creation-step-tab'},{'name': 'ExtensionConfigOverlay', 'selector': 'app-extension-config-overlay'},{'name': 'Features', 'selector': 'app-features'},{'name': 'Header', 'selector': 'app-header'},{'name': 'Home', 'selector': 'app-home'},{'name': 'Landing', 'selector': 'app-landing'},{'name': 'LessonGeneration', 'selector': 'app-lesson-generation'},{'name': 'LessonPage', 'selector': 'app-lesson-page'},{'name': 'Login', 'selector': 'app-login'},{'name': 'MarkdownCell', 'selector': 'app-markdown-cell'},{'name': 'NamingUpload', 'selector': 'app-naming-upload'},{'name': 'NotFound', 'selector': 'app-not-found'},{'name': 'Practice', 'selector': 'app-practice'},{'name': 'Pricing', 'selector': 'app-pricing'},{'name': 'PrivacyPolicy', 'selector': 'app-privacy-policy'},{'name': 'QuestionSettings', 'selector': 'app-question-settings'},{'name': 'Sidebar', 'selector': 'app-sidebar'},{'name': 'Signup', 'selector': 'app-signup'},{'name': 'Subjects', 'selector': 'app-subjects'},{'name': 'Subscription', 'selector': 'app-subscription'},{'name': 'Subtopic', 'selector': 'app-subtopic'},{'name': 'Team', 'selector': 'app-team'},{'name': 'TermsOfService', 'selector': 'app-terms-of-service'},{'name': 'Toast', 'selector': 'app-toast'},{'name': 'TopicPreferences', 'selector': 'app-topic-preferences'},{'name': 'VerifyEmail', 'selector': 'app-verify-email'},{'name': 'VerifyPayment', 'selector': 'app-verify-payment'}];
     var DIRECTIVES = [{'name': 'FileTypeDirective', 'selector': '[appFileType]'},{'name': 'PasswordValidator', 'selector': '[appPasswordValidator]'},{'name': 'PreferenceValidator', 'selector': '[appPreferenceValidator]'},{'name': 'SubjectNameValidator', 'selector': '[appSubjectNameValidator]'}];
     var ACTUAL_COMPONENT = {'name': 'VerifyEmail'};
 </script>

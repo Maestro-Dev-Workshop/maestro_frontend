@@ -1,0 +1,184 @@
+<app-header></app-header>
+<div class="flex flex-col w-full px-12 md:px-32 pb-12">
+  <div class="flex flex-row mb-8 w-full">
+    <app-creation-step-tab
+      text="My Subject and Materials"
+      icon="subject-icon"
+      [active]="true"
+      class="hidden md:block w-3/6"
+    />
+    <app-creation-step-tab
+      text="Lesson Content Generation"
+      icon="lesson-generation-icon"
+      [active]="true"
+      class="w-full md:w-3/6"
+    />
+  </div>
+
+  <h1 class="text-2xl mb-2 font-medium">{{subjectName}}</h1>
+  <p class="mb-4 text-[var(--text-alt)]">
+    Select the specific topics from your document that you want Maestro to focus on for your lesson.
+  </p>
+
+  <!-- Topic List -->
+  <div class="flex flex-row flex-wrap mb-16">
+    @for (topic of topics; track topic.id) {
+      <button
+        [class]="
+          'flex flex-row rounded-full py-2 px-3 lg:py-4 lg:px-6 mr-4 my-1 text-sm text-white transition duration-300 ease-in-out ' 
+          + ( topic.selected? 'bg-prussian-blue-900' : 'bg-gray-500')"
+        (click)="toggleTopicSelection(topic.id)"
+        [disabled]="loading || (subjectStatus !== 'pending topic selection')"
+      >
+        @if (topic.selected) {
+          <!-- Replace with X icon -->
+          <img src="images/x-icon.svg" alt="X" class="mr-2 w-3">
+        }
+        {{topic.title}}
+      </button>
+    }
+  </div>
+
+  <!-- Preference and Settings Form -->
+  <form #form="ngForm" class="border-2 border-[var(--text-primary)] text-sm md:text-lg rounded-xl p-3 md:pl-6">
+    <!-- Preference Text Box -->
+    <textarea 
+    type="text" 
+    name="learningStyle" 
+    placeholder="How would you like to learn and generate extensions?" 
+    class="w-full border-0 focus:outline-none resize-none overflow-hidden bg-[var(--bg-page)]" 
+    rows="1"
+    cols="1"
+    oninput="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px';"
+    onmousemove="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px';"
+    [(ngModel)]="learningStyle"
+    required
+    [disabled]="loading || (subjectStatus === 'pending lesson generation')"
+    >
+    </textarea>
+
+    <!-- Settings -->
+    <div class="flex flex-row items-center justify-between">
+      <div class="flex flex-row relative">
+        <button 
+          [class]="`flex flex-row items-center md:mr-4 rounded-full md:hover:shadow-lg p-2
+          ${settingsPopup ? 'bg-[var(--bg-hover)] shadow-lg p-2' : ''}`"
+          (click)="toggleSettingsPopup()"
+          [disabled]="loading"
+        >
+          <app-theme-icon name="extension-icon" className="w-4 md:w-6 mr-1"></app-theme-icon>
+          <span class="hidden md:block">Enable Extensions</span>
+        </button>
+        <button 
+          [class]="`flex flex-row items-center md:mr-4 rounded-full md:hover:shadow-lg p-2
+          ${configOverlay ? 'bg-[var(--bg-hover)] shadow-lg p-2' : ''}`"
+          (click)="toggleConfigOverlay()"
+          [disabled]="!extensionsEnabled || loading"
+        >
+          <app-theme-icon name="config-icon" className="w-6 md:w-6 mr-1"></app-theme-icon>
+          <span class="hidden md:block">Configure Extensions</span>
+        </button>
+
+        <!-- Extension Settings Popup -->
+        <div 
+          [class]="`absolute w-64 bottom-10 left-2 md:bottom-auto md:top-12 md:left-12 rounded-lg flex flex-col items-start 
+          border-[1px] border-[var(--text-primary)] bg-[var(--bg-page)] ${!settingsPopup? 'hidden' : ''}`"
+        >
+          <!-- Exercise Button -->
+          <button 
+            [class]="`rounded-t-lg flex flex-row w-full items-center px-2 py-2 
+            ${!extensionSettings.exercise.enabled ? 'bg-[var(--bg-page)] md:hover:bg-[var(--bg-hover)]'
+              : 'bg-[var(--text-secondary)] text-[var(--bg-page)]'}`"
+            (click)="toggleExtension('exercise')"
+            [disabled]="loading  || (subjectStatus === 'pending lesson generation')"
+          >
+            <app-theme-icon name="exercise-icon" class="w-5 mr-2" [invert]="extensionSettings.exercise.enabled"/>
+            Exercise
+            @if (extensionSettings.exercise.enabled) {
+              <app-theme-icon name="x-icon" class="m-2 w-2 ml-auto" [invert]="true"/>
+            }
+          </button>
+
+          <!-- Exam Button -->
+          <button 
+            [class]="`flex flex-row w-full items-center px-2 py-2 
+            ${!extensionSettings.exam.enabled ? 'bg-[var(--bg-page)] md:hover:bg-[var(--bg-hover)]'
+              : 'bg-[var(--text-secondary)] text-[var(--bg-page)]'}`"
+            (click)="toggleExtension('exam')"
+            [disabled]="loading  || (subjectStatus === 'pending lesson generation')"
+          >
+            <app-theme-icon name="exam-icon" class="w-5 mr-2" [invert]="extensionSettings.exam.enabled"/>
+            Exam
+            @if (extensionSettings.exam.enabled) {
+              <app-theme-icon name="x-icon" class="m-2 w-2 ml-auto" [invert]="true"/>
+            }
+          </button>
+
+          <!-- Flashcards Button -->
+          <button 
+            [class]="`flex flex-row w-full items-center px-2 py-2 
+            ${!extensionSettings.flashcards.enabled ? 'bg-[var(--bg-page)] md:hover:bg-[var(--bg-hover)]'
+              : 'bg-[var(--text-secondary)] text-[var(--bg-page)]'}`"
+            (click)="toggleExtension('flashcards')"
+            [disabled]="loading  || (subjectStatus === 'pending lesson generation')"
+          >
+            <app-theme-icon name="flashcards-icon" class="w-5 mr-2" [invert]="extensionSettings.flashcards.enabled"/>
+            Flashcards
+            @if (extensionSettings.flashcards.enabled) {
+              <app-theme-icon name="x-icon" class="m-2 w-2 ml-auto" [invert]="true"/>
+            }
+          </button>
+
+          <!-- Glossary Button -->
+          <button 
+            [class]="`rounded-b-lg flex flex-row w-full items-center px-2 py-2 
+            ${!extensionSettings.glossary.enabled ? 'bg-[var(--bg-page)] md:hover:bg-[var(--bg-hover)]'
+              : 'bg-[var(--text-secondary)] text-[var(--bg-page)]'}`"
+            (click)="toggleExtension('glossary')"
+            [disabled]="loading  || (subjectStatus === 'pending lesson generation')"
+          >
+            <app-theme-icon name="glossary-icon" class="w-5 mr-2" [invert]="extensionSettings.glossary.enabled"/>
+            Glossary
+            @if (extensionSettings.glossary.enabled) {
+              <app-theme-icon name="x-icon" class="m-2 w-2 ml-auto" [invert]="true"/>
+            }
+          </button>
+        </div>
+      </div>
+
+      <button (click)="go()" [disabled]="loading">
+        <app-theme-icon name="send-icon" className="w-6 md:w-8 lg:hover:opacity-50 disabled:opacity-50"></app-theme-icon>
+      </button>
+    </div>
+  </form>
+
+  <!-- Selected Extensions Display -->
+  <div class="text-gray-400 text-center mt-4">
+    {{ extensionsEnabled ? 'Selected Extensions:' : 'No Extensions Selected' }}
+  </div>
+  <div class="self-center w-full md:w-1/2 my-2 flex flex-row items-center justify-center flex-wrap">
+    @for (extension of getExtensionList(); track $index) {
+      @if (extension.enabled) {
+        <div class="flex flex-row items-center rounded-lg px-2 py-2 m-1 md:m-2 shadow-lg border-2 border-[1px] border-[var(--text-primary)] bg-[var(--bg-page)] cursor-default">
+          <app-theme-icon [name]="`${extension.name}-icon`" class="w-5 mr-1"/>
+          {{ extension.name.charAt(0).toUpperCase() + extension.name.slice(1) }}
+        </div>
+      }
+    }
+  </div>
+  @if (loading) {
+    <div [class]="`self-center flex flex-row items-center`">
+      <img src="images/spinner.gif" alt="" class="w-8 h-8 mx-2">
+      loading...
+    </div>
+  }
+</div>
+
+@if (configOverlay) {
+  <app-extension-config-overlay
+    (close)="saveConfig($event)"
+    [configuration]="extensionSettings"
+    [constraints]="constraints"
+  >
+  </app-extension-config-overlay>
+}

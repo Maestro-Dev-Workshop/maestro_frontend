@@ -18,6 +18,7 @@ export class AuthService {
   }
 
   login(credentials: { email: string; password: string }): Observable<any> {
+    
     return this.http.post('auth/login', credentials);
   }
 
@@ -34,6 +35,7 @@ export class AuthService {
   }
 
   logout(): void {
+    sessionStorage.removeItem('maestro-feedback-banner-dismissed');
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('userEmail');

@@ -167,7 +167,7 @@
             <tr>
                 <td class="col-md-3">imports</td>
                 <td class="col-md-9">
-                            <code>MarkdownPipe</code>
+                                <code><a href="../components/MarkdownCell.html" target="_self" >MarkdownCell</a></code>
                 </td>
             </tr>
 
@@ -438,12 +438,12 @@
 
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, input, output } from &#x27;@angular/core&#x27;;
-import { MarkdownPipe } from &#x27;../../../shared/pipes/markdown-pipe&#x27;;
-// import { MarkdownModule } from &#x27;ngx-markdown&#x27;;
+import { MarkdownCell } from &#x27;../cells/markdown-cell/markdown-cell&#x27;;
+// import { ChartCell } from &#x27;../cells/chart-cell/chart-cell&#x27;;
 
 @Component({
   selector: &#x27;app-subtopic&#x27;,
-  imports: [MarkdownPipe],
+  imports: [MarkdownCell],
   templateUrl: &#x27;./subtopic.html&#x27;,
   styleUrl: &#x27;./subtopic.css&#x27;
 })
@@ -468,17 +468,17 @@ export class Subtopic {
     <div class="tab-pane fade " id="templateData">
         <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;w-full flex flex-col&quot;&gt;
   &lt;!-- Top Section --&gt;
-  &lt;div class&#x3D;&quot;flex flex-row justify-between py-4 sticky z-[9] top-0 bg-white&quot;&gt;
+  &lt;div class&#x3D;&quot;flex flex-row justify-between lg:pt-4 lg:pb-2 sticky z-[9] top-0 bg-[var(--bg-page)]&quot;&gt;
     &lt;!-- Topic tree display --&gt;
-    &lt;div class&#x3D;&quot;flex flex-row items-center text-prussian-blue-800&quot;&gt;
+    &lt;div class&#x3D;&quot;hidden lg:flex flex-row items-center text-[var(--text-secondary)]&quot;&gt;
       {{ currentTopic().title }}
       &lt;img src&#x3D;&quot;images/dropdown-icon-closed.svg&quot; alt&#x3D;&quot;&quot; class&#x3D;&quot;w-2 m-4&quot;&gt;
       {{ currentView().content.title }}
     &lt;/div&gt;
     &lt;!-- Subtopic Navigation --&gt;
-    &lt;div class&#x3D;&quot;flex flex-row&quot;&gt;
+    &lt;div class&#x3D;&quot;flex flex-row ml-auto&quot;&gt;
       &lt;button 
-        [class]&#x3D;&quot;&#x60;flex flex-row items-center mx-4 text-prussian-blue-900 lg:hover:text-prussian-blue-500 disabled:text-prussian-blue-500 ${getPosition().includes(&#x27;top&#x27;) ? &#x27;invisible&#x27; : &#x27;&#x27;}&#x60;&quot; 
+        [class]&#x3D;&quot;&#x60;flex flex-row items-center mr-4 lg:mx-4 text-[var(--text-primary)] lg:hover:text-[var(--text-primary-hover)] disabled:text-[var(--text-primary-hover)] ${getPosition().includes(&#x27;top&#x27;) ? &#x27;invisible&#x27; : &#x27;&#x27;}&#x60;&quot; 
         (click)&#x3D;&quot;prevSubtopic()&quot;
         [disabled]&#x3D;&quot;getPosition() &#x3D;&#x3D;&#x3D; &#x27;top&#x27;&quot;
       &gt;
@@ -486,7 +486,7 @@ export class Subtopic {
         Previous
       &lt;/button&gt;
       &lt;button 
-        [class]&#x3D;&quot;&#x60;flex flex-row items-center mx-4 text-prussian-blue-900 lg:hover:text-prussian-blue-500 disabled:text-prussian-blue-500 ${getPosition().includes(&#x27;bottom&#x27;) ? &#x27;invisible&#x27; : &#x27;&#x27;}&#x60;&quot; 
+        [class]&#x3D;&quot;&#x60;flex flex-row items-center ml-4 lg:mx-4 text-[var(--text-primary)] lg:hover:text-[var(--text-primary-hover)] disabled:text-[var(--text-primary-hover)] ${getPosition().includes(&#x27;bottom&#x27;) ? &#x27;invisible&#x27; : &#x27;&#x27;}&#x60;&quot; 
         (click)&#x3D;&quot;nextSubtopic()&quot;
         [disabled]&#x3D;&quot;getPosition() &#x3D;&#x3D;&#x3D; &#x27;bottom&#x27;&quot;
       &gt;
@@ -498,7 +498,7 @@ export class Subtopic {
 
   &lt;!-- Subtopic Name --&gt;
   &lt;h1 class&#x3D;&quot;flex flex-row items-center my-6&quot;&gt;
-    &lt;div class&#x3D;&quot;rounded-full bg-prussian-blue-200 p-3&quot;&gt;
+    &lt;div class&#x3D;&quot;rounded-full bg-[var(--bg-card)] p-3&quot;&gt;
       &lt;img src&#x3D;&quot;images/subject-icon.svg&quot; alt&#x3D;&quot;&quot; class&#x3D;&quot;w-6&quot;&gt;
     &lt;/div&gt;
     &lt;span class&#x3D;&quot;text-3xl font-medium mx-4&quot;&gt;{{ currentView().content.title }}&lt;/span&gt;
@@ -506,7 +506,15 @@ export class Subtopic {
 
   &lt;!-- Subtopic Content --&gt;
   &lt;div class&#x3D;&quot;text-lg text-gray-700 pb-32&quot;&gt;
-    &lt;div class&#x3D;&quot;prose prose-math&quot; [innerHTML]&#x3D;&quot;currentView().content.content | markdown&quot;&gt;&lt;/div&gt;
+    @for (cell of currentView().content.cells; track $index) {
+      @if (cell.type &#x3D;&#x3D;&#x3D; &quot;text&quot;) {
+        &lt;!-- Markdown Text Cells --&gt;
+        &lt;app-markdown-cell [data]&#x3D;&quot;cell&quot;&gt;&lt;/app-markdown-cell&gt;
+      } @else {
+        &lt;!-- Default Fallback Cells --&gt;
+        &lt;app-markdown-cell [data]&#x3D;&quot;cell&quot;&gt;&lt;/app-markdown-cell&gt;
+      }
+    }
   &lt;/div&gt;
 &lt;/div&gt;</code></pre>
     </div>
@@ -537,8 +545,8 @@ export class Subtopic {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><div class="w-full flex flex-col">  <!-- Top Section -->  <div class="flex flex-row justify-between py-4 sticky z-[9] top-0 bg-white">    <!-- Topic tree display -->    <div class="flex flex-row items-center text-prussian-blue-800">      {{ currentTopic().title }}      <img src="images/dropdown-icon-closed.svg" alt="" class="w-2 m-4">      {{ currentView().content.title }}    </div>    <!-- Subtopic Navigation -->    <div class="flex flex-row">      <button         [class]="`flex flex-row items-center mx-4 text-prussian-blue-900 lg:hover:text-prussian-blue-500 disabled:text-prussian-blue-500 ${getPosition().includes(\'top\') ? \'invisible\' : \'\'}`"         (click)="prevSubtopic()"        [disabled]="getPosition() === \'top\'"      >        <img src="images/dropdown-icon-closed.svg" alt="" class="w-2 m-4 rotate-180">        Previous      </button>      <button         [class]="`flex flex-row items-center mx-4 text-prussian-blue-900 lg:hover:text-prussian-blue-500 disabled:text-prussian-blue-500 ${getPosition().includes(\'bottom\') ? \'invisible\' : \'\'}`"         (click)="nextSubtopic()"        [disabled]="getPosition() === \'bottom\'"      >        Next        <img src="images/dropdown-icon-closed.svg" alt="" class="w-2 m-4">      </button>    </div>  </div>  <!-- Subtopic Name -->  <h1 class="flex flex-row items-center my-6">    <div class="rounded-full bg-prussian-blue-200 p-3">      <img src="images/subject-icon.svg" alt="" class="w-6">    </div>    <span class="text-3xl font-medium mx-4">{{ currentView().content.title }}</span>  </h1>  <!-- Subtopic Content -->  <div class="text-lg text-gray-700 pb-32">    <div class="prose prose-math" [innerHTML]="currentView().content.content | markdown"></div>  </div></div></div>'
-    var COMPONENTS = [{'name': 'About', 'selector': 'app-about'},{'name': 'App', 'selector': 'app-root'},{'name': 'Chatbot', 'selector': 'app-chatbot'},{'name': 'CheckEmail', 'selector': 'app-check-email'},{'name': 'ConfirmLogout', 'selector': 'app-confirm-logout'},{'name': 'Contact', 'selector': 'app-contact'},{'name': 'CreationStepTab', 'selector': 'app-creation-step-tab'},{'name': 'Features', 'selector': 'app-features'},{'name': 'Header', 'selector': 'app-header'},{'name': 'Home', 'selector': 'app-home'},{'name': 'Landing', 'selector': 'app-landing'},{'name': 'LessonPage', 'selector': 'app-lesson-page'},{'name': 'Login', 'selector': 'app-login'},{'name': 'NamingUpload', 'selector': 'app-naming-upload'},{'name': 'NotFound', 'selector': 'app-not-found'},{'name': 'Practice', 'selector': 'app-practice'},{'name': 'Pricing', 'selector': 'app-pricing'},{'name': 'QuestionSettings', 'selector': 'app-question-settings'},{'name': 'Sidebar', 'selector': 'app-sidebar'},{'name': 'Signup', 'selector': 'app-signup'},{'name': 'Subjects', 'selector': 'app-subjects'},{'name': 'Subscription', 'selector': 'app-subscription'},{'name': 'Subtopic', 'selector': 'app-subtopic'},{'name': 'Toast', 'selector': 'app-toast'},{'name': 'TopicPreferences', 'selector': 'app-topic-preferences'},{'name': 'VerifyEmail', 'selector': 'app-verify-email'}];
+        var COMPONENT_TEMPLATE = '<div><div class="w-full flex flex-col">  <!-- Top Section -->  <div class="flex flex-row justify-between lg:pt-4 lg:pb-2 sticky z-[9] top-0 bg-[var(--bg-page)]">    <!-- Topic tree display -->    <div class="hidden lg:flex flex-row items-center text-[var(--text-secondary)]">      {{ currentTopic().title }}      <img src="images/dropdown-icon-closed.svg" alt="" class="w-2 m-4">      {{ currentView().content.title }}    </div>    <!-- Subtopic Navigation -->    <div class="flex flex-row ml-auto">      <button         [class]="`flex flex-row items-center mr-4 lg:mx-4 text-[var(--text-primary)] lg:hover:text-[var(--text-primary-hover)] disabled:text-[var(--text-primary-hover)] ${getPosition().includes(\'top\') ? \'invisible\' : \'\'}`"         (click)="prevSubtopic()"        [disabled]="getPosition() === \'top\'"      >        <img src="images/dropdown-icon-closed.svg" alt="" class="w-2 m-4 rotate-180">        Previous      </button>      <button         [class]="`flex flex-row items-center ml-4 lg:mx-4 text-[var(--text-primary)] lg:hover:text-[var(--text-primary-hover)] disabled:text-[var(--text-primary-hover)] ${getPosition().includes(\'bottom\') ? \'invisible\' : \'\'}`"         (click)="nextSubtopic()"        [disabled]="getPosition() === \'bottom\'"      >        Next        <img src="images/dropdown-icon-closed.svg" alt="" class="w-2 m-4">      </button>    </div>  </div>  <!-- Subtopic Name -->  <h1 class="flex flex-row items-center my-6">    <div class="rounded-full bg-[var(--bg-card)] p-3">      <img src="images/subject-icon.svg" alt="" class="w-6">    </div>    <span class="text-3xl font-medium mx-4">{{ currentView().content.title }}</span>  </h1>  <!-- Subtopic Content -->  <div class="text-lg text-gray-700 pb-32">    @for (cell of currentView().content.cells; track $index) {      @if (cell.type === "text") {        <!-- Markdown Text Cells -->        <app-markdown-cell [data]="cell"></app-markdown-cell>      } @else {        <!-- Default Fallback Cells -->        <app-markdown-cell [data]="cell"></app-markdown-cell>      }    }  </div></div></div>'
+    var COMPONENTS = [{'name': 'About', 'selector': 'app-about'},{'name': 'App', 'selector': 'app-root'},{'name': 'ChartCell', 'selector': 'app-chart-cell'},{'name': 'Chatbot', 'selector': 'app-chatbot'},{'name': 'CheckEmail', 'selector': 'app-check-email'},{'name': 'Confirmation', 'selector': 'app-confirmation'},{'name': 'ConfirmLogout', 'selector': 'app-confirm-logout'},{'name': 'Contact', 'selector': 'app-contact'},{'name': 'CreationStepTab', 'selector': 'app-creation-step-tab'},{'name': 'ExtensionConfigOverlay', 'selector': 'app-extension-config-overlay'},{'name': 'Features', 'selector': 'app-features'},{'name': 'Header', 'selector': 'app-header'},{'name': 'Home', 'selector': 'app-home'},{'name': 'Landing', 'selector': 'app-landing'},{'name': 'LessonGeneration', 'selector': 'app-lesson-generation'},{'name': 'LessonPage', 'selector': 'app-lesson-page'},{'name': 'Login', 'selector': 'app-login'},{'name': 'MarkdownCell', 'selector': 'app-markdown-cell'},{'name': 'NamingUpload', 'selector': 'app-naming-upload'},{'name': 'NotFound', 'selector': 'app-not-found'},{'name': 'Practice', 'selector': 'app-practice'},{'name': 'Pricing', 'selector': 'app-pricing'},{'name': 'PrivacyPolicy', 'selector': 'app-privacy-policy'},{'name': 'QuestionSettings', 'selector': 'app-question-settings'},{'name': 'Sidebar', 'selector': 'app-sidebar'},{'name': 'Signup', 'selector': 'app-signup'},{'name': 'Subjects', 'selector': 'app-subjects'},{'name': 'Subscription', 'selector': 'app-subscription'},{'name': 'Subtopic', 'selector': 'app-subtopic'},{'name': 'Team', 'selector': 'app-team'},{'name': 'TermsOfService', 'selector': 'app-terms-of-service'},{'name': 'Toast', 'selector': 'app-toast'},{'name': 'TopicPreferences', 'selector': 'app-topic-preferences'},{'name': 'VerifyEmail', 'selector': 'app-verify-email'},{'name': 'VerifyPayment', 'selector': 'app-verify-payment'}];
     var DIRECTIVES = [{'name': 'FileTypeDirective', 'selector': '[appFileType]'},{'name': 'PasswordValidator', 'selector': '[appPasswordValidator]'},{'name': 'PreferenceValidator', 'selector': '[appPreferenceValidator]'},{'name': 'SubjectNameValidator', 'selector': '[appSubjectNameValidator]'}];
     var ACTUAL_COMPONENT = {'name': 'Subtopic'};
 </script>

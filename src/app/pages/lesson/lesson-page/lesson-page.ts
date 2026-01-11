@@ -5,16 +5,19 @@ import { Chatbot } from '../chatbot/chatbot';
 import { Subtopic } from '../subtopic/subtopic';
 import { Practice } from "../practice/practice";
 import { SubjectsService } from '../../../core/services/subjects.service';
+import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-icon';
 import { LessonService } from '../../../core/services/lesson.service';
 import { ChatMetadata } from '../../../core/models/chat-metadata.model';
 import { ChatbotService } from '../../../core/services/chatbot.service';
 import { forkJoin, map, switchMap } from 'rxjs';
 import { ChatMessage } from '../../../core/models/chat-message.model';
 import { NotificationService } from '../../../core/services/notification.service';
+import { Glossary } from '../glossary/glossary';
+import { Flashcards } from '../flashcards/flashcards';
 
 @Component({
   selector: 'app-lesson-page',
-  imports: [Header, Sidebar, Chatbot, Subtopic, Practice],
+  imports: [Header, Sidebar, Chatbot, Subtopic, Practice, Glossary, Flashcards],
   templateUrl: './lesson-page.html',
   styleUrl: './lesson-page.css'
 })
@@ -23,7 +26,7 @@ export class LessonPage implements OnInit {
   chatMetadata: ChatMetadata = {};
   subjectContent: any = {};
   currentView: any = {
-    type: 'subtopic', // 'subtopic', 'exercise', or 'exam'
+    type: 'subtopic', // 'subtopic', 'exercise', 'exam', 'glossary', 'flashcards'
     id: '', // ID of the current subtopic, exercise question, or exam question
     content: {} // Content to display based on the current view
   }
@@ -97,7 +100,21 @@ export class LessonPage implements OnInit {
   //             question_type: 'essay',
   //           }
   //         ]
-  //       }
+  //       },
+  //       flashcards: [
+  //         // {
+  //         //   id: 'f1-t1',
+  //         //   front: 'What is Latitude?',
+  //         //   back: 'Latitude is the distance north or south of the Equator, measured in degrees.',
+  //         //   hint: 'Think horizontal lines on a globe.'
+  //         // },
+  //         // {
+  //         //   id: 'f2-t1',
+  //         //   front: 'What is Longitude?',
+  //         //   back: 'Longitude is the distance east or west of the Prime Meridian, measured in degrees.',
+  //         //   hint: 'Think vertical lines on a globe.'
+  //         // }
+  //       ]
   //     },
   //     {
   //       expanded: false,
@@ -140,7 +157,39 @@ export class LessonPage implements OnInit {
   //             answer: 'Human activities such as deforestation, pollution, and urbanization significantly impact the environment by altering ecosystems, contributing to climate change, and reducing biodiversity.'
   //           }
   //         ]
-  //       }
+  //       },
+  //       flashcards: [
+  //         {
+  //           id: 'f1-t2',
+  //           front: 'What is Latitude?',
+  //           back: 'Latitude is the distance north or south of the Equator, measured in degrees.',
+  //           hint: 'Think horizontal lines on a globe.'
+  //         },
+  //         {
+  //           id: 'f2-t2',
+  //           front: 'What is Longitude?',
+  //           back: 'Longitude is the distance east or west of the Prime Meridian, measured in degrees.',
+  //           hint: 'Think vertical lines on a globe.'
+  //         },
+  //         {
+  //           id: 'f3-t2',
+  //           front: 'What is the Equator?',
+  //           back: 'The Equator is an imaginary line around the Earth, equidistant from the North and South Poles.',
+  //           hint: 'It divides the Earth into Northern and Southern Hemispheres.'
+  //         },
+  //         {            
+  //           id: 'f4-t2',
+  //           front: 'What is the Prime Meridian?',
+  //           back: 'The Prime Meridian is the planet\'s line of zero degrees longitude, which passes through Greenwich, England.',
+  //           hint: 'It divides the Earth into Eastern and Western Hemispheres.'
+  //         },
+  //         {            
+  //           id: 'f5-t2',
+  //           front: 'Define "Topography".',
+  //           back: 'Topography refers to the arrangement of the natural and artificial physical features of an area.',
+  //           hint: 'Think about the shape and features of the land.'
+  //         }
+  //       ]
   //     }
   //   ],
   //   exam: {
@@ -180,7 +229,9 @@ export class LessonPage implements OnInit {
   //   },
   // ]
 
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor(
+    private cdr: ChangeDetectorRef,
+  ) {
     // Extract subjectId from the route parameters
     const url = window.location.pathname;
     const parts = url.split('/');
@@ -188,12 +239,16 @@ export class LessonPage implements OnInit {
   }
 
   ngOnInit(): void {
+    // // Testing
+    // this.subjectLoading = false;
+    // this.cdr.detectChanges();
+
     // Fetch chat history
     this.chatbotService.getChatHistory(this.subjectId).subscribe({
       next: (response) => {
         this.chatHistory = response.history;
       }, error: (res) => {
-        this.notify.showError(res.error.message || "Failed to load chat history. Please try again later.")
+        this.notify.showError(res.error.displayMessage || "Failed to load chat history. Please try again later.")
       },
     });
 
@@ -236,11 +291,15 @@ export class LessonPage implements OnInit {
             ),
             exercise: this.lessonService.getExercise(topic.id).pipe(
               map((r: any) => r.exercise || null)
+            ),
+            flashcards: this.lessonService.getFlashcards(topic.id).pipe(
+              map((r: any) => r.flashcards || [])
             )
           }).pipe(
             map((res) => {
               topic.subtopics = res.subtopics;
               topic.exercise = res.exercise;
+              topic.flashcards = res.flashcards;
               return topic;
             })
           )
@@ -249,11 +308,20 @@ export class LessonPage implements OnInit {
         return forkJoin(topicRequests); // wait for all topics to finish loading
       }),
       switchMap(() => {
-        // 4. Finally fetch exam
+        // 4. Fetch exam
         return this.lessonService.getExam(this.subjectId).pipe(
           map((res: any) => {
             this.subjectContent.exam = res.exam || null; // unwrap exam
             return res.exam;
+          })
+        );
+      }),
+      switchMap(() => {
+        // 5. Fetch glossary
+        return this.lessonService.getGlossary(this.subjectId).pipe(
+          map((res: any) => {
+            this.subjectContent.glossary = res.glossary || []; // unwrap glossary
+            return res.glossary;
           })
         );
       })
@@ -274,9 +342,9 @@ export class LessonPage implements OnInit {
         }
   
         // If still nothing, set exam or fallback
-        if (!this.currentView.id && this.subjectContent.exam) {
+        if ((!this.currentView.id) && (this.subjectContent.exam?.score == null)) {
           this.updatecurrentView({ id: this.subjectContent.exam.id, type: 'exam' });
-        } else if (!this.currentView.id) {
+        } else {
           const firstTopic = this.subjectContent.topics[0];
           if (firstTopic && firstTopic.subtopics.length > 0) {
             this.updatecurrentView({ id: firstTopic.subtopics[0].id, type: 'subtopic' });
@@ -287,7 +355,7 @@ export class LessonPage implements OnInit {
         this.cdr.detectChanges();
       },
       error: (res) => {
-        this.notify.showError(res.error.message || 'Failed to load lesson content. Please try again later.');
+        this.notify.showError(res.error.displayMessage || 'Failed to load lesson content. Please try again later.');
         this.subjectLoading = false;
         this.cdr.detectChanges();
       }
@@ -301,16 +369,19 @@ export class LessonPage implements OnInit {
 
     if (event.type === 'subtopic') {
       content = this.subjectContent.topics
-        .flatMap((topic: any) => topic.subtopics)
-        .find((subtopic: any)=> subtopic.id === event.id) || {};
-      // check for completed topic
-      } else if (event.type === 'exercise') {
-        content = this.subjectContent.topics
-        .flatMap((topic: any) => topic.exercise)
-        .find((exercise: any) => exercise.id === event.id) || {};
-      } else if (event.type === 'exam') {
-        content = this.subjectContent.exam
-      }
+      .flatMap((topic: any) => topic.subtopics)
+      .find((subtopic: any)=> subtopic.id === event.id) || {};
+    } else if (event.type === 'exercise') {
+      content = this.subjectContent.topics
+      .flatMap((topic: any) => topic.exercise)
+      .find((exercise: any) => exercise.id === event.id) || {};
+    } else if (event.type === 'exam') {
+      content = this.subjectContent.exam
+    } else if (event.type === 'glossary') {
+      content = this.subjectContent.glossary
+    } else if (event.type === 'flashcards') {
+      content = this.subjectContent.topics.find((topic: any) => topic.id === event.id)?.flashcards || [];
+    }
       
     this.currentView = {
       id: event.id,
@@ -332,7 +403,7 @@ export class LessonPage implements OnInit {
           this.updateProgress()
           this.checkForTopicCompleteness(topic_id)
         }, error: (res) => {
-          this.notify.showError(res.error.message || 'Failed to mark subtopic as read.')
+          this.notify.showError(res.error.displayMessage || 'Failed to mark subtopic as read.')
         },
       });
     } else if (this.chatOpen && (this.currentView.content.score == null)){
@@ -377,14 +448,14 @@ export class LessonPage implements OnInit {
         const percentage = total > 0 ? Math.round(fraction * 100) : 0;
         console.log(`Progress: ${completed}/${total} (${percentage}%)`);
       }, error: (res) => {
-        this.notify.showError(res.error.message || 'Failed to update progress.')
+        this.notify.showError(res.error.displayMessage || 'Failed to update progress.')
       },
     });
   }  
   
   //
   getTopicDataFromSubtopic() {
-    const topicData = this.subjectContent.topics.find((topic: any) => topic.subtopics.some((subtopic: any) => subtopic.id === this.currentView.id));
+    const topicData = this.subjectContent.topics?.find((topic: any) => topic.subtopics.some((subtopic: any) => subtopic.id === this.currentView.id));
     return { id: topicData?.id, title: topicData?.title};
   }
 
@@ -492,6 +563,12 @@ export class LessonPage implements OnInit {
     const el = this.contentContainer?.nativeElement;
     if (!el) return;
     el.scrollTop = 0;
+  }
+
+  scrollToPosition(pos: any) {
+    const el = this.contentContainer?.nativeElement;
+    if (!el) return;
+    el.scrollTo({ top: pos - el.getBoundingClientRect().top + el.scrollTop, behavior: 'smooth' });
   }
 
   toggleSidebar() {

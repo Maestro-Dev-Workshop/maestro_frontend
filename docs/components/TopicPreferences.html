@@ -403,8 +403,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="102"
-                                    class="link-to-prism">src/app/pages/subject-create/topic-preferences/topic-preferences.ts:102</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="99"
+                                    class="link-to-prism">src/app/pages/subject-create/topic-preferences/topic-preferences.ts:99</a></div>
                         </td>
                     </tr>
 
@@ -884,13 +884,10 @@ export class TopicPreferences implements OnInit {
     // Fetch topics from backend
     this.lessonService.getAllTopics(this.subjectId).subscribe({
       next: (response) &#x3D;&gt; {
-        console.log(response)
         this.topics &#x3D; response.topics
-        console.log(this.topics)
         this.cdr.detectChanges();
       },
       error: (res) &#x3D;&gt; {
-        console.error(&#x27;Error fetching topics:&#x27;, res);
         this.notify.showError(res.error.message || &quot;Failed to load topics. Please try again later.&quot;);
       }
     });
@@ -910,19 +907,13 @@ export class TopicPreferences implements OnInit {
       return
     }
 
-    // Here you would typically send the data to the backend
-    console.log(selectedTopics);
-    console.log(this.learningStyle);
-
     // Select topics
     this.subjectService.selectTopics(this.subjectId, selectedTopics.map((topic) &#x3D;&gt; topic.id)).subscribe({
       next: (response) &#x3D;&gt; {
-        console.log(&quot;Topics selected:&quot;, response);
         
         // Generate lesson
         this.subjectService.generateLesson(this.subjectId, this.learningStyle).subscribe({
           next: (response) &#x3D;&gt; {
-            console.log(&quot;Lesson generated:&quot;, response);
             this.notify.showSuccess(&quot;Successfully generated lesson.&quot;)
             this.router.navigate([&#x60;/subject-create/${this.subjectId}/question-settings&#x60;])
             this.loading &#x3D; false;
@@ -930,7 +921,6 @@ export class TopicPreferences implements OnInit {
 
           error: (res) &#x3D;&gt; {
             this.loading &#x3D; false;
-            console.error(&#x27;Error generating lesson:&#x27;, res);
             this.notify.showError(res.error.message || &quot;Failed to generate lesson. Please try again later.&quot;);
             this.loading &#x3D; false;
             this.cdr.detectChanges();
@@ -940,7 +930,6 @@ export class TopicPreferences implements OnInit {
       
       error: (res) &#x3D;&gt; {
         this.loading &#x3D; false;
-        console.error(&#x27;Error selecting topics:&#x27;, res);
         this.notify.showError(res.error.message || &quot;Failed to select topics. Please try again later.&quot;);
         this.loading &#x3D; false;
         this.cdr.detectChanges();
@@ -976,7 +965,7 @@ export class TopicPreferences implements OnInit {
   &lt;/div&gt;
 
   &lt;h1 class&#x3D;&quot;text-2xl mb-2 font-medium&quot;&gt;Create Your Personalized Lesson&lt;/h1&gt;
-  &lt;p class&#x3D;&quot;mb-4 text-gray-600&quot;&gt;
+  &lt;p class&#x3D;&quot;mb-4 text-[var(--text-alt)]&quot;&gt;
     Select the specific topics from your document that you want Maestro to focus on for your lesson.
   &lt;/p&gt;
 
@@ -984,7 +973,7 @@ export class TopicPreferences implements OnInit {
   &lt;div class&#x3D;&quot;flex flex-row flex-wrap mb-16&quot;&gt;
     @for (topic of topics; track topic.id) {
       &lt;button
-        [class]&#x3D;&quot;&#x27;flex flex-row rounded-full py-4 px-6 text-sm text-white mx-2 my-1 transition duration-300 ease-in-out &#x27; + ( topic.selected? &#x27;bg-prussian-blue-900&#x27; : &#x27;bg-gray-500&#x27;)&quot;
+        [class]&#x3D;&quot;&#x27;flex flex-row rounded-full py-2 px-3 lg:py-4 lg:px-6 text-sm text-white mx-2 my-1 transition duration-300 ease-in-out &#x27; + ( topic.selected? &#x27;bg-prussian-blue-900&#x27; : &#x27;bg-gray-500&#x27;)&quot;
         (click)&#x3D;&quot;toggleTopicSelection(topic.id)&quot;
         [disabled]&#x3D;&quot;loading&quot;
       &gt;
@@ -1000,12 +989,12 @@ export class TopicPreferences implements OnInit {
   &lt;!-- Learning Preferences Form --&gt;
   &lt;h1 class&#x3D;&quot;text-2xl font-medium&quot;&gt;Learning Style&lt;/h1&gt;
   &lt;form #form&#x3D;&quot;ngForm&quot; class&#x3D;&quot;flex flex-col w-full md:w-2/4&quot;&gt;
-    &lt;label class&#x3D;&quot;text-gray-700 my-2&quot;&gt;How would you like this lesson to be?&lt;/label&gt;
+    &lt;label class&#x3D;&quot;text-[var(--text-alt)] my-2&quot;&gt;How would you like this lesson to be?&lt;/label&gt;
     &lt;textarea
       type&#x3D;&quot;text&quot; 
       name&#x3D;&quot;learningStyle&quot; 
       placeholder&#x3D;&quot;This helps Maestro tailor the content delivery to your unique style, you can provide your custom instructions here.&quot; 
-      class&#x3D;&quot;bg-gray-50 p-4 rounded-lg border border-2 h-48 text-sm&quot; 
+      class&#x3D;&quot;p-4 rounded-lg border border-2 h-48 text-sm bg-[var(--bg-page)]&quot; 
       [(ngModel)]&#x3D;&quot;learningStyle&quot;
       required
       learningStyle
@@ -1023,7 +1012,7 @@ export class TopicPreferences implements OnInit {
     &lt;div class&#x3D;&quot;flex flex-row items-center&quot;&gt;
       &lt;button
         type&#x3D;&quot;submit&quot; 
-        class&#x3D;&quot;w-max bg-prussian-blue-800 lg:hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500 text-white flex flex-row items-center px-5 py-3 rounded-md text-sm my-4&quot; 
+        class&#x3D;&quot;w-max bg-prussian-blue-700 lg:hover:bg-prussian-blue-400 disabled:bg-prussian-blue-400 text-white flex flex-row items-center px-5 py-3 rounded-md text-sm my-4&quot; 
         (click)&#x3D;&quot;onSubmit()&quot;
         [disabled]&#x3D;&quot;loading&quot;
       &gt;
@@ -1066,8 +1055,8 @@ export class TopicPreferences implements OnInit {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><app-header></app-header><div class="flex flex-col w-full px-12 md:px-32">  <div class="flex flex-row mb-8 w-full">    <app-creation-step-tab      [text]="\'My Subject and Materials\'"      [icon]="\'images/subject-icon.svg\'"      [active]="true"      class="hidden md:block w-2/6"    />    <app-creation-step-tab      [text]="\'Lesson Content Generation\'"      [icon]="\'images/lesson-generation-icon.svg\'"      [active]="true"      class="w-full md:w-2/6"    />    <app-creation-step-tab      [text]="\'Practice Question Generation\'"      [icon]="\'images/question-generation-icon.svg\'"      [active]="false"      class="hidden md:block w-2/6"    />  </div>  <h1 class="text-2xl mb-2 font-medium">Create Your Personalized Lesson</h1>  <p class="mb-4 text-gray-600">    Select the specific topics from your document that you want Maestro to focus on for your lesson.  </p>  <!-- Topic List -->  <div class="flex flex-row flex-wrap mb-16">    @for (topic of topics; track topic.id) {      <button        [class]="\'flex flex-row rounded-full py-4 px-6 text-sm text-white mx-2 my-1 transition duration-300 ease-in-out \' + ( topic.selected? \'bg-prussian-blue-900\' : \'bg-gray-500\')"        (click)="toggleTopicSelection(topic.id)"        [disabled]="loading"      >        @if (topic.selected) {          <!-- Replace with X icon -->          <img src="images/x-icon.svg" alt="X" class="mr-2 w-3">        }        {{topic.title}}      </button>    }  </div>  <!-- Learning Preferences Form -->  <h1 class="text-2xl font-medium">Learning Style</h1>  <form #form="ngForm" class="flex flex-col w-full md:w-2/4">    <label class="text-gray-700 my-2">How would you like this lesson to be?</label>    <textarea      type="text"       name="learningStyle"       placeholder="This helps Maestro tailor the content delivery to your unique style, you can provide your custom instructions here."       class="bg-gray-50 p-4 rounded-lg border border-2 h-48 text-sm"       [(ngModel)]="learningStyle"      required      learningStyle      #learningStyleCtrl="ngModel"      appPreferenceValidator      [disabled]="loading"    ></textarea>    <!-- Error messages -->    @if (learningStyleCtrl.invalid && learningStyleCtrl.touched) {      <div class="text-red-500 text-sm mt-1">        @if (learningStyleCtrl.errors?.[\'required\']) {<span>Learning Style is required</span>}        @if (learningStyleCtrl.errors?.[\'invalidPreference\']) {<span>Learning Style cannot exceed 1000 characters</span>}      </div>    }    <div class="flex flex-row items-center">      <button        type="submit"         class="w-max bg-prussian-blue-800 lg:hover:bg-prussian-blue-500 disabled:bg-prussian-blue-500 text-white flex flex-row items-center px-5 py-3 rounded-md text-sm my-4"         (click)="onSubmit()"        [disabled]="loading"      >        Next        <img src="images/next-icon.svg" alt="" class="w-3 ml-2">      </button>      <div [class]="`flex flex-row items-center ${loading ? \'\' : \'hidden\'}`">        <img src="images/spinner.gif" alt="" class="w-8 h-8 mx-2">        loading...      </div>    </div>  </form></div></div>'
-    var COMPONENTS = [{'name': 'About', 'selector': 'app-about'},{'name': 'App', 'selector': 'app-root'},{'name': 'Chatbot', 'selector': 'app-chatbot'},{'name': 'CheckEmail', 'selector': 'app-check-email'},{'name': 'ConfirmLogout', 'selector': 'app-confirm-logout'},{'name': 'Contact', 'selector': 'app-contact'},{'name': 'CreationStepTab', 'selector': 'app-creation-step-tab'},{'name': 'Features', 'selector': 'app-features'},{'name': 'Header', 'selector': 'app-header'},{'name': 'Home', 'selector': 'app-home'},{'name': 'Landing', 'selector': 'app-landing'},{'name': 'LessonPage', 'selector': 'app-lesson-page'},{'name': 'Login', 'selector': 'app-login'},{'name': 'NamingUpload', 'selector': 'app-naming-upload'},{'name': 'NotFound', 'selector': 'app-not-found'},{'name': 'Practice', 'selector': 'app-practice'},{'name': 'Pricing', 'selector': 'app-pricing'},{'name': 'QuestionSettings', 'selector': 'app-question-settings'},{'name': 'Sidebar', 'selector': 'app-sidebar'},{'name': 'Signup', 'selector': 'app-signup'},{'name': 'Subjects', 'selector': 'app-subjects'},{'name': 'Subscription', 'selector': 'app-subscription'},{'name': 'Subtopic', 'selector': 'app-subtopic'},{'name': 'Toast', 'selector': 'app-toast'},{'name': 'TopicPreferences', 'selector': 'app-topic-preferences'},{'name': 'VerifyEmail', 'selector': 'app-verify-email'}];
+        var COMPONENT_TEMPLATE = '<div><app-header></app-header><div class="flex flex-col w-full px-12 md:px-32">  <div class="flex flex-row mb-8 w-full">    <app-creation-step-tab      [text]="\'My Subject and Materials\'"      [icon]="\'images/subject-icon.svg\'"      [active]="true"      class="hidden md:block w-2/6"    />    <app-creation-step-tab      [text]="\'Lesson Content Generation\'"      [icon]="\'images/lesson-generation-icon.svg\'"      [active]="true"      class="w-full md:w-2/6"    />    <app-creation-step-tab      [text]="\'Practice Question Generation\'"      [icon]="\'images/question-generation-icon.svg\'"      [active]="false"      class="hidden md:block w-2/6"    />  </div>  <h1 class="text-2xl mb-2 font-medium">Create Your Personalized Lesson</h1>  <p class="mb-4 text-[var(--text-alt)]">    Select the specific topics from your document that you want Maestro to focus on for your lesson.  </p>  <!-- Topic List -->  <div class="flex flex-row flex-wrap mb-16">    @for (topic of topics; track topic.id) {      <button        [class]="\'flex flex-row rounded-full py-2 px-3 lg:py-4 lg:px-6 text-sm text-white mx-2 my-1 transition duration-300 ease-in-out \' + ( topic.selected? \'bg-prussian-blue-900\' : \'bg-gray-500\')"        (click)="toggleTopicSelection(topic.id)"        [disabled]="loading"      >        @if (topic.selected) {          <!-- Replace with X icon -->          <img src="images/x-icon.svg" alt="X" class="mr-2 w-3">        }        {{topic.title}}      </button>    }  </div>  <!-- Learning Preferences Form -->  <h1 class="text-2xl font-medium">Learning Style</h1>  <form #form="ngForm" class="flex flex-col w-full md:w-2/4">    <label class="text-[var(--text-alt)] my-2">How would you like this lesson to be?</label>    <textarea      type="text"       name="learningStyle"       placeholder="This helps Maestro tailor the content delivery to your unique style, you can provide your custom instructions here."       class="p-4 rounded-lg border border-2 h-48 text-sm bg-[var(--bg-page)]"       [(ngModel)]="learningStyle"      required      learningStyle      #learningStyleCtrl="ngModel"      appPreferenceValidator      [disabled]="loading"    ></textarea>    <!-- Error messages -->    @if (learningStyleCtrl.invalid && learningStyleCtrl.touched) {      <div class="text-red-500 text-sm mt-1">        @if (learningStyleCtrl.errors?.[\'required\']) {<span>Learning Style is required</span>}        @if (learningStyleCtrl.errors?.[\'invalidPreference\']) {<span>Learning Style cannot exceed 1000 characters</span>}      </div>    }    <div class="flex flex-row items-center">      <button        type="submit"         class="w-max bg-prussian-blue-700 lg:hover:bg-prussian-blue-400 disabled:bg-prussian-blue-400 text-white flex flex-row items-center px-5 py-3 rounded-md text-sm my-4"         (click)="onSubmit()"        [disabled]="loading"      >        Next        <img src="images/next-icon.svg" alt="" class="w-3 ml-2">      </button>      <div [class]="`flex flex-row items-center ${loading ? \'\' : \'hidden\'}`">        <img src="images/spinner.gif" alt="" class="w-8 h-8 mx-2">        loading...      </div>    </div>  </form></div></div>'
+    var COMPONENTS = [{'name': 'About', 'selector': 'app-about'},{'name': 'App', 'selector': 'app-root'},{'name': 'ChartCell', 'selector': 'app-chart-cell'},{'name': 'Chatbot', 'selector': 'app-chatbot'},{'name': 'CheckEmail', 'selector': 'app-check-email'},{'name': 'Confirmation', 'selector': 'app-confirmation'},{'name': 'ConfirmLogout', 'selector': 'app-confirm-logout'},{'name': 'Contact', 'selector': 'app-contact'},{'name': 'CreationStepTab', 'selector': 'app-creation-step-tab'},{'name': 'ExtensionConfigOverlay', 'selector': 'app-extension-config-overlay'},{'name': 'Features', 'selector': 'app-features'},{'name': 'Header', 'selector': 'app-header'},{'name': 'Home', 'selector': 'app-home'},{'name': 'Landing', 'selector': 'app-landing'},{'name': 'LessonGeneration', 'selector': 'app-lesson-generation'},{'name': 'LessonPage', 'selector': 'app-lesson-page'},{'name': 'Login', 'selector': 'app-login'},{'name': 'MarkdownCell', 'selector': 'app-markdown-cell'},{'name': 'NamingUpload', 'selector': 'app-naming-upload'},{'name': 'NotFound', 'selector': 'app-not-found'},{'name': 'Practice', 'selector': 'app-practice'},{'name': 'Pricing', 'selector': 'app-pricing'},{'name': 'PrivacyPolicy', 'selector': 'app-privacy-policy'},{'name': 'QuestionSettings', 'selector': 'app-question-settings'},{'name': 'Sidebar', 'selector': 'app-sidebar'},{'name': 'Signup', 'selector': 'app-signup'},{'name': 'Subjects', 'selector': 'app-subjects'},{'name': 'Subscription', 'selector': 'app-subscription'},{'name': 'Subtopic', 'selector': 'app-subtopic'},{'name': 'Team', 'selector': 'app-team'},{'name': 'TermsOfService', 'selector': 'app-terms-of-service'},{'name': 'Toast', 'selector': 'app-toast'},{'name': 'TopicPreferences', 'selector': 'app-topic-preferences'},{'name': 'VerifyEmail', 'selector': 'app-verify-email'},{'name': 'VerifyPayment', 'selector': 'app-verify-payment'}];
     var DIRECTIVES = [{'name': 'FileTypeDirective', 'selector': '[appFileType]'},{'name': 'PasswordValidator', 'selector': '[appPasswordValidator]'},{'name': 'PreferenceValidator', 'selector': '[appPreferenceValidator]'},{'name': 'SubjectNameValidator', 'selector': '[appSubjectNameValidator]'}];
     var ACTUAL_COMPONENT = {'name': 'TopicPreferences'};
 </script>
