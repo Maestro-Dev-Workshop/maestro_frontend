@@ -1,9 +1,10 @@
 import { Component, computed, effect, ElementRef, input, output, signal, untracked, viewChild } from '@angular/core';
 import { MarkdownPipe } from '../../../shared/pipes/markdown-pipe';
+import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-icon';
 
 @Component({
   selector: 'app-glossary',
-  imports: [MarkdownPipe],
+  imports: [MarkdownPipe, ThemeIconComponent],
   templateUrl: './glossary.html',
   styleUrl: './glossary.css',
 })

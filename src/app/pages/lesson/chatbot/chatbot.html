@@ -1,45 +1,124 @@
-<div class="flex flex-col justify-end h-full w-full bg-[var(--bg-page)] border-l-2 p-2">
-  <!-- Close Button -->
-  <button class="absolute top-2 justify-self-start p-3 rounded-full bg-prussian-blue-700 lg:hover:bg-prussian-blue-400" (click)="onCloseChat()">
-    <img src="images/x-icon.svg" alt="">
-  </button>
-
-  <!-- Chat Messages -->
-  <div #chatContainer class="flex flex-col w-full flex-grow overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 lg:hover:scrollbar-thumb-gray-500">
-    @for (chat of chatHistory(); track $index) {
-      <div 
-        [class]="`rounded-2xl p-3 my-1 break-words text-sm 
-          ${(chat.sender === 'user') 
-            ? 'self-end bg-prussian-blue-700 text-white rounded-br-none' 
-            : 'prose prose-math self-start bg-[var(--bg-card)] text-gray-900 rounded-bl-none'}`"
-        style="max-width: 80%;"
-      >
-      <span class="block" [innerHTML]="chat.message | markdown"></span>
+<!-- chatbot.html -->
+<div class="relative flex flex-col h-full w-full bg-[var(--bg-page)] border-l-2 p-3">
+  <!-- Header -->
+  <div class="flex items-center justify-between gap-3 pb-2 border-b border-transparent">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-full bg-prussian-blue-700 flex items-center justify-center text-white font-semibold">
+        <img src="images/chatin-icon.svg" alt="" srcset="">
       </div>
-    }
-  </div>
+      <div class="flex flex-col">
+        <div class="text-sm font-semibold text-prussian-blue-900">Maestro</div>
+        <div class="text-xs text-gray-500">Ask anything about this subject</div>
+      </div>
+    </div>
 
-  <!-- Text Input -->
-  <div class="w-full flex flex-col place-self-end">
-    <textarea 
-      class="p-2 my-2 border-2 rounded-md overflow-hidden w-full bg-[var(--bg-page)]"
-      rows="1"
-      [(ngModel)]="currentMessage"
-      [disabled]="loading"
-      (keydown)="handleKeyDown($event)"
-      oninput="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px';"
-      onmousemove="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px';"
-    ></textarea>
-
-    <!-- Submit Button -->
-    <button 
-      class="self-center w-2/4 text-white rounded-md p-2 bg-prussian-blue-700 lg:hover:bg-prussian-blue-400 disabled:bg-prussian-blue-400" 
-      (click)="sendMessage()"
-      [disabled]="loading || !currentMessage"
+    <button
+      class="p-2 rounded-full bg-prussian-blue-700 hover:bg-prussian-blue-600 text-white"
+      (click)="onCloseChat()"
+      aria-label="Close chat"
+      title="Close"
     >
-      Send
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
     </button>
   </div>
 
-  <img src="images/spinner.gif" alt="" class="absolute bottom-3 right-2 h-8 mx-2" [hidden]="!loading">
+  <!-- Chat Messages -->
+  <div
+    #chatContainer
+    class="flex flex-col w-full flex-grow overflow-y-auto mt-3 gap-2 px-1 scrollbar-thin scrollbar-thumb-gray-400"
+    role="log"
+    aria-live="polite"
+  >
+    <!-- Empty / Prompt state -->
+    <div *ngIf="chatHistory().length === 0" class="w-full flex flex-col items-center justify-center py-8">
+      <div class="max-w-xs text-center text-gray-600">
+        <h3 class="text-lg font-semibold text-prussian-blue-900 mb-2">What would you like to explore?</h3>
+        <p class="text-sm">Ask Maestro anything about this subject...</p>
+      </div>
+    </div>
+
+    <!-- Messages -->
+    <ng-container *ngFor="let chat of chatHistory(); trackBy: trackByIndex">
+      <div class="flex items-start gap-3" [class.justify-end]="chat.sender === 'user'">
+        <!-- Avatar -->
+        <div *ngIf="chat.sender !== 'user'" class="w-8 h-8 rounded-full bg-[var(--bg-card)] flex items-center justify-center text-sm text-prussian-blue-900">
+          A
+        </div>
+        <div *ngIf="chat.sender === 'user'" class="w-8 h-8 rounded-full bg-prussian-blue-700 flex items-center justify-center text-sm text-white">
+          U
+        </div>
+
+        <!-- Bubble -->
+        <div
+          [class]="
+            'max-w-[80%] break-words text-sm p-3 rounded-2xl ' +
+            (chat.sender === 'user'
+              ? 'self-end bg-prussian-blue-700 text-white rounded-br-none'
+              : 'self-start bg-[var(--bg-card)] text-gray-900 rounded-bl-none')
+          "
+        >
+          <div [innerHTML]="chat.message | markdown"></div>
+          <div class="text-[10px] text-gray-400 mt-1 text-right">
+            {{ chat.timestamp }}
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- Typing / Loading indicator -->
+    <div *ngIf="loading" class="flex items-start gap-3">
+      <div class="w-8 h-8 rounded-full bg-[var(--bg-card)] flex items-center justify-center text-sm text-prussian-blue-900">A</div>
+      <div class="bg-[var(--bg-card)] text-gray-900 p-3 rounded-2xl rounded-bl-none">
+        <div class="flex items-center gap-1">
+          <span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></span>
+          <span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-75"></span>
+          <span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-150"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Composer -->
+  <div class="w-full mt-3">
+    <div class="flex items-end gap-2">
+      <textarea
+        #messageInput
+        class="flex-1 min-h-[40px] max-h-40 resize-none p-3 rounded-md border border-gray-200 bg-[var(--bg-page)] text-sm focus:outline-none focus:ring-2 focus:ring-prussian-blue-200"
+        rows="1"
+        [(ngModel)]="currentMessage"
+        [disabled]="loading"
+        (keydown)="handleKeyDown($event)"
+        (input)="adjustInputHeight()"
+        placeholder="Ask Maestro anything about this subject..."
+        aria-label="Message input"
+      ></textarea>
+
+      <button
+        class="flex items-center justify-center w-10 h-10 rounded-full bg-prussian-blue-700 hover:bg-prussian-blue-600 text-white disabled:opacity-50"
+        (click)="sendMessage()"
+        [disabled]="loading || !currentMessage.trim()"
+        aria-label="Send message"
+        title="Send"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 transform rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l7-7-7-7M5 12h14"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Secondary actions row (mobile friendly) -->
+    <div class="mt-2 flex items-center justify-between text-xs text-gray-500">
+      <div class="flex items-center gap-3">
+        <button class="px-2 py-1 rounded-md hover:bg-gray-100" (click)="insertExample('Give me a summary')">Example: Summary</button>
+        <button class="px-2 py-1 rounded-md hover:bg-gray-100" (click)="insertExample('Create practice questions')">Practice</button>
+      </div>
+
+      <div class="text-xs text-gray-400">Press Enter to send · Shift+Enter for newline</div>
+    </div>
+  </div>
+
+  <!-- Floating spinner for global loading (keeps previous behavior) -->
+  <img src="images/spinner.gif" alt="loading" class="absolute bottom-3 right-3 h-8" [hidden]="!loading">
 </div>

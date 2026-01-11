@@ -164,6 +164,12 @@
             </tr>
 
 
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                            <code>RouterLink</code>
+                </td>
+            </tr>
 
 
 
@@ -256,7 +262,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">src/app/pages/home/contact/contact.ts:10</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="11" class="link-to-prism">src/app/pages/home/contact/contact.ts:11</a></div>
                             </td>
                         </tr>
             </tbody>
@@ -289,8 +295,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="16"
-                                    class="link-to-prism">src/app/pages/home/contact/contact.ts:16</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="17"
+                                    class="link-to-prism">src/app/pages/home/contact/contact.ts:17</a></div>
                         </td>
                     </tr>
 
@@ -326,8 +332,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="12"
-                                    class="link-to-prism">src/app/pages/home/contact/contact.ts:12</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="13"
+                                    class="link-to-prism">src/app/pages/home/contact/contact.ts:13</a></div>
                         </td>
                     </tr>
 
@@ -363,8 +369,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="20"
-                                    class="link-to-prism">src/app/pages/home/contact/contact.ts:20</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="21"
+                                    class="link-to-prism">src/app/pages/home/contact/contact.ts:21</a></div>
                         </td>
                     </tr>
 
@@ -387,10 +393,11 @@
 
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, EventEmitter, Output } from &#x27;@angular/core&#x27;;
+import { RouterLink } from &#x27;@angular/router&#x27;;
 
 @Component({
   selector: &#x27;app-contact&#x27;,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: &#x27;./contact.html&#x27;,
   styleUrl: &#x27;./contact.css&#x27;
 })
@@ -424,7 +431,7 @@ export class Contact {
           &lt;div class&#x3D;&quot;h-auto w-12 sm:w-[63px] flex-shrink-0&quot;&gt;
             &lt;img src&#x3D;&quot;images/logo-coloured.svg&quot; alt&#x3D;&quot;Maestro Logo Icon&quot; /&gt;
           &lt;/div&gt;
-          &lt;h2 class&#x3D;&quot;font-serif text-3xl sm:text-5xl md:text-7xl font-bold leading-tight text-white&quot;&gt;
+          &lt;h2 class&#x3D;&quot;font-serif text-3xl sm:text-5xl md:text-7xl leading-tight text-white&quot;&gt;
             Maestro
           &lt;/h2&gt;
         &lt;/div&gt;
@@ -444,12 +451,14 @@ export class Contact {
           &lt;/ul&gt;
         &lt;/div&gt;
 
-        &lt;div&gt;
+        &lt;div class&#x3D;&quot;flex flex-col text-gray-300&quot;&gt;
           &lt;h3 class&#x3D;&quot;mb-4 text-lg sm:text-xl font-medium text-[#EAAA08]&quot;&gt;Contact Information&lt;/h3&gt;
-          &lt;p class&#x3D;&quot;flex items-center space-x-2 text-sm sm:text-base text-gray-300&quot;&gt;
+          &lt;p class&#x3D;&quot;flex items-center space-x-2 text-sm sm:text-base md:hover:text-white&quot;&gt;
             &lt;img src&#x3D;&quot;images/EnvelopeSimple.svg&quot; /&gt;
-            &lt;span&gt;maestroaidevs@gmail.com&lt;/span&gt;
+            &lt;a href&#x3D;&quot;mailto:support@maestrolearningplatform.com&quot;&gt;support@maestrolearningplatform.com&lt;/a&gt;
           &lt;/p&gt;
+          &lt;a routerLink&#x3D;&quot;/privacy-policy&quot; class&#x3D;&quot;text-sm sm:text-base mt-3 md:hover:text-white&quot;&gt;Privacy Policy&lt;/a&gt;
+          &lt;a routerLink&#x3D;&quot;/terms-of-service&quot; class&#x3D;&quot;text-sm sm:text-base mt-3 md:hover:text-white&quot;&gt;Terms of Service&lt;/a&gt;
         &lt;/div&gt;
       &lt;/div&gt;
     &lt;/div&gt;
@@ -463,15 +472,18 @@ export class Contact {
         &amp;copy; 2025 Maestro. All rights reserved.
       &lt;/p&gt;
       &lt;div class&#x3D;&quot;flex space-x-4&quot;&gt;
-        &lt;a href&#x3D;&quot;https://www.linkedin.com/&quot; target&#x3D;&quot;_blank&quot;&gt;
-          &lt;img src&#x3D;&quot;images/linkedin.svg&quot; alt&#x3D;&quot;linkedin icon&quot; /&gt;
+        &lt;a href&#x3D;&quot;https://www.linkedin.com/company/overmind-tech/&quot; target&#x3D;&quot;_blank&quot;&gt;
+          &lt;img src&#x3D;&quot;images/linkedin.svg&quot; alt&#x3D;&quot;linkedin icon&quot;  class&#x3D;&quot;w-12 lg:w-20&quot;/&gt;
         &lt;/a&gt;
-        &lt;a href&#x3D;&quot;https://www.facebook.com/&quot; target&#x3D;&quot;_blank&quot;&gt;
-          &lt;img src&#x3D;&quot;images/facebook.svg&quot; alt&#x3D;&quot;facebook icon&quot; /&gt;
+        &lt;a href&#x3D;&quot;https://discord.gg/FNawhhghKC&quot; target&#x3D;&quot;_blank&quot;&gt;
+          &lt;img src&#x3D;&quot;images/discord-icon.png&quot; alt&#x3D;&quot;discord icon&quot; class&#x3D;&quot;w-12 lg:w-20&quot;/&gt;
+        &lt;/a&gt;
+        &lt;!-- &lt;a href&#x3D;&quot;https://www.facebook.com/&quot; target&#x3D;&quot;_blank&quot;&gt;
+          &lt;img src&#x3D;&quot;images/facebook.svg&quot; alt&#x3D;&quot;facebook icon&quot; class&#x3D;&quot;w-20&quot;/&gt;
         &lt;/a&gt;
         &lt;a href&#x3D;&quot;https://www.instagram.com/&quot; target&#x3D;&quot;_blank&quot;&gt;
-          &lt;img src&#x3D;&quot;images/instagram.svg&quot; alt&#x3D;&quot;instagram icon&quot; /&gt;
-        &lt;/a&gt;
+          &lt;img src&#x3D;&quot;images/instagram.svg&quot; alt&#x3D;&quot;instagram icon&quot; class&#x3D;&quot;w-20&quot;/&gt;
+        &lt;/a&gt; --&gt;
       &lt;/div&gt;
     &lt;/div&gt;
   &lt;/div&gt;
@@ -504,8 +516,8 @@ export class Contact {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><!-- Main Footer Container --><footer class="bg-prussian-blue-900 py-12 sm:py-16 text-white">  <div class="container mx-auto px-4 sm:px-6 lg:px-8">    <!-- Footer Content -->    <div class="flex flex-col gap-12 md:flex-row md:justify-between md:items-start">      <!-- Logo and Tagline -->      <div class="px-2 sm:px-4 py-4 md:mb-0">        <div class="flex items-center gap-2">          <div class="h-auto w-12 sm:w-[63px] flex-shrink-0">            <img src="images/logo-coloured.svg" alt="Maestro Logo Icon" />          </div>          <h2 class="font-serif text-3xl sm:text-5xl md:text-7xl font-bold leading-tight text-white">            Maestro          </h2>        </div>        <p class="mt-2 text-base sm:text-xl md:text-2xl text-gray-400">          Your Personalized Learning Companion        </p>      </div>      <!-- Quick Links and Contact Info -->      <div class="flex flex-col sm:flex-row sm:space-x-12 md:space-x-24 w-full sm:w-auto px-2 sm:px-0">        <div class="mb-8 sm:mb-0">          <h3 class="mb-4 text-lg sm:text-xl font-medium text-[#EAAA08]">Quick Links</h3>          <ul class="space-y-2 sm:space-y-3 text-sm sm:text-base text-gray-300">            <li><a (click)="onHomeClick()" class="lg:hover:text-white cursor-pointer">Home</a></li>            <li><a (click)="onFeaturesClick()" class="lg:hover:text-white cursor-pointer">Features</a></li>            <li><a (click)="onPricingClick()" class="lg:hover:text-white cursor-pointer">Pricing</a></li>          </ul>        </div>        <div>          <h3 class="mb-4 text-lg sm:text-xl font-medium text-[#EAAA08]">Contact Information</h3>          <p class="flex items-center space-x-2 text-sm sm:text-base text-gray-300">            <img src="images/EnvelopeSimple.svg" />            <span>maestroaidevs@gmail.com</span>          </p>        </div>      </div>    </div>    <!-- Divider -->    <hr class="my-10 sm:my-12 border-t border-gray-700" />    <!-- Bottom Footer -->    <div class="flex flex-col items-center justify-between gap-6 sm:gap-8 md:flex-row md:items-end">      <p class="text-sm sm:text-base md:text-xl text-gray-500 text-center md:text-left">        &copy; 2025 Maestro. All rights reserved.      </p>      <div class="flex space-x-4">        <a href="https://www.linkedin.com/" target="_blank">          <img src="images/linkedin.svg" alt="linkedin icon" />        </a>        <a href="https://www.facebook.com/" target="_blank">          <img src="images/facebook.svg" alt="facebook icon" />        </a>        <a href="https://www.instagram.com/" target="_blank">          <img src="images/instagram.svg" alt="instagram icon" />        </a>      </div>    </div>  </div></footer></div>'
-    var COMPONENTS = [{'name': 'About', 'selector': 'app-about'},{'name': 'App', 'selector': 'app-root'},{'name': 'Chatbot', 'selector': 'app-chatbot'},{'name': 'CheckEmail', 'selector': 'app-check-email'},{'name': 'ConfirmLogout', 'selector': 'app-confirm-logout'},{'name': 'Contact', 'selector': 'app-contact'},{'name': 'CreationStepTab', 'selector': 'app-creation-step-tab'},{'name': 'Features', 'selector': 'app-features'},{'name': 'Header', 'selector': 'app-header'},{'name': 'Home', 'selector': 'app-home'},{'name': 'Landing', 'selector': 'app-landing'},{'name': 'LessonPage', 'selector': 'app-lesson-page'},{'name': 'Login', 'selector': 'app-login'},{'name': 'NamingUpload', 'selector': 'app-naming-upload'},{'name': 'NotFound', 'selector': 'app-not-found'},{'name': 'Practice', 'selector': 'app-practice'},{'name': 'Pricing', 'selector': 'app-pricing'},{'name': 'QuestionSettings', 'selector': 'app-question-settings'},{'name': 'Sidebar', 'selector': 'app-sidebar'},{'name': 'Signup', 'selector': 'app-signup'},{'name': 'Subjects', 'selector': 'app-subjects'},{'name': 'Subscription', 'selector': 'app-subscription'},{'name': 'Subtopic', 'selector': 'app-subtopic'},{'name': 'Toast', 'selector': 'app-toast'},{'name': 'TopicPreferences', 'selector': 'app-topic-preferences'},{'name': 'VerifyEmail', 'selector': 'app-verify-email'}];
+        var COMPONENT_TEMPLATE = '<div><!-- Main Footer Container --><footer class="bg-prussian-blue-900 py-12 sm:py-16 text-white">  <div class="container mx-auto px-4 sm:px-6 lg:px-8">    <!-- Footer Content -->    <div class="flex flex-col gap-12 md:flex-row md:justify-between md:items-start">      <!-- Logo and Tagline -->      <div class="px-2 sm:px-4 py-4 md:mb-0">        <div class="flex items-center gap-2">          <div class="h-auto w-12 sm:w-[63px] flex-shrink-0">            <img src="images/logo-coloured.svg" alt="Maestro Logo Icon" />          </div>          <h2 class="font-serif text-3xl sm:text-5xl md:text-7xl leading-tight text-white">            Maestro          </h2>        </div>        <p class="mt-2 text-base sm:text-xl md:text-2xl text-gray-400">          Your Personalized Learning Companion        </p>      </div>      <!-- Quick Links and Contact Info -->      <div class="flex flex-col sm:flex-row sm:space-x-12 md:space-x-24 w-full sm:w-auto px-2 sm:px-0">        <div class="mb-8 sm:mb-0">          <h3 class="mb-4 text-lg sm:text-xl font-medium text-[#EAAA08]">Quick Links</h3>          <ul class="space-y-2 sm:space-y-3 text-sm sm:text-base text-gray-300">            <li><a (click)="onHomeClick()" class="lg:hover:text-white cursor-pointer">Home</a></li>            <li><a (click)="onFeaturesClick()" class="lg:hover:text-white cursor-pointer">Features</a></li>            <li><a (click)="onPricingClick()" class="lg:hover:text-white cursor-pointer">Pricing</a></li>          </ul>        </div>        <div class="flex flex-col text-gray-300">          <h3 class="mb-4 text-lg sm:text-xl font-medium text-[#EAAA08]">Contact Information</h3>          <p class="flex items-center space-x-2 text-sm sm:text-base md:hover:text-white">            <img src="images/EnvelopeSimple.svg" />            <a href="mailto:support@maestrolearningplatform.com">support@maestrolearningplatform.com</a>          </p>          <a routerLink="/privacy-policy" class="text-sm sm:text-base mt-3 md:hover:text-white">Privacy Policy</a>          <a routerLink="/terms-of-service" class="text-sm sm:text-base mt-3 md:hover:text-white">Terms of Service</a>        </div>      </div>    </div>    <!-- Divider -->    <hr class="my-10 sm:my-12 border-t border-gray-700" />    <!-- Bottom Footer -->    <div class="flex flex-col items-center justify-between gap-6 sm:gap-8 md:flex-row md:items-end">      <p class="text-sm sm:text-base md:text-xl text-gray-500 text-center md:text-left">        &copy; 2025 Maestro. All rights reserved.      </p>      <div class="flex space-x-4">        <a href="https://www.linkedin.com/company/overmind-tech/" target="_blank">          <img src="images/linkedin.svg" alt="linkedin icon"  class="w-12 lg:w-20"/>        </a>        <a href="https://discord.gg/FNawhhghKC" target="_blank">          <img src="images/discord-icon.png" alt="discord icon" class="w-12 lg:w-20"/>        </a>        <!-- <a href="https://www.facebook.com/" target="_blank">          <img src="images/facebook.svg" alt="facebook icon" class="w-20"/>        </a>        <a href="https://www.instagram.com/" target="_blank">          <img src="images/instagram.svg" alt="instagram icon" class="w-20"/>        </a> -->      </div>    </div>  </div></footer></div>'
+    var COMPONENTS = [{'name': 'About', 'selector': 'app-about'},{'name': 'App', 'selector': 'app-root'},{'name': 'ChartCell', 'selector': 'app-chart-cell'},{'name': 'Chatbot', 'selector': 'app-chatbot'},{'name': 'CheckEmail', 'selector': 'app-check-email'},{'name': 'Confirmation', 'selector': 'app-confirmation'},{'name': 'ConfirmLogout', 'selector': 'app-confirm-logout'},{'name': 'Contact', 'selector': 'app-contact'},{'name': 'CreationStepTab', 'selector': 'app-creation-step-tab'},{'name': 'ExtensionConfigOverlay', 'selector': 'app-extension-config-overlay'},{'name': 'Features', 'selector': 'app-features'},{'name': 'Header', 'selector': 'app-header'},{'name': 'Home', 'selector': 'app-home'},{'name': 'Landing', 'selector': 'app-landing'},{'name': 'LessonGeneration', 'selector': 'app-lesson-generation'},{'name': 'LessonPage', 'selector': 'app-lesson-page'},{'name': 'Login', 'selector': 'app-login'},{'name': 'MarkdownCell', 'selector': 'app-markdown-cell'},{'name': 'NamingUpload', 'selector': 'app-naming-upload'},{'name': 'NotFound', 'selector': 'app-not-found'},{'name': 'Practice', 'selector': 'app-practice'},{'name': 'Pricing', 'selector': 'app-pricing'},{'name': 'PrivacyPolicy', 'selector': 'app-privacy-policy'},{'name': 'QuestionSettings', 'selector': 'app-question-settings'},{'name': 'Sidebar', 'selector': 'app-sidebar'},{'name': 'Signup', 'selector': 'app-signup'},{'name': 'Subjects', 'selector': 'app-subjects'},{'name': 'Subscription', 'selector': 'app-subscription'},{'name': 'Subtopic', 'selector': 'app-subtopic'},{'name': 'Team', 'selector': 'app-team'},{'name': 'TermsOfService', 'selector': 'app-terms-of-service'},{'name': 'Toast', 'selector': 'app-toast'},{'name': 'TopicPreferences', 'selector': 'app-topic-preferences'},{'name': 'VerifyEmail', 'selector': 'app-verify-email'},{'name': 'VerifyPayment', 'selector': 'app-verify-payment'}];
     var DIRECTIVES = [{'name': 'FileTypeDirective', 'selector': '[appFileType]'},{'name': 'PasswordValidator', 'selector': '[appPasswordValidator]'},{'name': 'PreferenceValidator', 'selector': '[appPreferenceValidator]'},{'name': 'SubjectNameValidator', 'selector': '[appSubjectNameValidator]'}];
     var ACTUAL_COMPONENT = {'name': 'Contact'};
 </script>

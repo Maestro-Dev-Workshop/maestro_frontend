@@ -1,5 +1,6 @@
 import { Component, input, output } from '@angular/core';
 import { RouterLink } from '@angular/router';
+// import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-icon';
 
 @Component({
   selector: 'app-sidebar',
