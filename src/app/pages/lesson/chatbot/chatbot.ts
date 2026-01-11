@@ -21,11 +21,12 @@ import { ChatbotService } from '../../../core/services/chatbot.service';
 import { ChatMetadata } from '../../../core/models/chat-metadata.model';
 import { MarkdownPipe } from '../../../shared/pipes/markdown-pipe';
 import { NotificationService } from '../../../core/services/notification.service';
+import { ThemeIconComponent } from "../../../shared/components/theme-icon/theme-icon";
 
 @Component({
   selector: 'app-chatbot',
   standalone: true,
-  imports: [FormsModule, MarkdownPipe, CommonModule],
+  imports: [FormsModule, MarkdownPipe, CommonModule, ThemeIconComponent],
   templateUrl: './chatbot.html',
   styleUrls: ['./chatbot.css'],
 })

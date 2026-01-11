@@ -17,7 +17,7 @@ import { Flashcards } from '../flashcards/flashcards';
 
 @Component({
   selector: 'app-lesson-page',
-  imports: [Header, Sidebar, Chatbot, Subtopic, Practice, Glossary, Flashcards, ThemeIconComponent],
+  imports: [Header, Sidebar, Chatbot, Subtopic, Practice, Glossary, Flashcards],
   templateUrl: './lesson-page.html',
   styleUrl: './lesson-page.css'
 })
