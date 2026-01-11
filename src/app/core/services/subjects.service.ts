@@ -58,8 +58,11 @@ export class SubjectsService {
     return this.http.delete(`session/${sessionId}/delete`);
   }
 
-  submitFeedback(sessionId: string, rating: number, comments: string): Observable<any> {
-    return this.http.post(`session/${sessionId}/feedback`, { rating, comments });
+  submitFeedback(sessionId: string, rating: number, comment: string): Observable<any> {
+    return this.http.post(`lesson-feedback`, { 
+      session_id: sessionId, 
+      rating, 
+      comment });
   }
 
 

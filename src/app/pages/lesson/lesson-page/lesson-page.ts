@@ -27,7 +27,7 @@ export class LessonPage implements OnInit {
   subjectContent: any = {};
   currentView: any = {
     type: 'subtopic', // 'subtopic', 'exercise', 'exam', 'glossary', 'flashcards'
-    id: 's1-t1', // ID of the current subtopic, exercise question, or exam question
+    id: '', // ID of the current subtopic, exercise question, or exam question
     content: {} // Content to display based on the current view
   }
   chatHistory: ChatMessage[] = [];
@@ -342,9 +342,9 @@ export class LessonPage implements OnInit {
         }
   
         // If still nothing, set exam or fallback
-        if (!this.currentView.id && this.subjectContent.exam) {
+        if ((!this.currentView.id) && (this.subjectContent.exam?.score == null)) {
           this.updatecurrentView({ id: this.subjectContent.exam.id, type: 'exam' });
-        } else if (!this.currentView.id) {
+        } else {
           const firstTopic = this.subjectContent.topics[0];
           if (firstTopic && firstTopic.subtopics.length > 0) {
             this.updatecurrentView({ id: firstTopic.subtopics[0].id, type: 'subtopic' });
@@ -455,7 +455,7 @@ export class LessonPage implements OnInit {
   
   //
   getTopicDataFromSubtopic() {
-    const topicData = this.subjectContent.topics.find((topic: any) => topic.subtopics.some((subtopic: any) => subtopic.id === this.currentView.id));
+    const topicData = this.subjectContent.topics?.find((topic: any) => topic.subtopics.some((subtopic: any) => subtopic.id === this.currentView.id));
     return { id: topicData?.id, title: topicData?.title};
   }
 

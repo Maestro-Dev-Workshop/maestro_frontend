@@ -64,7 +64,7 @@
     }
 
     <!-- Glossary -->
-    @if (content().glossary) {
+    @if (content().glossary && (content().glossary.length > 0)) {
       <button [class]="`py-2 px-2 pl-8 text-[var(--text-secondary)] w-full text-left lg:hover:bg-[var(--bg-hover)] border-[var(--text-primary)] 
         ${(content().glossary.id === currentView().id && currentView().type === 'glossary') ? 'border-l-4' : ''}`"
         (click)="selectView('glossary', 'glossary')">
