@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, NO_ERRORS_SCHEMA, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, inject, NO_ERRORS_SCHEMA, OnInit, viewChild, ViewChild } from '@angular/core';
 import { Header } from '../../../shared/components/header/header';
 import { CreationStepTab } from '../creation-step-tab/creation-step-tab';
 import { FormsModule, NgModel } from '@angular/forms';
@@ -30,6 +30,7 @@ export class LessonGeneration implements OnInit {
   extensionsEnabled = false
   subjectId = ''
   subjectStatus = ''
+  textInput = viewChild<ElementRef>('textInput');
   notify = inject(NotificationService)
   subjectService = inject(SubjectsService)
   subscriptionService = inject(SubscriptionService)
@@ -80,6 +81,14 @@ export class LessonGeneration implements OnInit {
     this.subjectId = parts[parts.length - 2]; // Assuming the last part is the subjectId
   }
 
+  adjustInputHeight() {
+    const ta = this.textInput()?.nativeElement;
+    if (!ta) return;
+    ta.style.height = 'auto';
+    const max = 240; // px
+    ta.style.height = Math.min(ta.scrollHeight, max) + 'px';
+  }
+
   toggleTopicSelection(topic_id: any) {
     this.topics.map(
       (topic: any) => {
@@ -93,7 +102,13 @@ export class LessonGeneration implements OnInit {
   }
 
   toggleConfigOverlay() {
-    this.configOverlay = !this.configOverlay
+    if (
+      this.extensionSettings.exercise.enabled ||
+      this.extensionSettings.exam.enabled ||
+      this.extensionSettings.flashcards.enabled
+    ) {
+      this.configOverlay = !this.configOverlay
+    }
   }
 
   saveConfig(config: any) {
