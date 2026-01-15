@@ -46,11 +46,12 @@
     type="text" 
     name="learningStyle" 
     placeholder="How would you like to learn and generate extensions?" 
-    class="w-full border-0 focus:outline-none resize-none overflow-hidden bg-[var(--bg-page)]" 
+    class="w-full border-0 focus:outline-none resize-none overflow-y-auto scrollbar-thin bg-[var(--bg-page)] max-h-[30vh]" 
     rows="1"
     cols="1"
-    oninput="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px';"
-    onmousemove="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px';"
+    #textInput
+    (input)="adjustInputHeight()"
+    (mousemove)="adjustInputHeight()"
     [(ngModel)]="learningStyle"
     required
     [disabled]="loading || (subjectStatus === 'pending lesson generation')"
