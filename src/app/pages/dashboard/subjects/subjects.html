@@ -190,30 +190,31 @@
   </div>
 
   <!-- Right-click contextual popup (Delete / Rate) -->
-  <div
-    *ngIf="rightClickSubject"
-    class="fixed z-40 bg-[var(--bg-page)] border rounded-md shadow-lg"
-    [ngStyle]="{ left: popup.x + 'px', top: popup.y + 'px' }"
-    (click)="$event.stopPropagation()"
-  >
-    <ul class="p-2">
-      <li
-        class="flex items-center gap-2 px-3 py-2 hover:bg-[var(--bg-hover)] cursor-pointer rounded"
-        (click)="openDelete()"
-      >
-        <app-theme-icon name="delete-subject-icon" className="w-4"></app-theme-icon>
-        <span>Delete</span>
-      </li>
-
-      <li
-        class="flex items-center gap-2 px-3 py-2 hover:bg-[var(--bg-hover)] cursor-pointer rounded"
-        (click)="openRateModal()"
-      >
-        <app-theme-icon name="rate-icon" className="w-4"></app-theme-icon>
-        <span>Rate</span>
-      </li>
-    </ul>
-  </div>
+  @if (rightClickSubject) {
+    <div
+      class="fixed z-40 bg-[var(--bg-page)] border rounded-md shadow-lg"
+      [ngStyle]="{ left: popup.x + 'px', top: popup.y + 'px' }"
+      (click)="$event.stopPropagation()"
+    >
+      <ul class="p-2">
+        <li
+          class="flex items-center gap-2 px-3 py-2 hover:bg-[var(--bg-hover)] cursor-pointer rounded"
+          (click)="openDelete()"
+        >
+          <app-theme-icon name="delete-subject-icon" className="w-4"></app-theme-icon>
+          <span>Delete</span>
+        </li>
+  
+        <li
+          class="flex items-center gap-2 px-3 py-2 hover:bg-[var(--bg-hover)] cursor-pointer rounded"
+          (click)="openRateModal()"
+        >
+          <app-theme-icon name="rate-icon" className="w-4"></app-theme-icon>
+          <span>Rate</span>
+        </li>
+      </ul>
+    </div>
+  }
 
   <!-- Rate Modal -->
   @if (showRateModal) {
@@ -288,51 +289,34 @@
   }
 
   <!-- Feedback Button -->
-  <div
-    *ngIf="showFeedbackBanner"
-    class="fixed bottom-0 left-0 right-0 z-40 flex gap-4 items-center justify-between px-6 py-4 bg-[var(--bg-banner)] ]"
-  >
-    <!-- Text -->
-    <p class="text-sm text-[var(--text-secondary)]">
-      Got a minute? We’d love to hear how Maestro is working for you so far.
-    </p>
-
-    <!-- Actions -->
-    <div class="flex items-center gap-4">
-      <!-- CTA -->
-      <a
-        href="https://forms.gle/y6B3ReSJXCstUAE89"
-        target="_blank"
-        class="px-4 py-2 rounded-full text-center bg-[var(--bg-button)] lg:hover:bg-[var(--bg-button-hover)] text-[var(--text-primary)] transition-colors"
-      >
-        Share Feedback
-      </a>
-
-      <!-- Close -->
-      <button
-        class="text-xl leading-none text-[var(--text-alt-hover)] hover:text-[var(--text-primary)] transition"
-        (click)="closeFeedbackBanner()"
-        aria-label="Close feedback banner"
-      >
-        ×
-      </button>
+  @if (showFeedbackBanner) {
+    <div class="fixed bottom-0 left-0 right-0 z-40 flex gap-4 items-center justify-between px-6 py-4 bg-[var(--bg-banner)] ]">
+      <!-- Text -->
+      <p class="text-sm text-[var(--text-secondary)]">
+        Got a minute? We’d love to hear how Maestro is working for you so far.
+      </p>
+  
+      <!-- Actions -->
+      <div class="flex items-center gap-4">
+        <!-- CTA -->
+        <a
+          href="https://forms.gle/y6B3ReSJXCstUAE89"
+          target="_blank"
+          class="px-4 py-2 rounded-full text-center bg-[var(--bg-button)] lg:hover:bg-[var(--bg-button-hover)] text-[var(--text-primary)] transition-colors"
+        >
+          Share Feedback
+        </a>
+  
+        <!-- Close -->
+        <button
+          class="text-xl leading-none text-[var(--text-alt-hover)] hover:text-[var(--text-primary)] transition"
+          (click)="closeFeedbackBanner()"
+          aria-label="Close feedback banner"
+        >
+          ×
+        </button>
+      </div>
     </div>
-  </div>
+  }
 </div>
 } }
-
-<!-- Popup Delete button
-@if (rightClickSubject) {
-<div
-  [class]="`fixed p-1 bg-[var(--bg-page)] rounded-md flex flex-col items-center justify-center top-[${popup.y}px] left-[${popup.x}px]`"
-  [style.top.px]="popup.y + 8"
-  [style.left.px]="popup.x + 8"
->
-  <button
-    class="rounded-md px-2 py-1 text-white bg-red-600 lg:hover:bg-red-400"
-    (click)="openDelete()"
-  >
-    Delete
-  </button>
-</div>
-} -->
