@@ -45,7 +45,7 @@
         <!-- Flashcards -->
         @if (topic.flashcards && (topic.flashcards?.length > 0)) {
           <button [class]="`py-2 px-2 pl-8 text-[var(--text-secondary)] w-full text-left lg:hover:bg-[var(--bg-hover)] border-[var(--text-primary)]
-            ${(topic.flashcards.id === currentView().id && currentView().type === 'flashcards') ? 'border-l-4' : ''}`"
+            ${(topic.id === currentView().id && currentView().type === 'flashcards') ? 'border-l-4' : ''}`"
             (click)="selectView(topic.id, 'flashcards')">
             Flashcards
           </button>
@@ -66,7 +66,7 @@
     <!-- Glossary -->
     @if (content().glossary && (content().glossary.length > 0)) {
       <button [class]="`py-2 px-2 pl-8 text-[var(--text-secondary)] w-full text-left lg:hover:bg-[var(--bg-hover)] border-[var(--text-primary)] 
-        ${(content().glossary.id === currentView().id && currentView().type === 'glossary') ? 'border-l-4' : ''}`"
+        ${(currentView().type === 'glossary') ? 'border-l-4' : ''}`"
         (click)="selectView('glossary', 'glossary')">
         Glossary
       </button>
