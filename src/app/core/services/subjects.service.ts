@@ -58,6 +58,10 @@ export class SubjectsService {
     return this.http.delete(`session/${sessionId}/delete`);
   }
 
+  reorderSubjectTopics(sessionId: string, topics: string[]): Observable<any> {
+    return this.http.put(`session/${sessionId}/reorder-topics`, { topics })
+  }
+
   submitFeedback(sessionId: string, rating: number, comment: string): Observable<any> {
     return this.http.post(`lesson-feedback`, { 
       session_id: sessionId, 

@@ -574,4 +574,8 @@ export class LessonPage implements OnInit {
   toggleSidebar() {
     this.sidebarOpen = !this.sidebarOpen;
   }
+
+  reorderTopics(topics: any[]) {
+    this.subjectService.reorderSubjectTopics(this.subjectId, topics).subscribe()
+  }
 }
