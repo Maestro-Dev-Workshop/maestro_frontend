@@ -21,17 +21,17 @@
   </p>
 
   <!-- Topic List -->
-  <div class="flex flex-row flex-wrap mb-16">
+  <div class="flex flex-row flex-wrap mb-16" cdkDropList (cdkDropListDropped)="drop($event)" cdkDropListOrientation="mixed">
     @for (topic of topics; track topic.id) {
       <button
-        [class]="
-          'flex flex-row rounded-full py-2 px-3 lg:py-4 lg:px-6 mr-4 my-1 text-sm text-white transition duration-300 ease-in-out ' 
-          + ( topic.selected? 'bg-prussian-blue-900' : 'bg-gray-500')"
+        class="flex flex-row rounded-full py-2 px-3 lg:py-4 lg:px-6 mr-4 my-1 text-sm text-white"
+        [class.bg-prussian-blue-900]="topic.selected"
+        [class.bg-gray-500]="!topic.selected"
         (click)="toggleTopicSelection(topic.id)"
         [disabled]="loading || (subjectStatus !== 'pending topic selection')"
+        cdkDrag
       >
         @if (topic.selected) {
-          <!-- Replace with X icon -->
           <img src="images/x-icon.svg" alt="X" class="mr-2 w-3">
         }
         {{topic.title}}

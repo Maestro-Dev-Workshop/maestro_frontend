@@ -13,11 +13,12 @@ import { max } from 'rxjs';
 import { SubscriptionService } from '../../../core/services/subscription.service';
 import { SubscriptionStatus } from '../../../core/models/subscription.model';
 import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-icon';
+import {CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray} from '@angular/cdk/drag-drop';
 
 
 @Component({
   selector: 'app-lesson-generation',
-  imports: [Header, CreationStepTab, FormsModule, ExtensionConfigOverlay, ThemeIconComponent],
+  imports: [Header, CreationStepTab, FormsModule, ExtensionConfigOverlay, ThemeIconComponent, CdkDrag, CdkDropList],
   schemas: [NO_ERRORS_SCHEMA],
   templateUrl: './lesson-generation.html',
   styleUrl: './lesson-generation.css',
@@ -127,6 +128,11 @@ export class LessonGeneration implements OnInit {
 
   getExtensionList() {
     return Object.values(this.extensionSettings).filter((ext: any) => ext.enabled);
+  }
+
+  drop(event: CdkDragDrop<any[]>) {
+    moveItemInArray(this.topics, event.previousIndex, event.currentIndex);
+    this.subjectService.reorderSubjectTopics(this.subjectId, this.topics.map((topic:any) => topic.id)).subscribe()
   }
 
   validateSettings() {
