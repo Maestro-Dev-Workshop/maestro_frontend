@@ -30,6 +30,7 @@
         (click)="toggleTopicSelection(topic.id)"
         [disabled]="loading || (subjectStatus !== 'pending topic selection')"
         cdkDrag
+        [cdkDragDisabled]="loading"
       >
         @if (topic.selected) {
           <img src="images/x-icon.svg" alt="X" class="mr-2 w-3">
