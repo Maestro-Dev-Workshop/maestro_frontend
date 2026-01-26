@@ -343,7 +343,7 @@ export class LessonPage implements OnInit {
   
         // If still nothing, set exam or fallback
         if (!this.currentView.id) {
-          if (this.subjectContent.exam?.score == null)) {
+          if (this.subjectContent.exam?.score == null) {
             this.updatecurrentView({ id: this.subjectContent.exam.id, type: 'exam' });
           } else {
             const firstTopic = this.subjectContent.topics[0];
