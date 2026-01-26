@@ -342,12 +342,14 @@ export class LessonPage implements OnInit {
         }
   
         // If still nothing, set exam or fallback
-        if ((!this.currentView.id) && (this.subjectContent.exam?.score == null)) {
-          this.updatecurrentView({ id: this.subjectContent.exam.id, type: 'exam' });
-        } else {
-          const firstTopic = this.subjectContent.topics[0];
-          if (firstTopic && firstTopic.subtopics.length > 0) {
-            this.updatecurrentView({ id: firstTopic.subtopics[0].id, type: 'subtopic' });
+        if (!this.currentView.id) {
+          if (this.subjectContent.exam?.score == null) {
+            this.updatecurrentView({ id: this.subjectContent.exam.id, type: 'exam' });
+          } else {
+            const firstTopic = this.subjectContent.topics[0];
+            if (firstTopic && firstTopic.subtopics.length > 0) {
+              this.updatecurrentView({ id: firstTopic.subtopics[0].id, type: 'subtopic' });
+            }
           }
         }
         
@@ -573,5 +575,9 @@ export class LessonPage implements OnInit {
 
   toggleSidebar() {
     this.sidebarOpen = !this.sidebarOpen;
+  }
+
+  reorderTopics(topics: any[]) {
+    this.subjectService.reorderSubjectTopics(this.subjectId, topics).subscribe()
   }
 }

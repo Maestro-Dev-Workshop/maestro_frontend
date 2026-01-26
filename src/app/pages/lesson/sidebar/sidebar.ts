@@ -1,18 +1,20 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, model, output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-icon';
+import {CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [RouterLink, ThemeIconComponent],
+  imports: [RouterLink, ThemeIconComponent, CdkDrag, CdkDropList],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.css'
 })
 export class Sidebar {
-  content = input<any>();
+  content = model<any>();
   currentView = input<any>();
   updateView = output<any>();
   closeSidebar = output<void>();
+  reorderTopicEvent = output<any>();
 
   logContent() {
     return;
@@ -32,5 +34,10 @@ export class Sidebar {
 
   closeBar() {
     this.closeSidebar.emit();
+  }
+
+  dropTopic(event: CdkDragDrop<any[]>) {
+    moveItemInArray(this.content().topics, event.previousIndex, event.currentIndex);
+    this.reorderTopicEvent.emit(this.content().topics.map((topic:any) => topic.id))
   }
 }

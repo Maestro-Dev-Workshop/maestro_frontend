@@ -15,43 +15,50 @@
   <!-- Main Navigation -->
   <div class="p-2">
     <!-- Topic List -->
-    @for (topic of content().topics; track topic.id) {
-      <button [class]="`flex flex-row items-center text-[var(--text-primary)] lg:hover:text-[var(--text-primary-hover)] text-left ${!topic.completed ? 'font-bold' : ''}`" (click)="toggleExpandTopic(topic.id)">
-        <app-theme-icon name="dropdown-icon" className="w-2 m-4 z-0" [class.rotate-90]="topic.expanded"></app-theme-icon>
-        {{ topic.title }}
-      </button>
-      @if (topic.expanded) {
-        <!-- Subtopic List -->
-        @for (subtopic of topic.subtopics; track subtopic.id) {
-          <button [class]="`py-2 px-2 pl-8 text-[var(--text-secondary)] w-full text-left lg:hover:bg-[var(--bg-hover)] border-[var(--text-primary)]
-            ${(subtopic.id === currentView().id && currentView().type === 'subtopic') ? 'border-l-4' : ''}
-            ${!subtopic.read ? 'font-bold' : ''}`"
-            (click)="selectView(subtopic.id, 'subtopic')"
-          >
-            {{ subtopic.title }}
-          </button>
-        }
-
-        <!-- Exercise -->
-        @if (topic.exercise) {
-          <button [class]="`py-2 px-2 pl-8 text-[var(--text-secondary)] w-full text-left lg:hover:bg-[var(--bg-hover)] border-[var(--text-primary)]
-            ${(topic.exercise.id === currentView().id && currentView().type === 'exercise') ? 'border-l-4' : ''}
-            ${!topic.exercise.score ? 'font-bold' : ''}`"
-            (click)="selectView(topic.exercise.id, 'exercise')">
-            Exercise
-          </button>
-        }
-
-        <!-- Flashcards -->
-        @if (topic.flashcards && (topic.flashcards?.length > 0)) {
-          <button [class]="`py-2 px-2 pl-8 text-[var(--text-secondary)] w-full text-left lg:hover:bg-[var(--bg-hover)] border-[var(--text-primary)]
-            ${(topic.id === currentView().id && currentView().type === 'flashcards') ? 'border-l-4' : ''}`"
-            (click)="selectView(topic.id, 'flashcards')">
-            Flashcards
-          </button>
+    <div cdkDropList (cdkDropListDropped)="dropTopic($event)">
+      @for (topic of content().topics; track topic.id) {
+        <button 
+          class="flex flex-row items-center text-[var(--text-primary)] lg:hover:text-[var(--text-primary-hover)] text-left"
+          [class.font-bold]="!topic.completed" 
+          (click)="toggleExpandTopic(topic.id)"
+          cdkDrag
+        >
+          <app-theme-icon name="dropdown-icon" className="w-2 m-4 z-0" [class.rotate-90]="topic.expanded"></app-theme-icon>
+          {{ topic.title }}
+        </button>
+        @if (topic.expanded) {
+          <!-- Subtopic List -->
+          @for (subtopic of topic.subtopics; track subtopic.id) {
+            <button [class]="`py-2 px-2 pl-8 text-[var(--text-secondary)] w-full text-left lg:hover:bg-[var(--bg-hover)] border-[var(--text-primary)]
+              ${(subtopic.id === currentView().id && currentView().type === 'subtopic') ? 'border-l-4' : ''}
+              ${!subtopic.read ? 'font-bold' : ''}`"
+              (click)="selectView(subtopic.id, 'subtopic')"
+            >
+              {{ subtopic.title }}
+            </button>
+          }
+  
+          <!-- Exercise -->
+          @if (topic.exercise) {
+            <button [class]="`py-2 px-2 pl-8 text-[var(--text-secondary)] w-full text-left lg:hover:bg-[var(--bg-hover)] border-[var(--text-primary)]
+              ${(topic.exercise.id === currentView().id && currentView().type === 'exercise') ? 'border-l-4' : ''}
+              ${!topic.exercise.score ? 'font-bold' : ''}`"
+              (click)="selectView(topic.exercise.id, 'exercise')">
+              Exercise
+            </button>
+          }
+  
+          <!-- Flashcards -->
+          @if (topic.flashcards && (topic.flashcards?.length > 0)) {
+            <button [class]="`py-2 px-2 pl-8 text-[var(--text-secondary)] w-full text-left lg:hover:bg-[var(--bg-hover)] border-[var(--text-primary)]
+              ${(topic.id === currentView().id && currentView().type === 'flashcards') ? 'border-l-4' : ''}`"
+              (click)="selectView(topic.id, 'flashcards')">
+              Flashcards
+            </button>
+          }
         }
       }
-    }
+    </div>
 
     <!-- Exam -->
     @if (content().exam) {
