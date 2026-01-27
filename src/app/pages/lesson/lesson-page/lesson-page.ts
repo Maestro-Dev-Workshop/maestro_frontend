@@ -538,7 +538,7 @@ export class LessonPage implements OnInit {
       this.chatMetadata.topic_name = topicData.title
       this.chatMetadata.sub_topic_id = null
       this.chatMetadata.sub_topic_name = null
-      this.chatMetadata.exercise_id = this.currentView.id
+      this.chatMetadata.exercise_id = "<masked-exercise-id>"
       this.chatMetadata.exam_id = null
       this.chatMetadata.question_id = question_event.id
     } else if (this.currentView.type === 'exam') {
@@ -547,7 +547,7 @@ export class LessonPage implements OnInit {
       this.chatMetadata.sub_topic_id = null
       this.chatMetadata.sub_topic_name = null
       this.chatMetadata.exercise_id = null
-      this.chatMetadata.exam_id = this.currentView.id
+      this.chatMetadata.exam_id = "<masked-exam-id>"
       this.chatMetadata.question_id = question_event.id
     }
   }
