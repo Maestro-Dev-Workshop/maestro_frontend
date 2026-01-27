@@ -290,7 +290,7 @@ export class Subjects implements OnInit, OnDestroy {
     });
   }
 
-  async navigateSubject(subject: SubjectModel) {
+  navigateSubject(subject: SubjectModel) {
     if (this.loadingAction) return;
     
     if (this.rightClickSubject) {
@@ -299,7 +299,6 @@ export class Subjects implements OnInit, OnDestroy {
     }
     
     this.loadingAction = true;
-    await new Promise(resolve => setTimeout(resolve, 100000));
     const status = subject.status?.toLowerCase();
     if (
       status === 'pending naming' ||
