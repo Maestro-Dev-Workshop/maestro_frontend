@@ -4,7 +4,6 @@ import {
   inject,
   OnInit,
   OnDestroy,
-  AfterViewInit,
 } from '@angular/core';
 import { Header } from '../../../shared/components/header/header';
 import { Router } from '@angular/router';
@@ -27,7 +26,7 @@ import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-
 })
 export class Subjects implements OnInit, OnDestroy {
   loadingSubjects = true;
-  loadingCreate = false;
+  loadingAction = false;
   subjects: any[] = [];
   subjectService = inject(SubjectsService);
   subscriptionService = inject(SubscriptionService);
@@ -171,7 +170,7 @@ export class Subjects implements OnInit, OnDestroy {
   }
 
   createNewSubject() {
-    this.loadingCreate = true;
+    this.loadingAction = true;
 
     if (
       (this.subscriptionData?.subjects_created_this_month ?? 0) >=
@@ -180,7 +179,7 @@ export class Subjects implements OnInit, OnDestroy {
       this.notify.showError(
         'You have reached the monthly subject creation limit for your current subscription plan.'
       );
-      this.loadingCreate = false;
+      this.loadingAction = false;
       this.cdr.detectChanges();
       return;
     }
@@ -191,7 +190,7 @@ export class Subjects implements OnInit, OnDestroy {
       this.notify.showError(
         'You have reached the total subject limit for your current subscription plan.'
       );
-      this.loadingCreate = false;
+      this.loadingAction = false;
       this.cdr.detectChanges();
       return;
     }
@@ -200,7 +199,7 @@ export class Subjects implements OnInit, OnDestroy {
       next: (response: any) => {
         const newSubjectId = response.session.id;
         this.router.navigate([`/subject-create/${newSubjectId}/naming-upload`]);
-        this.loadingCreate = false;
+        this.loadingAction = false;
         this.cdr.detectChanges();
       },
       error: (res) => {
@@ -208,13 +207,14 @@ export class Subjects implements OnInit, OnDestroy {
           res.error?.displayMessage ||
             'Failed to create a new subject. Please try again later.'
         );
-        this.loadingCreate = false;
+        this.loadingAction = false;
         this.cdr.detectChanges();
       },
     });
   }
 
   onSubjectRightClick(event: MouseEvent, subject: any) {
+    if (this.loadingAction) return;
     event.preventDefault();
     event.stopPropagation();
     if (this.rightClickSubject?.id === subject.id) {
@@ -290,11 +290,16 @@ export class Subjects implements OnInit, OnDestroy {
     });
   }
 
-  navigateSubject(subject: SubjectModel) {
+  async navigateSubject(subject: SubjectModel) {
+    if (this.loadingAction) return;
+    
     if (this.rightClickSubject) {
       this.rightClickSubject = null;
       return;
     }
+    
+    this.loadingAction = true;
+    await new Promise(resolve => setTimeout(resolve, 100000));
     const status = subject.status?.toLowerCase();
     if (
       status === 'pending naming' ||
@@ -311,6 +316,7 @@ export class Subjects implements OnInit, OnDestroy {
     } else {
       this.router.navigate([`/lesson/${subject.id}`]);
     }
+    this.loadingAction = false;
   }
 
   continueSubject(event: MouseEvent, subject: SubjectModel) {
