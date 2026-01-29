@@ -91,7 +91,7 @@ export class TopicPreferences implements OnInit {
         this.cdr.detectChanges();
       },
       error: (res) => {
-        this.notify.showError(res.error.displayMessage || "Failed to load topics. Please try again later.");
+        this.notify.showError(res.error.message || "Failed to load topics. Please try again later.");
       }
     });
   }
@@ -124,7 +124,7 @@ export class TopicPreferences implements OnInit {
 
           error: (res) => {
             this.loading = false;
-            this.notify.showError(res.error.displayMessage || "Failed to generate lesson. Please try again later.");
+            this.notify.showError(res.error.message || "Failed to generate lesson. Please try again later.");
             this.loading = false;
             this.cdr.detectChanges();
           }
@@ -133,7 +133,7 @@ export class TopicPreferences implements OnInit {
       
       error: (res) => {
         this.loading = false;
-        this.notify.showError(res.error.displayMessage || "Failed to select topics. Please try again later.");
+        this.notify.showError(res.error.message || "Failed to select topics. Please try again later.");
         this.loading = false;
         this.cdr.detectChanges();
       }
