@@ -232,7 +232,7 @@ export class LessonGeneration implements OnInit {
         this.router.navigate([`/lesson/${this.subjectId}`])
       },
       error: (res) => {
-        this.notify.showError(res.error.displayMessage || "Failed to generate lesson. Please try again later.");
+        this.notify.showError(res.error.message || "Failed to generate lesson. Please try again later.");
         this.loading = false
         this.cdr.detectChanges();
       },
@@ -289,14 +289,14 @@ export class LessonGeneration implements OnInit {
             }
           },
           error: (res) => {
-            this.notify.showError(res.error.displayMessage || "Failed to load subscription data. Please try again later.");
+            this.notify.showError(res.error.message || "Failed to load subscription data. Please try again later.");
             this.loading = false
             this.cdr.detectChanges();
           }
         })
       },
       error: (res) => {
-        this.notify.showError(res.error.displayMessage || 'Failed to load subject details. Please try again later.');
+        this.notify.showError(res.error.message || 'Failed to load subject details. Please try again later.');
         this.loading = false
         this.cdr.detectChanges();
       },

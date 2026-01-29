@@ -55,7 +55,7 @@ export class Login {
           }
         },
         error: (res) => {
-          this.notify.showError(res.error.displayMessage || 'Login failed. Please try again.');
+          this.notify.showError(res.error.message || 'Login failed. Please try again.');
           this.loading = false;
           this.cdr.detectChanges();
         }

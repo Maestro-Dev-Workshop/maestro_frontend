@@ -38,7 +38,7 @@ export class ExtensionConfigOverlay {
     if (event.target.checked) {
       this.config[section].types.push(event.target.value);
     } else {
-      this.config[section].types = this.config.exercise.types.filter((qt:any) => qt !== event.target.value);
+      this.config[section].types = this.config[section].types.filter((qt:any) => qt !== event.target.value);
     }
   }
 

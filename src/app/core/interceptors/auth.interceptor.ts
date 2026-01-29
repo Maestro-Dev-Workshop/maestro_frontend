@@ -23,7 +23,6 @@ export class AuthInterceptor implements HttpInterceptor {
     return next.handle(authReq).pipe(
       catchError((err: HttpErrorResponse) => {
         if (err.status === 401) {
-          console.log('Unauthorized request - logging out');
           // clear stored tokens/session
           this.auth.logout();  
 
