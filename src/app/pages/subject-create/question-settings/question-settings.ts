@@ -178,7 +178,7 @@ export class QuestionSettings implements OnInit {
           });
         },
         error: (res) => {
-          this.notify.showError(res.error.displayMessage || "Failed to generate practice questions. Please try again later.");
+          this.notify.showError(res.error.message || "Failed to generate practice questions. Please try again later.");
           this.loading = false;
           this.cdr.detectChanges();
         }
@@ -187,11 +187,10 @@ export class QuestionSettings implements OnInit {
       // If no requests to generate, just update status directly
       this.subjectService.updateSessionStatus(this.subjectId, "In Progress").subscribe({
         next: () => {
-          console.log("Session status updated (no generation needed)");
           this.router.navigate([`/lesson/${this.subjectId}`]);
         },
         error: (res) => {
-          this.notify.showError(res.error.displayMessage || "Failed to update session status.");
+          this.notify.showError(res.error.message || "Failed to update session status.");
           this.router.navigate([`/lesson/${this.subjectId}`]);
         },
         complete: () => (this.loading = false),

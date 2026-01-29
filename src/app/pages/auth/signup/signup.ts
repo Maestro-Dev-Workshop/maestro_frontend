@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { PasswordValidator } from '../../../shared/directives/password-validator';
 import { AuthService } from '../../../core/services/auth.service';
 import { NotificationService } from '../../../core/services/notification.service';
+import { environment } from '../../../../environments/environment'
 
 @Component({
   selector: 'app-signup',
@@ -61,13 +62,18 @@ export class Signup {
       this.authService.signup({ 
         first_name: this.firstname, last_name: this.lastname, email: this.email.toLowerCase(), password: this.password }).subscribe({
         next: (response) => {
-          this.notify.showSuccess('Verification email sent. Please check your inbox.');
           this.loading = false;
-          this.router.navigateByUrl('/check-email', { state: { email: this.email.toLowerCase() } });
+          if (environment.production) {
+            this.notify.showSuccess('Verification email sent. Please check your inbox.');
+            this.router.navigateByUrl('/check-email', { state: { email: this.email.toLowerCase() } });
+          } else {
+            this.notify.showSuccess('Signup successful. Redirecting to login...')
+            this.router.navigateByUrl('/login');
+          }
         },
         error: (res) => {
-          this.notify.showError(res.error.displayMessage || 'Signup failed. Please try again.');
           this.loading = false;
+          this.notify.showError(res.error.message || 'Signup failed. Please try again.');
           this.cdr.detectChanges();
         }
       });

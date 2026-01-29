@@ -30,7 +30,7 @@ export class VerifyEmail {
           }, 1000);
         },
         error: (res) => {
-          this.notify.showError(res.error.displayMessage || 'Email verification failed. Please try again.');
+          this.notify.showError(res.error.message || 'Email verification failed. Please try again.');
           this.router.navigateByUrl('/signup');
         }
       });

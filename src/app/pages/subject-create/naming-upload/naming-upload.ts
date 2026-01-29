@@ -151,7 +151,7 @@ export class NamingUpload implements OnInit {
         this.cdr.detectChanges();
       },
       error: (res) => {
-        this.notify.showError(res.error.displayMessage || "Failed to load subscription data. Please try again later.");
+        this.notify.showError(res.error.message || "Failed to load subscription data. Please try again later.");
         this.cdr.detectChanges();
       }
     })
@@ -167,7 +167,7 @@ export class NamingUpload implements OnInit {
         this.cdr.detectChanges();
       },
       error: (res) => {
-        this.notify.showError(res.error.displayMessage || 'Failed to load subject details. Please try again later.');
+        this.notify.showError(res.error.message || 'Failed to load subject details. Please try again later.');
       }
     });
   }
@@ -249,7 +249,7 @@ export class NamingUpload implements OnInit {
       return labelDocuments$()
     }),
     catchError((res) => {
-      this.notify.showError(res.error.displayMessage || 'Something went wrong. Please try again later.');
+      this.notify.showError(res.error.message || 'Something went wrong. Please try again later.');
       return EMPTY;
     }),
     finalize(() => {

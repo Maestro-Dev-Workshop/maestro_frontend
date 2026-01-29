@@ -24,7 +24,6 @@ export class Pricing implements OnInit {
   ngOnInit(): void {
     this.subscriptionService.getPlans().subscribe({
       next: (res) => {
-        console.log(res);
         res.plans.forEach((plan: any) => {
           if (plan.name.toLowerCase() === 'basic') {
             this.basicPrice = plan.display_price;
