@@ -1,13 +1,20 @@
 <div class="flex flex-row w-screen h-screen justify-between">
   <!-- left panel -->
   <div class="w-full lg-w-6/12 h-full flex flex-col p-12">
-
     <!-- Header -->
     <div class="flex flex-row my-8 items-center">
-      <img src="images/logo-coloured.svg" alt="Maestro Logo" class="w-12 mr-2">
-      <span class="font-serif text-3xl h-max text-[var(--text-primary)]">Maestro</span>
+      <img
+        src="images/logo-coloured.svg"
+        alt="Maestro Logo"
+        class="w-12 mr-2"
+      />
+      <span class="font-serif text-3xl h-max text-[var(--text-primary)]"
+        >Maestro</span
+      >
     </div>
-    <h1 class="font-bold text-2xl text-[var(--text-alt)] my-2">Welcome Back!</h1>
+    <h1 class="font-bold text-2xl text-[var(--text-alt)] my-2">
+      Welcome Back!
+    </h1>
     <p class="">Access your personalized lessons and materials.</p>
     <form class="mt-2" #form="ngForm">
       <!-- Email Input -->
@@ -26,8 +33,12 @@
         <!-- Error messages -->
         @if (emailCtrl.invalid && emailCtrl.touched) {
           <div class="text-red-500 text-sm mt-1">
-            @if (emailCtrl.errors?.['required']) {<span>Email is required</span>}
-            @if (emailCtrl.errors?.['email']) {<span>Invalid email format</span>}
+            @if (emailCtrl.errors?.["required"]) {
+              <span>Email is required</span>
+            }
+            @if (emailCtrl.errors?.["email"]) {
+              <span>Invalid email format</span>
+            }
           </div>
         }
       </div>
@@ -35,11 +46,11 @@
       <!-- Password Input -->
       <div class="flex flex-col my-6 font-medium relative">
         <label class="text-[var(--text-alt-hover)]">Password</label>
-        <input 
-          [type]="passwordVisible" 
-          name="password" 
-          placeholder="Password" 
-          class="bg-gray-100 p-4 rounded-md text-gray-900" 
+        <input
+          [type]="passwordVisible"
+          name="password"
+          placeholder="Password"
+          class="bg-gray-100 p-4 rounded-md text-gray-900"
           [(ngModel)]="password"
           required
           password
@@ -51,30 +62,59 @@
             <span>Password is required</span>
           </div>
         }
-        <button type="button" (click)="togglePasswordVisibility()"class="absolute p-4 right-0 top-6 bottom-6" >
-          <img src="images/eye-icon.svg" alt="Toggle Visibility" class="w-6">
+        <button
+          type="button"
+          (click)="togglePasswordVisibility()"
+          class="absolute p-4 right-0 top-6 bottom-6"
+        >
+          <img src="images/eye-icon.svg" alt="Toggle Visibility" class="w-6" />
         </button>
       </div>
 
-      <button 
-        type="submit" 
-        class="w-full rounded-md p-4 text-white font-bold bg-prussian-blue-700 lg:hover:bg-prussian-blue-400 disabled:bg-prussian-blue-400 relative" 
-        (click)="onSubmit()" 
+      <button
+        type="submit"
+        class="w-full rounded-md p-4 text-white font-bold bg-prussian-blue-700 lg:hover:bg-prussian-blue-400 disabled:bg-prussian-blue-400 relative"
+        (click)="onSubmit()"
         [disabled]="loading"
       >
         Next
-        <img src="images/spinner.gif" alt="" [class]="`absolute right-2 top-3 w-8 h-8 mx-2  ${loading ? '' : 'hidden'}`">
+        <img
+          src="images/spinner.gif"
+          alt=""
+          [class]="
+            `absolute right-2 top-3 w-8 h-8 mx-2  ${loading ? '' : 'hidden'}`
+          "
+        />
       </button>
     </form>
+    <div class="my-6 flex flex-col items-center">
+      <div class="flex items-center w-full my-4">
+        <div class="flex-grow h-px bg-gray-300"></div>
+        <span class="mx-3 text-gray-500 text-sm">OR</span>
+        <div class="flex-grow h-px bg-gray-300"></div>
+      </div>
+
+      <div id="google-login-btn"></div>
+    </div>
+
     <div class="self-center m-4 pb-4">
-      New to Maestro? <a href="/signup" class="font-medium text-[var(--text-primary)] lg:hover:text-[var(--text-primary-hover)]">Sign Up!</a>
+      New to Maestro?
+      <a
+        href="/signup"
+        class="font-medium text-[var(--text-primary)] lg:hover:text-[var(--text-primary-hover)]"
+        >Sign Up!</a
+      >
     </div>
   </div>
   <!-- right panel -->
   <div class="w-full h-full relative hidden lg:block">
-    <img src="images/person-studying-1.png" alt="Maestro Logo" class="h-full w-full object-cover">
+    <img
+      src="images/person-studying-1.png"
+      alt="Maestro Logo"
+      class="h-full w-full object-cover"
+    />
     <div class="flex flex-row m-8 items-center absolute left-0 bottom-0">
-      <img src="images/logo-white.svg" alt="Maestro Logo" class="w-12 mr-2">
+      <img src="images/logo-white.svg" alt="Maestro Logo" class="w-12 mr-2" />
       <span class="font-serif text-3xl h-max text-white">Maestro</span>
     </div>
   </div>

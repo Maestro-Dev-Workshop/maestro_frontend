@@ -3,6 +3,10 @@ import { FormsModule, NgModel } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { NotificationService } from '../../../core/services/notification.service'; // <-- Add this import
+import { environment } from '../../../../environments/environment';
+
+declare var google: any;
+
 
 @Component({
   selector: 'app-login',
@@ -12,7 +16,7 @@ import { NotificationService } from '../../../core/services/notification.service
 export class Login {
   email = '';
   password = '';
-  passwordVisible = "password";
+  passwordVisible = 'password';
   loading = false;
   authService = inject(AuthService);
   notify = inject(NotificationService); // <-- Inject notification service
@@ -22,44 +26,92 @@ export class Login {
 
   constructor(
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
   ) {}
 
   togglePasswordVisibility() {
-    if (this.passwordVisible === "password") {
-      this.passwordVisible = "text"
+    if (this.passwordVisible === 'password') {
+      this.passwordVisible = 'text';
     } else {
-      this.passwordVisible = "password"
+      this.passwordVisible = 'password';
     }
   }
 
   onSubmit() {
     this.loading = true;
     if (this.emailCtrl.invalid || this.passwordCtrl.invalid) {
-      this.notify.showError("Valid email and password required");
+      this.notify.showError('Valid email and password required');
       this.loading = false;
     } else {
-      this.authService.login({ email: this.email.toLowerCase(), password: this.password }).subscribe({
-        next: (response) => {
-          if (response.verifyRedirect) {
-            this.notify.showInfo('Please verify your email to continue. We have sent you a new verification link.');
+      this.authService
+        .login({ email: this.email.toLowerCase(), password: this.password })
+        .subscribe({
+          next: (response) => {
+            if (response.verifyRedirect) {
+              this.notify.showInfo(
+                'Please verify your email to continue. We have sent you a new verification link.',
+              );
+              this.loading = false;
+              this.router.navigateByUrl('/check-email', {
+                state: { email: this.email.toLowerCase() },
+              });
+            } else {
+              localStorage.setItem('accessToken', response.accessToken);
+              localStorage.setItem('refreshToken', response.refreshToken);
+              const user = response.user;
+              localStorage.setItem('userEmail', user.email);
+              this.loading = false;
+              this.router.navigateByUrl('/dashboard');
+            }
+          },
+          error: (res) => {
+            this.notify.showError(
+              res.error.message || 'Login failed. Please try again.',
+            );
             this.loading = false;
-            this.router.navigateByUrl('/check-email', { state: { email: this.email.toLowerCase() } });
-          } else {
-            localStorage.setItem('accessToken', response.accessToken);
-            localStorage.setItem('refreshToken', response.refreshToken);
-            const user = response.user;
-            localStorage.setItem('userEmail', user.email);
-            this.loading = false;
-            this.router.navigateByUrl('/dashboard');
-          }
-        },
-        error: (res) => {
-          this.notify.showError(res.error.message || 'Login failed. Please try again.');
-          this.loading = false;
-          this.cdr.detectChanges();
-        }
-      });
+            this.cdr.detectChanges();
+          },
+        });
     }
+  }
+
+  ngAfterViewInit() {
+    google.accounts.id.initialize({
+      client_id: environment.googleClientId,
+      callback: this.handleGoogleResponse.bind(this),
+    });
+
+    google.accounts.id.renderButton(
+      document.getElementById('google-login-btn'),
+      {
+        theme: 'outline',
+        size: 'large',
+        text: 'continue_with',
+        width: 320,
+      },
+    );
+  }
+
+  handleGoogleResponse(response: any) {
+    const idToken = response.credential;
+    this.loading = true;
+
+    this.authService.googleAuth(idToken).subscribe({
+      next: (res) => {
+        localStorage.setItem('accessToken', res.accessToken);
+        localStorage.setItem('refreshToken', res.refreshToken);
+        localStorage.setItem('userEmail', res.user.email);
+
+        this.loading = false;
+        this.router.navigateByUrl('/dashboard');
+      },
+      error: (err) => {
+        this.loading = false;
+        this.notify.showError(
+          err.error?.message || 'Google login failed. Please try again.',
+        );
+        this.cdr.detectChanges();
+      },
+    });
   }
 }
