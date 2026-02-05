@@ -27,7 +27,7 @@ export class AuthService {
   }
 
   googleAuth(token: string) {
-    return this.http.post<any>('/auth/google', { token });
+    return this.http.post<any>('auth/google', { token });
   }
 
   refreshAccessToken(): Observable<any> {
