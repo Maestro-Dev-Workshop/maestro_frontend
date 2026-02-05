@@ -111,7 +111,11 @@ export class Signup implements AfterViewInit {
     this.loading = true;
 
     this.authService.googleAuth(response.credential).subscribe({
-      next: () => {
+      next: (res: any) => {
+        localStorage.setItem('accessToken', res.accessToken);
+        localStorage.setItem('refreshToken', res.refreshToken);
+        localStorage.setItem('userEmail', res.user.email);
+
         this.loading = false;
         this.router.navigateByUrl('/dashboard');
       },
