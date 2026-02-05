@@ -7,6 +7,65 @@
     max-h-[80%] overflow-y-auto scrollbar-none"
     (click)="$event.stopPropagation()"
   >
+    <!-- Content Cell Configuration -->
+    @if (config.cells.enabled) {
+      <form #form="ngForm" class="my-4 md:my-8">
+        <!-- Header -->
+        <div class="flex flex-row w-full justify-between items-center border-b-2 p-2 border-[var(--text-primary)]">
+          <div class="flex flex-row items-center">
+            <app-theme-icon name="cells-icon" className="w-5 mr-2"/>
+            Content Cells
+          </div>
+          <button (click)="toggleExtensionVisibility('cells')" class="p-2">
+            <app-theme-icon name="dropdown-icon" [className]="`w-2 ${extensionVisibility['cells'] ? 'rotate-90' : 'rotate-180'}`"/>
+          </button>
+        </div>
+
+        <div [class]="extensionVisibility['cells'] ? '' : 'hidden'">
+          <!-- Cell Types -->
+          <div class="px-2 pt-2 md:pt-6 flex flex-col md:flex-row">
+            <label for="" class="my-2">Cell Types:</label>
+            <div class="flex flex-row items-start text-sm p-2 pt-3">
+              <div class="flex flex-row items-start">
+                <input 
+                  type="checkbox" 
+                  id="cell-graph" 
+                  class="mx-2 my-1 accent-blue-900" 
+                  value="graph" 
+                  [checked]="config.cells.types.includes('graph')" 
+                  (change)="toggleType($event, 'cells')"
+                >
+                <label for="cell-graph">Charts</label>
+              </div>
+              <div class="flex flex-row items-start">
+                <input 
+                  type="checkbox" 
+                  id="cell-audio" 
+                  class="mx-2 my-1 accent-blue-900" 
+                  value="audio-snippet" 
+                  [checked]="config.exercise.types.includes('audio-snippet')" 
+                  (change)="toggleType($event, 'cells')"
+                >
+                <label for="cell-audio">Audio Snippets</label>
+              </div>
+              <div class="flex flex-row items-start">
+                <input 
+                  type="checkbox" 
+                  id="cell-card" 
+                  class="mx-2 my-1 accent-blue-900" 
+                  value="card" 
+                  [checked]="config.exercise.types.includes('card')" 
+                  (change)="toggleType($event, 'cells')"
+                >
+                <label for="cell-card">Flashcards</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    }
+
+
     <!-- Exercise Configuration -->
     @if (config.exercise.enabled) {
       <form #form="ngForm" class="my-4 md:my-8">

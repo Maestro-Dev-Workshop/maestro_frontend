@@ -46,6 +46,8 @@
       @if (cell.type === "text") {
         <!-- Markdown Text Cells -->
         <app-markdown-cell [data]="cell"></app-markdown-cell>
+      } @else if (cell.type === "graph") {
+        <app-chart-cell [data]="cell"></app-chart-cell>
       } @else {
         <!-- Default Fallback Cells -->
         <app-markdown-cell [data]="cell"></app-markdown-cell>

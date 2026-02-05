@@ -13,7 +13,8 @@ export class ChartCell implements AfterViewInit {
   plotContainer!: ElementRef;
 
   ngAfterViewInit() {
-    const fig = JSON.parse(this.data().content);
+    // const fig = JSON.parse(this.data().content);
+    const fig = this.data().metadata;
     Plotly.newPlot(
       this.plotContainer.nativeElement,
       fig.data,

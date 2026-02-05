@@ -39,6 +39,11 @@ export class LessonGeneration implements OnInit {
   subjectName = '';
   topics: any = [];
   extensionSettings = {
+    cells: {
+      enabled: false,
+      name: 'cells',
+      types: []
+    },
     exercise: {
       enabled: false,
       types: [],
@@ -245,6 +250,11 @@ export class LessonGeneration implements OnInit {
 
   configureExtensions(extensions: any) {
     for (let ext of extensions) {
+      if (ext.type == 'lesson' && ext.configuration.cell_types.length > 0) {
+        this.extensionSettings.cells.enabled = true
+        this.extensionSettings.cells.types = ext.configuration.cell_types
+        this.extensionsEnabled = true
+      }
       if (ext.type == 'exercise') {
         this.extensionSettings.exercise.enabled = true
         this.extensionSettings.exercise.numQuestions = ext.configuration.no_of_questions

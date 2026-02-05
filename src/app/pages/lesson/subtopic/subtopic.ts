@@ -1,11 +1,12 @@
 import { Component, effect, ElementRef, input, output, untracked, viewChild, ViewChild } from '@angular/core';
 import { MarkdownCell } from '../cells/markdown-cell/markdown-cell';
 import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-icon';
+import { ChartCell } from "../cells/chart-cell/chart-cell";
 // import { ChartCell } from '../cells/chart-cell/chart-cell';
 
 @Component({
   selector: 'app-subtopic',
-  imports: [MarkdownCell, ThemeIconComponent],
+  imports: [MarkdownCell, ThemeIconComponent, ChartCell],
   templateUrl: './subtopic.html',
   styleUrl: './subtopic.css'
 })
