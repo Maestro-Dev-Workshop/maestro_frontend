@@ -146,7 +146,7 @@ export class Practice {
               q.essay_feedback = question.essay_feedback = value.feedback;
             }),
             catchError(res => {
-              this.notify.showError(res.error.displayMessage || 'Failed to score an essay question.');
+              this.notify.showError(res.error.message || 'Failed to score an essay question.');
               return of(null);
             })
           )
@@ -182,7 +182,7 @@ export class Practice {
         this.cdr.detectChanges();
       },
       error: (res) => {
-        this.notify.showError(res.error.displayMessage || 'Failed to submit answers. Please try again.');
+        this.notify.showError(res.error.message || 'Failed to submit answers. Please try again.');
         this.loading = false;
         this.cdr.detectChanges();
       }
