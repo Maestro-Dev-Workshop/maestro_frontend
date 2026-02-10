@@ -42,13 +42,13 @@
                   type="checkbox" 
                   id="cell-audio" 
                   class="mx-2 my-1 accent-blue-900" 
-                  value="audio-snippet" 
-                  [checked]="config.exercise.types.includes('audio-snippet')" 
+                  value="audio_snippet" 
+                  [checked]="config.exercise.types.includes('audio_snippet')" 
                   (change)="toggleType($event, 'cells')"
                 >
                 <label for="cell-audio">Audio Snippets</label>
               </div>
-              <div class="flex flex-row items-start">
+              <!-- <div class="flex flex-row items-start">
                 <input 
                   type="checkbox" 
                   id="cell-card" 
@@ -58,7 +58,7 @@
                   (change)="toggleType($event, 'cells')"
                 >
                 <label for="cell-card">Flashcards</label>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
