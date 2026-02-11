@@ -1,5 +1,6 @@
 <app-header></app-header>
-<div class="flex flex-col w-full px-12 md:px-32">
+
+<div class="flex flex-col w-full px-6 md:px-20 lg:px-32">
   <!-- Creation step tabs -->
   <div class="flex flex-row mb-8 w-full">
     <app-creation-step-tab
@@ -17,92 +18,139 @@
   </div>
 
   <h1 class="text-2xl font-medium">Create a new subject</h1>
-  <form #form="ngForm" class="flex flex-col w-full md:w-6/12 my-4">
-    <label for="">Subject Name</label>
-    <input 
-      type="text" 
-      name="subjectName" 
-      placeholder="Name of the subject" 
-      class="bg-[var(--bg-page)] p-4 my-1 rounded-lg border border-prussian-blue-300 text-sm" 
-      [(ngModel)]="subjectName"
-      required
-      subjectName
-      #nameCtrl="ngModel"
-      appSubjectNameValidator
-      [disabled]="!(subject.status == 'pending naming')"
-    />
-    <!-- Error messages -->
-    @if (nameCtrl.invalid && nameCtrl.touched) {
-      <div class="text-red-500 text-sm mt-1">
-        @if (nameCtrl.errors?.['required']) {<span>Subject Name cannot be empty</span>}
-        @if (nameCtrl.errors?.['invalidName']) {<span>Subject Name cannot be longer than 30 characters</span>}
-      </div>
-    }
 
-    <!-- Drag and drop area here -->
-    <div
-      class="my-4 flex flex-col items-center justify-center w-full border-2 border-dashed border-gray-400 
-      rounded-2xl px-6 py-10 cursor-pointer transition lg:hover:border-prussian-blue-300 bg-[var(--bg-hover)]"
-      (drop)="onFileDrop($event)"
-      (dragover)="onDragOver($event)"
-      (dragleave)="onDragLeave($event)"
-      [class.bg-blue-50]="isDragging"
-    >
-      <label
-        for="fileInput"
-        class="border border-[var(--text-primary-hover)] lg:hover:border-[var(--text-primary)] p-2 rounded-md cursor-pointer "
-      >
-        <app-theme-icon name="upload-file-icon" className="w-4"></app-theme-icon>
-      </label>
+  <form #form="ngForm" class="flex flex-col w-full my-6">
+    <!-- Subject Name -->
+    <div class="w-full lg:w-6/12">
+      <label>Subject Name</label>
+
       <input
-        type="file"
-        id="fileInput"
-        (change)="onFileSelect($event)"
-        class="hidden"
-        multiple
-        [accept]="acceptString"
+        type="text"
+        name="subjectName"
+        placeholder="Name of the subject"
+        class="bg-[var(--bg-page)] p-4 my-1 rounded-lg border border-prussian-blue-300 text-sm w-full"
+        [(ngModel)]="subjectName"
+        required
+        #nameCtrl="ngModel"
+        appSubjectNameValidator
+        [disabled]="!(subject?.status == 'pending naming')"
       />
-      <p class="text-[var(--text-alt)] text-sm text-center">Upload your files here to start generating personalized lessons for this subject.</p>
-      <p class="text-[var(--text-alt-hover)] text-xs my-2 text-center">
-        {{allowedExtensions.join(", ").toUpperCase()}}. Max file size: {{single_file_size}}MB. Max total files size: {{total_files_size}}MB. Maximum of {{max_file_count}} files.
-      </p>
+
+      @if (nameCtrl.invalid && nameCtrl.touched) {
+        <div class="text-red-500 text-sm mt-1">
+          @if (nameCtrl.errors?.["required"]) {
+            <span>Subject Name cannot be empty</span>
+          }
+          @if (nameCtrl.errors?.["invalidName"]) {
+            <span>Subject Name cannot be longer than 30 characters</span>
+          }
+        </div>
+      }
     </div>
 
-    <!-- Show selected files -->
-    @if (files.length > 0) {
-      <div class="mb-4 space-y-1">
-        <p class="text-sm font-medium text-[var(--text-alt)]">Selected files:</p>
-        <ul class="list-disc list-inside text-sm text-[var(--text-alt)]">
-          @for (file of files; track $index) {
-            <li>
-              {{ file.name }}
-              <span class="text-[var(--text-alt-hover)] text-xs">({{formatFileSize(file)}})</span>
-              <button
-                class="ml-2 text-red-500 lg:hover:text-red-700"
-                (click)="removeFile(file)"
-                [disabled]="loading"
-              >
-                <!-- Replace with X icon -->
-                X
-              </button>
-            </li>
-          }
-        </ul>
-      </div>
-    }
+    <!-- Upload + File List Section -->
+    <div class="flex flex-col lg:flex-row gap-10 mt-6 w-full">
+      <!-- Upload Box -->
+      <div class="w-full lg:w-7/12">
+        <div
+          class="flex flex-col items-center justify-center w-full border-2 border-dashed border-gray-400 rounded-2xl px-6 py-12 cursor-pointer transition lg:hover:border-prussian-blue-300 bg-[var(--bg-hover)]"
+          (drop)="onFileDrop($event)"
+          (dragover)="onDragOver($event)"
+          (dragleave)="onDragLeave($event)"
+          [class.bg-blue-50]="isDragging"
+        >
+          <label
+            for="fileInput"
+            class="border border-[var(--text-primary-hover)] lg:hover:border-[var(--text-primary)] p-3 rounded-md cursor-pointer"
+          >
+            <app-theme-icon
+              name="upload-file-icon"
+              className="w-5"
+            ></app-theme-icon>
+          </label>
 
-    <div class="flex flex-row items-center">
-      <button d
-        type="submit" 
-        class="w-max bg-prussian-blue-700 lg:hover:bg-prussian-blue-400 disabled:bg-prussian-blue-400 text-white flex flex-row items-center px-5 py-3 rounded-md text-sm" 
+          <input
+            type="file"
+            id="fileInput"
+            (change)="onFileSelect($event)"
+            class="hidden"
+            multiple
+            [accept]="acceptString"
+          />
+
+          <p class="text-[var(--text-alt)] text-sm text-center mt-4">
+            Upload your files here to start generating personalized lessons.
+          </p>
+
+          <p class="text-[var(--text-alt-hover)] text-xs mt-2 text-center">
+            {{ allowedExtensions.join(", ").toUpperCase() }}. Max file size:
+            {{ single_file_size }}MB. Max total files size:
+            {{ total_files_size }}MB. Maximum of {{ max_file_count }} files.
+          </p>
+        </div>
+      </div>
+
+      <!-- File List -->
+      @if (files.length > 0) {
+        <div class="w-full lg:w-5/12 flex flex-col max-h-[340px]">
+          <p class="text-sm font-medium text-[var(--text-alt)] mb-4">Uploads</p>
+
+          <div class="overflow-y-auto space-y-4 pr-2">
+            @for (file of files; track $index) {
+              <div
+                class="flex items-center justify-between bg-[var(--bg-page)] border border-gray-200 p-4 rounded-2xl"
+              >
+                <div class="flex items-center gap-3">
+                  <!-- Placeholder File Icon -->
+                  <app-theme-icon
+                    name="upload-file-icon"
+                    className="w-5"
+                  ></app-theme-icon>
+
+                  <div class="flex flex-col">
+                    <span class="text-sm font-medium truncate max-w-[180px]">
+                      {{ file.name }}
+                    </span>
+
+                    <span class="text-xs text-[var(--text-alt-hover)]">
+                      Ready
+                    </span>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  (click)="removeFile(file)"
+                  [disabled]="loading"
+                  class="text-gray-400 lg:hover:text-gray-700 transition"
+                >
+                  <!-- Replace with closed-square icon later -->
+                  <app-theme-icon
+                    name="close-icon"
+                    className="w-6"
+                  ></app-theme-icon>
+                </button>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Submit Button -->
+    <div class="flex flex-row items-center mt-8">
+      <button
+        type="button"
+        class="w-max bg-prussian-blue-700 lg:hover:bg-prussian-blue-400 disabled:bg-prussian-blue-400 text-white flex items-center px-6 py-3 rounded-md text-sm"
         (click)="onSubmit()"
         [disabled]="loading"
       >
         Next
-        <img src="images/next-icon.svg" alt="" class="w-3 ml-2">
+        <img src="images/next-icon.svg" class="w-3 ml-2" />
       </button>
-      <div [class]="`flex flex-row items-center ${loading ? '' : 'hidden'}`">
-        <img src="images/spinner.gif" alt="" class="w-8 h-8 mx-2">
+
+      <div [class]="loading ? 'flex items-center ml-4' : 'hidden'">
+        <img src="images/spinner.gif" class="w-6 h-6 mr-2" />
         loading...
       </div>
     </div>
