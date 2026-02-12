@@ -43,6 +43,11 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
   subjectName = '';
   topics: any = [];
   extensionSettings = {
+    cells: {
+      enabled: false,
+      name: 'cells',
+      types: []
+    },
     exercise: {
       enabled: false,
       types: [],
@@ -79,7 +84,10 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  constructor(private cdr: ChangeDetectorRef, private router: Router) {
+  constructor(
+    private cdr: ChangeDetectorRef, 
+    private router: Router,
+  ) {
     // Extract subjectId from the route parameters
     const url = window.location.pathname;
     const parts = url.split('/');
@@ -161,6 +169,16 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
         status: false,
         message: 'Learning style cannot exceed 2000 characters.'
       };
+    }
+
+    // Content Cell checks
+    if (this.extensionSettings.cells.enabled) {
+      if (this.extensionSettings.cells.types.length === 0) {
+        return {
+          status: false,
+          message: 'Please select at least one cell type for lesson.'
+        };
+      }
     }
 
     // Exercise checks
@@ -249,6 +267,11 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
 
   configureExtensions(extensions: any) {
     for (let ext of extensions) {
+      if (ext.type == 'lesson' && ext.configuration.cell_types.length > 0) {
+        this.extensionSettings.cells.enabled = true
+        this.extensionSettings.cells.types = ext.configuration.cell_types
+        this.extensionsEnabled = true
+      }
       if (ext.type == 'exercise') {
         this.extensionSettings.exercise.enabled = true
         this.extensionSettings.exercise.numQuestions = ext.configuration.no_of_questions

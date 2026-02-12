@@ -106,9 +106,24 @@
           [class]="`absolute w-64 bottom-10 left-2 md:bottom-auto md:top-12 md:left-12 rounded-lg flex flex-col items-start 
           border-[1px] border-[var(--text-primary)] bg-[var(--bg-page)] ${!settingsPopup? 'hidden' : ''}`"
         >
-          <!-- Exercise Button -->
+          <!-- Content Cells Button -->
           <button 
             [class]="`rounded-t-lg flex flex-row w-full items-center px-2 py-2 
+            ${!extensionSettings.cells.enabled ? 'bg-[var(--bg-page)] md:hover:bg-[var(--bg-hover)]'
+              : 'bg-[var(--text-secondary)] text-[var(--bg-page)]'}`"
+            (click)="toggleExtension('cells')"
+            [disabled]="loading  || (subjectStatus === 'pending lesson generation')"
+          >
+            <app-theme-icon name="cells-icon" class="w-5 mr-2" [invert]="extensionSettings.cells.enabled"/>
+            Content Cells
+            @if (extensionSettings.cells.enabled) {
+              <app-theme-icon name="x-icon" class="m-2 w-2 ml-auto" [invert]="true"/>
+            }
+          </button>
+
+          <!-- Exercise Button -->
+          <button 
+            [class]="`flex flex-row w-full items-center px-2 py-2 
             ${!extensionSettings.exercise.enabled ? 'bg-[var(--bg-page)] md:hover:bg-[var(--bg-hover)]'
               : 'bg-[var(--text-secondary)] text-[var(--bg-page)]'}`"
             (click)="toggleExtension('exercise')"
