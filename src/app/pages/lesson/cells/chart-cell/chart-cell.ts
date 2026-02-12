@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, effect, ElementRef, input, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, input, ViewChild } from '@angular/core';
 import * as Plotly from 'plotly.js-dist-min';
 
 @Component({
@@ -7,14 +7,13 @@ import * as Plotly from 'plotly.js-dist-min';
   templateUrl: './chart-cell.html',
   styleUrl: './chart-cell.css',
 })
-export class ChartCell {
+export class ChartCell implements AfterViewInit {
   data = input<any>();
   @ViewChild('plotContainer', { static: true })
   plotContainer!: ElementRef;
 
-  private updateOnInputChange = effect(() => {
-    // const fig = JSON.parse(this.data().content);
-    const fig = this.data().metadata.graph_content;
+  ngAfterViewInit() {
+    const fig = JSON.parse(this.data().content);
     Plotly.newPlot(
       this.plotContainer.nativeElement,
       fig.data,
@@ -24,5 +23,5 @@ export class ChartCell {
     window.addEventListener('resize', () => {
       Plotly.Plots.resize(this.plotContainer.nativeElement);
     });
-  });
+  }
 }
