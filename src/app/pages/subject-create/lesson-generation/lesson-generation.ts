@@ -33,7 +33,7 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
   subjectStatus = ''
   topicOverflowing = false;
   topicsExpanded = false;
-  textInput = viewChild<ElementRef>('textInput');
+  textInput = viewChild<ElementRef>('textInput')
   topicList = viewChild<ElementRef>('topicList')
   notify = inject(NotificationService)
   subjectService = inject(SubjectsService)
