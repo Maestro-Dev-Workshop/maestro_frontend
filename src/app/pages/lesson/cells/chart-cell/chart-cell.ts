@@ -11,10 +11,11 @@ export class ChartCell {
   data = input<any>();
   @ViewChild('plotContainer', { static: true })
   plotContainer!: ElementRef;
+  context = ''
 
   private updateOnInputChange = effect(() => {
-    // const fig = JSON.parse(this.data().content);
     const fig = this.data().metadata.graph_content;
+    this.context = this.data().content
     Plotly.newPlot(
       this.plotContainer.nativeElement,
       fig.data,

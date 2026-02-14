@@ -34,6 +34,7 @@
                   value="graph" 
                   [checked]="config.cells.types.includes('graph')" 
                   (change)="toggleType($event, 'cells')"
+                  [disabled]="(config.cells.types.length > 0) && (!config.cells.types.includes('graph'))"
                 >
                 <label for="cell-graph">Charts</label>
               </div>
@@ -43,10 +44,23 @@
                   id="cell-audio" 
                   class="mx-2 my-1 accent-blue-900" 
                   value="audio_snippet" 
-                  [checked]="config.exercise.types.includes('audio_snippet')" 
+                  [checked]="config.cells.types.includes('audio_snippet')" 
                   (change)="toggleType($event, 'cells')"
+                  [disabled]="(config.cells.types.length > 0) && (!config.cells.types.includes('audio_snippet'))"
                 >
                 <label for="cell-audio">Audio Snippets</label>
+              </div>
+              <div class="flex flex-row items-start">
+                <input 
+                  type="checkbox" 
+                  id="cell-code" 
+                  class="mx-2 my-1 accent-blue-900" 
+                  value="executable_code" 
+                  [checked]="config.cells.types.includes('executable_code')" 
+                  (change)="toggleType($event, 'cells')"
+                  [disabled]="(config.cells.types.length > 0) && (!config.cells.types.includes('executable_code'))"
+                >
+                <label for="cell-code">Code Blocks</label>
               </div>
               <!-- <div class="flex flex-row items-start">
                 <input 

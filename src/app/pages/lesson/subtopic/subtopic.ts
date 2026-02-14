@@ -2,11 +2,19 @@ import { Component, effect, ElementRef, input, output, untracked, viewChild, Vie
 import { MarkdownCell } from '../cells/markdown-cell/markdown-cell';
 import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-icon';
 import { ChartCell } from "../cells/chart-cell/chart-cell";
+import { AudioSnippetCell } from '../cells/audio-snippet-cell/audio-snippet-cell';
+import { ExecutableCodeCell } from '../cells/executable-code-cell/executable-code-cell';
 // import { ChartCell } from '../cells/chart-cell/chart-cell';
 
 @Component({
   selector: 'app-subtopic',
-  imports: [MarkdownCell, ThemeIconComponent, ChartCell],
+  imports: [
+    ThemeIconComponent, 
+    MarkdownCell, 
+    ChartCell,
+    AudioSnippetCell,
+    ExecutableCodeCell,
+  ],
   templateUrl: './subtopic.html',
   styleUrl: './subtopic.css'
 })

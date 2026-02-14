@@ -48,6 +48,10 @@
         <app-markdown-cell [data]="cell"></app-markdown-cell>
       } @else if (cell.type === "graph") {
         <app-chart-cell [data]="cell"></app-chart-cell>
+      } @else if (cell.type === "audio_snippet") {
+        <app-audio-snippet-cell [data]="cell"></app-audio-snippet-cell>
+      } @else if (cell.type === "executable_code") {
+        <app-executable-code-cell [data]="cell"></app-executable-code-cell>
       } @else {
         <!-- Default Fallback Cells -->
         <app-markdown-cell [data]="cell"></app-markdown-cell>
