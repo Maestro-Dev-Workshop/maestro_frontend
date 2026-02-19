@@ -254,9 +254,8 @@ export class LessonPage implements OnInit {
 
 
     // 1. Fetch all subjects first
-    this.subjectService.getAllSubjects().pipe(
-      map((res: any) => res.sessions || []), // unwrap sessions array
-      map((subjects: any[]) => subjects.find(s => s.id === this.subjectId)), // pick current subject
+    this.subjectService.getSubject(this.subjectId).pipe(
+      map((res: any) => res.session || null), // unwrap sessions array
       switchMap((subject) => {
         if (!subject) throw new Error('Subject not found');
         
@@ -343,7 +342,7 @@ export class LessonPage implements OnInit {
   
         // If still nothing, set exam or fallback
         if (!this.currentView.id) {
-          if (this.subjectContent.exam?.score == null) {
+          if ((this.subjectContent.exam) && (this.subjectContent.exam?.score == null)) {
             this.updatecurrentView({ id: this.subjectContent.exam.id, type: 'exam' });
           } else {
             const firstTopic = this.subjectContent.topics[0];

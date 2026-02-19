@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, inject, NO_ERRORS_SCHEMA, OnDestroy, OnInit, viewChild, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, inject, NO_ERRORS_SCHEMA, OnInit, viewChild, ViewChild } from '@angular/core';
 import { Header } from '../../../shared/components/header/header';
 import { CreationStepTab } from '../creation-step-tab/creation-step-tab';
 import { FormsModule, NgModel } from '@angular/forms';
@@ -23,7 +23,7 @@ import {CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray} from '@angular/cdk/d
   templateUrl: './lesson-generation.html',
   styleUrl: './lesson-generation.css',
 })
-export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
+export class LessonGeneration implements OnInit {
   loading = false
   learningStyle = ''
   settingsPopup = false
@@ -31,14 +31,10 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
   extensionsEnabled = false
   subjectId = ''
   subjectStatus = ''
-  topicOverflowing = false;
-  topicsExpanded = false;
-  textInput = viewChild<ElementRef>('textInput')
-  topicList = viewChild<ElementRef>('topicList')
+  textInput = viewChild<ElementRef>('textInput');
   notify = inject(NotificationService)
   subjectService = inject(SubjectsService)
   subscriptionService = inject(SubscriptionService)
-  private resizeObserver?: ResizeObserver; 
   
   subjectName = '';
   topics: any = [];
@@ -309,34 +305,5 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
         this.cdr.detectChanges();
       }
     })
-  }
-
-  ngAfterViewInit() {
-    this.observeResize();
-  }
-
-  observeResize() {
-    if (this.topicList()?.nativeElement) {
-      this.resizeObserver = new ResizeObserver(() => {
-        this.checkIfScrollable();
-      });
-      this.resizeObserver.observe(this.topicList()?.nativeElement);
-    }
-  }
-
-  checkIfScrollable() {
-    if (this.topicList()?.nativeElement && !this.topicOverflowing) {
-      const element = this.topicList()?.nativeElement;
-      this.topicOverflowing = element.scrollWidth > element.clientWidth;
-      this.cdr.detectChanges();
-    }
-  }
-
-  toggleTopicExpansion() {
-    this.topicsExpanded = !this.topicsExpanded;
-  }
-
-  ngOnDestroy() {
-    this.resizeObserver?.disconnect();
   }
 }
