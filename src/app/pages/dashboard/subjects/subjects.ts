@@ -65,7 +65,7 @@ export class Subjects implements OnInit, OnDestroy {
       },
       error: (res) => {
         this.notify.showError(
-          res.error?.displayMessage ||
+          res.error?.message ||
             'Failed to load subscription data. Please try again later.'
         );
         this.cdr.detectChanges();
@@ -97,7 +97,7 @@ export class Subjects implements OnInit, OnDestroy {
       },
       error: (res) => {
         this.notify.showError(
-          res.error?.displayMessage ||
+          res.error?.message ||
             'Failed to load subjects. Please try again later.'
         );
         this.loadingSubjects = false;
@@ -204,7 +204,7 @@ export class Subjects implements OnInit, OnDestroy {
       },
       error: (res) => {
         this.notify.showError(
-          res.error?.displayMessage ||
+          res.error?.message ||
             'Failed to create a new subject. Please try again later.'
         );
         this.loadingAction = false;
@@ -281,7 +281,7 @@ export class Subjects implements OnInit, OnDestroy {
       },
       error: (res) => {
         this.notify.showError(
-          res.error?.displayMessage ||
+          res.error?.message ||
             'Failed to delete subject. Please try again later.'
         );
         this.rightClickSubject = null;
@@ -399,7 +399,7 @@ export class Subjects implements OnInit, OnDestroy {
       },
       error: (res: any) => {
         this.notify.showError(
-          res?.error?.displayMessage ||
+          res?.error?.message ||
             'Failed to submit feedback. Please try again later.'
         );
         this.cdr.detectChanges();
