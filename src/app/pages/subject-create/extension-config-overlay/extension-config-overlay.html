@@ -14,7 +14,7 @@
         <div class="flex flex-row w-full justify-between items-center border-b-2 p-2 border-[var(--text-primary)]">
           <div class="flex flex-row items-center">
             <app-theme-icon name="cells-icon" className="w-5 mr-2"/>
-            Content Cells
+            {{ config.cells.displayName }}
           </div>
           <button (click)="toggleExtensionVisibility('cells')" class="p-2">
             <app-theme-icon name="dropdown-icon" [className]="`w-2 ${extensionVisibility['cells'] ? 'rotate-90' : 'rotate-180'}`"/>
@@ -24,7 +24,7 @@
         <div [class]="extensionVisibility['cells'] ? '' : 'hidden'">
           <!-- Cell Types -->
           <div class="px-2 pt-2 md:pt-6 flex flex-col md:flex-row">
-            <label for="" class="my-2">Cell Types:</label>
+            <label for="" class="my-2">Supplement Types:</label>
             <div class="flex flex-row items-start text-sm p-2 pt-3">
               <div class="flex flex-row items-start">
                 <input 
@@ -34,7 +34,7 @@
                   value="graph" 
                   [checked]="config.cells.types.includes('graph')" 
                   (change)="toggleType($event, 'cells')"
-                  [disabled]="(config.cells.types.length > 0) && (!config.cells.types.includes('graph'))"
+                  [disabled]="(config.cells.types.length >= 1) && (!config.cells.types.includes('graph'))"
                 >
                 <label for="cell-graph">Charts</label>
               </div>
@@ -46,7 +46,7 @@
                   value="audio_snippet" 
                   [checked]="config.cells.types.includes('audio_snippet')" 
                   (change)="toggleType($event, 'cells')"
-                  [disabled]="(config.cells.types.length > 0) && (!config.cells.types.includes('audio_snippet'))"
+                  [disabled]="(config.cells.types.length >= 1) && (!config.cells.types.includes('audio_snippet'))"
                 >
                 <label for="cell-audio">Audio Snippets</label>
               </div>
@@ -58,7 +58,7 @@
                   value="executable_code" 
                   [checked]="config.cells.types.includes('executable_code')" 
                   (change)="toggleType($event, 'cells')"
-                  [disabled]="(config.cells.types.length > 0) && (!config.cells.types.includes('executable_code'))"
+                  [disabled]="(config.cells.types.length >= 1) && (!config.cells.types.includes('executable_code'))"
                 >
                 <label for="cell-code">Code Blocks</label>
               </div>

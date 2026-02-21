@@ -130,7 +130,7 @@ export class Chatbot implements OnInit, AfterViewInit, OnDestroy {
         error: (res) => {
           this.loading = false;
           this.notify.showError(
-            res?.error?.displayMessage ||
+            res?.error?.message ||
               'Failed to send message. Please try again.'
           );
           this.cdr.detectChanges();

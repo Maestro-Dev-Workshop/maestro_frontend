@@ -47,7 +47,7 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
       enabled: false,
       types: [],
       name: 'cells',
-      displayName: 'Content Cells',
+      displayName: 'Lesson Supplements',
     },
     exercise: {
       enabled: false,
