@@ -116,7 +116,7 @@
 
 <!-- Chatbot Popup -->
 <button 
-  [class]="`absolute right-6 lg:right-16 bottom-12 bg-transparent lg:hover:opacity-70
+  [class]="`absolute z-20 right-6 lg:right-16 bottom-12 bg-transparent lg:hover:opacity-70
   ${(
       chatOpen || 
       (['exercise', 'exam'].includes(currentView.type)  && (currentView.content.score == null)) ||

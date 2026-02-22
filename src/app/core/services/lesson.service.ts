@@ -48,4 +48,8 @@ export class LessonService {
   getFlashcards(topicId: string): Observable<any> {
     return this.http.get<any>(`topic/${topicId}/get-flashcards`);
   }
+
+  executeCodeBlock(code: string, language: string): Observable<any> {
+    return this.http.post<any>(`topic/execute-code`, { code, language })
+  }
 }
