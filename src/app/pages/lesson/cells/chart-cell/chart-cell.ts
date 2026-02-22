@@ -11,9 +11,11 @@ export class ChartCell implements AfterViewInit {
   data = input<any>();
   @ViewChild('plotContainer', { static: true })
   plotContainer!: ElementRef;
+  context = ''
 
-  ngAfterViewInit() {
-    const fig = JSON.parse(this.data().content);
+  private updateOnInputChange = effect(() => {
+    const fig = this.data().metadata.graph_content;
+    this.context = this.data().content
     Plotly.newPlot(
       this.plotContainer.nativeElement,
       fig.data,

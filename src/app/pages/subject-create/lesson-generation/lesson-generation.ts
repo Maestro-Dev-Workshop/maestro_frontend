@@ -39,28 +39,38 @@ export class LessonGeneration implements OnInit {
   subjectName = '';
   topics: any = [];
   extensionSettings = {
+    cells: {
+      enabled: false,
+      types: [],
+      name: 'cells',
+      displayName: 'Lesson Supplements',
+    },
     exercise: {
       enabled: false,
       types: [],
       numQuestions: 3,
-      name: 'exercise'
+      name: 'exercise',
+      displayName: 'Exercise',
     },
     exam: {
       enabled: false,
       types: [],
       numQuestions: 10,
       timelimit: null,
-      name: 'exam'
+      name: 'exam',
+      displayName: 'Exam',
     },
     flashcards: {
       enabled: false,
       numCards: 5,
       types: [],
-      name: 'flashcards'
+      name: 'flashcards',
+      displayName: 'Flashcards',
     },
     glossary: {
       enabled: false,
-      name: 'glossary'
+      name: 'glossary',
+      displayName: 'Glossary',
     }
   }
   constraints = {
@@ -104,6 +114,7 @@ export class LessonGeneration implements OnInit {
 
   toggleConfigOverlay() {
     if (
+      this.extensionSettings.cells.enabled ||
       this.extensionSettings.exercise.enabled ||
       this.extensionSettings.exam.enabled ||
       this.extensionSettings.flashcards.enabled
@@ -127,6 +138,10 @@ export class LessonGeneration implements OnInit {
   }
 
   getExtensionList() {
+    return Object.values(this.extensionSettings);
+  }
+
+  getEnabledExtensionList() {
     return Object.values(this.extensionSettings).filter((ext: any) => ext.enabled);
   }
 
