@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, inject, NO_ERRORS_SCHEMA, OnInit, viewChild, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, inject, NO_ERRORS_SCHEMA, OnDestroy, OnInit, viewChild, ViewChild } from '@angular/core';
 import { Header } from '../../../shared/components/header/header';
 import { CreationStepTab } from '../creation-step-tab/creation-step-tab';
 import { FormsModule, NgModel } from '@angular/forms';
@@ -23,7 +23,7 @@ import {CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray} from '@angular/cdk/d
   templateUrl: './lesson-generation.html',
   styleUrl: './lesson-generation.css',
 })
-export class LessonGeneration implements OnInit {
+export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
   loading = false
   learningStyle = ''
   settingsPopup = false
@@ -31,10 +31,14 @@ export class LessonGeneration implements OnInit {
   extensionsEnabled = false
   subjectId = ''
   subjectStatus = ''
-  textInput = viewChild<ElementRef>('textInput');
+  topicOverflowing = false;
+  topicsExpanded = false;
+  textInput = viewChild<ElementRef>('textInput')
+  topicList = viewChild<ElementRef>('topicList')
   notify = inject(NotificationService)
   subjectService = inject(SubjectsService)
   subscriptionService = inject(SubscriptionService)
+  private resizeObserver?: ResizeObserver; 
   
   subjectName = '';
   topics: any = [];
@@ -85,7 +89,10 @@ export class LessonGeneration implements OnInit {
     }
   }
 
-  constructor(private cdr: ChangeDetectorRef, private router: Router) {
+  constructor(
+    private cdr: ChangeDetectorRef, 
+    private router: Router,
+  ) {
     // Extract subjectId from the route parameters
     const url = window.location.pathname;
     const parts = url.split('/');
@@ -174,6 +181,16 @@ export class LessonGeneration implements OnInit {
       };
     }
 
+    // Content Cell checks
+    if (this.extensionSettings.cells.enabled) {
+      if (this.extensionSettings.cells.types.length === 0) {
+        return {
+          status: false,
+          message: 'Please select at least one cell type for lesson.'
+        };
+      }
+    }
+
     // Exercise checks
     if (this.extensionSettings.exercise.enabled) {
       if (this.extensionSettings.exercise.numQuestions <= 0 || this.extensionSettings.exercise.numQuestions > this.constraints.excercise.maxQuestions) {
@@ -260,6 +277,11 @@ export class LessonGeneration implements OnInit {
 
   configureExtensions(extensions: any) {
     for (let ext of extensions) {
+      if (ext.type == 'lesson' && ext.configuration.cell_types.length > 0) {
+        this.extensionSettings.cells.enabled = true
+        this.extensionSettings.cells.types = ext.configuration.cell_types
+        this.extensionsEnabled = true
+      }
       if (ext.type == 'exercise') {
         this.extensionSettings.exercise.enabled = true
         this.extensionSettings.exercise.numQuestions = ext.configuration.no_of_questions
@@ -320,5 +342,34 @@ export class LessonGeneration implements OnInit {
         this.cdr.detectChanges();
       }
     })
+  }
+
+  ngAfterViewInit() {
+    this.observeResize();
+  }
+
+  observeResize() {
+    if (this.topicList()?.nativeElement) {
+      this.resizeObserver = new ResizeObserver(() => {
+        this.checkIfScrollable();
+      });
+      this.resizeObserver.observe(this.topicList()?.nativeElement);
+    }
+  }
+
+  checkIfScrollable() {
+    if (this.topicList()?.nativeElement && !this.topicOverflowing) {
+      const element = this.topicList()?.nativeElement;
+      this.topicOverflowing = element.scrollWidth > element.clientWidth;
+      this.cdr.detectChanges();
+    }
+  }
+
+  toggleTopicExpansion() {
+    this.topicsExpanded = !this.topicsExpanded;
+  }
+
+  ngOnDestroy() {
+    this.resizeObserver?.disconnect();
   }
 }

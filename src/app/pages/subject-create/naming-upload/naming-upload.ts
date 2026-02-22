@@ -155,6 +155,7 @@ export class NamingUpload implements OnInit {
     const validFiles: File[] = [];
     const invalidFiles: string[] = [];
     const largeFiles: string[] = [];
+    const duplicateFiles: string[] = [];
 
     let totalFilesCount = this.files.length;
     let totalFilesSize = this.files.reduce((acc, file) => acc + file.size, 0);
@@ -164,6 +165,8 @@ export class NamingUpload implements OnInit {
 
       if (!ext || !this.allowedExtensions.includes(ext)) {
         invalidFiles.push(file.name);
+      } else if (this.files.some((f) => f.name === file.name)) {
+        duplicateFiles.push(file.name);
       } else if (file.size > this.single_file_size * 1024 ** 2) {
         largeFiles.push(file.name);
       } else if (totalFilesCount === this.max_file_count) {
@@ -188,12 +191,16 @@ export class NamingUpload implements OnInit {
 
     if (invalidFiles.length) {
       this.notify.showError(
-        `Unsupported file types: ${invalidFiles.join(', ')}`,
+        `Unsupported file type(s): ${invalidFiles.join(', ')}`,
       );
     }
 
+    if (duplicateFiles.length) {
+      this.notify.showError(`Duplicate file(s) found: ${duplicateFiles.join(', ')}`);
+    }
+
     if (largeFiles.length) {
-      this.notify.showError(`Files too large: ${largeFiles.join(', ')}`);
+      this.notify.showError(`File(s) too large: ${largeFiles.join(', ')}`);
     }
 
     if (validFiles.length) {
@@ -204,6 +211,27 @@ export class NamingUpload implements OnInit {
 
   removeFile(file: File) {
     this.files = this.files.filter((f) => f !== file);
+  }
+
+  formatFileSize(file: File) {
+    let size: any = file.size;
+    let end = null;
+    if (size >= (1024 ** 2)) {
+      size /= (1024 ** 2);
+      size = size.toFixed(3);
+      end = 'MB';
+    } else if (size >= 1024) {
+      size /= 1024;
+      size = size.toFixed(3);
+      end = 'KB';
+    } else {
+      end = 'B';
+    }
+    return `${size} ${end}`;
+  }
+
+  getFileExtension(file: File) {
+    return file.name.split('.').pop()?.toLowerCase() || '';
   }
 
   onSubmit() {
