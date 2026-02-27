@@ -87,6 +87,7 @@
           ${settingsPopup ? 'bg-[var(--bg-hover)] shadow-lg p-2' : ''}`"
           (click)="toggleSettingsPopup()"
           [disabled]="loading"
+          #enableExtensionsButton
         >
           <app-theme-icon name="extension-icon" className="w-4 md:w-6 mr-1"></app-theme-icon>
           <span class="hidden md:block">Enable Extensions</span>
@@ -96,6 +97,7 @@
           ${configOverlay ? 'bg-[var(--bg-hover)] shadow-lg p-2' : ''}`"
           (click)="toggleConfigOverlay()"
           [disabled]="!extensionsEnabled || loading"
+          #configureExtensionsButton
         >
           <app-theme-icon name="config-icon" className="w-6 md:w-6 mr-1"></app-theme-icon>
           <span class="hidden md:block">Configure Extensions</span>
@@ -127,7 +129,7 @@
         </div>
       </div>
 
-      <button (click)="go()" [disabled]="loading">
+      <button (click)="go()" [disabled]="loading" #submitButton>
         <app-theme-icon name="send-icon" className="w-6 md:w-8 lg:hover:opacity-50 disabled:opacity-50"></app-theme-icon>
       </button>
     </div>
@@ -162,4 +164,15 @@
     [constraints]="constraints"
   >
   </app-extension-config-overlay>
+}
+
+@if (currentOnboardingStep >= 0 && currentOnboardingStep < onboardingSteps.length) {
+  <app-tutorial-element
+    [objectDimensions]="getTutorialObjectPosition(currentOnboardingStep)"
+    [title]="onboardingSteps[currentOnboardingStep].title"
+    [text]="onboardingSteps[currentOnboardingStep].text"
+    [tipPosition]="onboardingSteps[currentOnboardingStep].tipPosition"
+    [tipAlignment]="onboardingSteps[currentOnboardingStep].tipAlignment"
+    (next)="cycleOnboarding()"
+  ></app-tutorial-element>
 }

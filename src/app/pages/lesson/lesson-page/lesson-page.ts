@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, inject, OnInit, signal, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, inject, OnInit, signal, viewChild, ViewChild } from '@angular/core';
 import { Header } from '../../../shared/components/header/header';
 import { Sidebar } from '../sidebar/sidebar';
 import { Chatbot } from '../chatbot/chatbot';
@@ -14,10 +14,13 @@ import { ChatMessage } from '../../../core/models/chat-message.model';
 import { NotificationService } from '../../../core/services/notification.service';
 import { Glossary } from '../glossary/glossary';
 import { Flashcards } from '../flashcards/flashcards';
+import { TutorialElement } from '../../../shared/components/tutorial-element/tutorial-element';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-lesson-page',
-  imports: [Header, Sidebar, Chatbot, Subtopic, Practice, Glossary, Flashcards],
+  imports: [Header, Sidebar, Chatbot, Subtopic, Practice, Glossary, Flashcards, TutorialElement],
   templateUrl: './lesson-page.html',
   styleUrl: './lesson-page.css'
 })
@@ -39,6 +42,20 @@ export class LessonPage implements OnInit {
   chatbotService = inject(ChatbotService)
   notify = inject(NotificationService)
   @ViewChild('contentContainer') private contentContainer!: ElementRef<HTMLDivElement>;
+
+  // Onboarding elements
+  chatPopupButton = viewChild<ElementRef>('chatPopupButton');
+  onboardingSteps = [
+    {
+      title: 'Need Help?',
+      text: 'Ask the chatbot about the lesson content or get feedback on practice questions.',
+      object: this.chatPopupButton,
+      tipPosition: 'top',
+      tipAlignment: 'end',
+    },
+  ];
+  beginner = false;
+  currentOnboardingStep = -1;
 
   // subjectContent: any = {
   //   subject_name: 'Geography',
@@ -231,11 +248,15 @@ export class LessonPage implements OnInit {
 
   constructor(
     private cdr: ChangeDetectorRef,
+    private router: Router,
   ) {
     // Extract subjectId from the route parameters
     const url = window.location.pathname;
     const parts = url.split('/');
     this.subjectId = parts[parts.length - 1]; // Assuming the last part is the subjectId
+    const nav = this.router.currentNavigation();
+    this.beginner = nav?.extras?.state?.['beginner'];
+    this.currentOnboardingStep = this.beginner ? 0 : -1;
   }
 
   ngOnInit(): void {
@@ -577,5 +598,21 @@ export class LessonPage implements OnInit {
 
   reorderTopics(topics: any[]) {
     this.subjectService.reorderSubjectTopics(this.subjectId, topics).subscribe()
+  }
+
+  getTutorialObjectPosition(step: any) {
+    if (!this.onboardingSteps[step].object()) return { top: 0, left: 0, bottom: 0, right: 0 };
+    const rect = this.onboardingSteps[step].object()?.nativeElement.getBoundingClientRect();
+    return {
+      top: rect.top,
+      left: rect.left,
+      bottom: rect.bottom,
+      right: rect.right,
+    }
+  }
+
+  cycleOnboarding() {
+    this.currentOnboardingStep = this.currentOnboardingStep + 1;
+    this.cdr.detectChanges();
   }
 }

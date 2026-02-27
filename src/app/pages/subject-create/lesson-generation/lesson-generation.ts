@@ -13,12 +13,13 @@ import { max } from 'rxjs';
 import { SubscriptionService } from '../../../core/services/subscription.service';
 import { SubscriptionStatus } from '../../../core/models/subscription.model';
 import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-icon';
-import {CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray} from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
+import { TutorialElement } from '../../../shared/components/tutorial-element/tutorial-element';
 
 
 @Component({
   selector: 'app-lesson-generation',
-  imports: [Header, CreationStepTab, FormsModule, ExtensionConfigOverlay, ThemeIconComponent, CdkDrag, CdkDropList],
+  imports: [Header, CreationStepTab, FormsModule, ExtensionConfigOverlay, ThemeIconComponent, CdkDrag, CdkDropList, TutorialElement],
   schemas: [NO_ERRORS_SCHEMA],
   templateUrl: './lesson-generation.html',
   styleUrl: './lesson-generation.css',
@@ -33,12 +34,56 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
   subjectStatus = ''
   topicOverflowing = false;
   topicsExpanded = false;
-  textInput = viewChild<ElementRef>('textInput')
-  topicList = viewChild<ElementRef>('topicList')
   notify = inject(NotificationService)
   subjectService = inject(SubjectsService)
   subscriptionService = inject(SubscriptionService)
   private resizeObserver?: ResizeObserver; 
+  
+  // Onboarding elements
+  topicList = viewChild<ElementRef>('topicList')
+  enableExtensionsButton = viewChild<ElementRef>('enableExtensionsButton')
+  configureExtensionsButton = viewChild<ElementRef>('configureExtensionsButton')
+  textInput = viewChild<ElementRef>('textInput')
+  submitButton = viewChild<ElementRef>('submitButton')
+  onboardingSteps = [
+    {
+      title: 'Select Topics',
+      text: 'Choose the specific concepts you want to focus on for this lesson.',
+      object: this.topicList,
+      tipPosition: 'top',
+      tipAlignment: 'start',
+    },
+    {
+      title: 'Enhance Your Lesson',
+      text: 'Select additional extensions to enhance the quality of your generated lesson.',
+      object: this.enableExtensionsButton,
+      tipPosition: 'top',
+      tipAlignment: 'start',
+    },
+    {
+      title: 'Configure',
+      text: 'Click here to customize your extensions.',
+      object: this.configureExtensionsButton,
+      tipPosition: 'top',
+      tipAlignment: 'start',
+    },
+    {
+      title: 'Lesson Preferences',
+      text: 'Provide any specific preferences or instructions for your lesson generation.',
+      object: this.textInput,
+      tipPosition: 'bottom',
+      tipAlignment: 'start',
+    },
+    {
+      title: 'Generate Lesson',
+      text: 'Ready? Click the send button to build your personalised lesson.',
+      object: this.submitButton,
+      tipPosition: 'top',
+      tipAlignment: 'end',
+    },
+  ];
+  beginner = false;
+  currentOnboardingStep = -1;
   
   subjectName = '';
   topics: any = [];
@@ -97,6 +142,9 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
     const url = window.location.pathname;
     const parts = url.split('/');
     this.subjectId = parts[parts.length - 2]; // Assuming the last part is the subjectId
+    const nav = this.router.currentNavigation();
+    this.beginner = nav?.extras?.state?.['beginner'];
+    this.currentOnboardingStep = this.beginner ? 0 : -1;
   }
 
   adjustInputHeight() {
@@ -261,7 +309,7 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
     this.subjectService.generateFullLesson(this.subjectId, selectedTopicIds, this.learningStyle, this.extensionSettings).subscribe({
       next: (response) => {
         this.notify.showSuccess("Successfully generated lesson.")
-        this.router.navigate([`/lesson/${this.subjectId}`])
+        this.router.navigateByUrl(`/lesson/${this.subjectId}`, { state: { beginner: this.beginner } })
       },
       error: (res) => {
         this.notify.showError(res.error.message || "Failed to generate lesson. Please try again later.");
@@ -371,5 +419,21 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy() {
     this.resizeObserver?.disconnect();
+  }
+
+  getTutorialObjectPosition(step: any) {
+    if (!this.onboardingSteps[step].object()) return { top: 0, left: 0, bottom: 0, right: 0 };
+    const rect = this.onboardingSteps[step].object()?.nativeElement.getBoundingClientRect();
+    return {
+      top: rect.top,
+      left: rect.left,
+      bottom: rect.bottom,
+      right: rect.right,
+    }
+  }
+
+  cycleOnboarding() {
+    this.currentOnboardingStep = this.currentOnboardingStep + 1;
+    this.cdr.detectChanges();
   }
 }
