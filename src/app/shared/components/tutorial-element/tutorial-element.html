@@ -1,0 +1,28 @@
+<div class="absolute inset-0 z-20">
+
+  <!-- Highlight -->
+  <div
+    class="absolute border-2 border-white rounded-lg cursor-pointer"
+    [ngStyle]="highlightStyle()"
+    style="box-shadow: 0 0 0 9999px rgba(0,0,0,0.7);"
+    (click)="close()"
+  ></div>
+
+  <!-- Tooltip -->
+  <div
+    class="absolute flex flex-col bg-blue-500 text-white p-4 rounded-lg w-[220px] h-[110px] overflow-y-auto scrollbar-none"
+    [ngStyle]="tooltipStyle()"
+    #tooltipEl
+  >
+    <h3 class="font-semibold">{{ title() }}</h3>
+    <div class="text-xs">{{ text() }}</div>
+
+    <button
+      class="text-xs font-semibold underline block mt-auto ml-auto"
+      (click)="close()"
+    >
+      Next
+    </button>
+  </div>
+
+</div>

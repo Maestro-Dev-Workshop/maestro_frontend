@@ -24,6 +24,7 @@
         class="rounded-md m-4 md:m-8 px-5 py-3 text-white bg-prussian-blue-700 lg:hover:bg-prussian-blue-400 disabled:bg-prussian-blue-400 flex flex-row justify-center"
         (click)="createNewSubject()"
         [disabled]="loadingAction"
+        #createSubjectButton
       >
         Create New Subject
         <img src="images/create-subject-icon.svg" alt="" class="w-4 ml-2" />
@@ -33,7 +34,7 @@
     <div class="flex flex-col w-full px-4 md:px-12 lg:px-32">
       <!-- Heading -->
       <div class="flex flex-row w-full justify-between my-4 space-y-4 md:space-y-0">
-        <div class="flex flex-row items-center">
+        <div class="flex flex-row items-center" #testElement>
           <app-theme-icon name="subject-icon" className="w-8 h-4" />
           <span class="font-medium text-[var(--text-primary)]">My Subjects</span>
         </div>
@@ -327,4 +328,15 @@
       <img src="images/spinner.gif" class="w-8 lg:w-12">
     </div>
   }
+}
+
+@if (currentOnboardingStep >= 0 && currentOnboardingStep < onboardingSteps.length) {
+  <app-tutorial-element
+    [objectDimensions]="getTutorialObjectPosition(currentOnboardingStep)"
+    [title]="onboardingSteps[currentOnboardingStep].title"
+    [text]="onboardingSteps[currentOnboardingStep].text"
+    [tipPosition]="onboardingSteps[currentOnboardingStep].tipPosition"
+    [tipAlignment]="onboardingSteps[currentOnboardingStep].tipAlignment"
+    (next)="cycleOnboarding()"
+  ></app-tutorial-element>
 }

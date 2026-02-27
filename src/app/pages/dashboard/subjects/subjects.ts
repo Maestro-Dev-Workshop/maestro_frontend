@@ -4,6 +4,8 @@ import {
   inject,
   OnInit,
   OnDestroy,
+  viewChild,
+  ElementRef,
 } from '@angular/core';
 import { Header } from '../../../shared/components/header/header';
 import { Router } from '@angular/router';
@@ -16,11 +18,12 @@ import { SubscriptionService } from '../../../core/services/subscription.service
 import { SubscriptionStatus } from '../../../core/models/subscription.model';
 import { ConfirmService } from '../../../core/services/confirm';
 import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-icon';
+import { TutorialElement } from '../../../shared/components/tutorial-element/tutorial-element';
 
 @Component({
   selector: 'app-subjects',
   standalone: true,
-  imports: [Header, CommonModule, FormsModule, ThemeIconComponent],
+  imports: [Header, CommonModule, FormsModule, ThemeIconComponent, TutorialElement],
   templateUrl: './subjects.html',
   styleUrls: ['./subjects.css'],
 })
@@ -38,6 +41,19 @@ export class Subjects implements OnInit, OnDestroy {
   showFeedbackBanner = true;
   subscriptionData: SubscriptionStatus | null = null;
   popup = { x: 0, y: 0 };
+  
+  // Onboarding elements
+  createButton = viewChild<ElementRef>('createSubjectButton');
+  onboardingSteps = [
+    {
+      title: 'New Subject',
+      text: 'Click here to create a new subject and start your learning journey.',
+      object: this.createButton,
+      tipPosition: 'bottom',
+      tipAlignment: 'start',
+    },
+  ];
+  currentOnboardingStep = -1;
 
   // Rating modal state
   showRateModal = false;
@@ -92,6 +108,9 @@ export class Subjects implements OnInit, OnDestroy {
           topics: s.topics.filter((t: any) => t.selected),
           extensions: s.extensions.filter((e: any) => e.type !== 'lesson'),
         }));
+        if (this.subjects.length == 0) {
+          this.currentOnboardingStep = 0; // start onboarding if we don't have subjects
+        }
         this.loadingSubjects = false;
         this.cdr.detectChanges();
       },
@@ -198,7 +217,7 @@ export class Subjects implements OnInit, OnDestroy {
     this.subjectService.createSubject().subscribe({
       next: (response: any) => {
         const newSubjectId = response.session.id;
-        this.router.navigate([`/subject-create/${newSubjectId}/naming-upload`]);
+        this.router.navigateByUrl(`/subject-create/${newSubjectId}/naming-upload`, { state: { beginner: (this.subjects.length == 0) } });
         this.loadingAction = false;
         this.cdr.detectChanges();
       },
@@ -426,5 +445,22 @@ export class Subjects implements OnInit, OnDestroy {
   getCircleDashOffset(completion?: number): number {
     const c = this.normalizeCompletion(completion);
     return this.CIRCLE_CIRCUMFERENCE * (1 - c / 100);
+  }
+
+  getTutorialObjectPosition(step: any) {
+    if (!this.onboardingSteps[step].object()) return { top: 0, left: 0, bottom: 0, right: 0 };
+    const rect = this.onboardingSteps[step].object()?.nativeElement.getBoundingClientRect();
+    return {
+      top: rect.top,
+      left: rect.left,
+      bottom: rect.bottom,
+      right: rect.right,
+    }
+  }
+
+  cycleOnboarding() {
+    // this.currentOnboardingStep = (this.currentOnboardingStep + 1) % this.onboardingSteps.length;
+    this.currentOnboardingStep = this.currentOnboardingStep + 1;
+    this.cdr.detectChanges();
   }
 }

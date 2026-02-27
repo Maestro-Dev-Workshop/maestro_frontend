@@ -1,9 +1,11 @@
 import {
   ChangeDetectorRef,
   Component,
+  ElementRef,
   inject,
   NgZone,
   OnInit,
+  viewChild,
   ViewChild,
 } from '@angular/core';
 import { Header } from '../../../shared/components/header/header';
@@ -27,6 +29,7 @@ import { SubscriptionStatus } from '../../../core/models/subscription.model';
 import { SubscriptionService } from '../../../core/services/subscription.service';
 import { ConfirmService } from '../../../core/services/confirm';
 import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-icon';
+import { TutorialElement } from '../../../shared/components/tutorial-element/tutorial-element';
 
 @Component({
   selector: 'app-naming-upload',
@@ -36,6 +39,7 @@ import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-
     FormsModule,
     SubjectNameValidator,
     ThemeIconComponent,
+    TutorialElement,
   ],
   templateUrl: './naming-upload.html',
   styleUrl: './naming-upload.css',
@@ -64,6 +68,36 @@ export class NamingUpload implements OnInit {
 
   @ViewChild('nameCtrl') nameCtrl!: NgModel;
 
+  // Onboarding elements
+  beginner = false;
+  subjectNameInput = viewChild<ElementRef>('subjectNameInput');
+  fileUploadIcon = viewChild<ElementRef>('fileUploadIcon');
+  submitButton = viewChild<ElementRef>('submitButton');
+  onboardingSteps = [
+    {
+      title: 'Name Your Subject',
+      text: 'Enter the name of the subject/lesson you want to generate.',
+      object: this.subjectNameInput,
+      tipPosition: 'right',
+      tipAlignment: 'start',
+    },
+    {
+      title: 'Upload Documents',
+      text: 'Click the button or drag and drop files into the area to add study materials.',
+      object: this.fileUploadIcon,
+      tipPosition: 'bottom',
+      tipAlignment: 'start',
+    },
+    {
+      title: 'Finalize Setup',
+      text: 'After naming and uploading documents, click here to proceed.',
+      object: this.submitButton,
+      tipPosition: 'right',
+      tipAlignment: 'start',
+    },
+  ];
+  currentOnboardingStep = -1;
+
   constructor(
     private router: Router,
     private cdr: ChangeDetectorRef,
@@ -72,6 +106,9 @@ export class NamingUpload implements OnInit {
     const url = window.location.pathname;
     const parts = url.split('/');
     this.subjectId = parts[parts.length - 2];
+    const nav = this.router.currentNavigation();
+    this.beginner = nav?.extras?.state?.['beginner'];
+    this.currentOnboardingStep = this.beginner ? 0 : -1;
   }
 
   ngOnInit(): void {
@@ -259,11 +296,34 @@ export class NamingUpload implements OnInit {
       );
 
     const ingestDocumentsIfNeeded$ = () =>
-      iif(
-        () => this.uploadedDocs,
-        of(true),
-        this.subjectService.ingestDocuments(this.subjectId, this.files),
-      );
+    iif(
+      () => this.uploadedDocs,
+      of(true), // Documents already uploaded, skip
+      this.subjectService.ingestDocuments(this.subjectId, this.files).pipe(
+        switchMap((res: any) => {
+          if (res.warning) {
+            // Fix lowDocs and docsCount mapping
+            const lowDocs = res.documents
+              .filter((doc: any) => doc.belowThreshold)
+              .map((doc: any) => `"${doc.document.name}${doc.document.extension}"`);
+            const docsCount = res.documents
+              .filter((doc: any) => doc.belowThreshold)
+              .map((doc: any) => doc.avgPageWordCount);
+
+            // Show confirmation modal and return Observable<boolean>
+            return this.confirmation.open({
+              title: "Scanned Documents Detected",
+              message: `The following have been identified as scanned documents: ${lowDocs.join(", ")}.
+              Don't worry, everything will still work fine, this is just a placehoder warning for an upcoming update 😉.`,
+              okText: "Proceed",
+              cancelText: "Go back"
+            });
+          } else {
+            return of(true); // No warning, proceed
+          }
+        })
+      )
+    );
 
     nameSubjectIfPending$()
       .pipe(
@@ -271,9 +331,7 @@ export class NamingUpload implements OnInit {
         switchMap(() => this.subjectService.labelDocuments(this.subjectId)),
         tap(() => {
           this.notify.showSuccess('Topics successfully identified.');
-          this.router.navigate([
-            `/subject-create/${this.subjectId}/lesson-generation`,
-          ]);
+          this.router.navigateByUrl(`/subject-create/${this.subjectId}/lesson-generation`, { state: { beginner: this.beginner } });
         }),
         catchError((res) => {
           this.notify.showError(res.error?.message || 'Something went wrong.');
@@ -285,5 +343,21 @@ export class NamingUpload implements OnInit {
         }),
       )
       .subscribe();
+  }
+
+  getTutorialObjectPosition(step: any) {
+    if (!this.onboardingSteps[step].object()) return { top: 0, left: 0, bottom: 0, right: 0 };
+    const rect = this.onboardingSteps[step].object()?.nativeElement.getBoundingClientRect();
+    return {
+      top: rect.top,
+      left: rect.left,
+      bottom: rect.bottom,
+      right: rect.right,
+    }
+  }
+
+  cycleOnboarding() {
+    this.currentOnboardingStep = this.currentOnboardingStep + 1;
+    this.cdr.detectChanges();
   }
 }

@@ -125,6 +125,19 @@
     ) ? 'hidden' : ''}`" 
   (click)="toggleChatPopup()"
   [disabled]="(currentView.type !== 'subtopic' && (currentView.content.score == null))"
+  #chatPopupButton
 >
   <img src="images/Chat-Button.png" alt="Chat" class="w-16 lg:w-20">
 </button>
+
+@if (currentOnboardingStep >= 0 && currentOnboardingStep < onboardingSteps.length) {
+  <app-tutorial-element
+    [objectDimensions]="getTutorialObjectPosition(currentOnboardingStep)"
+    [title]="onboardingSteps[currentOnboardingStep].title"
+    [text]="onboardingSteps[currentOnboardingStep].text"
+    [tipPosition]="onboardingSteps[currentOnboardingStep].tipPosition"
+    [tipAlignment]="onboardingSteps[currentOnboardingStep].tipAlignment"
+    (next)="cycleOnboarding()"
+    class="z-40"
+  ></app-tutorial-element>
+}
