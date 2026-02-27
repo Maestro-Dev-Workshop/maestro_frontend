@@ -37,6 +37,7 @@
             #nameCtrl="ngModel"
             appSubjectNameValidator
             [disabled]="!(subject?.status == 'pending naming')"
+            #subjectNameInput
           />
   
           @if (nameCtrl.invalid && nameCtrl.touched) {
@@ -62,6 +63,7 @@
           <label
             for="fileInput"
             class="border border-[var(--text-primary-hover)] lg:hover:border-[var(--text-primary)] p-3 rounded-md cursor-pointer"
+            #fileUploadIcon
           >
             <app-theme-icon
               name="upload-file-icon"
@@ -146,6 +148,7 @@
           class="w-max bg-prussian-blue-700 lg:hover:bg-prussian-blue-400 disabled:bg-prussian-blue-400 text-white flex items-center px-6 py-3 rounded-md text-sm"
           (click)="onSubmit()"
           [disabled]="loading"
+          #submitButton
         >
           Next
           <img src="images/next-icon.svg" class="w-3 ml-2" />
@@ -158,3 +161,15 @@
       </div>
     </form>
 </div>
+
+
+@if (currentOnboardingStep >= 0 && currentOnboardingStep < onboardingSteps.length) {
+  <app-tutorial-element
+    [objectDimensions]="getTutorialObjectPosition(currentOnboardingStep)"
+    [title]="onboardingSteps[currentOnboardingStep].title"
+    [text]="onboardingSteps[currentOnboardingStep].text"
+    [tipPosition]="onboardingSteps[currentOnboardingStep].tipPosition"
+    [tipAlignment]="onboardingSteps[currentOnboardingStep].tipAlignment"
+    (next)="cycleOnboarding()"
+  ></app-tutorial-element>
+}
