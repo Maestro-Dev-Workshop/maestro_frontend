@@ -259,11 +259,34 @@ export class NamingUpload implements OnInit {
       );
 
     const ingestDocumentsIfNeeded$ = () =>
-      iif(
-        () => this.uploadedDocs,
-        of(true),
-        this.subjectService.ingestDocuments(this.subjectId, this.files),
-      );
+    iif(
+      () => this.uploadedDocs,
+      of(true), // Documents already uploaded, skip
+      this.subjectService.ingestDocuments(this.subjectId, this.files).pipe(
+        switchMap((res: any) => {
+          if (res.warning) {
+            // Fix lowDocs and docsCount mapping
+            const lowDocs = res.documents
+              .filter((doc: any) => doc.belowThreshold)
+              .map((doc: any) => `"${doc.document.name}${doc.document.extension}"`);
+            const docsCount = res.documents
+              .filter((doc: any) => doc.belowThreshold)
+              .map((doc: any) => doc.avgPageWordCount);
+
+            // Show confirmation modal and return Observable<boolean>
+            return this.confirmation.open({
+              title: "Scanned Documents Detected",
+              message: `The following have been identified as scanned documents: ${lowDocs.join(", ")}.
+              Don't worry, everything will still work fine, this is just a placehoder warning for an upcoming update 😉.`,
+              okText: "Proceed",
+              cancelText: "Go back"
+            });
+          } else {
+            return of(true); // No warning, proceed
+          }
+        })
+      )
+    );
 
     nameSubjectIfPending$()
       .pipe(
