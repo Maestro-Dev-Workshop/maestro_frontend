@@ -9,7 +9,7 @@ import { environment } from '../../../../environments/environment';
   styleUrl: './terms-of-service.css',
 })
 export class TermsOfService implements OnInit {
-  webURL = environment.production ? (environment.beta ? 'https://maestro-beta.netlify.app' : 'https://www.maestrolearningplatform.com') : 'http://localhost:4200';
+  webURL = (environment.type?.toLowerCase() == 'prod') ? 'https://www.maestrolearningplatform.com' : (environment.type?.toLowerCase() == 'beta' ? 'https://maestro-beta.netlify.app' : 'http://localhost:4200');
 
   tosMarkdown: string = `
 

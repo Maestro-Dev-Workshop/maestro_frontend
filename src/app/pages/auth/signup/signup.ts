@@ -74,7 +74,7 @@ export class Signup implements AfterViewInit {
       })
       .subscribe({
         next: () => {
-          if (environment.production) {
+          if (environment.type?.toLowerCase() == 'prod') {
             this.notify.showSuccess('Verification email sent. Please check your inbox.');
             this.router.navigateByUrl('/check-email', { state: { email: this.email.toLowerCase() } });
           } else {
