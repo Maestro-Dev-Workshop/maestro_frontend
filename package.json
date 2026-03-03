@@ -32,6 +32,7 @@
     "@traptitech/markdown-it-katex": "^3.6.0",
     "katex": "^0.16.22",
     "markdown-it": "^14.1.0",
+    "mermaid": "^11.12.3",
     "ngx-markdown": "^20.0.0",
     "ngx-monaco-editor-v2": "^20.3.0",
     "plotly.js-dist-min": "^3.3.1",
