@@ -4,7 +4,8 @@ import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-
 import { ChartCell } from "../cells/chart-cell/chart-cell";
 import { AudioSnippetCell } from '../cells/audio-snippet-cell/audio-snippet-cell';
 import { ExecutableCodeCell } from '../cells/executable-code-cell/executable-code-cell';
-// import { ChartCell } from '../cells/chart-cell/chart-cell';
+import { DiagramCell } from '../cells/diagram-cell/diagram-cell';
+
 
 @Component({
   selector: 'app-subtopic',
@@ -14,6 +15,7 @@ import { ExecutableCodeCell } from '../cells/executable-code-cell/executable-cod
     ChartCell,
     AudioSnippetCell,
     ExecutableCodeCell,
+    DiagramCell,
   ],
   templateUrl: './subtopic.html',
   styleUrl: './subtopic.css'
