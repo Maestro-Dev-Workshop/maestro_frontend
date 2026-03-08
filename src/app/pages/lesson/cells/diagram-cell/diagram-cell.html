@@ -1,5 +1,9 @@
-<div class="max-w-[710px] flex flex-row items-center justify-center my-2">
-  <div class="mermaid">
-    {{ diagramContent }}
+<div class="max-w-[710px] flex flex-col items-center my-2">
+
+  <div #diagramContainer class="w-full flex justify-center overflow-x-auto"></div>
+
+  <div class="text-[var(--text-primary)] max-w-[710px] mt-2">
+    <em>{{ context }}</em>
   </div>
+
 </div>

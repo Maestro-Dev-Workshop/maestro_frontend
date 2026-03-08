@@ -62,6 +62,18 @@
                 >
                 <label for="cell-code">Code Blocks</label>
               </div>
+              <div class="flex flex-row items-start">
+                <input 
+                  type="checkbox" 
+                  id="cell-code" 
+                  class="mx-2 my-1 accent-blue-900" 
+                  value="diagram" 
+                  [checked]="config.cells.types.includes('diagram')" 
+                  (change)="toggleType($event, 'cells')"
+                  [disabled]="(config.cells.types.length >= 1) && (!config.cells.types.includes('diagram'))"
+                >
+                <label for="cell-code">Diagrams</label>
+              </div>
               <!-- <div class="flex flex-row items-start">
                 <input 
                   type="checkbox" 
