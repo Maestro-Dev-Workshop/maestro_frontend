@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   // Home
@@ -12,21 +13,17 @@ export const routes: Routes = [
   { path: 'verify-email', loadComponent: () => import('./pages/auth/verify-email/verify-email').then(m => m.VerifyEmail) },
   { path: 'check-email', loadComponent: () => import('./pages/auth/check-email/check-email').then(m => m.CheckEmail) },
 
-  // Dashboard
-  { path: 'dashboard', loadComponent: () => import('./pages/dashboard/subjects/subjects').then(m => m.Subjects) },
-  { path: 'dashboard/subscription', loadComponent: () => import('./pages/dashboard/subscription/subscription').then(m => m.Subscription) },
-  { path: 'dashboard/verify-payment', loadComponent: () => import('./pages/dashboard/verify-payment/verify-payment').then(m => m.VerifyPayment) },
+  // Dashboard (protected)
+  { path: 'dashboard', loadComponent: () => import('./pages/dashboard/subjects/subjects').then(m => m.Subjects), canActivate: [authGuard] },
+  { path: 'dashboard/subscription', loadComponent: () => import('./pages/dashboard/subscription/subscription').then(m => m.Subscription), canActivate: [authGuard] },
+  { path: 'dashboard/verify-payment', loadComponent: () => import('./pages/dashboard/verify-payment/verify-payment').then(m => m.VerifyPayment), canActivate: [authGuard] },
 
-  { path: 'subscription-test', loadComponent: () => import('./pages/dashboard/subscription/subscription').then(m => m.Subscription) },
+  // Subject Creation (protected)
+  { path: 'subject-create/:sessionId/naming-upload', loadComponent: () => import('./pages/subject-create/naming-upload/naming-upload').then(m => m.NamingUpload), canActivate: [authGuard] },
+  { path: 'subject-create/:sessionId/lesson-generation', loadComponent: () => import('./pages/subject-create/lesson-generation/lesson-generation').then(m => m.LessonGeneration), canActivate: [authGuard] },
 
-  // Subject Creation (stepper flow, could be nested later if you want)
-  { path: 'subject-create/:sessionId/naming-upload', loadComponent: () => import('./pages/subject-create/naming-upload/naming-upload').then(m => m.NamingUpload) },
-  { path: 'subject-create/:sessionId/lesson-generation', loadComponent: () => import('./pages/subject-create/lesson-generation/lesson-generation').then(m => m.LessonGeneration) },
-  // { path: 'subject-create/:sessionId/topic-preferences', loadComponent: () => import('./pages/subject-create/topic-preferences/topic-preferences').then(m => m.TopicPreferences) },
-  // { path: 'subject-create/:sessionId/question-settings', loadComponent: () => import('./pages/subject-create/question-settings/question-settings').then(m => m.QuestionSettings) },
-
-  // Lesson
-  { path: 'lesson/:subjectId', loadComponent: () => import('./pages/lesson/lesson-page/lesson-page').then(m => m.LessonPage) },
+  // Lesson (protected)
+  { path: 'lesson/:subjectId', loadComponent: () => import('./pages/lesson/lesson-page/lesson-page').then(m => m.LessonPage), canActivate: [authGuard] },
 
   // Not Found
   { path: '**', loadComponent: () => import('./pages/not-found/not-found').then(m => m.NotFound) },

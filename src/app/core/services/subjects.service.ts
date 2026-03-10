@@ -9,68 +9,65 @@ export class SubjectsService {
   http = inject(HttpBaseService);
 
   getAllSubjects(): Observable<any> {
-    return this.http.get('session/list');
+    return this.http.get('subjects');
   }
 
   createSubject(): Observable<any> {
-    return this.http.post('session/create', {});
+    return this.http.post('subjects', {});
   }
 
-  nameSubject(sessionId: string, name: string): Observable<any> {
-    return this.http.put(`session/${sessionId}/name`, { name });
+  nameSubject(subjectId: string, name: string): Observable<any> {
+    return this.http.put(`subjects/${subjectId}`, { name });
   }
 
-  getSubject(sessionId: string): Observable<any> {
-    return this.http.get(`session/${sessionId}/get`);
+  getSubject(subjectId: string): Observable<any> {
+    return this.http.get(`subjects/${subjectId}`);
   }
 
-  getSubjectDetails(sessionId: string): Observable<any> {
-    return this.http.get(`session/${sessionId}/get-full`);
+  getSubjectDetails(subjectId: string): Observable<any> {
+    return this.http.get(`subjects/${subjectId}/full`);
   }
 
   getAllSubjectsDetails(): Observable<any> {
-    return this.http.get('session/list-full');
+    return this.http.get('subjects/full');
   }
 
-  ingestDocuments(sessionId: string, files: File[]): Observable<any> {
+  ingestDocuments(subjectId: string, files: File[]): Observable<any> {
     const formData = new FormData();
     files.forEach((file) => formData.append('files', file));
-    return this.http.post(`session/${sessionId}/docs/ingest`, formData);
+    return this.http.post(`subjects/${subjectId}/documents/ingest`, formData);
   }
 
-  labelDocuments(sessionId: string): Observable<any> {
-    return this.http.post(`session/${sessionId}/docs/label`, {});
+  labelDocuments(subjectId: string): Observable<any> {
+    return this.http.post(`subjects/${subjectId}/documents/label`, {});
   }
 
-  generateFullLesson(sessionId: string, topics: string[], user_preference: string, extension_settings: any): Observable<any> {
-    return this.http.post(`session/${sessionId}/generate`, { topics, user_preference, extension_settings });
-  }
-  
-  updateSessionStatus(sessionId: string, status: string): Observable<any> {
-    return this.http.put(`session/${sessionId}/update-status`, { status });
+  generateFullLesson(subjectId: string, topics: string[], user_preference: string, extension_settings: any): Observable<any> {
+    return this.http.post(`subjects/${subjectId}/generate`, { topics, user_preference, extension_settings });
   }
 
-  updateSessionProgress(sessionId: string, progress: number): Observable<any> {
-    return this.http.put(`session/${sessionId}/update-progress`, { update_tick: progress });
+  updateSessionStatus(subjectId: string, status: string): Observable<any> {
+    return this.http.put(`subjects/${subjectId}/status`, { status });
   }
 
-  deleteSubject(sessionId: string): Observable<any> {
-    return this.http.delete(`session/${sessionId}/delete`);
+  updateSessionProgress(subjectId: string, progress: number): Observable<any> {
+    return this.http.put(`subjects/${subjectId}/progress`, { update_tick: progress });
   }
 
-  reorderSubjectTopics(sessionId: string, topics: string[]): Observable<any> {
-    return this.http.put(`session/${sessionId}/reorder-topics`, { topics })
+  deleteSubject(subjectId: string): Observable<any> {
+    return this.http.delete(`subjects/${subjectId}`);
   }
 
-  submitFeedback(sessionId: string, rating: number, comment: string): Observable<any> {
-    return this.http.post(`lesson-feedback`, { 
-      session_id: sessionId, 
-      rating, 
+  reorderSubjectTopics(subjectId: string, topics: string[]): Observable<any> {
+    return this.http.put(`subjects/${subjectId}/topics/reorder`, { topics })
+  }
+
+  submitFeedback(subjectId: string, rating: number, comment: string): Observable<any> {
+    return this.http.post(`subjects/${subjectId}/feedback`, {
+      session_id: subjectId,
+      rating,
       comment });
   }
-
-
-
 
 
 
@@ -79,19 +76,19 @@ export class SubjectsService {
   // Deprecated methods for lesson/exercise/exam generation flow
   // ------------------------------------------------------------------
 
-  selectTopics(sessionId: string, topicIds: string[]): Observable<any> {
-    return this.http.post(`session/${sessionId}/select-topics`, { topics: topicIds });
+  selectTopics(subjectId: string, topicIds: string[]): Observable<any> {
+    return this.http.post(`subjects/${subjectId}/select-topics`, { topics: topicIds });
   }
-  
-  generateLesson(sessionId: string, prefs: string): Observable<any> {
-    return this.http.post(`session/${sessionId}/generate-lesson`, { lesson_preference: prefs });
+
+  generateLesson(subjectId: string, prefs: string): Observable<any> {
+    return this.http.post(`subjects/${subjectId}/generate-lesson`, { lesson_preference: prefs });
   }
-  
-  generateExercise(sessionId: string, prefs: string, questionTypes: string[], numQuestions: number): Observable<any> {
-    return this.http.post(`session/${sessionId}/generate-exercises`, { exercise_preference: prefs, question_types: questionTypes, no_of_questions: numQuestions });
+
+  generateExercise(subjectId: string, prefs: string, questionTypes: string[], numQuestions: number): Observable<any> {
+    return this.http.post(`subjects/${subjectId}/generate-exercises`, { exercise_preference: prefs, question_types: questionTypes, no_of_questions: numQuestions });
   }
-  
-  generateExam(sessionId: string, prefs: string, questionTypes: string[], numQuestions: number, timeLimit: boolean = false): Observable<any> {
-    return this.http.post(`session/${sessionId}/generate-exam`, { exam_preference: prefs, question_types: questionTypes, no_of_questions: numQuestions, use_time_limit: timeLimit });
+
+  generateExam(subjectId: string, prefs: string, questionTypes: string[], numQuestions: number, timeLimit: boolean = false): Observable<any> {
+    return this.http.post(`subjects/${subjectId}/generate-exam`, { exam_preference: prefs, question_types: questionTypes, no_of_questions: numQuestions, use_time_limit: timeLimit });
   }
 }

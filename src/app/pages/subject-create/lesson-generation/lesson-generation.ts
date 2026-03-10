@@ -1,20 +1,31 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, inject, NO_ERRORS_SCHEMA, OnDestroy, OnInit, viewChild, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  inject,
+  NO_ERRORS_SCHEMA,
+  OnDestroy,
+  OnInit,
+  viewChild,
+  computed,
+} from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
+
 import { Header } from '../../../shared/components/header/header';
 import { CreationStepTab } from '../creation-step-tab/creation-step-tab';
-import { FormsModule, NgModel } from '@angular/forms';
-import { Router } from '@angular/router';
-import { TopicModel } from '../../../core/models/topic.model';
-import { SubjectsService } from '../../../core/services/subjects.service';
-import { LessonService } from '../../../core/services/lesson.service';
-import { NotificationService } from '../../../core/services/notification.service';
-import { PreferenceValidator } from '../../../shared/directives/preference-validator';
 import { ExtensionConfigOverlay } from '../extension-config-overlay/extension-config-overlay';
-import { max } from 'rxjs';
-import { SubscriptionService } from '../../../core/services/subscription.service';
-import { SubscriptionStatus } from '../../../core/models/subscription.model';
 import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-icon';
-import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { TutorialElement } from '../../../shared/components/tutorial-element/tutorial-element';
+
+import { SubjectsService } from '../../../core/services/subjects.service';
+import { NotificationService } from '../../../core/services/notification.service';
+import { SubscriptionService } from '../../../core/services/subscription.service';
+import { OnboardingService, OnboardingStep } from '../../../core/services/onboarding.service';
+
+import { SubscriptionStatus } from '../../../core/models/subscription.model';
 
 
 @Component({
@@ -25,65 +36,34 @@ import { TutorialElement } from '../../../shared/components/tutorial-element/tut
   styleUrl: './lesson-generation.css',
 })
 export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
-  loading = false
-  learningStyle = ''
-  settingsPopup = false
-  configOverlay = false
-  extensionsEnabled = false
-  subjectId = ''
-  subjectStatus = ''
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
+  private notify = inject(NotificationService);
+  private subjectService = inject(SubjectsService);
+  private subscriptionService = inject(SubscriptionService);
+  private onboardingService = inject(OnboardingService);
+  private resizeObserver?: ResizeObserver;
+
+  loading = false;
+  learningStyle = '';
+  settingsPopup = false;
+  configOverlay = false;
+  extensionsEnabled = false;
+  subjectId = '';
+  subjectStatus = '';
   topicOverflowing = false;
   topicsExpanded = false;
-  notify = inject(NotificationService)
-  subjectService = inject(SubjectsService)
-  subscriptionService = inject(SubscriptionService)
-  private resizeObserver?: ResizeObserver; 
-  
+
   // Onboarding elements
-  topicList = viewChild<ElementRef>('topicList')
-  enableExtensionsButton = viewChild<ElementRef>('enableExtensionsButton')
-  configureExtensionsButton = viewChild<ElementRef>('configureExtensionsButton')
-  textInput = viewChild<ElementRef>('textInput')
-  submitButton = viewChild<ElementRef>('submitButton')
-  onboardingSteps = [
-    {
-      title: 'Select Topics',
-      text: 'Choose the specific concepts you want to focus on for this lesson.',
-      object: this.topicList,
-      tipPosition: 'top',
-      tipAlignment: 'start',
-    },
-    {
-      title: 'Enhance Your Lesson',
-      text: 'Select additional extensions to enhance the quality of your generated lesson.',
-      object: this.enableExtensionsButton,
-      tipPosition: 'top',
-      tipAlignment: 'start',
-    },
-    {
-      title: 'Configure',
-      text: 'Click here to customize your extensions.',
-      object: this.configureExtensionsButton,
-      tipPosition: 'top',
-      tipAlignment: 'start',
-    },
-    {
-      title: 'Lesson Preferences',
-      text: 'Provide any specific preferences or instructions for your lesson generation.',
-      object: this.textInput,
-      tipPosition: 'bottom',
-      tipAlignment: 'start',
-    },
-    {
-      title: 'Generate Lesson',
-      text: 'Ready? Click the send button to build your personalised lesson.',
-      object: this.submitButton,
-      tipPosition: 'top',
-      tipAlignment: 'end',
-    },
-  ];
+  topicList = viewChild<ElementRef>('topicList');
+  enableExtensionsButton = viewChild<ElementRef>('enableExtensionsButton');
+  configureExtensionsButton = viewChild<ElementRef>('configureExtensionsButton');
+  textInput = viewChild<ElementRef>('textInput');
+  submitButton = viewChild<ElementRef>('submitButton');
+  onboardingSteps: OnboardingStep[] = [];
   beginner = false;
-  currentOnboardingStep = -1;
+  currentOnboardingStep = computed(() => this.onboardingService.currentStepIndex());
   
   subjectName = '';
   topics: any = [];
@@ -134,17 +114,51 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  constructor(
-    private cdr: ChangeDetectorRef, 
-    private router: Router,
-  ) {
-    // Extract subjectId from the route parameters
-    const url = window.location.pathname;
-    const parts = url.split('/');
-    this.subjectId = parts[parts.length - 2]; // Assuming the last part is the subjectId
+  constructor() {
+    // Initialize onboarding steps
+    this.onboardingSteps = [
+      {
+        title: 'Select Topics',
+        text: 'Choose the specific concepts you want to focus on for this lesson.',
+        object: this.topicList,
+        tipPosition: 'top',
+        tipAlignment: 'start',
+      },
+      {
+        title: 'Enhance Your Lesson',
+        text: 'Select additional extensions to enhance the quality of your generated lesson.',
+        object: this.enableExtensionsButton,
+        tipPosition: 'top',
+        tipAlignment: 'start',
+      },
+      {
+        title: 'Configure',
+        text: 'Click here to customize your extensions.',
+        object: this.configureExtensionsButton,
+        tipPosition: 'top',
+        tipAlignment: 'start',
+      },
+      {
+        title: 'Lesson Preferences',
+        text: 'Provide any specific preferences or instructions for your lesson generation.',
+        object: this.textInput,
+        tipPosition: 'bottom',
+        tipAlignment: 'start',
+      },
+      {
+        title: 'Generate Lesson',
+        text: 'Ready? Click the send button to build your personalised lesson.',
+        object: this.submitButton,
+        tipPosition: 'top',
+        tipAlignment: 'end',
+      },
+    ];
+
     const nav = this.router.currentNavigation();
-    this.beginner = nav?.extras?.state?.['beginner'];
-    this.currentOnboardingStep = this.beginner ? 0 : -1;
+    this.beginner = nav?.extras?.state?.['beginner'] ?? false;
+    if (this.beginner) {
+      this.onboardingService.startOnboarding();
+    }
   }
 
   adjustInputHeight() {
@@ -356,7 +370,15 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.loading = true
+    // Get subjectId from route params
+    this.route.paramMap.subscribe((params) => {
+      this.subjectId = params.get('sessionId') ?? '';
+      this.loadSubjectDetails();
+    });
+  }
+
+  private loadSubjectDetails() {
+    this.loading = true;
     this.subjectService.getSubjectDetails(this.subjectId).subscribe({
       next: (response) => {
         this.subjectName = response.session.name || 'Untitled';
@@ -421,19 +443,13 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
     this.resizeObserver?.disconnect();
   }
 
-  getTutorialObjectPosition(step: any) {
-    if (!this.onboardingSteps[step].object()) return { top: 0, left: 0, bottom: 0, right: 0 };
-    const rect = this.onboardingSteps[step].object()?.nativeElement.getBoundingClientRect();
-    return {
-      top: rect.top,
-      left: rect.left,
-      bottom: rect.bottom,
-      right: rect.right,
-    }
+  getTutorialObjectPosition(stepIndex: number) {
+    const step = this.onboardingSteps[stepIndex];
+    if (!step) return { top: 0, left: 0, bottom: 0, right: 0 };
+    return this.onboardingService.getObjectPosition(step);
   }
 
-  cycleOnboarding() {
-    this.currentOnboardingStep = this.currentOnboardingStep + 1;
-    this.cdr.detectChanges();
+  cycleOnboarding(): void {
+    this.onboardingService.nextStep();
   }
 }

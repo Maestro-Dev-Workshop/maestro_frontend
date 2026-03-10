@@ -7,13 +7,10 @@ import {
   OnInit,
   viewChild,
   ViewChild,
+  computed,
 } from '@angular/core';
-import { Header } from '../../../shared/components/header/header';
-import { Router } from '@angular/router';
-import { CreationStepTab } from '../creation-step-tab/creation-step-tab';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule, NgModel } from '@angular/forms';
-import { SubjectsService } from '../../../core/services/subjects.service';
-import { NotificationService } from '../../../core/services/notification.service';
 import {
   catchError,
   EMPTY,
@@ -21,15 +18,22 @@ import {
   iif,
   of,
   switchMap,
-  takeWhile,
   tap,
 } from 'rxjs';
-import { SubjectNameValidator } from '../../../shared/directives/subject-name-validator';
-import { SubscriptionStatus } from '../../../core/models/subscription.model';
-import { SubscriptionService } from '../../../core/services/subscription.service';
-import { ConfirmService } from '../../../core/services/confirm';
+
+import { Header } from '../../../shared/components/header/header';
+import { CreationStepTab } from '../creation-step-tab/creation-step-tab';
 import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-icon';
 import { TutorialElement } from '../../../shared/components/tutorial-element/tutorial-element';
+
+import { SubjectsService } from '../../../core/services/subjects.service';
+import { NotificationService } from '../../../core/services/notification.service';
+import { SubscriptionService } from '../../../core/services/subscription.service';
+import { ConfirmService } from '../../../core/services/confirm';
+import { OnboardingService, OnboardingStep } from '../../../core/services/onboarding.service';
+
+import { SubjectNameValidator } from '../../../shared/directives/subject-name-validator';
+import { SubscriptionStatus } from '../../../core/models/subscription.model';
 
 @Component({
   selector: 'app-naming-upload',
@@ -61,10 +65,14 @@ export class NamingUpload implements OnInit {
   allowedExtensions = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'epub'];
   acceptString = this.allowedExtensions.map((ext) => '.' + ext).join(', ');
 
-  subjectService = inject(SubjectsService);
-  notify = inject(NotificationService);
-  subscriptionService = inject(SubscriptionService);
-  confirmation = inject(ConfirmService);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
+  private subjectService = inject(SubjectsService);
+  private notify = inject(NotificationService);
+  private subscriptionService = inject(SubscriptionService);
+  private confirmation = inject(ConfirmService);
+  private onboardingService = inject(OnboardingService);
 
   @ViewChild('nameCtrl') nameCtrl!: NgModel;
 
@@ -73,45 +81,48 @@ export class NamingUpload implements OnInit {
   subjectNameInput = viewChild<ElementRef>('subjectNameInput');
   fileUploadIcon = viewChild<ElementRef>('fileUploadIcon');
   submitButton = viewChild<ElementRef>('submitButton');
-  onboardingSteps = [
-    {
-      title: 'Name Your Subject',
-      text: 'Enter the name of the subject/lesson you want to generate.',
-      object: this.subjectNameInput,
-      tipPosition: 'right',
-      tipAlignment: 'start',
-    },
-    {
-      title: 'Upload Documents',
-      text: 'Click the button or drag and drop files into the area to add study materials.',
-      object: this.fileUploadIcon,
-      tipPosition: 'bottom',
-      tipAlignment: 'start',
-    },
-    {
-      title: 'Finalize Setup',
-      text: 'After naming and uploading documents, click here to proceed.',
-      object: this.submitButton,
-      tipPosition: 'right',
-      tipAlignment: 'start',
-    },
-  ];
-  currentOnboardingStep = -1;
+  onboardingSteps: OnboardingStep[] = [];
+  currentOnboardingStep = computed(() => this.onboardingService.currentStepIndex());
 
-  constructor(
-    private router: Router,
-    private cdr: ChangeDetectorRef,
-    private zone: NgZone,
-  ) {
-    const url = window.location.pathname;
-    const parts = url.split('/');
-    this.subjectId = parts[parts.length - 2];
+  constructor() {
+    // Initialize onboarding steps
+    this.onboardingSteps = [
+      {
+        title: 'Name Your Subject',
+        text: 'Enter the name of the subject/lesson you want to generate.',
+        object: this.subjectNameInput,
+        tipPosition: 'right',
+        tipAlignment: 'start',
+      },
+      {
+        title: 'Upload Documents',
+        text: 'Click the button or drag and drop files into the area to add study materials.',
+        object: this.fileUploadIcon,
+        tipPosition: 'bottom',
+        tipAlignment: 'start',
+      },
+      {
+        title: 'Finalize Setup',
+        text: 'After naming and uploading documents, click here to proceed.',
+        object: this.submitButton,
+        tipPosition: 'right',
+        tipAlignment: 'start',
+      },
+    ];
+
     const nav = this.router.currentNavigation();
-    this.beginner = nav?.extras?.state?.['beginner'];
-    this.currentOnboardingStep = this.beginner ? 0 : -1;
+    this.beginner = nav?.extras?.state?.['beginner'] ?? false;
+    if (this.beginner) {
+      this.onboardingService.startOnboarding();
+    }
   }
 
   ngOnInit(): void {
+    // Get subjectId from route params
+    this.route.paramMap.subscribe((params) => {
+      this.subjectId = params.get('sessionId') ?? '';
+    });
+
     this.subscriptionService.getSubscription().subscribe({
       next: (response) => {
         const subscriptionData: SubscriptionStatus | null =
@@ -345,19 +356,13 @@ export class NamingUpload implements OnInit {
       .subscribe();
   }
 
-  getTutorialObjectPosition(step: any) {
-    if (!this.onboardingSteps[step].object()) return { top: 0, left: 0, bottom: 0, right: 0 };
-    const rect = this.onboardingSteps[step].object()?.nativeElement.getBoundingClientRect();
-    return {
-      top: rect.top,
-      left: rect.left,
-      bottom: rect.bottom,
-      right: rect.right,
-    }
+  getTutorialObjectPosition(stepIndex: number) {
+    const step = this.onboardingSteps[stepIndex];
+    if (!step) return { top: 0, left: 0, bottom: 0, right: 0 };
+    return this.onboardingService.getObjectPosition(step);
   }
 
-  cycleOnboarding() {
-    this.currentOnboardingStep = this.currentOnboardingStep + 1;
-    this.cdr.detectChanges();
+  cycleOnboarding(): void {
+    this.onboardingService.nextStep();
   }
 }

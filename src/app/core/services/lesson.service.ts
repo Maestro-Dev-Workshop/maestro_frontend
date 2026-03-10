@@ -9,47 +9,47 @@ import { SaveQuestionData } from '../models/question.model';
 export class LessonService {
   http = inject(HttpBaseService);
 
-  getAllTopics(sessionId: string): Observable<any> {
-    return this.http.get<any>(`topic/${sessionId}/list`);
+  getAllTopics(subjectId: string): Observable<any> {
+    return this.http.get<any>(`subjects/${subjectId}/topics`);
   }
 
   getAllSubtopics(topicId: string): Observable<any> {
-    return this.http.get<any>(`topic/${topicId}/get-content`);
+    return this.http.get<any>(`topics/${topicId}`);
   }
 
   getExercise(topicId: string): Observable<any> {
-    return this.http.get<any>(`topic/${topicId}/get-exercise`);
+    return this.http.get<any>(`topics/${topicId}/exercise`);
   }
 
-  getExam(sessionId: string): Observable<any> {
-    return this.http.get<any>(`session/${sessionId}/get-exam`);
+  getExam(subjectId: string): Observable<any> {
+    return this.http.get<any>(`subjects/${subjectId}/exam`);
   }
 
-  scoreEssayQuestion(sessionId?: string, questionId?: string, answer?: string | null): Observable<any> {
-    return this.http.post<any>(`chatbot/answer-question`, { session_id: sessionId, question_id: questionId, answer });
+  scoreEssayQuestion(subjectId?: string, questionId?: string, answer?: string | null): Observable<any> {
+    return this.http.post<any>(`chatbot/questions/evaluate`, { session_id: subjectId, question_id: questionId, answer });
   }
 
   markSubtopicAsRead(topicId: string, subtopicId: string): Observable<any> {
-    return this.http.put<any>(`topic/${topicId}/mark-as-read`, { subtopic_id: subtopicId });
+    return this.http.put<any>(`topics/${topicId}/read`, { subtopic_id: subtopicId });
   }
 
   saveExerciseScore(topicId?: string | null, exerciseId?: string, score?: number, questionData?: SaveQuestionData[]): Observable<any> {
-    return this.http.put<any>(`topic/${topicId}/save-exercise-score`, { exercise_id: exerciseId, score, question_data: questionData });
+    return this.http.put<any>(`topics/${topicId}/exercise/score`, { exercise_id: exerciseId, score, question_data: questionData });
   }
 
-  saveExamScore(sessionId?: string, examId?: string, score?: number, questionData?: SaveQuestionData[]): Observable<any> {
-    return this.http.put<any>(`session/${sessionId}/save-exam-score`, { exam_id: examId, score, question_data: questionData });
+  saveExamScore(subjectId?: string, examId?: string, score?: number, questionData?: SaveQuestionData[]): Observable<any> {
+    return this.http.put<any>(`subjects/${subjectId}/exam/score`, { exam_id: examId, score, question_data: questionData });
   }
 
-  getGlossary(sessionId: string): Observable<any> {
-    return this.http.get<any>(`session/${sessionId}/glossary`);
+  getGlossary(subjectId: string): Observable<any> {
+    return this.http.get<any>(`subjects/${subjectId}/glossary`);
   }
 
   getFlashcards(topicId: string): Observable<any> {
-    return this.http.get<any>(`topic/${topicId}/get-flashcards`);
+    return this.http.get<any>(`topics/${topicId}/flashcards`);
   }
 
   executeCodeBlock(code: string, language: string): Observable<any> {
-    return this.http.post<any>(`topic/execute-code`, { code, language })
+    return this.http.post<any>(`topics/code/execute`, { code, language })
   }
 }

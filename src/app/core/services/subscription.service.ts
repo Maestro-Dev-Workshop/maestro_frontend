@@ -8,30 +8,30 @@ export class SubscriptionService {
   http = inject(HttpBaseService);
 
   getPlans(): Observable<any> {
-    return this.http.get('subscription/plans');
+    return this.http.get('subscriptions/plans');
   }
 
   getSinglePlan(planCode: string): Observable<any> {
-    return this.http.get(`subscription/plans/${planCode}`);
+    return this.http.get(`subscriptions/plans/${planCode}`);
   }
 
   subscribe(planCode: string): Observable<any> {
-    return this.http.post('subscription/initialize-transaction', { planCode });
+    return this.http.post('subscriptions', { planCode });
   }
 
   verifyTransaction(reference: string): Observable<any> {
-    return this.http.post('subscription/verify-transaction', { reference });
+    return this.http.post('subscriptions/verify', { reference });
   }
 
   getSubscription(): Observable<any> {
-    return this.http.get('subscription/get');
+    return this.http.get('subscriptions');
   }
 
   cancel(): Observable<any> {
-    return this.http.post('subscription/cancel', {});
+    return this.http.delete('subscriptions');
   }
 
   manageSubscription() : Observable<any> {
-    return this.http.get('subscription/generate-manage-link');
+    return this.http.get('subscriptions/manage-link');
   }
 }
