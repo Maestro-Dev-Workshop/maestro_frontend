@@ -44,13 +44,17 @@ export class OnboardingService {
     if (!element) {
       return { top: 0, left: 0, bottom: 0, right: 0 };
     }
-
+  
     const rect = element.nativeElement.getBoundingClientRect();
+  
+    const scrollX = window.scrollX;
+    const scrollY = window.scrollY;
+  
     return {
-      top: rect.top,
-      left: rect.left,
-      bottom: rect.bottom,
-      right: rect.right,
+      top: rect.top + scrollY,
+      left: rect.left + scrollX,
+      bottom: rect.bottom + scrollY,
+      right: rect.right + scrollX,
     };
   }
 }

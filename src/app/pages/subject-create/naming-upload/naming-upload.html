@@ -163,13 +163,13 @@
 </div>
 
 
-@if (currentOnboardingStep >= 0 && currentOnboardingStep < onboardingSteps.length) {
+@if (currentOnboardingStep() >= 0 && currentOnboardingStep() < onboardingSteps.length) {
   <app-tutorial-element
-    [objectDimensions]="getTutorialObjectPosition(currentOnboardingStep)"
-    [title]="onboardingSteps[currentOnboardingStep].title"
-    [text]="onboardingSteps[currentOnboardingStep].text"
-    [tipPosition]="onboardingSteps[currentOnboardingStep].tipPosition"
-    [tipAlignment]="onboardingSteps[currentOnboardingStep].tipAlignment"
+    [objectDimensions]="getTutorialObjectPosition(currentOnboardingStep())"
+    [title]="onboardingSteps[currentOnboardingStep()].title"
+    [text]="onboardingSteps[currentOnboardingStep()].text"
+    [tipPosition]="onboardingSteps[currentOnboardingStep()].tipPosition"
+    [tipAlignment]="onboardingSteps[currentOnboardingStep()].tipAlignment"
     (next)="cycleOnboarding()"
   ></app-tutorial-element>
 }
