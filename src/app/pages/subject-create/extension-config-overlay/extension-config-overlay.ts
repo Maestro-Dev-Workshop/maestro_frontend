@@ -1,6 +1,10 @@
-import { AfterViewInit, Component, effect, input, model, NO_ERRORS_SCHEMA, OnInit, output } from '@angular/core';
+import { Component, effect, input, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-icon';
+import { ExtensionSettings, ExtensionConstraints, ExtensionConfig } from '../../../core/models/extension-settings.model';
+
+/** Visibility state for extension sections */
+type ExtensionVisibilityMap = Record<string, boolean>;
 
 @Component({
   selector: 'app-extension-config-overlay',
@@ -10,18 +14,18 @@ import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-
 })
 export class ExtensionConfigOverlay {
   show = false;
-  close = output<any>();
-  configuration = input<any>();
-  constraints = input<any>();
-  config: any;
-  extensionVisibility: any = {};
+  close = output<ExtensionSettings>();
+  configuration = input<ExtensionSettings>();
+  constraints = input<ExtensionConstraints>();
+  config: ExtensionSettings | null = null;
+  extensionVisibility: ExtensionVisibilityMap = {};
 
   constructor() {
-    // ✅ keep config in sync whenever configuration changes
+    // Keep config in sync whenever configuration changes
     effect(() => {
       const cfg = this.configuration();
       this.config = cfg ? structuredClone(cfg) : null;
-      const vals:any[] = Object.values(this.config || {});
+      const vals: ExtensionConfig[] = Object.values(this.config || {});
       for (const ext of vals) {
         if (ext.enabled) {
           this.extensionVisibility[ext.name] = true;
@@ -31,14 +35,20 @@ export class ExtensionConfigOverlay {
   }
 
   save() {
-    this.close.emit(this.config);
+    if (this.config) {
+      this.close.emit(this.config);
+    }
   }
 
-  toggleType(event: any, section: string) {
-    if (event.target.checked) {
-      this.config[section].types.push(event.target.value);
+  toggleType(event: Event, section: keyof ExtensionSettings) {
+    const target = event.target as HTMLInputElement;
+    const configSection = this.config?.[section];
+    if (!configSection || !('types' in configSection)) return;
+
+    if (target.checked) {
+      configSection.types.push(target.value);
     } else {
-      this.config[section].types = this.config[section].types.filter((qt:any) => qt !== event.target.value);
+      configSection.types = configSection.types.filter((qt: string) => qt !== target.value);
     }
   }
 

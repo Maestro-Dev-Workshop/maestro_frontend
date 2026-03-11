@@ -1,0 +1,67 @@
+@if (visible()) {
+  <div
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+    (click)="onBackdropClick()"
+  >
+    <div
+      class="w-full max-w-md bg-[var(--bg-page)] rounded-xl p-6 px-8 shadow-lg text-center"
+      (click)="$event.stopPropagation()"
+    >
+      <h4 class="text-2xl mb-3">{{ title() }}</h4>
+      <p class="text-sm text-[var(--text-alt)] mb-4">{{ subtitle() }}</p>
+
+      <!-- Star Rating -->
+      <div class="flex flex-col items-center gap-2 mb-8">
+        <div class="flex flex-row items-center">
+          @for (s of [1, 2, 3, 4, 5]; track $index) {
+            <button
+              class="p-1 mx-2 hover:scale-110 transition-transform"
+              (click)="setRating(s)"
+              [attr.aria-pressed]="rating() >= s"
+            >
+              <svg
+                [ngClass]="{
+                  'text-yellow-400': rating() >= s,
+                  'text-gray-300': rating() < s
+                }"
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.966a1 1 0 00.95.69h4.173c.969 0 1.371 1.24.588 1.81l-3.376 2.455a1 1 0 00-.364 1.118l1.287 3.966c.3.921-.755 1.688-1.54 1.118L10 13.347l-3.376 2.455c-.785.57-1.84-.197-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.631 9.393c-.783-.57-.38-1.81.588-1.81h4.173a1 1 0 00.95-.69L9.049 2.927z"
+                />
+              </svg>
+            </button>
+          }
+        </div>
+        <span class="text-sm text-[var(--text-alt)] ml-2">{{ ratingDescription() }}</span>
+      </div>
+
+      <!-- Feedback -->
+      <textarea
+        class="w-full bg-[var(--bg-page)] border border-[var(--text-primary)] rounded-md p-2 text-xs mb-4 focus:outline-none focus:ring-2 focus:ring-[var(--text-primary)]"
+        rows="4"
+        placeholder="Anything you'd like to add? Your input is valuable to us"
+        [ngModel]="feedback()"
+        (ngModelChange)="feedback.set($event)"
+      ></textarea>
+
+      <div class="flex justify-end gap-2">
+        <button
+          class="px-4 py-2 rounded-md bg-[var(--bg-card)] lg:hover:bg-[var(--bg-card-hover)] transition-colors"
+          (click)="onCancel()"
+        >
+          Cancel
+        </button>
+        <button
+          class="px-4 py-2 rounded-md bg-prussian-blue-700 text-white hover:bg-prussian-blue-800 transition-colors"
+          (click)="onSubmit()"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+}

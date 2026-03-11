@@ -2,6 +2,33 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpBaseService } from './http-base.service';
 import { LoginResponse } from '../models/auth-payload.model';
+import { ApiResponse, RefreshTokenResponseData, SignupResponseData } from '../models/api-response.model';
+
+export interface SignupPayload {
+  first_name: string;
+  last_name: string;
+  email: string;
+  password: string;
+}
+
+export interface LoginPayload {
+  email: string;
+  password: string;
+}
+
+export interface SignupApiResponse extends ApiResponse {
+  user: SignupResponseData;
+}
+
+export interface LoginApiResponse extends ApiResponse {
+  user: LoginResponse['user'];
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface RefreshTokenApiResponse extends ApiResponse {
+  accessToken: string;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -9,33 +36,36 @@ import { LoginResponse } from '../models/auth-payload.model';
 export class AuthService {
   private http = inject(HttpBaseService);
 
-  signup(data: {
-    first_name: string;
-    last_name: string;
-    email: string;
-    password: string;
-  }): Observable<any> {
-    return this.http.post('auth/sign-up', data);
+  signup(data: SignupPayload): Observable<SignupApiResponse> {
+    return this.http.post<SignupApiResponse>('auth/sign-up', data);
   }
 
-  login(credentials: { email: string; password: string }): Observable<any> {
-    return this.http.post('auth/login', credentials);
+  login(credentials: LoginPayload): Observable<LoginApiResponse> {
+    return this.http.post<LoginApiResponse>('auth/login', credentials);
   }
 
-  googleAuth(token: string) {
-    return this.http.post<any>('auth/google', { token });
+  googleAuth(token: string): Observable<LoginApiResponse> {
+    return this.http.post<LoginApiResponse>('auth/google', { token });
   }
 
-  refreshAccessToken(): Observable<any> {
-    return this.http.post('auth/refresh-token', {});
+  refreshAccessToken(): Observable<RefreshTokenApiResponse> {
+    return this.http.post<RefreshTokenApiResponse>('auth/refresh-token', {});
   }
 
-  verifyEmail(token: string): Observable<any> {
-    return this.http.post('auth/verify-email', { token });
+  verifyEmail(token: string): Observable<ApiResponse> {
+    return this.http.post<ApiResponse>('auth/verify-email', { token });
   }
 
-  resendVerificationEmail(email: string): Observable<any> {
-    return this.http.post('auth/resend-verification', { email });
+  resendVerificationEmail(email: string): Observable<ApiResponse> {
+    return this.http.post<ApiResponse>('auth/resend-verification', { email });
+  }
+
+  forgotPassword(email: string): Observable<ApiResponse> {
+    return this.http.post<ApiResponse>('auth/forgot-password', { email });
+  }
+
+  resetPassword(reset_token: string, new_password: string): Observable<ApiResponse> {
+    return this.http.post<ApiResponse>('auth/reset-password', { reset_token, new_password });
   }
 
   logout(): void {

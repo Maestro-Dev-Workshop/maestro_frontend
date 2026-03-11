@@ -34,6 +34,8 @@ import { OnboardingService, OnboardingStep } from '../../../core/services/onboar
 
 import { SubjectNameValidator } from '../../../shared/directives/subject-name-validator';
 import { SubscriptionStatus } from '../../../core/models/subscription.model';
+import { SubjectModel } from '../../../core/models/subject.model';
+import { DocumentIngestResponse, IngestedDocument } from '../../../core/models/api-response.model';
 
 @Component({
   selector: 'app-naming-upload',
@@ -51,7 +53,7 @@ import { SubscriptionStatus } from '../../../core/models/subscription.model';
 export class NamingUpload implements OnInit {
   subjectName = '';
   subjectId = '';
-  subject: any = null;
+  subject: SubjectModel | null = null;
 
   files: File[] = [];
   isDragging = false;
@@ -261,21 +263,22 @@ export class NamingUpload implements OnInit {
     this.files = this.files.filter((f) => f !== file);
   }
 
-  formatFileSize(file: File) {
-    let size: any = file.size;
-    let end = null;
+  formatFileSize(file: File): string {
+    let size = file.size;
+    let formattedSize: string;
+    let unit: string;
+
     if (size >= (1024 ** 2)) {
-      size /= (1024 ** 2);
-      size = size.toFixed(3);
-      end = 'MB';
+      formattedSize = (size / (1024 ** 2)).toFixed(3);
+      unit = 'MB';
     } else if (size >= 1024) {
-      size /= 1024;
-      size = size.toFixed(3);
-      end = 'KB';
+      formattedSize = (size / 1024).toFixed(3);
+      unit = 'KB';
     } else {
-      end = 'B';
+      formattedSize = String(size);
+      unit = 'B';
     }
-    return `${size} ${end}`;
+    return `${formattedSize} ${unit}`;
   }
 
   getFileExtension(file: File) {
@@ -311,21 +314,18 @@ export class NamingUpload implements OnInit {
       () => this.uploadedDocs,
       of(true), // Documents already uploaded, skip
       this.subjectService.ingestDocuments(this.subjectId, this.files).pipe(
-        switchMap((res: any) => {
+        switchMap((res: DocumentIngestResponse) => {
           if (res.warning) {
-            // Fix lowDocs and docsCount mapping
+            // Fix lowDocs mapping
             const lowDocs = res.documents
-              .filter((doc: any) => doc.belowThreshold)
-              .map((doc: any) => `"${doc.document.name}${doc.document.extension}"`);
-            const docsCount = res.documents
-              .filter((doc: any) => doc.belowThreshold)
-              .map((doc: any) => doc.avgPageWordCount);
+              .filter((doc: IngestedDocument) => doc.belowThreshold)
+              .map((doc: IngestedDocument) => `"${doc.document.name}${doc.document.extension}"`);
 
             // Show confirmation modal and return Observable<boolean>
             return this.confirmation.open({
               title: "Scanned Documents Detected",
               message: `The following have been identified as scanned documents: ${lowDocs.join(", ")}.
-              Don't worry, everything will still work fine, this is just a placehoder warning for an upcoming update 😉.`,
+              Don't worry, everything will still work fine, this is just a placehoder warning for an upcoming update.`,
               okText: "Proceed",
               cancelText: "Go back"
             });

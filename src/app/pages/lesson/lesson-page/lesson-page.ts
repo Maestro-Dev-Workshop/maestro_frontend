@@ -28,6 +28,24 @@ import { OnboardingService, OnboardingStep } from '../../../core/services/onboar
 
 import { ChatMetadata } from '../../../core/models/chat-metadata.model';
 import { ChatMessage } from '../../../core/models/chat-message.model';
+import {
+  SubjectContent,
+  LessonTopic,
+  LessonSubtopic,
+  LessonViewState,
+  ViewChangeEvent,
+  SubtopicChangeEvent,
+  QuestionChangeEvent,
+} from '../../../core/models/lesson-content.model';
+import {
+  SubjectResponse,
+  TopicListResponse,
+  TopicContentResponse,
+  ExerciseResponse,
+  FlashcardResponse,
+  ExamResponse,
+  GlossaryResponse,
+} from '../../../core/models/api-response.model';
 
 @Component({
   selector: 'app-lesson-page',
@@ -49,15 +67,16 @@ export class LessonPage implements OnInit {
   subjectId = signal('');
 
   // State as signals (reduces manual change detection)
-  subjectContent = signal<any>({});
-  currentView = signal<{
-    type: string;
-    id: string;
-    content: any;
-  }>({
+  subjectContent = signal<SubjectContent>({
+    subject_name: '',
+    topics: [],
+    exam: null,
+    glossary: [],
+  });
+  currentView = signal<LessonViewState>({
     type: 'subtopic',
     id: '',
-    content: {},
+    content: null,
   });
   chatHistory = signal<ChatMessage[]>([]);
   chatOpen = signal(false);
@@ -120,7 +139,7 @@ export class LessonPage implements OnInit {
     this.subjectService
       .getSubject(subjectId)
       .pipe(
-        map((res: any) => res.session || null),
+        map((res: SubjectResponse) => res.session || null),
         switchMap((subject) => {
           if (!subject) throw new Error('Subject not found');
 
@@ -133,15 +152,16 @@ export class LessonPage implements OnInit {
 
           return this.lessonService.getAllTopics(subjectId);
         }),
-        switchMap((res: any) => {
+        switchMap((res: TopicListResponse) => {
           const topicsResponse = res.topics || [];
-          const topics = topicsResponse
-            .filter((topic: any) => topic.selected)
-            .map((topic: any) => ({
+          const topics: LessonTopic[] = topicsResponse
+            .filter((topic) => topic.selected)
+            .map((topic) => ({
               expanded: false,
               id: topic.id,
               title: topic.title,
               completed: topic.completed,
+              selected: topic.selected,
               subtopics: [],
               exercise: null,
               flashcards: [],
@@ -149,14 +169,14 @@ export class LessonPage implements OnInit {
 
           this.subjectContent.update((content) => ({ ...content, topics }));
 
-          const topicRequests = topics.map((topic: any) =>
+          const topicRequests = topics.map((topic: LessonTopic) =>
             forkJoin({
-              subtopics: this.lessonService.getAllSubtopics(topic.id).pipe(map((r: any) => r.subtopics || [])),
-              exercise: this.lessonService.getExercise(topic.id).pipe(map((r: any) => r.exercise || null)),
-              flashcards: this.lessonService.getFlashcards(topic.id).pipe(map((r: any) => r.flashcards || [])),
+              subtopics: this.lessonService.getAllSubtopics(topic.id).pipe(map((r: TopicContentResponse) => r.subtopics || [])),
+              exercise: this.lessonService.getExercise(topic.id).pipe(map((r: ExerciseResponse) => r.exercise || null)),
+              flashcards: this.lessonService.getFlashcards(topic.id).pipe(map((r: FlashcardResponse) => r.flashcards || [])),
             }).pipe(
               map((res) => {
-                topic.subtopics = res.subtopics;
+                topic.subtopics = res.subtopics as LessonSubtopic[];
                 topic.exercise = res.exercise;
                 topic.flashcards = res.flashcards;
                 return topic;
@@ -168,7 +188,7 @@ export class LessonPage implements OnInit {
         }),
         switchMap(() =>
           this.lessonService.getExam(subjectId).pipe(
-            map((res: any) => {
+            map((res: ExamResponse) => {
               this.subjectContent.update((content) => ({
                 ...content,
                 exam: res.exam || null,
@@ -179,7 +199,7 @@ export class LessonPage implements OnInit {
         ),
         switchMap(() =>
           this.lessonService.getGlossary(subjectId).pipe(
-            map((res: any) => {
+            map((res: GlossaryResponse) => {
               this.subjectContent.update((content) => ({
                 ...content,
                 glossary: res.glossary || [],
@@ -206,7 +226,7 @@ export class LessonPage implements OnInit {
 
     for (const topic of content.topics) {
       if (!topic.completed) {
-        const unreadSubtopic = topic.subtopics.find((st: any) => !st.read);
+        const unreadSubtopic = topic.subtopics.find((st) => !st.read);
         if (unreadSubtopic) {
           this.updateCurrentView({ id: unreadSubtopic.id, type: 'subtopic' });
           return;
@@ -224,18 +244,18 @@ export class LessonPage implements OnInit {
     }
   }
 
-  updateCurrentView(event: { id: string; type: string }): void {
+  updateCurrentView(event: ViewChangeEvent): void {
     const content = this.subjectContent();
-    let viewContent = null;
+    let viewContent: LessonViewState['content'] = null;
 
     switch (event.type) {
       case 'subtopic':
         viewContent =
-          content.topics.flatMap((topic: any) => topic.subtopics).find((st: any) => st.id === event.id) || {};
+          content.topics.flatMap((topic) => topic.subtopics).find((st) => st.id === event.id) || null;
         break;
       case 'exercise':
         viewContent =
-          content.topics.map((topic: any) => topic.exercise).find((ex: any) => ex?.id === event.id) || {};
+          content.topics.map((topic) => topic.exercise).find((ex) => ex?.id === event.id) || null;
         break;
       case 'exam':
         viewContent = content.exam;
@@ -244,7 +264,7 @@ export class LessonPage implements OnInit {
         viewContent = content.glossary;
         break;
       case 'flashcards':
-        viewContent = content.topics.find((topic: any) => topic.id === event.id)?.flashcards || [];
+        viewContent = content.topics.find((topic) => topic.id === event.id)?.flashcards || [];
         break;
     }
 
@@ -257,7 +277,7 @@ export class LessonPage implements OnInit {
     if (event.type === 'subtopic') {
       this.updateChatMetadata();
       this.markSubtopicAsRead(event.id);
-    } else if (this.chatOpen() && this.currentView().content?.score == null) {
+    } else if (this.chatOpen() && (this.currentView().content as { score?: number })?.score == null) {
       this.chatOpen.set(false);
     }
 
@@ -271,11 +291,11 @@ export class LessonPage implements OnInit {
     this.lessonService.markSubtopicAsRead(topicData.id, subtopicId).subscribe({
       next: () => {
         this.subjectContent.update((content) => {
-          const topics = content.topics.map((topic: any) => {
+          const topics = content.topics.map((topic) => {
             if (topic.id === topicData.id) {
               return {
                 ...topic,
-                subtopics: topic.subtopics.map((st: any) => (st.id === subtopicId ? { ...st, read: true } : st)),
+                subtopics: topic.subtopics.map((st) => (st.id === subtopicId ? { ...st, read: true } : st)),
               };
             }
             return topic;
@@ -296,10 +316,10 @@ export class LessonPage implements OnInit {
     let total = 0;
     let completed = 0;
 
-    content.topics.forEach((topic: any) => {
+    content.topics.forEach((topic) => {
       if (topic.subtopics?.length) {
         total += topic.subtopics.length;
-        completed += topic.subtopics.filter((st: any) => st.read).length;
+        completed += topic.subtopics.filter((st) => st.read).length;
       }
       if (topic.exercise) {
         total += 1;
@@ -323,23 +343,23 @@ export class LessonPage implements OnInit {
   getTopicDataFromSubtopic(): { id?: string; title?: string } {
     const content = this.subjectContent();
     const currentId = this.currentView().id;
-    const topic = content.topics?.find((t: any) => t.subtopics.some((st: any) => st.id === currentId));
+    const topic = content.topics?.find((t) => t.subtopics.some((st) => st.id === currentId));
     return { id: topic?.id, title: topic?.title };
   }
 
   getTopicDataFromExercise(): { id?: string; title?: string } {
     const content = this.subjectContent();
     const currentId = this.currentView().id;
-    const topic = content.topics?.find((t: any) => t.exercise?.id === currentId);
+    const topic = content.topics?.find((t) => t.exercise?.id === currentId);
     return { id: topic?.id, title: topic?.title };
   }
 
   checkForTopicCompleteness(topicId: string): void {
     this.subjectContent.update((content) => {
-      const topics = content.topics.map((topic: any) => {
+      const topics = content.topics.map((topic) => {
         if (topic.id !== topicId) return topic;
 
-        const allSubtopicsRead = topic.subtopics?.every((st: any) => st.read) ?? false;
+        const allSubtopicsRead = topic.subtopics?.every((st) => st.read) ?? false;
         const hasExerciseScore = topic.exercise ? topic.exercise.score !== null : true;
 
         return { ...topic, completed: allSubtopicsRead && hasExerciseScore };
@@ -351,11 +371,11 @@ export class LessonPage implements OnInit {
   getSubtopicPosition(): string[] {
     const content = this.subjectContent();
     const topicData = this.getTopicDataFromSubtopic();
-    const topic = content.topics?.find((t: any) => t.id === topicData.id);
+    const topic = content.topics?.find((t) => t.id === topicData.id);
     if (!topic) return [];
 
     const currentId = this.currentView().id;
-    const subtopicIndex = topic.subtopics.findIndex((s: any) => s.id === currentId);
+    const subtopicIndex = topic.subtopics.findIndex((s) => s.id === currentId);
     const pos: string[] = [];
 
     if (subtopicIndex === 0) pos.push('top');
@@ -364,13 +384,13 @@ export class LessonPage implements OnInit {
     return pos;
   }
 
-  changeSubtopic(event: { id: string; direction: string }): void {
+  changeSubtopic(event: SubtopicChangeEvent): void {
     const content = this.subjectContent();
-    const topic = content.topics?.find((t: any) => t.id === event.id);
+    const topic = content.topics?.find((t) => t.id === event.id);
     if (!topic) return;
 
     const currentId = this.currentView().id;
-    const currentIndex = topic.subtopics.findIndex((s: any) => s.id === currentId);
+    const currentIndex = topic.subtopics.findIndex((s) => s.id === currentId);
     if (currentIndex === -1) return;
 
     let newIndex = currentIndex + (event.direction === 'next' ? 1 : -1);
@@ -387,7 +407,7 @@ export class LessonPage implements OnInit {
     this.updateCurrentView({ id: topic.subtopics[newIndex].id, type: 'subtopic' });
   }
 
-  updateChatMetadata(questionEvent?: { id: string }): void {
+  updateChatMetadata(questionEvent?: QuestionChangeEvent): void {
     const viewType = this.currentView().type;
 
     if (viewType === 'subtopic') {
@@ -446,8 +466,8 @@ export class LessonPage implements OnInit {
     });
   }
 
-  reorderTopics(topics: any[]): void {
-    this.subjectService.reorderSubjectTopics(this.subjectId(), topics).subscribe();
+  reorderTopics(topicIds: string[]): void {
+    this.subjectService.reorderSubjectTopics(this.subjectId(), topicIds).subscribe();
   }
 
   capitalizeFirstLetter(str: string): string {

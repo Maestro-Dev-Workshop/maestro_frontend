@@ -15,19 +15,62 @@ import { FormsModule } from '@angular/forms';
 import { Header } from '../../../shared/components/header/header';
 import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-icon';
 import { TutorialElement } from '../../../shared/components/tutorial-element/tutorial-element';
+import { SubjectCard, SubjectCardData } from '../../../shared/components/subject-card/subject-card';
+import { RatingModal } from '../../../shared/components/rating-modal/rating-modal';
+import { ContextMenu, ContextMenuItem } from '../../../shared/components/context-menu/context-menu';
 
 import { SubjectModel } from '../../../core/models/subject.model';
+import { SubjectStatus } from '../../../core/models/subject-status.model';
 import { SubjectsService } from '../../../core/services/subjects.service';
 import { NotificationService } from '../../../core/services/notification.service';
 import { SubscriptionService } from '../../../core/services/subscription.service';
 import { SubscriptionStatus } from '../../../core/models/subscription.model';
 import { ConfirmService } from '../../../core/services/confirm';
 import { OnboardingService, OnboardingStep } from '../../../core/services/onboarding.service';
+import { SubjectResponse, ExtensionModel } from '../../../core/models/api-response.model';
+import { TopicModel } from '../../../core/models/topic.model';
+
+/** Dashboard subject data with computed fields */
+interface DashboardSubject {
+  id: string;
+  name: string;
+  created_at: Date;
+  status: SubjectStatus;
+  completion: number;
+  topics: TopicModel[];
+  extensions: ExtensionModel[];
+  pinned?: boolean;
+  tags?: string[];
+}
+
+/** Response from getAllSubjectsDetails */
+interface SubjectsListResponse {
+  sessions: Array<{
+    session: {
+      id: string;
+      name: string;
+      created_at: string;
+      status: SubjectStatus;
+      completion: number;
+    };
+    topics: TopicModel[];
+    extensions: ExtensionModel[];
+  }>;
+}
 
 @Component({
   selector: 'app-subjects',
   standalone: true,
-  imports: [Header, CommonModule, FormsModule, ThemeIconComponent, TutorialElement],
+  imports: [
+    Header,
+    CommonModule,
+    FormsModule,
+    ThemeIconComponent,
+    TutorialElement,
+    SubjectCard,
+    RatingModal,
+    ContextMenu,
+  ],
   templateUrl: './subjects.html',
   styleUrls: ['./subjects.css'],
 })
@@ -39,33 +82,26 @@ export class Subjects implements OnInit, OnDestroy {
   private confirmation = inject(ConfirmService);
   private onboardingService = inject(OnboardingService);
 
+  // Expose SubjectStatus enum for template usage
+  readonly SubjectStatus = SubjectStatus;
+
   // State as signals
   loadingSubjects = signal(true);
   loadingAction = signal(false);
-  subjects = signal<any[]>([]);
+  subjects = signal<DashboardSubject[]>([]);
   subscriptionData = signal<SubscriptionStatus | null>(null);
-  rightClickSubject = signal<SubjectModel | null>(null);
+  rightClickSubject = signal<DashboardSubject | null>(null);
   showFeedbackBanner = signal(true);
   popup = signal({ x: 0, y: 0 });
 
   // Rating modal state
   showRateModal = signal(false);
-  rating = signal(0);
-  ratingFeedback = signal('');
 
-  readonly ratingDescriptions = [
-    'Confusing/Inaccurate',
-    'Hard to Follow',
-    'Okay but not Helpful',
-    'Clear and Helpful',
-    'Excellent',
+  // Context menu items
+  readonly contextMenuItems: ContextMenuItem[] = [
+    { id: 'delete', label: 'Delete', icon: 'delete-subject-icon' },
+    { id: 'rate', label: 'Rate', icon: 'rate-icon' },
   ];
-
-  ratingDescription = computed(() => {
-    const r = this.rating();
-    if (r <= 0) return this.ratingDescriptions[0];
-    return this.ratingDescriptions[Math.max(0, r - 1)];
-  });
 
   // Circle constants
   readonly CIRCLE_RADIUS = 17;
@@ -118,15 +154,15 @@ export class Subjects implements OnInit, OnDestroy {
 
   private loadSubjects(): void {
     this.subjectService.getAllSubjectsDetails().subscribe({
-      next: (response: any) => {
-        const mapped = (response.sessions || []).map((s: any) => ({
+      next: (response: SubjectsListResponse) => {
+        const mapped: DashboardSubject[] = (response.sessions || []).map((s) => ({
           id: s.session.id,
           name: s.session.name ?? '',
-          created_at: s.session.created_at ? new Date(s.created_at) : new Date(),
-          status: s.session.status ?? 'pending naming',
+          created_at: s.session.created_at ? new Date(s.session.created_at) : new Date(),
+          status: s.session.status ?? SubjectStatus.PENDING_NAMING,
           completion: this.normalizeCompletion(s.session.completion),
-          topics: s.topics.filter((t: any) => t.selected),
-          extensions: s.extensions.filter((e: any) => e.type !== 'lesson'),
+          topics: s.topics.filter((t) => t.selected),
+          extensions: s.extensions.filter((e) => e.type !== 'lesson'),
         }));
         this.subjects.set(mapped);
 
@@ -162,11 +198,11 @@ export class Subjects implements OnInit, OnDestroy {
     return item.id;
   }
 
-  getExtensionsString(subject: any): string {
-    return subject.extensions.map((ext: any) => ext.type).join(', ');
+  getExtensionsString(subject: DashboardSubject): string {
+    return subject.extensions.map((ext) => ext.type).join(', ');
   }
 
-  normalizeCompletion(value: any): number {
+  normalizeCompletion(value: number | null | undefined): number {
     if (value === null || value === undefined) return 0;
     const n = Number(value);
     if (isNaN(n)) return 0;
@@ -178,11 +214,10 @@ export class Subjects implements OnInit, OnDestroy {
     return this.normalizeCompletion(value);
   }
 
-  getStatusColours(status: string | undefined): string {
+  getStatusColours(status: SubjectStatus | string | undefined): string {
     if (!status) return 'text-red-600 bg-red-50';
-    const s = status.toLowerCase();
-    if (s === 'completed') return 'text-green-600 bg-green-50';
-    if (s === 'in progress') return 'text-yellow-600 bg-yellow-50';
+    if (status === SubjectStatus.COMPLETED) return 'text-green-600 bg-green-50';
+    if (status === SubjectStatus.IN_PROGRESS) return 'text-yellow-600 bg-yellow-50';
     return 'text-red-600 bg-red-50';
   }
 
@@ -206,7 +241,7 @@ export class Subjects implements OnInit, OnDestroy {
     }
 
     this.subjectService.createSubject().subscribe({
-      next: (response: any) => {
+      next: (response: SubjectResponse) => {
         const newSubjectId = response.session.id;
         const isBeginner = this.subjects().length === 0;
         this.router.navigateByUrl(`/subject-create/${newSubjectId}/naming-upload`, {
@@ -221,7 +256,7 @@ export class Subjects implements OnInit, OnDestroy {
     });
   }
 
-  onSubjectRightClick(event: MouseEvent, subject: any): void {
+  onSubjectRightClick(event: MouseEvent, subject: DashboardSubject): void {
     if (this.loadingAction()) return;
     event.preventDefault();
     event.stopPropagation();
@@ -292,7 +327,7 @@ export class Subjects implements OnInit, OnDestroy {
     });
   }
 
-  navigateSubject(subject: SubjectModel): void {
+  navigateSubject(subject: DashboardSubject | SubjectModel): void {
     if (this.loadingAction()) return;
 
     if (this.rightClickSubject()) {
@@ -301,18 +336,18 @@ export class Subjects implements OnInit, OnDestroy {
     }
 
     this.loadingAction.set(true);
-    const status = subject.status?.toLowerCase();
+    const status = subject.status;
 
     if (
-      status === 'pending naming' ||
-      status === 'pending document upload' ||
-      status === 'pending topic labelling'
+      status === SubjectStatus.PENDING_NAMING ||
+      status === SubjectStatus.PENDING_DOCUMENT_UPLOAD ||
+      status === SubjectStatus.PENDING_TOPIC_LABELLING
     ) {
       this.router.navigate([`/subject-create/${subject.id}/naming-upload`]);
     } else if (
-      status === 'pending topic selection' ||
-      status === 'pending extension configuration' ||
-      status === 'pending lesson generation'
+      status === SubjectStatus.PENDING_TOPIC_SELECTION ||
+      status === SubjectStatus.PENDING_EXTENSION_CONFIG ||
+      status === SubjectStatus.PENDING_LESSON_GENERATION
     ) {
       this.router.navigate([`/subject-create/${subject.id}/lesson-generation`]);
     } else {
@@ -341,8 +376,6 @@ export class Subjects implements OnInit, OnDestroy {
   // Rating modal methods
   openRateModal(): void {
     this.showRateModal.set(true);
-    this.rating.set(0);
-    this.ratingFeedback.set('');
   }
 
   closeRateModal(): void {
@@ -350,11 +383,7 @@ export class Subjects implements OnInit, OnDestroy {
     this.rightClickSubject.set(null);
   }
 
-  setRating(value: number): void {
-    this.rating.set(value);
-  }
-
-  submitRating(): void {
+  onRatingSubmit(data: { rating: number; feedback: string }): void {
     const subject = this.rightClickSubject();
     if (!subject) {
       this.notify.showError('No subject selected for rating.');
@@ -362,7 +391,7 @@ export class Subjects implements OnInit, OnDestroy {
       return;
     }
 
-    if (this.rating() < 1) {
+    if (data.rating < 1) {
       this.notify.showError('Select a valid rating.');
       this.closeRateModal();
       return;
@@ -370,8 +399,8 @@ export class Subjects implements OnInit, OnDestroy {
 
     const payload = {
       subjectId: subject.id,
-      rating: this.rating(),
-      feedback: this.ratingFeedback(),
+      rating: data.rating,
+      feedback: data.feedback,
     };
 
     const rateCall =
@@ -389,10 +418,33 @@ export class Subjects implements OnInit, OnDestroy {
         this.notify.showSuccess('Thanks for your feedback.');
         this.closeRateModal();
       },
-      error: (res: any) => {
+      error: (res: { error?: { message?: string } }) => {
         this.notify.showError(res?.error?.message || 'Failed to submit feedback.');
       },
     });
+  }
+
+  // Context menu handler
+  onContextMenuItemClick(itemId: string): void {
+    if (itemId === 'delete') {
+      this.openDelete();
+    } else if (itemId === 'rate') {
+      this.openRateModal();
+    }
+    // Note: don't reset rightClickSubject here - delete/rate modal needs it
+  }
+
+  // Subject card event handlers
+  onSubjectCardClick(subject: SubjectCardData): void {
+    this.navigateSubject(subject as SubjectModel);
+  }
+
+  onSubjectCardContextMenu(event: { event: MouseEvent; subject: SubjectCardData }): void {
+    this.onSubjectRightClick(event.event, event.subject);
+  }
+
+  onSubjectCardContinue(event: { event: MouseEvent; subject: SubjectCardData }): void {
+    this.continueSubject(event.event, event.subject as SubjectModel);
   }
 
   getDisplayTags(subject: SubjectModel): string[] {

@@ -1,12 +1,16 @@
-import { ChangeDetectorRef, Component, effect, ElementRef, inject, input, OnInit, output, SimpleChanges, untracked, viewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, ElementRef, inject, input, output, untracked, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { QuestionModel, SaveQuestionData } from '../../../core/models/question.model';
+import { QuestionModel, QuestionOption, SaveQuestionData } from '../../../core/models/question.model';
 import { LessonService } from '../../../core/services/lesson.service';
-import { catchError, forkJoin, Observable, of, switchMap, take, tap } from 'rxjs';
+import { catchError, forkJoin, Observable, of, switchMap, tap } from 'rxjs';
 import { MarkdownPipe } from '../../../shared/pipes/markdown-pipe';
 import { NotificationService } from '../../../core/services/notification.service';
 import { ConfirmService } from '../../../core/services/confirm';
 import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-icon';
+import { LessonViewState, QuestionChangeEvent } from '../../../core/models/lesson-content.model';
+import { ExerciseModel } from '../../../core/models/exercise.model';
+import { ExamModel } from '../../../core/models/exam.model';
+import { EssayEvaluationResponse } from '../../../core/models/api-response.model';
 
 @Component({
   selector: 'app-practice',
@@ -14,14 +18,21 @@ import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-
   templateUrl: './practice.html',
   styleUrl: './practice.css'
 })
+/** View data with questions for practice mode */
+interface PracticeViewData {
+  type: 'exercise' | 'exam';
+  id: string;
+  content: ExerciseModel | ExamModel;
+}
+
 export class Practice {
-  currentView = input<any>();
+  currentView = input<PracticeViewData>();
   subjectId = input<string>();
   topicId = input<string | null>()
-  changeQuestion = output<any>();
-  exerciseCompleted = output<any>();
-  changeProgress = output<any>();
-  question: any;
+  changeQuestion = output<QuestionChangeEvent>();
+  exerciseCompleted = output<string | null>();
+  changeProgress = output<void>();
+  question: QuestionModel | null = null;
   currentIndex = 0;
   loading = false;
   showSubmitConfirmation = false;
@@ -58,32 +69,40 @@ export class Practice {
   }
 
   goToQuestion(index: number) {
+    const view = this.currentView();
+    if (!view) return;
     this.currentIndex = index;
-    this.question = this.currentView().content.questions[this.currentIndex];
-    this.changeQuestion.emit({id: this.question.id})
+    this.question = view.content.questions[this.currentIndex];
+    if (this.question) {
+      this.changeQuestion.emit({ id: this.question.id });
+    }
     this.scrollToTop();
   }
 
   cycleQuestion(direction: string) {
-    // const currentIndex = this.currentView().content.questions.findIndex((q: any) => q.id === this.question.id);
-    let index = this.currentIndex
+    const view = this.currentView();
+    if (!view) return;
+    let index = this.currentIndex;
     index += (direction === 'next' ? 1 : -1);
     if (index < 0) index = 0; // Caps previous question at first question
-    if (index >= this.currentView().content.questions.length) index = this.currentView().content.questions.length - 1; // Caps next question at last question
+    if (index >= view.content.questions.length) index = view.content.questions.length - 1; // Caps next question at last question
     this.goToQuestion(index);
   }
 
-  getQuestionNumber() {
-    return this.currentView().content.questions.findIndex((q: any) => q.id === this.question.id) + 1;
+  getQuestionNumber(): number {
+    const view = this.currentView();
+    if (!view || !this.question) return 0;
+    return view.content.questions.findIndex((q) => q.id === this.question!.id) + 1;
   }
 
-  toggleSelectOption(id: any) {
+  toggleSelectOption(id: string) {
+    if (!this.question || !this.question.options) return;
     if (this.question.type === 'multiple choice') {
-      this.question.options.forEach((option: any) => {
+      this.question.options.forEach((option: QuestionOption) => {
         option.selected = option.id === id;
       });
     } else if (this.question.type === 'multiple selection') {
-      const option = this.question.options.find((o: any) => o.id === id);
+      const option = this.question.options.find((o) => o.id === id);
       if (option) {
         option.selected = !option.selected;
       }
@@ -104,16 +123,21 @@ export class Practice {
   }
 
   submitAnswers() {
+    const view = this.currentView();
+    if (!view) return;
+
     this.loading = true;
 
     let correctCount = 0;
-    let questionData: SaveQuestionData[] = [];
+    const questionData: SaveQuestionData[] = [];
 
-    const essayCalls: Observable<any>[] = [];
+    const essayCalls: Observable<EssayEvaluationResponse | null>[] = [];
 
-    this.currentView().content.questions.forEach((question: QuestionModel) => {
-      this.currentView().content.questions.find((q: any) => q.id === question.id).scored = false;
-      let q: SaveQuestionData = {
+    view.content.questions.forEach((question: QuestionModel) => {
+      const targetQuestion = view.content.questions.find((q) => q.id === question.id);
+      if (targetQuestion) targetQuestion.scored = false;
+
+      const q: SaveQuestionData = {
         id: question.id,
         type: question.type,
         scored: false,
@@ -124,46 +148,48 @@ export class Practice {
 
       if (question.type === 'multiple choice' || question.type === 'multiple selection') {
         const isCorrect = question.options?.every(opt => opt.selected === opt.correct);
-        if (isCorrect){
+        if (isCorrect) {
           q.scored = true;
-          this.currentView().content.questions.find((q: any) => q.id === question.id).scored = true;
+          const targetQ = view.content.questions.find((qItem) => qItem.id === question.id);
+          if (targetQ) targetQ.scored = true;
           correctCount++;
-        } 
+        }
         q.options = question.options?.map(opt => ({ id: opt.id, selected: opt.selected }));
-      } 
-      
+      }
+
       else if (question.type === 'essay') {
-        if (!question.essay_answer) question.essay_answer = "<no-answer-provided>"
+        if (!question.essay_answer) question.essay_answer = "<no-answer-provided>";
         essayCalls.push(
           this.lessonService.scoreEssayQuestion(this.subjectId(), question.id, question.essay_answer).pipe(
             tap((value) => {
               if (value.correct) {
                 q.scored = true;
-                this.currentView().content.questions.find((q: any) => q.id === question.id).scored = true;
+                const targetQ = view.content.questions.find((qItem) => qItem.id === question.id);
+                if (targetQ) targetQ.scored = true;
                 correctCount++;
-              } 
+              }
               q.essay_answer = question.essay_answer;
-              q.essay_feedback = question.essay_feedback = value.feedback;
+              q.essay_feedback = question.essay_feedback = value.feedback ?? null;
             }),
             catchError(res => {
-              this.notify.showError(res.error.message || 'Failed to score an essay question.');
+              this.notify.showError(res.error?.message || 'Failed to score an essay question.');
               return of(null);
             })
           )
         );
       }
 
-      questionData.push(q); // this might seem counterintuitive, but it actually does work with the async essay scoring, trust me bro, I asked gpt... I lied, it doesn't work
+      questionData.push(q);
     });
 
     // save score observable
-    let saveCall$: Observable<any>;
-    if (this.currentView().type === 'exercise') {
-      saveCall$ = this.lessonService.saveExerciseScore(this.topicId(), this.currentView().id, correctCount, questionData).pipe(
+    let saveCall$: Observable<unknown>;
+    if (view.type === 'exercise') {
+      saveCall$ = this.lessonService.saveExerciseScore(this.topicId(), view.id, correctCount, questionData).pipe(
         tap(() => this.exerciseCompleted.emit(this.topicId()))
-        );
-    } else if (this.currentView().type === 'exam') {
-      saveCall$ = this.lessonService.saveExamScore(this.subjectId(), this.currentView().id, correctCount, questionData);
+      );
+    } else if (view.type === 'exam') {
+      saveCall$ = this.lessonService.saveExamScore(this.subjectId(), view.id, correctCount, questionData);
     } else {
       saveCall$ = of(null);
     }
@@ -172,17 +198,17 @@ export class Practice {
     forkJoin(essayCalls.length > 0 ? essayCalls : [of(null)]).pipe(
       switchMap(() => {
         // Save final score into the currentView
-        this.currentView().content.score = correctCount;
+        (view.content as ExerciseModel | ExamModel).score = correctCount;
         return saveCall$;
       })
     ).subscribe({
       next: () => {
-        this.changeProgress.emit({}); // Notify parent to refresh progress
-        this.loading = false; // ✅ only after scoring + saving
+        this.changeProgress.emit(); // Notify parent to refresh progress
+        this.loading = false;
         this.cdr.detectChanges();
       },
       error: (res) => {
-        this.notify.showError(res.error.message || 'Failed to submit answers. Please try again.');
+        this.notify.showError(res.error?.message || 'Failed to submit answers. Please try again.');
         this.loading = false;
         this.cdr.detectChanges();
       }

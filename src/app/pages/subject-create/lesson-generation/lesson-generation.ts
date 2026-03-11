@@ -26,6 +26,14 @@ import { SubscriptionService } from '../../../core/services/subscription.service
 import { OnboardingService, OnboardingStep } from '../../../core/services/onboarding.service';
 
 import { SubscriptionStatus } from '../../../core/models/subscription.model';
+import {
+  ExtensionSettings,
+  ExtensionConfig,
+  ExtensionConstraints,
+  ValidationResult,
+  GenerationTopic,
+} from '../../../core/models/extension-settings.model';
+import { ExtensionModel } from '../../../core/models/api-response.model';
 
 
 @Component({
@@ -66,8 +74,8 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
   currentOnboardingStep = computed(() => this.onboardingService.currentStepIndex());
   
   subjectName = '';
-  topics: any = [];
-  extensionSettings = {
+  topics: GenerationTopic[] = [];
+  extensionSettings: ExtensionSettings = {
     cells: {
       enabled: false,
       types: [],
@@ -101,8 +109,8 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
       name: 'glossary',
       displayName: 'Glossary',
     }
-  }
-  constraints = {
+  };
+  constraints: ExtensionConstraints = {
     excercise: {
       maxQuestions: 3
     },
@@ -112,7 +120,7 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
     flashcards: {
       maxCards: 10
     }
-  }
+  };
 
   constructor() {
     // Initialize onboarding steps
@@ -169,12 +177,13 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
     ta.style.height = Math.min(ta.scrollHeight, max) + 'px';
   }
 
-  toggleTopicSelection(topic_id: any) {
-    this.topics.map(
-      (topic: any) => {
-        if (topic.id === topic_id) {topic.selected = !topic.selected}
+  toggleTopicSelection(topicId: string) {
+    this.topics = this.topics.map((topic) => {
+      if (topic.id === topicId) {
+        return { ...topic, selected: !topic.selected };
       }
-    )
+      return topic;
+    });
   }
 
   toggleSettingsPopup() {
@@ -192,36 +201,37 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  saveConfig(config: any) {
+  saveConfig(config: ExtensionSettings) {
     if (this.subjectStatus === 'pending lesson generation') {
-      this.notify.show('info', 'Extensions have already been configured and cannot be changed')
+      this.notify.show('info', 'Extensions have already been configured and cannot be changed');
     } else {
-      this.extensionSettings = config
+      this.extensionSettings = config;
     }
-    this.toggleConfigOverlay()
+    this.toggleConfigOverlay();
   }
 
   toggleExtension(extension: string) {
-    this.extensionSettings[extension as keyof typeof this.extensionSettings].enabled = !this.extensionSettings[extension as keyof typeof this.extensionSettings].enabled
-    this.extensionsEnabled = Object.values(this.extensionSettings).some((ext: any) => ext.enabled);
+    const key = extension as keyof ExtensionSettings;
+    this.extensionSettings[key].enabled = !this.extensionSettings[key].enabled;
+    this.extensionsEnabled = Object.values(this.extensionSettings).some((ext: ExtensionConfig) => ext.enabled);
   }
 
-  getExtensionList() {
+  getExtensionList(): ExtensionConfig[] {
     return Object.values(this.extensionSettings);
   }
 
-  getEnabledExtensionList() {
-    return Object.values(this.extensionSettings).filter((ext: any) => ext.enabled);
+  getEnabledExtensionList(): ExtensionConfig[] {
+    return Object.values(this.extensionSettings).filter((ext: ExtensionConfig) => ext.enabled);
   }
 
-  drop(event: CdkDragDrop<any[]>) {
+  drop(event: CdkDragDrop<GenerationTopic[]>) {
     moveItemInArray(this.topics, event.previousIndex, event.currentIndex);
-    this.subjectService.reorderSubjectTopics(this.subjectId, this.topics.map((topic:any) => topic.id)).subscribe()
+    this.subjectService.reorderSubjectTopics(this.subjectId, this.topics.map((topic) => topic.id)).subscribe();
   }
 
-  validateSettings() {
+  validateSettings(): ValidationResult {
     // Check if any topics have been selected
-    const selectedTopics = this.topics.filter((topic: any) => topic.selected);
+    const selectedTopics = this.topics.filter((topic) => topic.selected);
     if (selectedTopics.length === 0) {
       return {
         status: false,
@@ -319,7 +329,7 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    const selectedTopicIds = this.topics.filter((topic: any) => topic.selected).map((topic: any) => topic.id);
+    const selectedTopicIds = this.topics.filter((topic) => topic.selected).map((topic) => topic.id);
     this.subjectService.generateFullLesson(this.subjectId, selectedTopicIds, this.learningStyle, this.extensionSettings).subscribe({
       next: (response) => {
         this.notify.showSuccess("Successfully generated lesson.")
@@ -337,34 +347,34 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  configureExtensions(extensions: any) {
-    for (let ext of extensions) {
-      if (ext.type == 'lesson' && ext.configuration.cell_types.length > 0) {
-        this.extensionSettings.cells.enabled = true
-        this.extensionSettings.cells.types = ext.configuration.cell_types
-        this.extensionsEnabled = true
+  configureExtensions(extensions: ExtensionModel[]) {
+    for (const ext of extensions) {
+      if (ext.type === 'lesson' && ext.configuration?.cell_types && ext.configuration.cell_types.length > 0) {
+        this.extensionSettings.cells.enabled = true;
+        this.extensionSettings.cells.types = ext.configuration.cell_types;
+        this.extensionsEnabled = true;
       }
-      if (ext.type == 'exercise') {
-        this.extensionSettings.exercise.enabled = true
-        this.extensionSettings.exercise.numQuestions = ext.configuration.no_of_questions
-        this.extensionSettings.exercise.types = ext.configuration.question_types
-        this.extensionsEnabled = true
+      if (ext.type === 'exercise' && ext.configuration) {
+        this.extensionSettings.exercise.enabled = true;
+        this.extensionSettings.exercise.numQuestions = ext.configuration.no_of_questions ?? 3;
+        this.extensionSettings.exercise.types = ext.configuration.question_types ?? [];
+        this.extensionsEnabled = true;
       }
-      if (ext.type == 'exam') {
-        this.extensionSettings.exam.enabled = true
-        this.extensionSettings.exam.numQuestions = ext.configuration.no_of_questions
-        this.extensionSettings.exam.types = ext.configuration.question_types
-        this.extensionsEnabled = true
+      if (ext.type === 'exam' && ext.configuration) {
+        this.extensionSettings.exam.enabled = true;
+        this.extensionSettings.exam.numQuestions = ext.configuration.no_of_questions ?? 10;
+        this.extensionSettings.exam.types = ext.configuration.question_types ?? [];
+        this.extensionsEnabled = true;
       }
-      if (ext.type == 'flashcards') {
-        this.extensionSettings.flashcards.enabled = true
-        this.extensionSettings.flashcards.numCards = ext.configuration.no_of_cards
-        this.extensionSettings.flashcards.types = ext.configuration.card_types
-        this.extensionsEnabled = true
+      if (ext.type === 'flashcards' && ext.configuration) {
+        this.extensionSettings.flashcards.enabled = true;
+        this.extensionSettings.flashcards.numCards = ext.configuration.no_of_cards ?? 5;
+        this.extensionSettings.flashcards.types = ext.configuration.card_types ?? [];
+        this.extensionsEnabled = true;
       }
-      if (ext.type == 'glossary') {
-        this.extensionSettings.glossary.enabled = true
-        this.extensionsEnabled = true
+      if (ext.type === 'glossary') {
+        this.extensionSettings.glossary.enabled = true;
+        this.extensionsEnabled = true;
       }
     }
   }
