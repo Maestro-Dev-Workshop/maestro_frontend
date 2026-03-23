@@ -17,16 +17,16 @@
     <!-- Topic List -->
     <div cdkDropList (cdkDropListDropped)="dropTopic($event)">
       @for (topic of content().topics; track topic.id) {
-        <button 
+        <button
           class="flex flex-row items-center text-[var(--text-primary)] lg:hover:text-[var(--text-primary-hover)] text-left"
-          [class.font-bold]="!topic.completed" 
+          [class.font-bold]="!topic.completed"
           (click)="toggleExpandTopic(topic.id)"
           cdkDrag
         >
-          <app-theme-icon name="dropdown-icon" className="w-2 m-4 z-0" [class.rotate-90]="topic.expanded"></app-theme-icon>
+          <app-theme-icon name="dropdown-icon" className="w-2 m-4 z-0" [class.rotate-90]="isTopicExpanded(topic.id)"></app-theme-icon>
           {{ topic.title }}
         </button>
-        @if (topic.expanded) {
+        @if (isTopicExpanded(topic.id)) {
           <!-- Subtopic List -->
           @for (subtopic of topic.subtopics; track subtopic.id) {
             <button [class]="`py-2 px-2 pl-8 text-[var(--text-secondary)] w-full text-left lg:hover:bg-[var(--bg-hover)] border-[var(--text-primary)]

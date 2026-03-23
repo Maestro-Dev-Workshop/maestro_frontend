@@ -4,7 +4,7 @@ export type NoticeType = 'success' | 'error' | 'info' | 'warn';
 
 @Injectable({ providedIn: 'root' })
 export class NotificationService {
-  message = signal<string | null>(null);
+  message = signal<string>('');
   type = signal<NoticeType | null>(null);
   private _timer?: number;
 
@@ -19,5 +19,5 @@ export class NotificationService {
   showSuccess(msg: string, ms = 4000) { this.show('success', msg, ms); }
   showInfo(msg: string, ms = 4000) { this.show('info', msg, ms); }
   showWarning(msg: string, ms = 4000) { this.show('warn', msg, ms); }
-  clear() { this.message.set(null); this.type.set(null); }
+  clear() { this.message.set(''); this.type.set(null); }
 }

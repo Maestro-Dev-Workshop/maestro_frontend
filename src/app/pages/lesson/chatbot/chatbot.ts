@@ -32,8 +32,8 @@ import { ThemeIconComponent } from "../../../shared/components/theme-icon/theme-
 })
 export class Chatbot implements OnInit, AfterViewInit, OnDestroy {
   chatHistory = model<ChatMessage[]>([]);
-  subjectId = input<string>();
-  metadata = input<ChatMetadata>();
+  subjectId = input.required<string>();
+  metadata = input.required<ChatMetadata>();
   closeChat = output<any>();
   currentMessage: string = '';
   loading = false;

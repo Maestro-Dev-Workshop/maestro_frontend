@@ -1,20 +1,40 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, inject, NO_ERRORS_SCHEMA, OnDestroy, OnInit, viewChild, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  inject,
+  NO_ERRORS_SCHEMA,
+  OnDestroy,
+  OnInit,
+  viewChild,
+  computed,
+} from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
+
 import { Header } from '../../../shared/components/header/header';
 import { CreationStepTab } from '../creation-step-tab/creation-step-tab';
-import { FormsModule, NgModel } from '@angular/forms';
-import { Router } from '@angular/router';
-import { TopicModel } from '../../../core/models/topic.model';
-import { SubjectsService } from '../../../core/services/subjects.service';
-import { LessonService } from '../../../core/services/lesson.service';
-import { NotificationService } from '../../../core/services/notification.service';
-import { PreferenceValidator } from '../../../shared/directives/preference-validator';
 import { ExtensionConfigOverlay } from '../extension-config-overlay/extension-config-overlay';
-import { max } from 'rxjs';
-import { SubscriptionService } from '../../../core/services/subscription.service';
-import { SubscriptionStatus } from '../../../core/models/subscription.model';
 import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-icon';
-import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { TutorialElement } from '../../../shared/components/tutorial-element/tutorial-element';
+
+import { SubjectsService } from '../../../core/services/subjects.service';
+import { NotificationService } from '../../../core/services/notification.service';
+import { SubscriptionService } from '../../../core/services/subscription.service';
+import { OnboardingService, OnboardingStep } from '../../../core/services/onboarding.service';
+
+import { SubscriptionStatus } from '../../../core/models/subscription.model';
+import {
+  ExtensionSettings,
+  ExtensionConfig,
+  ExtensionConstraints,
+  ValidationResult,
+  GenerationTopic,
+  DEFAULT_EXTENSION_CONFIG,
+} from '../../../core/models/extension-settings.model';
+import { ExtensionModel } from '../../../core/models/api-response.model';
 
 
 @Component({
@@ -25,105 +45,40 @@ import { TutorialElement } from '../../../shared/components/tutorial-element/tut
   styleUrl: './lesson-generation.css',
 })
 export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
-  loading = false
-  learningStyle = ''
-  settingsPopup = false
-  configOverlay = false
-  extensionsEnabled = false
-  subjectId = ''
-  subjectStatus = ''
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
+  private notify = inject(NotificationService);
+  private subjectService = inject(SubjectsService);
+  private subscriptionService = inject(SubscriptionService);
+  private onboardingService = inject(OnboardingService);
+  private resizeObserver?: ResizeObserver;
+
+  loading = false;
+  learningStyle = '';
+  settingsPopup = false;
+  configOverlay = false;
+  extensionsEnabled = false;
+  subjectId = '';
+  subjectStatus = '';
   topicOverflowing = false;
   topicsExpanded = false;
-  notify = inject(NotificationService)
-  subjectService = inject(SubjectsService)
-  subscriptionService = inject(SubscriptionService)
-  private resizeObserver?: ResizeObserver; 
-  
+
   // Onboarding elements
-  topicList = viewChild<ElementRef>('topicList')
-  enableExtensionsButton = viewChild<ElementRef>('enableExtensionsButton')
-  configureExtensionsButton = viewChild<ElementRef>('configureExtensionsButton')
-  textInput = viewChild<ElementRef>('textInput')
-  submitButton = viewChild<ElementRef>('submitButton')
-  onboardingSteps = [
-    {
-      title: 'Select Topics',
-      text: 'Choose the specific concepts you want to focus on for this lesson.',
-      object: this.topicList,
-      tipPosition: 'top',
-      tipAlignment: 'start',
-    },
-    {
-      title: 'Enhance Your Lesson',
-      text: 'Select additional extensions to enhance the quality of your generated lesson.',
-      object: this.enableExtensionsButton,
-      tipPosition: 'top',
-      tipAlignment: 'start',
-    },
-    {
-      title: 'Configure',
-      text: 'Click here to customize your extensions.',
-      object: this.configureExtensionsButton,
-      tipPosition: 'top',
-      tipAlignment: 'start',
-    },
-    {
-      title: 'Lesson Preferences',
-      text: 'Provide any specific preferences or instructions for your lesson generation.',
-      object: this.textInput,
-      tipPosition: 'bottom',
-      tipAlignment: 'start',
-    },
-    {
-      title: 'Generate Lesson',
-      text: 'Ready? Click the send button to build your personalised lesson.',
-      object: this.submitButton,
-      tipPosition: 'top',
-      tipAlignment: 'end',
-    },
-  ];
+  topicList = viewChild<ElementRef>('topicList');
+  enableExtensionsButton = viewChild<ElementRef>('enableExtensionsButton');
+  configureExtensionsButton = viewChild<ElementRef>('configureExtensionsButton');
+  textInput = viewChild<ElementRef>('textInput');
+  submitButton = viewChild<ElementRef>('submitButton');
+  onboardingSteps: OnboardingStep[] = [];
   beginner = false;
-  currentOnboardingStep = -1;
+  currentOnboardingStep = computed(() => this.onboardingService.currentStepIndex());
   
   subjectName = '';
-  topics: any = [];
-  extensionSettings = {
-    cells: {
-      enabled: false,
-      types: [],
-      name: 'cells',
-      displayName: 'Lesson Supplements',
-    },
+  topics: GenerationTopic[] = [];
+  extensionSettings: ExtensionSettings = DEFAULT_EXTENSION_CONFIG;
+  constraints: ExtensionConstraints = {
     exercise: {
-      enabled: false,
-      types: [],
-      numQuestions: 3,
-      name: 'exercise',
-      displayName: 'Exercise',
-    },
-    exam: {
-      enabled: false,
-      types: [],
-      numQuestions: 10,
-      timelimit: null,
-      name: 'exam',
-      displayName: 'Exam',
-    },
-    flashcards: {
-      enabled: false,
-      numCards: 5,
-      types: [],
-      name: 'flashcards',
-      displayName: 'Flashcards',
-    },
-    glossary: {
-      enabled: false,
-      name: 'glossary',
-      displayName: 'Glossary',
-    }
-  }
-  constraints = {
-    excercise: {
       maxQuestions: 3
     },
     exam: {
@@ -132,19 +87,53 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
     flashcards: {
       maxCards: 10
     }
-  }
+  };
 
-  constructor(
-    private cdr: ChangeDetectorRef, 
-    private router: Router,
-  ) {
-    // Extract subjectId from the route parameters
-    const url = window.location.pathname;
-    const parts = url.split('/');
-    this.subjectId = parts[parts.length - 2]; // Assuming the last part is the subjectId
+  constructor() {
+    // Initialize onboarding steps
+    this.onboardingSteps = [
+      {
+        title: 'Select Topics',
+        text: 'Choose the specific concepts you want to focus on for this lesson.',
+        object: this.topicList,
+        tipPosition: 'top',
+        tipAlignment: 'start',
+      },
+      {
+        title: 'Enhance Your Lesson',
+        text: 'Select additional extensions to enhance the quality of your generated lesson.',
+        object: this.enableExtensionsButton,
+        tipPosition: 'top',
+        tipAlignment: 'start',
+      },
+      {
+        title: 'Configure',
+        text: 'Click here to customize your extensions.',
+        object: this.configureExtensionsButton,
+        tipPosition: 'top',
+        tipAlignment: 'start',
+      },
+      {
+        title: 'Lesson Preferences',
+        text: 'Provide any specific preferences or instructions for your lesson generation.',
+        object: this.textInput,
+        tipPosition: 'bottom',
+        tipAlignment: 'start',
+      },
+      {
+        title: 'Generate Lesson',
+        text: 'Ready? Click the send button to build your personalised lesson.',
+        object: this.submitButton,
+        tipPosition: 'top',
+        tipAlignment: 'end',
+      },
+    ];
+
     const nav = this.router.currentNavigation();
-    this.beginner = nav?.extras?.state?.['beginner'];
-    this.currentOnboardingStep = this.beginner ? 0 : -1;
+    this.beginner = nav?.extras?.state?.['beginner'] ?? false;
+    if (this.beginner) {
+      this.onboardingService.startOnboarding();
+    }
   }
 
   adjustInputHeight() {
@@ -155,12 +144,13 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
     ta.style.height = Math.min(ta.scrollHeight, max) + 'px';
   }
 
-  toggleTopicSelection(topic_id: any) {
-    this.topics.map(
-      (topic: any) => {
-        if (topic.id === topic_id) {topic.selected = !topic.selected}
+  toggleTopicSelection(topicId: string) {
+    this.topics = this.topics.map((topic) => {
+      if (topic.id === topicId) {
+        return { ...topic, selected: !topic.selected };
       }
-    )
+      return topic;
+    });
   }
 
   toggleSettingsPopup() {
@@ -178,36 +168,37 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  saveConfig(config: any) {
-    if (this.subjectStatus === 'pending lesson generation') {
-      this.notify.show('info', 'Extensions have already been configured and cannot be changed')
+  saveConfig(config: ExtensionSettings) {
+    if (this.subjectStatus === 'pending_lesson_generation') {
+      this.notify.show('info', 'Extensions have already been configured and cannot be changed');
     } else {
-      this.extensionSettings = config
+      this.extensionSettings = config;
     }
-    this.toggleConfigOverlay()
+    this.toggleConfigOverlay();
   }
 
   toggleExtension(extension: string) {
-    this.extensionSettings[extension as keyof typeof this.extensionSettings].enabled = !this.extensionSettings[extension as keyof typeof this.extensionSettings].enabled
-    this.extensionsEnabled = Object.values(this.extensionSettings).some((ext: any) => ext.enabled);
+    const key = extension as keyof ExtensionSettings;
+    this.extensionSettings[key].enabled = !this.extensionSettings[key].enabled;
+    this.extensionsEnabled = Object.values(this.extensionSettings).some((ext: ExtensionConfig) => ext.enabled);
   }
 
-  getExtensionList() {
+  getExtensionList(): ExtensionConfig[] {
     return Object.values(this.extensionSettings);
   }
 
-  getEnabledExtensionList() {
-    return Object.values(this.extensionSettings).filter((ext: any) => ext.enabled);
+  getEnabledExtensionList(): ExtensionConfig[] {
+    return Object.values(this.extensionSettings).filter((ext: ExtensionConfig) => ext.enabled);
   }
 
-  drop(event: CdkDragDrop<any[]>) {
+  drop(event: CdkDragDrop<GenerationTopic[]>) {
     moveItemInArray(this.topics, event.previousIndex, event.currentIndex);
-    this.subjectService.reorderSubjectTopics(this.subjectId, this.topics.map((topic:any) => topic.id)).subscribe()
+    this.subjectService.reorderSubjectTopics(this.subjectId, this.topics.map((topic) => topic.id)).subscribe();
   }
 
-  validateSettings() {
+  validateSettings(): ValidationResult {
     // Check if any topics have been selected
-    const selectedTopics = this.topics.filter((topic: any) => topic.selected);
+    const selectedTopics = this.topics.filter((topic) => topic.selected);
     if (selectedTopics.length === 0) {
       return {
         status: false,
@@ -241,10 +232,10 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
 
     // Exercise checks
     if (this.extensionSettings.exercise.enabled) {
-      if (this.extensionSettings.exercise.numQuestions <= 0 || this.extensionSettings.exercise.numQuestions > this.constraints.excercise.maxQuestions) {
+      if (this.extensionSettings.exercise.numQuestions <= 0 || this.extensionSettings.exercise.numQuestions > this.constraints.exercise.maxQuestions) {
         return {
           status: false,
-          message: `Number of exercise questions must be between 1 and ${this.constraints.excercise.maxQuestions}.`
+          message: `Number of exercise questions must be between 1 and ${this.constraints.exercise.maxQuestions}.`
         };
       }
       if (this.extensionSettings.exercise.types.length === 0) {
@@ -305,7 +296,7 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    const selectedTopicIds = this.topics.filter((topic: any) => topic.selected).map((topic: any) => topic.id);
+    const selectedTopicIds = this.topics.filter((topic) => topic.selected).map((topic) => topic.id);
     this.subjectService.generateFullLesson(this.subjectId, selectedTopicIds, this.learningStyle, this.extensionSettings).subscribe({
       next: (response) => {
         this.notify.showSuccess("Successfully generated lesson.")
@@ -323,40 +314,48 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  configureExtensions(extensions: any) {
-    for (let ext of extensions) {
-      if (ext.type == 'lesson' && ext.configuration.cell_types.length > 0) {
-        this.extensionSettings.cells.enabled = true
-        this.extensionSettings.cells.types = ext.configuration.cell_types
-        this.extensionsEnabled = true
+  configureExtensions(extensions: ExtensionModel[]) {
+    for (const ext of extensions) {
+      if (ext.type === 'lesson' && ext.configuration?.cell_types && ext.configuration.cell_types.length > 0) {
+        this.extensionSettings.cells.enabled = true;
+        this.extensionSettings.cells.types = ext.configuration.cell_types;
+        this.extensionsEnabled = true;
       }
-      if (ext.type == 'exercise') {
-        this.extensionSettings.exercise.enabled = true
-        this.extensionSettings.exercise.numQuestions = ext.configuration.no_of_questions
-        this.extensionSettings.exercise.types = ext.configuration.question_types
-        this.extensionsEnabled = true
+      if (ext.type === 'exercise' && ext.configuration) {
+        this.extensionSettings.exercise.enabled = true;
+        this.extensionSettings.exercise.numQuestions = ext.configuration.no_of_questions ?? 3;
+        this.extensionSettings.exercise.types = ext.configuration.question_types ?? [];
+        this.extensionsEnabled = true;
       }
-      if (ext.type == 'exam') {
-        this.extensionSettings.exam.enabled = true
-        this.extensionSettings.exam.numQuestions = ext.configuration.no_of_questions
-        this.extensionSettings.exam.types = ext.configuration.question_types
-        this.extensionsEnabled = true
+      if (ext.type === 'exam' && ext.configuration) {
+        this.extensionSettings.exam.enabled = true;
+        this.extensionSettings.exam.numQuestions = ext.configuration.no_of_questions ?? 10;
+        this.extensionSettings.exam.types = ext.configuration.question_types ?? [];
+        this.extensionsEnabled = true;
       }
-      if (ext.type == 'flashcards') {
-        this.extensionSettings.flashcards.enabled = true
-        this.extensionSettings.flashcards.numCards = ext.configuration.no_of_cards
-        this.extensionSettings.flashcards.types = ext.configuration.card_types
-        this.extensionsEnabled = true
+      if (ext.type === 'flashcards' && ext.configuration) {
+        this.extensionSettings.flashcards.enabled = true;
+        this.extensionSettings.flashcards.numCards = ext.configuration.no_of_cards ?? 5;
+        this.extensionSettings.flashcards.types = ext.configuration.card_types ?? [];
+        this.extensionsEnabled = true;
       }
-      if (ext.type == 'glossary') {
-        this.extensionSettings.glossary.enabled = true
-        this.extensionsEnabled = true
+      if (ext.type === 'glossary') {
+        this.extensionSettings.glossary.enabled = true;
+        this.extensionsEnabled = true;
       }
     }
   }
 
   ngOnInit() {
-    this.loading = true
+    // Get subjectId from route params
+    this.route.paramMap.subscribe((params) => {
+      this.subjectId = params.get('sessionId') ?? '';
+      this.loadSubjectDetails();
+    });
+  }
+
+  private loadSubjectDetails() {
+    this.loading = true;
     this.subjectService.getSubjectDetails(this.subjectId).subscribe({
       next: (response) => {
         this.subjectName = response.session.name || 'Untitled';
@@ -369,7 +368,7 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
           next: (response) => {
             const subscriptionData: SubscriptionStatus | null = response.subscription;
             if (subscriptionData && subscriptionData.plan) {
-              this.constraints.excercise.maxQuestions = subscriptionData.plan.exercise_question_count || 3;
+              this.constraints.exercise.maxQuestions = subscriptionData.plan.exercise_question_count || 3;
               this.constraints.exam.maxQuestions = subscriptionData.plan.exam_question_count || 10;
             }
           },
@@ -421,19 +420,13 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
     this.resizeObserver?.disconnect();
   }
 
-  getTutorialObjectPosition(step: any) {
-    if (!this.onboardingSteps[step].object()) return { top: 0, left: 0, bottom: 0, right: 0 };
-    const rect = this.onboardingSteps[step].object()?.nativeElement.getBoundingClientRect();
-    return {
-      top: rect.top,
-      left: rect.left,
-      bottom: rect.bottom,
-      right: rect.right,
-    }
+  getTutorialObjectPosition(stepIndex: number) {
+    const step = this.onboardingSteps[stepIndex];
+    if (!step) return { top: 0, left: 0, bottom: 0, right: 0 };
+    return this.onboardingService.getObjectPosition(step);
   }
 
-  cycleOnboarding() {
-    this.currentOnboardingStep = this.currentOnboardingStep + 1;
-    this.cdr.detectChanges();
+  cycleOnboarding(): void {
+    this.onboardingService.nextStep();
   }
 }

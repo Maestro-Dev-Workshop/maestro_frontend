@@ -37,5 +37,5 @@ export interface SubscriptionStatus {
   subjects_created_this_month: number;
   total_subjects_created: number;
 
-  plan: Plan | null;
+  plan: Plan;
 }

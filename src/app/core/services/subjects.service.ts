@@ -1,97 +1,88 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpBaseService } from './http-base.service';
+import {
+  ApiResponse,
+  SubjectListResponse,
+  SubjectResponse,
+  SubjectDetailsResponse,
+  DocumentIngestResponse,
+  DocumentLabelResponse,
+  UpdateProgressResponse,
+  FeedbackResponse,
+  ExtensionSettingsPayload,
+} from '../models/api-response.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SubjectsService {
-  http = inject(HttpBaseService);
+  private http = inject(HttpBaseService);
 
-  getAllSubjects(): Observable<any> {
-    return this.http.get('session/list');
+  getAllSubjects(): Observable<SubjectListResponse> {
+    return this.http.get<SubjectListResponse>('subjects');
   }
 
-  createSubject(): Observable<any> {
-    return this.http.post('session/create', {});
+  createSubject(): Observable<SubjectResponse> {
+    return this.http.post<SubjectResponse>('subjects', {});
   }
 
-  nameSubject(sessionId: string, name: string): Observable<any> {
-    return this.http.put(`session/${sessionId}/name`, { name });
+  nameSubject(subjectId: string, name: string): Observable<SubjectResponse> {
+    return this.http.put<SubjectResponse>(`subjects/${subjectId}`, { name });
   }
 
-  getSubject(sessionId: string): Observable<any> {
-    return this.http.get(`session/${sessionId}/get`);
+  getSubject(subjectId: string): Observable<SubjectResponse> {
+    return this.http.get<SubjectResponse>(`subjects/${subjectId}`);
   }
 
-  getSubjectDetails(sessionId: string): Observable<any> {
-    return this.http.get(`session/${sessionId}/get-full`);
+  getSubjectDetails(subjectId: string): Observable<SubjectDetailsResponse> {
+    return this.http.get<SubjectDetailsResponse>(`subjects/${subjectId}/full`);
   }
 
-  getAllSubjectsDetails(): Observable<any> {
-    return this.http.get('session/list-full');
+  getAllSubjectsDetails(): Observable<SubjectListResponse> {
+    return this.http.get<SubjectListResponse>('subjects/full');
   }
 
-  ingestDocuments(sessionId: string, files: File[]): Observable<any> {
+  ingestDocuments(subjectId: string, files: File[]): Observable<DocumentIngestResponse> {
     const formData = new FormData();
     files.forEach((file) => formData.append('files', file));
-    return this.http.post(`session/${sessionId}/docs/ingest`, formData);
+    return this.http.post<DocumentIngestResponse>(`subjects/${subjectId}/documents/ingest`, formData);
   }
 
-  labelDocuments(sessionId: string): Observable<any> {
-    return this.http.post(`session/${sessionId}/docs/label`, {});
+  labelDocuments(subjectId: string): Observable<DocumentLabelResponse> {
+    return this.http.post<DocumentLabelResponse>(`subjects/${subjectId}/documents/label`, {});
   }
 
-  generateFullLesson(sessionId: string, topics: string[], user_preference: string, extension_settings: any): Observable<any> {
-    return this.http.post(`session/${sessionId}/generate`, { topics, user_preference, extension_settings });
-  }
-  
-  updateSessionStatus(sessionId: string, status: string): Observable<any> {
-    return this.http.put(`session/${sessionId}/update-status`, { status });
-  }
-
-  updateSessionProgress(sessionId: string, progress: number): Observable<any> {
-    return this.http.put(`session/${sessionId}/update-progress`, { update_tick: progress });
-  }
-
-  deleteSubject(sessionId: string): Observable<any> {
-    return this.http.delete(`session/${sessionId}/delete`);
+  generateFullLesson(
+    subjectId: string,
+    topics: string[],
+    user_preference: string,
+    extension_settings: ExtensionSettingsPayload
+  ): Observable<ApiResponse> {
+    return this.http.post<ApiResponse>(`subjects/${subjectId}/generate`, {
+      topics,
+      user_preference,
+      extension_settings,
+    });
   }
 
-  reorderSubjectTopics(sessionId: string, topics: string[]): Observable<any> {
-    return this.http.put(`session/${sessionId}/reorder-topics`, { topics })
+  updateSessionStatus(subjectId: string, status: string): Observable<ApiResponse> {
+    return this.http.put<ApiResponse>(`subjects/${subjectId}/status`, { status });
   }
 
-  submitFeedback(sessionId: string, rating: number, comment: string): Observable<any> {
-    return this.http.post(`lesson-feedback`, { 
-      session_id: sessionId, 
-      rating, 
-      comment });
+  updateSessionProgress(subjectId: string, progress: number): Observable<UpdateProgressResponse> {
+    return this.http.put<UpdateProgressResponse>(`subjects/${subjectId}/progress`, { update_tick: progress });
   }
 
-
-
-
-
-
-
-  // ------------------------------------------------------------------
-  // Deprecated methods for lesson/exercise/exam generation flow
-  // ------------------------------------------------------------------
-
-  selectTopics(sessionId: string, topicIds: string[]): Observable<any> {
-    return this.http.post(`session/${sessionId}/select-topics`, { topics: topicIds });
+  deleteSubject(subjectId: string): Observable<ApiResponse> {
+    return this.http.delete<ApiResponse>(`subjects/${subjectId}`);
   }
-  
-  generateLesson(sessionId: string, prefs: string): Observable<any> {
-    return this.http.post(`session/${sessionId}/generate-lesson`, { lesson_preference: prefs });
+
+  reorderSubjectTopics(subjectId: string, topics: string[]): Observable<ApiResponse> {
+    return this.http.put<ApiResponse>(`subjects/${subjectId}/topics/reorder`, { topics });
   }
-  
-  generateExercise(sessionId: string, prefs: string, questionTypes: string[], numQuestions: number): Observable<any> {
-    return this.http.post(`session/${sessionId}/generate-exercises`, { exercise_preference: prefs, question_types: questionTypes, no_of_questions: numQuestions });
-  }
-  
-  generateExam(sessionId: string, prefs: string, questionTypes: string[], numQuestions: number, timeLimit: boolean = false): Observable<any> {
-    return this.http.post(`session/${sessionId}/generate-exam`, { exam_preference: prefs, question_types: questionTypes, no_of_questions: numQuestions, use_time_limit: timeLimit });
+
+  submitFeedback(subjectId: string, rating: number, comment: string): Observable<FeedbackResponse> {
+    return this.http.post<FeedbackResponse>(`subjects/${subjectId}/feedback`, { rating, comment });
   }
 }
