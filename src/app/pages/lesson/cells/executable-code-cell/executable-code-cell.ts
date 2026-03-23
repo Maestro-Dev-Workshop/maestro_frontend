@@ -4,6 +4,22 @@ import { FormsModule } from '@angular/forms';
 import { ThemeService } from '../../../../core/services/theme.service';
 import { LessonService } from '../../../../core/services/lesson.service';
 import { NotificationService } from '../../../../core/services/notification.service';
+import { CodeExecutionOutput } from '../../../../core/models/code-execution.model';
+
+/** Input data structure for executable code cell */
+interface CodeCellData {
+  content: string;
+  metadata: {
+    language: string;
+  };
+}
+
+/** Monaco editor options */
+interface MonacoEditorOptions {
+  theme: string;
+  language: string;
+  automaticLayout: boolean;
+}
 
 @Component({
   selector: 'app-executable-code-cell',
@@ -18,48 +34,51 @@ import { NotificationService } from '../../../../core/services/notification.serv
   styleUrl: './executable-code-cell.css',
 })
 export class ExecutableCodeCell {
-  data = input<any>();
-  editorOptions = {}
-  code = ''
-  language = ''
-  height = ''
-  output: any = {}
-  loading = false
-  themeService = inject(ThemeService)
-  lessonService = inject(LessonService)
-  notify = inject(NotificationService)
+  data = input<CodeCellData>();
+  editorOptions: MonacoEditorOptions = { theme: 'vs-dark', language: '', automaticLayout: true };
+  code = '';
+  language = '';
+  height = '';
+  output: CodeExecutionOutput = {};
+  loading = false;
+  themeService = inject(ThemeService);
+  lessonService = inject(LessonService);
+  notify = inject(NotificationService);
 
-  constructor (private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef) {}
 
   private updateOnInputChange = effect(() => {
-    this.output = {}
-    this.loading = false
-    this.language = this.data().metadata.language.toLowerCase()
+    const cellData = this.data();
+    if (!cellData) return;
+
+    this.output = {};
+    this.loading = false;
+    this.language = cellData.metadata.language.toLowerCase();
     this.editorOptions = {
-      theme: (this.themeService.getTheme() == 'light') ? 'vs-light' : 'vs-dark',
+      theme: (this.themeService.getTheme() === 'light') ? 'vs-light' : 'vs-dark',
       language: this.language,
       automaticLayout: true,
-    }
-    this.code = this.data().content
-    const lineCount = this.code.split('\n').length
-    this.height = `${(lineCount + 1) * 19}px`
+    };
+    this.code = cellData.content;
+    const lineCount = this.code.split('\n').length;
+    this.height = `${(lineCount + 1) * 19}px`;
   });
 
   runCode() {
-    this.loading = true
+    this.loading = true;
     this.cdr.detectChanges();
 
     this.lessonService.executeCodeBlock(this.code, this.language).subscribe({
       next: (response) => {
-        this.output = response.result;
-        // console.log(this.output)
-        this.loading = false
-        this.cdr.detectChanges()
-      }, error: (res) => {
-        this.notify.showError(res.error.message || "Code execution failed")
-        this.loading = false
-        this.cdr.detectChanges()
+        this.output = response.result as CodeExecutionOutput;
+        this.loading = false;
+        this.cdr.detectChanges();
       },
-    })
+      error: (res) => {
+        this.notify.showError(res.error?.message || "Code execution failed");
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+    });
   }
 }

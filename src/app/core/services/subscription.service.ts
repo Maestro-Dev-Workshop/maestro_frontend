@@ -1,37 +1,45 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpBaseService } from './http-base.service';
-import { Plan, SubscriptionStatus } from '../models/subscription.model';
+import {
+  ApiResponse,
+  PlansResponse,
+  SinglePlanResponse,
+  SubscriptionResponse,
+  TransactionInitResponse,
+  TransactionVerifyResponse,
+  ManageLinkResponse,
+} from '../models/api-response.model';
 
 @Injectable({ providedIn: 'root' })
 export class SubscriptionService {
-  http = inject(HttpBaseService);
+  private http = inject(HttpBaseService);
 
-  getPlans(): Observable<any> {
-    return this.http.get('subscription/plans');
+  getPlans(): Observable<PlansResponse> {
+    return this.http.get<PlansResponse>('subscriptions/plans');
   }
 
-  getSinglePlan(planCode: string): Observable<any> {
-    return this.http.get(`subscription/plans/${planCode}`);
+  getSinglePlan(planCode: string): Observable<SinglePlanResponse> {
+    return this.http.get<SinglePlanResponse>(`subscriptions/plans/${planCode}`);
   }
 
-  subscribe(planCode: string): Observable<any> {
-    return this.http.post('subscription/initialize-transaction', { planCode });
+  subscribe(planCode: string): Observable<TransactionInitResponse> {
+    return this.http.post<TransactionInitResponse>('subscriptions', { planCode });
   }
 
-  verifyTransaction(reference: string): Observable<any> {
-    return this.http.post('subscription/verify-transaction', { reference });
+  verifyTransaction(reference: string): Observable<TransactionVerifyResponse> {
+    return this.http.post<TransactionVerifyResponse>('subscriptions/verify', { reference });
   }
 
-  getSubscription(): Observable<any> {
-    return this.http.get('subscription/get');
+  getSubscription(): Observable<SubscriptionResponse> {
+    return this.http.get<SubscriptionResponse>('subscriptions');
   }
 
-  cancel(): Observable<any> {
-    return this.http.post('subscription/cancel', {});
+  cancel(): Observable<ApiResponse> {
+    return this.http.delete<ApiResponse>('subscriptions');
   }
 
-  manageSubscription() : Observable<any> {
-    return this.http.get('subscription/generate-manage-link');
+  manageSubscription(): Observable<ManageLinkResponse> {
+    return this.http.get<ManageLinkResponse>('subscriptions/manage-link');
   }
 }

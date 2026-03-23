@@ -1,6 +1,6 @@
 <app-header class="z-40"/>
 
-@if (subjectLoading) {
+@if (subjectLoading()) {
   <div class="flex flex-row items-center justify-center h-full w-full bg-[var(--bg-page)] z-30 absolute">
     <div class="flex flex-row items-center">
       <img src="images/spinner.gif" alt="" class="w-24 m-4">
@@ -10,25 +10,25 @@
 }
 
 <!-- Practice (Exercise/Exam) Header -->
-@if (currentView.type === 'exercise' || currentView.type === 'exam') {
+@if (currentView().type === 'exercise' || currentView().type === 'exam') {
   <div class="w-full bg-[var(--bg-hover)] flex flex-row items-center justify-between px-6 lg:px-12 py-3 lg:py-6">
     <div class="">
       <h1 class="hidden lg:block text-3xl font-medium text-[var(--text-primary)]">
-        Practice {{capitalizeFirstLetter(currentView.type)}} for {{(currentView.type === 'exercise') ? getTopicDataFromExercise().title : subjectContent.subject_name}}
+        Practice {{capitalizeFirstLetter(currentView().type)}} for {{(currentView().type === 'exercise') ? getTopicDataFromExercise().title : subjectContent().subject_name}}
       </h1>
       <h1 class="lg:hidden text-3xl font-medium text-[var(--text-primary)]">
-        {{capitalizeFirstLetter(currentView.type)}}
+        {{capitalizeFirstLetter(currentView().type)}}
       </h1>
       <h2 class="text-xl font-medium text-[var(--text-primary-hover)]">
-        {{ currentView.content.questions.length }} Question{{(currentView.content.questions.length > 1) ? 's' : '' }}
+        {{ questionsCount }} Question{{(questionsCount > 1) ? 's' : '' }}
       </h2>
       <span class="hidden lg:block mt-4 text-[var(--text-secondary)]">These questions will help reinforce your understanding. Take your time to answer all the questions.</span>
     </div>
     <div class="text-3xl flex flex-col text-[var(--text-primary)] text-right tracking-wider font-medium">
       <span>Score:</span>
       <span>
-        @if (!(currentView.content.score == null)) {
-          {{currentView.content.score}} / {{currentView.content.questions.length}}
+        @if (!(score == null)) {
+          {{score}} / {{questionsCount}}
         } @else {
           Not Graded
         }
@@ -39,104 +39,104 @@
 
 <div class="w-full flex flex-row flex-grow overflow-hidden mt-2 relative">
   <!-- Sidebar Toggle -->
-  <button 
-    [class]="`absolute z-20 top-0 ${sidebarOpen ? 'hidden' : 'left-0 rounded-r-full'} p-3 bg-prussian-blue-700 lg:hidden`"
+  <button
+    [class]="`absolute z-20 top-0 ${sidebarOpen() ? 'hidden' : 'left-0 rounded-r-full'} p-3 bg-prussian-blue-700 lg:hidden`"
     (click)="toggleSidebar()"
   >
     <img src="images/subject-icon-white.svg" class="w-6">
   </button>
 
   <!-- Sidebar Container -->
-  <app-sidebar 
-    [class]="`w-5/6 lg:w-3/12 h-full absolute lg:relative ${sidebarOpen ? '' : 'hidden'} lg:block 
+  <app-sidebar
+    [class]="`w-5/6 lg:w-3/12 h-full absolute lg:relative ${sidebarOpen() ? '' : 'hidden'} lg:block
     overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 lg:hover:scrollbar-thumb-gray-500 bg-[var(--bg-page)] z-[19]`"
-    [(content)]="subjectContent" 
-    [currentView]="currentView" 
-    (updateView)="updatecurrentView($event)" 
+    [content]="subjectContent()"
+    [currentView]="currentView()"
+    (updateView)="updateCurrentView($event)"
     (closeSidebar)="toggleSidebar()"
     (reorderTopicEvent)="reorderTopics($event)"
   ></app-sidebar>
 
   <!-- Main View Container -->
-  <div 
-    #contentContainer 
-    [class]="`overflow-hidden flex flex-grow lg:${chatOpen ? 'w-6/12' : 'w-9/12'}`"
+  <div
+    #contentContainer
+    [class]="`overflow-hidden flex flex-grow lg:${chatOpen() ? 'w-6/12' : 'w-9/12'}`"
   >
-    @if (currentView.type === 'subtopic') {
-      <app-subtopic 
+    @if (currentView().type === 'subtopic') {
+      <app-subtopic
         class="w-full overflow-hidden flex flex-col"
-        [currentView]="currentView" 
-        [currentTopic]="getTopicDataFromSubtopic()" 
+        [currentView]="currentView()"
+        [currentTopic]="getTopicDataFromSubtopic()"
         [getPosition]="getSubtopicPosition()"
-        (cycleSubtopic)="changeSubtopic($event)" 
+        (cycleSubtopic)="changeSubtopic($event)"
       ></app-subtopic>
     }
-    @if (currentView.type === 'exercise' || currentView.type === 'exam') {
-      <app-practice 
+    @if (currentView().type === 'exercise' || currentView().type === 'exam') {
+      <app-practice
         class="w-full overflow-hidden flex flex-col"
-        [currentView]="currentView" 
-        [subjectId]="subjectId"
-        [topicId]="(currentView.type == 'exercise') ? getTopicDataFromExercise().id : null"
-        (changeQuestion)="updateChatMetadata($event)" 
+        [currentView]="currentView()"
+        [subjectId]="subjectId()"
+        [topicId]="(currentView().type == 'exercise') ? getTopicDataFromExercise().id : null"
+        (changeQuestion)="updateChatMetadata($event)"
         (exerciseCompleted)="checkForTopicCompleteness($event)"
         (changeProgress)="updateProgress()"
       ></app-practice>
     }
-    @if (currentView.type === 'glossary') {
-      <app-glossary 
+    @if (currentView().type === 'glossary') {
+      <app-glossary
         class="w-full overflow-hidden flex flex-col"
-        [glossaryItems]="subjectContent.glossary"
+        [glossaryItems]="subjectContent().glossary"
         (scroll)="scrollToPosition($event)"
       ></app-glossary>
     }
-    @if (currentView.type === 'flashcards') {
-      <app-flashcards 
+    @if (currentView().type === 'flashcards') {
+      <app-flashcards
         class="w-full overflow-hidden flex flex-col"
-        [topicId]="currentView.id"
-        [cards]="currentView.content"
+        [topicId]="currentView().id"
+        [cards]="currentView().content"
       ></app-flashcards>
     }
   </div>
 
   <!-- Chatbot Container -->
-  <app-chatbot 
-    [class]="`w-5/6 lg:w-3/12 absolute z-30 right-0 top-0 h-full 
+  <app-chatbot
+    [class]="`w-5/6 lg:w-3/12 absolute z-30 right-0 top-0 h-full
     ${(
-        !chatOpen || 
-        (['exercise', 'exam'].includes(currentView.type)  && (currentView.content.score == null)) ||
-        (currentView.type === 'glossary') ||
-        (currentView.type === 'flashcards')
-      ) ? 'hidden' : ''}`" 
-    [chatHistory]="chatHistory" 
-    [subjectId]="subjectId"
-    [metadata]="chatMetadata"
+        !chatOpen() ||
+        (['exercise', 'exam'].includes(currentView().type)  && (score == null)) ||
+        (currentView().type === 'glossary') ||
+        (currentView().type === 'flashcards')
+      ) ? 'hidden' : ''}`"
+    [chatHistory]="chatHistory()"
+    [subjectId]="subjectId()"
+    [metadata]="chatMetadata()"
     (closeChat)="toggleChatPopup()"
   ></app-chatbot>
 </div>
 
 <!-- Chatbot Popup -->
-<button 
+<button
   [class]="`absolute z-20 right-6 lg:right-16 bottom-12 bg-transparent lg:hover:opacity-70
   ${(
-      chatOpen || 
-      (['exercise', 'exam'].includes(currentView.type)  && (currentView.content.score == null)) ||
-      (currentView.type === 'glossary') ||
-      (currentView.type === 'flashcards')
-    ) ? 'hidden' : ''}`" 
+      chatOpen() ||
+      (['exercise', 'exam'].includes(currentView().type)  && (score == null)) ||
+      (currentView().type === 'glossary') ||
+      (currentView().type === 'flashcards')
+    ) ? 'hidden' : ''}`"
   (click)="toggleChatPopup()"
-  [disabled]="(currentView.type !== 'subtopic' && (currentView.content.score == null))"
+  [disabled]="(currentView().type !== 'subtopic' && (score == null))"
   #chatPopupButton
 >
   <img src="images/Chat-Button.png" alt="Chat" class="w-16 lg:w-20">
 </button>
 
-@if (currentOnboardingStep >= 0 && currentOnboardingStep < onboardingSteps.length) {
+@if (currentOnboardingStep() >= 0 && currentOnboardingStep() < onboardingSteps.length) {
   <app-tutorial-element
-    [objectDimensions]="getTutorialObjectPosition(currentOnboardingStep)"
-    [title]="onboardingSteps[currentOnboardingStep].title"
-    [text]="onboardingSteps[currentOnboardingStep].text"
-    [tipPosition]="onboardingSteps[currentOnboardingStep].tipPosition"
-    [tipAlignment]="onboardingSteps[currentOnboardingStep].tipAlignment"
+    [objectDimensions]="getTutorialObjectPosition(currentOnboardingStep())"
+    [title]="onboardingSteps[currentOnboardingStep()].title"
+    [text]="onboardingSteps[currentOnboardingStep()].text"
+    [tipPosition]="onboardingSteps[currentOnboardingStep()].tipPosition"
+    [tipAlignment]="onboardingSteps[currentOnboardingStep()].tipAlignment"
     (next)="cycleOnboarding()"
     class="z-40"
   ></app-tutorial-element>

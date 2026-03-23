@@ -1,0 +1,21 @@
+@if (visible()) {
+  <div
+    class="fixed z-40 bg-[var(--bg-page)] border rounded-md shadow-lg"
+    [ngStyle]="{ left: position().x + 'px', top: position().y + 'px' }"
+    (click)="onBackdropClick($event)"
+  >
+    <ul class="p-2">
+      @for (item of items(); track item.id) {
+        <li
+          class="flex items-center gap-2 px-3 py-2 hover:bg-[var(--bg-hover)] cursor-pointer rounded"
+          (click)="onItemClick($event, item.id)"
+        >
+          @if (item.icon) {
+            <app-theme-icon [name]="item.icon" className="w-4"></app-theme-icon>
+          }
+          <span>{{ item.label }}</span>
+        </li>
+      }
+    </ul>
+  </div>
+}

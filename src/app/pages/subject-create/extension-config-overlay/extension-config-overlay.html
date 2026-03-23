@@ -115,7 +115,7 @@
               class="bg-[var(--bg-page)] p-2 border-b-2 border-[var(--text-primary-hover)] focus:border-[var(--text-primary)] focus:outline-none text-sm w-12 mx-4" 
               [(ngModel)]="config.exercise.numQuestions"
               min="1"
-              [max]="constraints()?.exercise?.maxQuestions"
+              [max]="constraints().exercise.maxQuestions"
             >
           </div>
   
@@ -187,7 +187,7 @@
               class="bg-[var(--bg-page)] p-2 border-b-2 border-[var(--text-primary-hover)] focus:border-[var(--text-primary)] focus:outline-none text-sm w-12 mx-4" 
               [(ngModel)]="config.exam.numQuestions"
               min="1"
-              [max]="constraints()?.exam.maxQuestions"
+              [max]="constraints().exam.maxQuestions"
             >
           </div>
   
@@ -259,7 +259,7 @@
               class="bg-[var(--bg-page)] p-2 border-b-2 border-[var(--text-primary-hover)] focus:border-[var(--text-primary)] focus:outline-none text-sm w-12 mx-4" 
               [(ngModel)]="config.flashcards.numCards"
               min="1"
-              [max]="constraints()?.flashcards.maxCards"
+              [max]="constraints().flashcards.maxCards"
             >
           </div>
   
