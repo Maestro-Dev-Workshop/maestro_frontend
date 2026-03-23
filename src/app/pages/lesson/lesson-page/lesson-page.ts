@@ -347,14 +347,19 @@ export class LessonPage implements OnInit {
     return { id: topic?.id, title: topic?.title };
   }
 
-  getTopicDataFromExercise(): { id?: string; title?: string } {
+  getTopicDataFromExercise(): { id: string | null; title: string | null } {
     const content = this.subjectContent();
     const currentId = this.currentView().id;
+  
     const topic = content.topics?.find((t) => t.exercise?.id === currentId);
-    return { id: topic?.id, title: topic?.title };
+  
+    return {
+      id: topic?.id ?? null,
+      title: topic?.title ?? null,
+    };
   }
 
-  checkForTopicCompleteness(topicId: string): void {
+  checkForTopicCompleteness(topicId: string | null): void {
     this.subjectContent.update((content) => {
       const topics = content.topics.map((topic) => {
         if (topic.id !== topicId) return topic;
@@ -412,11 +417,15 @@ export class LessonPage implements OnInit {
 
     if (viewType === 'subtopic') {
       const topicData = this.getTopicDataFromSubtopic();
+      const current = this.currentView().content;
+
       this.chatMetadata.set({
         topic_id: topicData.id,
         topic_name: topicData.title,
         sub_topic_id: this.currentView().id,
-        sub_topic_name: this.currentView().content?.title,
+        sub_topic_name: current && !Array.isArray(current) && 'title' in current
+          ? current.title
+          : null,
         exercise_id: null,
         exam_id: null,
         question_id: null,
@@ -483,5 +492,29 @@ export class LessonPage implements OnInit {
 
   cycleOnboarding(): void {
     this.onboardingService.nextStep();
+  }
+
+  get isExerciseOrExam(): boolean {
+    return this.currentView().type === 'exercise' || this.currentView().type === 'exam';
+  }
+  
+  get questionsCount(): number {
+    if (this.isExerciseOrExam) {
+      const content = this.currentView().content;
+      if (content && 'questions' in content) {
+        return content.questions.length;
+      }
+    }
+    return 0;
+  }
+  
+  get score(): number | null {
+    if (this.isExerciseOrExam) {
+      const content = this.currentView().content;
+      if (content && 'score' in content) {
+        return content.score || null;
+      }
+    }
+    return null;
   }
 }

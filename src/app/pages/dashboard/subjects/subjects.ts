@@ -39,7 +39,6 @@ interface DashboardSubject {
   completion: number;
   topics: TopicModel[];
   extensions: ExtensionModel[];
-  pinned?: boolean;
   tags?: string[];
 }
 
@@ -194,7 +193,7 @@ export class Subjects implements OnInit, OnDestroy {
     this.showFeedbackBanner.set(false);
   }
 
-  trackById(index: number, item: SubjectModel): string {
+  trackById(index: number, item: DashboardSubject): string {
     return item.id;
   }
 
@@ -304,7 +303,7 @@ export class Subjects implements OnInit, OnDestroy {
       });
   }
 
-  openDeleteFromIcon(event: MouseEvent, subject: SubjectModel): void {
+  openDeleteFromIcon(event: MouseEvent, subject: DashboardSubject): void {
     event.stopPropagation();
     this.rightClickSubject.set(subject);
     this.openDelete();
@@ -327,7 +326,7 @@ export class Subjects implements OnInit, OnDestroy {
     });
   }
 
-  navigateSubject(subject: DashboardSubject | SubjectModel): void {
+  navigateSubject(subject: DashboardSubject): void {
     if (this.loadingAction()) return;
 
     if (this.rightClickSubject()) {
@@ -356,19 +355,12 @@ export class Subjects implements OnInit, OnDestroy {
     this.loadingAction.set(false);
   }
 
-  continueSubject(event: MouseEvent, subject: SubjectModel): void {
+  continueSubject(event: MouseEvent, subject: DashboardSubject): void {
     event.stopPropagation();
     this.navigateSubject(subject);
   }
 
-  togglePin(event: MouseEvent, subject: SubjectModel): void {
-    event.stopPropagation();
-    this.subjects.update((list) =>
-      list.map((s) => (s.id === subject.id ? { ...s, pinned: !s.pinned } : s))
-    );
-  }
-
-  openMoreMenu(event: MouseEvent, subject: SubjectModel): void {
+  openMoreMenu(event: MouseEvent, subject: DashboardSubject): void {
     event.stopPropagation();
     this.notify.showInfo(`More options for "${subject.name || 'Untitled'}"`);
   }
@@ -435,16 +427,16 @@ export class Subjects implements OnInit, OnDestroy {
   }
 
   // Subject card event handlers
-  onSubjectCardClick(subject: SubjectCardData): void {
-    this.navigateSubject(subject as SubjectModel);
+  onSubjectCardClick(subject: DashboardSubject): void {
+    this.navigateSubject(subject);
   }
 
-  onSubjectCardContextMenu(event: { event: MouseEvent; subject: SubjectCardData }): void {
+  onSubjectCardContextMenu(event: { event: MouseEvent; subject: DashboardSubject }): void {
     this.onSubjectRightClick(event.event, event.subject);
   }
 
-  onSubjectCardContinue(event: { event: MouseEvent; subject: SubjectCardData }): void {
-    this.continueSubject(event.event, event.subject as SubjectModel);
+  onSubjectCardContinue(event: { event: MouseEvent; subject: DashboardSubject }): void {
+    this.continueSubject(event.event, event.subject);
   }
 
   getDisplayTags(subject: SubjectModel): string[] {

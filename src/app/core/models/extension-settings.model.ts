@@ -31,7 +31,7 @@ export interface ExamExtensionConfig {
   enabled: boolean;
   types: string[];
   numQuestions: number;
-  timelimit: number | null;
+  timeLimit: boolean | null;
   name: 'exam';
   displayName: string;
 }
@@ -77,11 +77,47 @@ export type ExtensionConfig =
   | FlashcardsExtensionConfig
   | GlossaryExtensionConfig;
 
+export const DEFAULT_EXTENSION_CONFIG: ExtensionSettings = {
+  cells: {
+    enabled: false,
+    types: [],
+    name: 'cells',
+    displayName: 'Lesson Supplements',
+  },
+  exercise: {
+    enabled: false,
+    types: [],
+    numQuestions: 3,
+    name: 'exercise',
+    displayName: 'Exercise',
+  },
+  exam: {
+    enabled: false,
+    types: [],
+    numQuestions: 10,
+    timeLimit: false,
+    name: 'exam',
+    displayName: 'Exam',
+  },
+  flashcards: {
+    enabled: false,
+    numCards: 5,
+    types: [],
+    name: 'flashcards',
+    displayName: 'Flashcards',
+  },
+  glossary: {
+    enabled: false,
+    name: 'glossary',
+    displayName: 'Glossary',
+  }
+};
+
 /**
  * Constraints for extension settings based on subscription plan.
  */
 export interface ExtensionConstraints {
-  excercise: {
+  exercise: {
     maxQuestions: number;
   };
   exam: {

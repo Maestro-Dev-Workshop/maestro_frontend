@@ -5,7 +5,7 @@
 /**
  * Valid toast notification types.
  */
-export type ToastType = 'success' | 'error' | 'info' | 'warning';
+export type ToastType = 'success' | 'error' | 'info' | 'warn';
 
 /**
  * Toast notification message structure.

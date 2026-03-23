@@ -152,8 +152,8 @@ export class NamingUpload implements OnInit {
         this.subjectName = this.subject?.name || '';
 
         if (
-          this.subject?.status !== 'pending naming' &&
-          this.subject?.status !== 'pending document upload'
+          this.subject?.status !== 'pending_naming' &&
+          this.subject?.status !== 'pending_document_upload'
         ) {
           this.uploadedDocs = true;
         }
@@ -290,7 +290,7 @@ export class NamingUpload implements OnInit {
 
     this.loading = true;
 
-    if (this.nameCtrl?.invalid && this.subject?.status === 'pending naming') {
+    if (this.nameCtrl?.invalid && this.subject?.status === 'pending_naming') {
       this.notify.showError('Valid subject name is required.');
       this.loading = false;
       return;
@@ -304,7 +304,7 @@ export class NamingUpload implements OnInit {
 
     const nameSubjectIfPending$ = () =>
       iif(
-        () => this.subject?.status !== 'pending naming',
+        () => this.subject?.status !== 'pending_naming',
         of(null),
         this.subjectService.nameSubject(this.subjectId, this.subjectName),
       );

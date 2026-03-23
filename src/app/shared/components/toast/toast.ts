@@ -18,7 +18,7 @@ export class Toast {
     'bg-green-500': this.type() === 'success',
     'bg-red-500': this.type() === 'error',
     'bg-blue-500': this.type() === 'info',
-    'bg-yellow-500': this.type() === 'warning'
+    'bg-yellow-500': this.type() === 'warn'
   }));
 
   constructor(public notify: NotificationService) {

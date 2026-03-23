@@ -20,15 +20,15 @@
         {{capitalizeFirstLetter(currentView().type)}}
       </h1>
       <h2 class="text-xl font-medium text-[var(--text-primary-hover)]">
-        {{ currentView().content.questions.length }} Question{{(currentView().content.questions.length > 1) ? 's' : '' }}
+        {{ questionsCount }} Question{{(questionsCount > 1) ? 's' : '' }}
       </h2>
       <span class="hidden lg:block mt-4 text-[var(--text-secondary)]">These questions will help reinforce your understanding. Take your time to answer all the questions.</span>
     </div>
     <div class="text-3xl flex flex-col text-[var(--text-primary)] text-right tracking-wider font-medium">
       <span>Score:</span>
       <span>
-        @if (!(currentView().content.score == null)) {
-          {{currentView().content.score}} / {{currentView().content.questions.length}}
+        @if (!(score == null)) {
+          {{score}} / {{questionsCount}}
         } @else {
           Not Graded
         }
@@ -103,7 +103,7 @@
     [class]="`w-5/6 lg:w-3/12 absolute z-30 right-0 top-0 h-full
     ${(
         !chatOpen() ||
-        (['exercise', 'exam'].includes(currentView().type)  && (currentView().content.score == null)) ||
+        (['exercise', 'exam'].includes(currentView().type)  && (score == null)) ||
         (currentView().type === 'glossary') ||
         (currentView().type === 'flashcards')
       ) ? 'hidden' : ''}`"
@@ -119,12 +119,12 @@
   [class]="`absolute z-20 right-6 lg:right-16 bottom-12 bg-transparent lg:hover:opacity-70
   ${(
       chatOpen() ||
-      (['exercise', 'exam'].includes(currentView().type)  && (currentView().content.score == null)) ||
+      (['exercise', 'exam'].includes(currentView().type)  && (score == null)) ||
       (currentView().type === 'glossary') ||
       (currentView().type === 'flashcards')
     ) ? 'hidden' : ''}`"
   (click)="toggleChatPopup()"
-  [disabled]="(currentView().type !== 'subtopic' && (currentView().content.score == null))"
+  [disabled]="(currentView().type !== 'subtopic' && (score == null))"
   #chatPopupButton
 >
   <img src="images/Chat-Button.png" alt="Chat" class="w-16 lg:w-20">

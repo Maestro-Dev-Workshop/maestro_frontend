@@ -1,7 +1,7 @@
 import { Component, effect, input, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-icon';
-import { ExtensionSettings, ExtensionConstraints, ExtensionConfig } from '../../../core/models/extension-settings.model';
+import { ExtensionSettings, ExtensionConstraints, ExtensionConfig, DEFAULT_EXTENSION_CONFIG } from '../../../core/models/extension-settings.model';
 
 /** Visibility state for extension sections */
 type ExtensionVisibilityMap = Record<string, boolean>;
@@ -15,16 +15,15 @@ type ExtensionVisibilityMap = Record<string, boolean>;
 export class ExtensionConfigOverlay {
   show = false;
   close = output<ExtensionSettings>();
-  configuration = input<ExtensionSettings>();
-  constraints = input<ExtensionConstraints>();
-  config: ExtensionSettings | null = null;
+  configuration = input.required<ExtensionSettings>();
+  constraints = input.required<ExtensionConstraints>();
+  config: ExtensionSettings = DEFAULT_EXTENSION_CONFIG;
   extensionVisibility: ExtensionVisibilityMap = {};
 
   constructor() {
     // Keep config in sync whenever configuration changes
     effect(() => {
-      const cfg = this.configuration();
-      this.config = cfg ? structuredClone(cfg) : null;
+      this.config = structuredClone(this.configuration());
       const vals: ExtensionConfig[] = Object.values(this.config || {});
       for (const ext of vals) {
         if (ext.enabled) {

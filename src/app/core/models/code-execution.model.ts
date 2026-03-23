@@ -8,9 +8,8 @@
 export interface CodeExecutionOutput {
   stdout?: string;
   stderr?: string;
-  error?: string;
-  result?: unknown;
-  executionTime?: number;
+  output?: string;
+  code?: number;
 }
 
 /**

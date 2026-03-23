@@ -35,7 +35,7 @@
         [class.bg-prussian-blue-900]="topic.selected"
         [class.bg-gray-500]="!topic.selected"
         (click)="toggleTopicSelection(topic.id)"
-        [disabled]="loading || (subjectStatus !== 'pending topic selection')"
+        [disabled]="loading || (subjectStatus !== 'pending_topic_selection')"
         cdkDrag
         [cdkDragDisabled]="loading || (topicOverflowing && !topicsExpanded)"
       >
@@ -75,7 +75,7 @@
     (mousemove)="adjustInputHeight()"
     [(ngModel)]="learningStyle"
     required
-    [disabled]="loading || (subjectStatus === 'pending lesson generation')"
+    [disabled]="loading || (subjectStatus === 'pending_lesson_generation')"
     >
     </textarea>
 
@@ -117,7 +117,7 @@
               [class.rounded-t-lg]="($index == 0)"
               [class.rounded-b-lg]="($index == getExtensionList().length - 1)"
               (click)="toggleExtension(extension.name)"
-              [disabled]="loading  || (subjectStatus === 'pending lesson generation')"
+              [disabled]="loading  || (subjectStatus === 'pending_lesson_generation')"
             >
               <app-theme-icon [name]="`${extension.name}-icon`" class="w-5 mr-2" [invert]="extension.enabled"/>
               {{ extension.displayName }}

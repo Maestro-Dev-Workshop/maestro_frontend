@@ -7,17 +7,11 @@ import { MarkdownPipe } from '../../../shared/pipes/markdown-pipe';
 import { NotificationService } from '../../../core/services/notification.service';
 import { ConfirmService } from '../../../core/services/confirm';
 import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-icon';
-import { LessonViewState, QuestionChangeEvent } from '../../../core/models/lesson-content.model';
+import { QuestionChangeEvent } from '../../../core/models/lesson-content.model';
 import { ExerciseModel } from '../../../core/models/exercise.model';
 import { ExamModel } from '../../../core/models/exam.model';
 import { EssayEvaluationResponse } from '../../../core/models/api-response.model';
 
-@Component({
-  selector: 'app-practice',
-  imports: [FormsModule, MarkdownPipe, ThemeIconComponent],
-  templateUrl: './practice.html',
-  styleUrl: './practice.css'
-})
 /** View data with questions for practice mode */
 interface PracticeViewData {
   type: 'exercise' | 'exam';
@@ -25,10 +19,16 @@ interface PracticeViewData {
   content: ExerciseModel | ExamModel;
 }
 
+@Component({
+  selector: 'app-practice',
+  imports: [FormsModule, MarkdownPipe, ThemeIconComponent],
+  templateUrl: './practice.html',
+  styleUrl: './practice.css'
+})
 export class Practice {
-  currentView = input<PracticeViewData>();
+  currentView = input.required<any>(); // Temporary fix
   subjectId = input<string>();
-  topicId = input<string | null>()
+  topicId = input.required<string | null>()
   changeQuestion = output<QuestionChangeEvent>();
   exerciseCompleted = output<string | null>();
   changeProgress = output<void>();
@@ -92,7 +92,7 @@ export class Practice {
   getQuestionNumber(): number {
     const view = this.currentView();
     if (!view || !this.question) return 0;
-    return view.content.questions.findIndex((q) => q.id === this.question!.id) + 1;
+    return view.content.questions.findIndex((q: any) => q.id === this.question!.id) + 1;
   }
 
   toggleSelectOption(id: string) {
@@ -134,7 +134,7 @@ export class Practice {
     const essayCalls: Observable<EssayEvaluationResponse | null>[] = [];
 
     view.content.questions.forEach((question: QuestionModel) => {
-      const targetQuestion = view.content.questions.find((q) => q.id === question.id);
+      const targetQuestion = view.content.questions.find((q: any) => q.id === question.id);
       if (targetQuestion) targetQuestion.scored = false;
 
       const q: SaveQuestionData = {
@@ -150,7 +150,7 @@ export class Practice {
         const isCorrect = question.options?.every(opt => opt.selected === opt.correct);
         if (isCorrect) {
           q.scored = true;
-          const targetQ = view.content.questions.find((qItem) => qItem.id === question.id);
+          const targetQ = view.content.questions.find((qItem: any) => qItem.id === question.id);
           if (targetQ) targetQ.scored = true;
           correctCount++;
         }
@@ -162,9 +162,9 @@ export class Practice {
         essayCalls.push(
           this.lessonService.scoreEssayQuestion(this.subjectId(), question.id, question.essay_answer).pipe(
             tap((value) => {
-              if (value.correct) {
+              if (value['correct']) {
                 q.scored = true;
-                const targetQ = view.content.questions.find((qItem) => qItem.id === question.id);
+                const targetQ = view.content.questions.find((qItem: any) => qItem.id === question.id);
                 if (targetQ) targetQ.scored = true;
                 correctCount++;
               }

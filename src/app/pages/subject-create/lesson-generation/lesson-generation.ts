@@ -32,6 +32,7 @@ import {
   ExtensionConstraints,
   ValidationResult,
   GenerationTopic,
+  DEFAULT_EXTENSION_CONFIG,
 } from '../../../core/models/extension-settings.model';
 import { ExtensionModel } from '../../../core/models/api-response.model';
 
@@ -75,43 +76,9 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
   
   subjectName = '';
   topics: GenerationTopic[] = [];
-  extensionSettings: ExtensionSettings = {
-    cells: {
-      enabled: false,
-      types: [],
-      name: 'cells',
-      displayName: 'Lesson Supplements',
-    },
-    exercise: {
-      enabled: false,
-      types: [],
-      numQuestions: 3,
-      name: 'exercise',
-      displayName: 'Exercise',
-    },
-    exam: {
-      enabled: false,
-      types: [],
-      numQuestions: 10,
-      timelimit: null,
-      name: 'exam',
-      displayName: 'Exam',
-    },
-    flashcards: {
-      enabled: false,
-      numCards: 5,
-      types: [],
-      name: 'flashcards',
-      displayName: 'Flashcards',
-    },
-    glossary: {
-      enabled: false,
-      name: 'glossary',
-      displayName: 'Glossary',
-    }
-  };
+  extensionSettings: ExtensionSettings = DEFAULT_EXTENSION_CONFIG;
   constraints: ExtensionConstraints = {
-    excercise: {
+    exercise: {
       maxQuestions: 3
     },
     exam: {
@@ -202,7 +169,7 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
   }
 
   saveConfig(config: ExtensionSettings) {
-    if (this.subjectStatus === 'pending lesson generation') {
+    if (this.subjectStatus === 'pending_lesson_generation') {
       this.notify.show('info', 'Extensions have already been configured and cannot be changed');
     } else {
       this.extensionSettings = config;
@@ -265,10 +232,10 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
 
     // Exercise checks
     if (this.extensionSettings.exercise.enabled) {
-      if (this.extensionSettings.exercise.numQuestions <= 0 || this.extensionSettings.exercise.numQuestions > this.constraints.excercise.maxQuestions) {
+      if (this.extensionSettings.exercise.numQuestions <= 0 || this.extensionSettings.exercise.numQuestions > this.constraints.exercise.maxQuestions) {
         return {
           status: false,
-          message: `Number of exercise questions must be between 1 and ${this.constraints.excercise.maxQuestions}.`
+          message: `Number of exercise questions must be between 1 and ${this.constraints.exercise.maxQuestions}.`
         };
       }
       if (this.extensionSettings.exercise.types.length === 0) {
@@ -401,7 +368,7 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
           next: (response) => {
             const subscriptionData: SubscriptionStatus | null = response.subscription;
             if (subscriptionData && subscriptionData.plan) {
-              this.constraints.excercise.maxQuestions = subscriptionData.plan.exercise_question_count || 3;
+              this.constraints.exercise.maxQuestions = subscriptionData.plan.exercise_question_count || 3;
               this.constraints.exam.maxQuestions = subscriptionData.plan.exam_question_count || 10;
             }
           },

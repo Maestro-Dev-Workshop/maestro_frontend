@@ -21,9 +21,10 @@ export interface SignupApiResponse extends ApiResponse {
 }
 
 export interface LoginApiResponse extends ApiResponse {
-  user: LoginResponse['user'];
-  accessToken: string;
-  refreshToken: string;
+  user?: LoginResponse['user'];
+  accessToken?: string;
+  refreshToken?: string;
+  verifyRedirect: boolean;
 }
 
 export interface RefreshTokenApiResponse extends ApiResponse {

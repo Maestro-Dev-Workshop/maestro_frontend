@@ -6,6 +6,8 @@ import { ExamModel } from './exam.model';
 import { UserModel } from './user.model';
 import { Plan, SubscriptionStatus } from './subscription.model';
 import { ChatMessage } from './chat-message.model';
+import { CodeExecutionOutput } from './code-execution.model';
+import { SubjectStatus } from './subject-status.model';
 
 // Base API response structure
 // Note: Not all backend responses include 'message', so it's optional
@@ -33,7 +35,17 @@ export interface RefreshTokenResponseData {
 // Subject responses
 // GET /subjects - returns { success, sessions }
 export interface SubjectListResponse extends ApiResponse {
-  sessions: SubjectModel[];
+  sessions: Array<{
+    session: {
+      id: string;
+      name: string;
+      created_at: string;
+      status: SubjectStatus;
+      completion: number;
+    };
+    topics: TopicModel[];
+    extensions: ExtensionModel[];
+  }>;
 }
 
 // GET /subjects/:id, POST /subjects, PUT /subjects/:id - returns { success, session, message? }
@@ -165,7 +177,7 @@ export interface FlashcardResponse extends ApiResponse {
 
 // POST /topics/code/execute - returns { success, message, result }
 export interface CodeExecutionResponse extends ApiResponse {
-  result: unknown; // Structure depends on code execution service
+  result: CodeExecutionOutput; // Structure depends on code execution service
 }
 
 // Chatbot responses
@@ -190,8 +202,8 @@ export interface EssayEvaluationResponse extends ApiResponse {
 // Subscription responses
 // GET /subscriptions/plans - returns { success, message, plans, ... }
 export interface PlansResponse extends ApiResponse {
-  plans?: Plan[];
-  [key: string]: unknown; // May include additional fields from service
+  plans: Plan[];
+  country_code: string; // May include additional fields from service
 }
 
 // GET /subscriptions/plans/:planCode - returns { success, message, plan }
@@ -230,9 +242,7 @@ export interface ManageLinkResponse extends ApiResponse {
 // Feedback responses
 // POST /subjects/:id/feedback - returns { success, message, data }
 // GET /subjects/:id/feedback - returns { success, message, data }
-export interface FeedbackResponse extends ApiResponse {
-  data: FeedbackData;
-}
+export interface FeedbackResponse extends ApiResponse<FeedbackData> {}
 
 export interface FeedbackData {
   id: string;
@@ -245,11 +255,9 @@ export interface FeedbackData {
 }
 
 // GET /feedback/rating-scale - returns { success, message, data: { scale } }
-export interface RatingScaleResponse extends ApiResponse {
-  data: {
-    scale: RatingScaleItem[];
-  };
-}
+export interface RatingScaleResponse extends ApiResponse<{
+  scale: RatingScaleItem[];
+}> {}
 
 export interface RatingScaleItem {
   value: number;
@@ -308,7 +316,7 @@ export interface ExtensionSettingsPayload {
     enabled: boolean;
     types: string[];
     numQuestions: number;
-    time_limit: boolean;
+    timeLimit: boolean | null;
     name: string;
   };
   flashcards: {

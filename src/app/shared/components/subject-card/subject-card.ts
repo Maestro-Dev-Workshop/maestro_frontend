@@ -9,10 +9,12 @@ import { ExtensionModel } from '../../../core/models/api-response.model';
 export interface SubjectCardData {
   id: string;
   name: string;
-  status: SubjectStatus | string;
+  created_at: Date;
+  status: SubjectStatus;
   completion: number;
   topics: TopicModel[];
   extensions: ExtensionModel[];
+  tags?: string[];
 }
 
 @Component({
