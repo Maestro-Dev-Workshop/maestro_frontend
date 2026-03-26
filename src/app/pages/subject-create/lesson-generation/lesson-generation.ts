@@ -153,8 +153,13 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  toggleSettingsPopup() {
+  toggleSettingsPopup(event: MouseEvent) {
     this.settingsPopup = !this.settingsPopup
+    event.stopPropagation();
+  }
+
+  closeSettingsPopup() {
+    this.settingsPopup = false;
   }
 
   toggleConfigOverlay() {
