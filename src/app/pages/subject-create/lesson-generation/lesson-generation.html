@@ -1,5 +1,5 @@
 <app-header></app-header>
-<div class="flex flex-col w-full px-12 md:px-32 pb-12">
+<div class="flex flex-col w-full px-12 md:px-32 pb-12" (click)="closeSettingsPopup()">
   <div class="flex flex-row mb-8 w-full">
     <app-creation-step-tab
       text="My Subject and Materials"
@@ -85,7 +85,7 @@
         <button 
           [class]="`flex flex-row items-center md:mr-4 rounded-full md:hover:shadow-lg p-2
           ${settingsPopup ? 'bg-[var(--bg-hover)] shadow-lg p-2' : ''}`"
-          (click)="toggleSettingsPopup()"
+          (click)="toggleSettingsPopup($event)"
           [disabled]="loading"
           #enableExtensionsButton
         >
@@ -107,6 +107,7 @@
         <div 
           [class]="`absolute w-64 bottom-10 left-2 md:bottom-auto md:top-12 md:left-12 rounded-lg flex flex-col items-start 
           border-[1px] border-[var(--text-primary)] bg-[var(--bg-page)] ${!settingsPopup? 'hidden' : ''}`"
+          (click)="$event.stopPropagation()"
         >
           <!-- Extension Buttons -->
           @for (extension of getExtensionList(); track $index) {
