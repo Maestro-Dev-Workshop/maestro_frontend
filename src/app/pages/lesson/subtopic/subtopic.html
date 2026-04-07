@@ -59,9 +59,15 @@
           <app-executable-code-cell [data]="cell"></app-executable-code-cell>
         } @else if (cell.type === "diagram") {
           <app-diagram-cell [data]="cell"></app-diagram-cell>
+        } @else if (cell.type === "music_sheet") {
+          <app-sheet-music-cell [data]="cell"></app-sheet-music-cell>
+        } @else if (cell.type === "image") {
+          <app-image-cell [data]="cell"></app-image-cell>
         } @else {
           <!-- Default Fallback Cells -->
-          <app-markdown-cell [data]="cell"></app-markdown-cell>
+          <!-- <app-markdown-cell [data]="cell"></app-markdown-cell> -->
+          {{ cell.content }}
+          {{ cell.metadata }}
         }
       }
     </div>

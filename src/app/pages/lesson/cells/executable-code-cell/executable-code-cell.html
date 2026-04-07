@@ -1,26 +1,38 @@
 <div class="mb-4 max-w-[710px] text-[var(--text-primary)]">
+  <div class="flex flex-row w-full items-center justify-between p-2 rounded-t-lg border-[1px] border-color-[var(--text-primary-hover)]">
+    <div class="flex flex-row">
+      <span class="mx-2">
+        {{ language }}
+      </span>
+      @if (loading()) {
+        <img class="w-6 mx-2" src="images/spinner.gif" alt="loading...">
+      }
+    </div>
+
+    <div class="flex flex-row items-center">
+      <button class="mx-2 lg:hover:opacity-70 disabled:opacity-70" (click)="runCode()" [disabled]="loading()">
+        <app-theme-icon name="execute-code"></app-theme-icon>
+      </button>
+      <button class="mx-2 lg:hover:opacity-70" (click)="copyCode()">
+        <app-theme-icon name="copy-to-clipboard"></app-theme-icon>
+      </button>
+    </div>
+  </div>
+  
   <ngx-monaco-editor
     [options]="editorOptions"
     [(ngModel)]="code"
     [style.height]="height"
     [style.max-height]="`400px`"
-    >
+    class="border-[1px] border-color-[var(--text-primary-hover)]"
+  >
   </ngx-monaco-editor>
 
-  <div class="flex flex-row items-center justify-between">
-    <button
-      class="px-5 py-3 text-white bg-prussian-blue-700 lg:hover:bg-prussian-blue-400 disabled:bg-prussian-blue-400 rounded-md"
-      (click)="runCode()"
-    >
-      Execute
-    </button>
-    @if (loading) {
-      <img class="w-8" src="images/spinner.gif" alt="loading...">
-    }
-  </div>
 
   @if (output.output) {
     Output:
-    <pre [class]="`border-[1px] border-color-[var(--text-primary-hover)] p-2 rounded-md text-${(output.code == 0) ? '[var(--text-primary)]' : 'red-600'}`">{{ output.output }}</pre>
+    <pre 
+      [class]="`border-[1px] border-color-[var(--text-primary-hover)] p-2 rounded-md text-sm text-${(output.code == 0) ? '[var(--text-primary)]' : 'red-600'}`"
+    >{{ output.output }}</pre>
   }
 </div>

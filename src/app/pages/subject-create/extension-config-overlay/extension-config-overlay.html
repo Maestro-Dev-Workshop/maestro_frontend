@@ -34,7 +34,7 @@
                   value="graph" 
                   [checked]="config.cells.types.includes('graph')" 
                   (change)="toggleType($event, 'cells')"
-                  [disabled]="(config.cells.types.length >= 1) && (!config.cells.types.includes('graph'))"
+                  [disabled]="(config.cells.types.length >= 10) && (!config.cells.types.includes('graph'))"
                 >
                 <label for="cell-graph">Charts</label>
               </div>
@@ -46,7 +46,7 @@
                   value="audio_snippet" 
                   [checked]="config.cells.types.includes('audio_snippet')" 
                   (change)="toggleType($event, 'cells')"
-                  [disabled]="(config.cells.types.length >= 1) && (!config.cells.types.includes('audio_snippet'))"
+                  [disabled]="(config.cells.types.length >= 10) && (!config.cells.types.includes('audio_snippet'))"
                 >
                 <label for="cell-audio">Audio Snippets</label>
               </div>
@@ -58,21 +58,45 @@
                   value="executable_code" 
                   [checked]="config.cells.types.includes('executable_code')" 
                   (change)="toggleType($event, 'cells')"
-                  [disabled]="(config.cells.types.length >= 1) && (!config.cells.types.includes('executable_code'))"
+                  [disabled]="(config.cells.types.length >= 10) && (!config.cells.types.includes('executable_code'))"
                 >
                 <label for="cell-code">Code Blocks</label>
               </div>
               <div class="flex flex-row items-start">
                 <input 
                   type="checkbox" 
-                  id="cell-code" 
+                  id="cell-diagram" 
                   class="mx-2 my-1 accent-blue-900" 
                   value="diagram" 
                   [checked]="config.cells.types.includes('diagram')" 
                   (change)="toggleType($event, 'cells')"
-                  [disabled]="(config.cells.types.length >= 1) && (!config.cells.types.includes('diagram'))"
+                  [disabled]="(config.cells.types.length >= 10) && (!config.cells.types.includes('diagram'))"
                 >
-                <label for="cell-code">Diagrams</label>
+                <label for="cell-diagram">Diagrams</label>
+              </div>
+              <div class="flex flex-row items-start">
+                <input 
+                  type="checkbox" 
+                  id="cell-music" 
+                  class="mx-2 my-1 accent-blue-900" 
+                  value="music_sheet" 
+                  [checked]="config.cells.types.includes('music_sheet')" 
+                  (change)="toggleType($event, 'cells')"
+                  [disabled]="(config.cells.types.length >= 10) && (!config.cells.types.includes('music_sheet'))"
+                >
+                <label for="cell-music">Sheet Music</label>
+              </div>
+              <div class="flex flex-row items-start">
+                <input 
+                  type="checkbox" 
+                  id="cell-image" 
+                  class="mx-2 my-1 accent-blue-900" 
+                  value="image" 
+                  [checked]="config.cells.types.includes('image')" 
+                  (change)="toggleType($event, 'cells')"
+                  [disabled]="(config.cells.types.length >= 10) && (!config.cells.types.includes('image'))"
+                >
+                <label for="cell-image">Images</label>
               </div>
               <!-- <div class="flex flex-row items-start">
                 <input 
