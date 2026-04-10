@@ -1,0 +1,196 @@
+<div class="flex flex-row w-screen h-screen justify-between">
+
+  <!-- Left Panel -->
+  <div class="w-full lg:w-6/12 h-full flex flex-col p-12 overflow-y-auto">
+
+    <!-- Header -->
+    <div class="flex flex-row my-8 items-center">
+      <img src="images/logo-coloured.svg" alt="Maestro Logo" class="w-12 mr-2" />
+      <span class="font-serif text-3xl h-max text-[var(--text-primary)]">Maestro</span>
+    </div>
+
+    <!-- Back + Title -->
+    <div class="flex flex-row items-center gap-3 mb-1">
+      <button
+        type="button"
+        class="text-3xl text-gray-500 hover:text-gray-800 transition-colors leading-none pb-1"
+        (click)="onBack()"
+        aria-label="Go back"
+      >
+        &#8249;
+      </button>
+      <h1 class="font-bold text-2xl text-[var(--text-alt)]">Unlock Premium Access</h1>
+    </div>
+    <p class="text-sm text-gray-500 mb-4 ml-9">Tell us a bit about yourself to get started.</p>
+
+    <form class="ml-9" #betaForm="ngForm" (ngSubmit)="onSubmit()">
+
+      <!-- Field of Study -->
+      <div class="flex flex-col my-6 font-medium">
+        <label class="text-[var(--text-alt-hover)]">What is your field of study? *</label>
+        <input
+          type="text"
+          name="fieldOfStudy"
+          placeholder="e.g., Computer Science"
+          class="bg-gray-100 p-4 rounded-md text-gray-900 mt-1"
+          [(ngModel)]="formData.fieldOfStudy"
+          required
+          #fieldOfStudyCtrl="ngModel"
+        />
+        @if (fieldOfStudyCtrl.invalid && fieldOfStudyCtrl.touched) {
+          <span class="text-red-500 text-sm mt-1">This field is required</span>
+        }
+      </div>
+
+      <!-- University -->
+      <div class="flex flex-col my-6 font-medium">
+        <label class="text-[var(--text-alt-hover)]">Which university or institution do you attend? *</label>
+        <input
+          type="text"
+          name="university"
+          placeholder="e.g., University of Lagos"
+          class="bg-gray-100 p-4 rounded-md text-gray-900 mt-1"
+          [(ngModel)]="formData.university"
+          required
+          #universityCtrl="ngModel"
+        />
+        @if (universityCtrl.invalid && universityCtrl.touched) {
+          <span class="text-red-500 text-sm mt-1">This field is required</span>
+        }
+      </div>
+
+      <!-- Level of Study -->
+      <div class="flex flex-col my-6 font-medium">
+        <label class="text-[var(--text-alt-hover)]">What is your current level of study? *</label>
+        <select
+          name="levelOfStudy"
+          class="bg-gray-100 p-4 rounded-md text-gray-900 mt-1"
+          [(ngModel)]="formData.levelOfStudy"
+          required
+          #levelCtrl="ngModel"
+        >
+          <option value="" disabled>Select your level</option>
+          <option value="100">100 Level / First Year</option>
+          <option value="200">200 Level / Second Year</option>
+          <option value="300">300 Level / Third Year</option>
+          <option value="400">400 Level / Fourth Year</option>
+          <option value="500">500 Level or above</option>
+          <option value="postgraduate">Postgraduate</option>
+          <option value="other">Other</option>
+        </select>
+        @if (levelCtrl.invalid && levelCtrl.touched) {
+          <span class="text-red-500 text-sm mt-1">Please select your level</span>
+        }
+      </div>
+
+      <!-- Study Tools -->
+      <div class="flex flex-col my-6 font-medium">
+        <label class="text-[var(--text-alt-hover)]">Which study tools or resources do you typically use? *</label>
+        <p class="text-xs text-gray-400 font-normal mt-0.5">e.g., ChatGPT, Wikipedia, lecture notes, YouTube, textbooks</p>
+        <input
+          type="text"
+          name="studyTools"
+          placeholder="e.g., ChatGPT, YouTube"
+          class="bg-gray-100 p-4 rounded-md text-gray-900 mt-1"
+          [(ngModel)]="formData.studyTools"
+          required
+          #studyToolsCtrl="ngModel"
+        />
+        @if (studyToolsCtrl.invalid && studyToolsCtrl.touched) {
+          <span class="text-red-500 text-sm mt-1">This field is required</span>
+        }
+      </div>
+
+      <!-- Hours per week -->
+      <div class="flex flex-col my-6 font-medium">
+        <label class="text-[var(--text-alt-hover)]">How many hours per week do you study outside of class? *</label>
+        <input
+          type="number"
+          name="hoursPerWeek"
+          placeholder="e.g., 10"
+          class="bg-gray-100 p-4 rounded-md text-gray-900 mt-1 w-36"
+          [(ngModel)]="formData.hoursPerWeek"
+          required
+          min="0"
+          #hoursCtrl="ngModel"
+        />
+        @if (hoursCtrl.invalid && hoursCtrl.touched) {
+          <span class="text-red-500 text-sm mt-1">Please enter a valid number</span>
+        }
+      </div>
+
+      <!-- Confidence Level -->
+      <div class="flex flex-col my-6 font-medium">
+        <label class="text-[var(--text-alt-hover)]">After studying for an exam, how confident do you usually feel? *</label>
+        <div class="flex flex-col gap-2 mt-2">
+          @for (option of confidenceOptions; track option.value) {
+            <label
+              class="flex items-center gap-3 p-3 rounded-md cursor-pointer transition-colors font-normal text-sm"
+              [class]="formData.confidenceLevel === option.value
+                ? 'bg-prussian-blue-700 text-white'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+            >
+              <input
+                type="radio"
+                [value]="option.value"
+                [(ngModel)]="formData.confidenceLevel"
+                name="confidenceLevel"
+                class="accent-white"
+                required
+              />
+              {{ option.label }}
+            </label>
+          }
+        </div>
+        @if (!formData.confidenceLevel && submitAttempted) {
+          <span class="text-red-500 text-sm mt-1">Please select an option</span>
+        }
+      </div>
+
+      <!-- Challenges (Optional) -->
+      <div class="flex flex-col my-6 font-medium">
+        <label class="text-[var(--text-alt-hover)]">
+          What challenges are you hoping Maestro will help you solve?
+          <span class="font-normal text-gray-400 text-sm ml-1">(Optional)</span>
+        </label>
+        <textarea
+          name="challenges"
+          placeholder="Tell us what you're struggling with..."
+          class="bg-gray-100 p-4 rounded-md text-gray-900 mt-1 resize-none font-normal text-sm"
+          rows="3"
+          [(ngModel)]="formData.challenges"
+        ></textarea>
+      </div>
+
+      <!-- Submit -->
+      <button
+        type="submit"
+        class="w-full rounded-md p-4 text-white font-bold bg-prussian-blue-700 lg:hover:bg-prussian-blue-400 disabled:bg-prussian-blue-400 relative transition-colors mb-12"
+        [disabled]="loading"
+        (click)="submitAttempted = true"
+      >
+        Start Studying for Free
+        <img
+          src="images/spinner.gif"
+          alt=""
+          [class]="'absolute right-2 top-3 w-8 h-8 mx-2 ' + (loading ? '' : 'hidden')"
+        />
+      </button>
+
+    </form>
+  </div>
+
+  <!-- Right Panel (mirrors login) -->
+  <div class="w-full h-full relative hidden lg:block">
+    <img
+      src="images/person-studying-1.png"
+      alt="Student studying"
+      class="h-full w-full object-cover"
+    />
+    <div class="flex flex-row m-8 items-center absolute left-0 bottom-0">
+      <img src="images/logo-white.svg" alt="Maestro Logo" class="w-12 mr-2" />
+      <span class="font-serif text-3xl h-max text-white">Maestro</span>
+    </div>
+  </div>
+
+</div>
