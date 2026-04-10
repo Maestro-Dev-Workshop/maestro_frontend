@@ -15,14 +15,14 @@
   </div>
 }
 @if (loadingSubjects()) {
-<div
-  class="flex flex-col w-full h-full items-center justify-center absolute z-0 px-4 md:px-8"
->
-  <div class="flex flex-row items-center text-4xl">
-    <img src="images/spinner.gif" alt="" class="w-16 h-16 mx-2" />
-    Loading Subjects...
+  <div
+    class="flex flex-col w-full h-full items-center justify-center absolute z-0 px-4 md:px-8"
+  >
+    <div class="flex flex-row items-center text-4xl">
+      <img src="images/spinner.gif" alt="" class="w-16 h-16 mx-2" />
+      Loading Subjects...
+    </div>
   </div>
-</div>
 } @else {
   @if (subjects().length == 0) {
     <div
@@ -32,8 +32,8 @@
         Start Your Learning Journey
       </h1>
       <p class="w-full md:w-6/12 text-center px-4">
-        Create subjects to keep your study materials neatly categorized and easy to
-        find.
+        Create subjects to keep your study materials neatly categorized and easy
+        to find.
       </p>
       <button
         class="rounded-md m-4 md:m-8 px-5 py-3 text-white bg-prussian-blue-700 lg:hover:bg-prussian-blue-400 disabled:bg-prussian-blue-400 flex flex-row justify-center"
@@ -45,13 +45,17 @@
         <img src="images/create-subject-icon.svg" alt="" class="w-4 ml-2" />
       </button>
     </div>
-    } @else {
+  } @else {
     <div class="flex flex-col w-full px-4 md:px-12 lg:px-32">
       <!-- Heading -->
-      <div class="flex flex-row w-full justify-between my-4 space-y-4 md:space-y-0">
+      <div
+        class="flex flex-row w-full justify-between my-4 space-y-4 md:space-y-0"
+      >
         <div class="flex flex-row items-center" #testElement>
           <app-theme-icon name="subject-icon" className="w-8 h-4" />
-          <span class="font-medium text-[var(--text-primary)]">My Subjects</span>
+          <span class="font-medium text-[var(--text-primary)]"
+            >My Subjects</span
+          >
         </div>
         <button
           class="w-max rounded-md px-5 py-3 text-white bg-prussian-blue-700 lg:hover:bg-prussian-blue-400 disabled:bg-prussian-blue-400 flex flex-row justify-center text-xs"
@@ -64,7 +68,9 @@
       </div>
 
       <!-- Subjects List -->
-      <div class="w-full h-full flex flex-wrap items-start justify-center px-4 py-6">
+      <div
+        class="w-full h-full flex flex-wrap items-start justify-center px-4 py-6"
+      >
         @for (subject of subjects(); track subject.id) {
           <app-subject-card
             [subject]="subject"
@@ -92,13 +98,20 @@
         (close)="closeRateModal()"
         (submit)="onRatingSubmit($event)"
       />
+      <app-join-community
+        whatsappUrl="https://chat.whatsapp.com/wetin_be_link_"
+        discordUrl="https://discord.gg/wetin_be_link_"
+      />
 
       <!-- Feedback Button -->
       @if (showFeedbackBanner()) {
-        <div class="fixed bottom-0 left-0 right-0 z-40 flex gap-4 items-center justify-between px-6 py-4 bg-[var(--bg-banner)] ]">
+        <div
+          class="fixed bottom-0 left-0 right-0 z-40 flex gap-4 items-center justify-between px-6 py-4 bg-[var(--bg-banner)] ]"
+        >
           <!-- Text -->
           <p class="text-sm text-[var(--text-secondary)]">
-            Got a minute? We'd love to hear how Maestro is working for you so far.
+            Got a minute? We'd love to hear how Maestro is working for you so
+            far.
           </p>
 
           <!-- Actions -->
@@ -127,12 +140,15 @@
   }
   @if (loadingAction()) {
     <div class="fixed left-4 bottom-4 lg:left-8 lg:bottom-8">
-      <img src="images/spinner.gif" class="w-8 lg:w-12">
+      <img src="images/spinner.gif" class="w-8 lg:w-12" />
     </div>
   }
 }
 
-@if (currentOnboardingStep() >= 0 && currentOnboardingStep() < onboardingSteps.length) {
+@if (
+  currentOnboardingStep() >= 0 &&
+  currentOnboardingStep() < onboardingSteps.length
+) {
   <app-tutorial-element
     [objectDimensions]="getTutorialObjectPosition(currentOnboardingStep())"
     [title]="onboardingSteps[currentOnboardingStep()].title"

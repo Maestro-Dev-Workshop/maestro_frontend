@@ -7,8 +7,8 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { NotificationService } from '../../../core/services/notification.service';
+import { BetaRegistrationService } from '../../../core/services/BetaRegistration.service';
 
 interface BetaFormData {
   fieldOfStudy: string;
@@ -25,7 +25,6 @@ interface BetaFormData {
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './beta-registration-form.html',
-  styleUrl: './beta-registration-form.css',
 })
 export class BetaRegistrationFormComponent {
   @Output() back = new EventEmitter<void>();
@@ -35,6 +34,7 @@ export class BetaRegistrationFormComponent {
   submitAttempted = false;
 
   notify = inject(NotificationService);
+  betaService = inject(BetaRegistrationService);
 
   formData: BetaFormData = {
     fieldOfStudy: '',
@@ -54,10 +54,7 @@ export class BetaRegistrationFormComponent {
     { value: 5, label: '5 — Extremely confident' },
   ];
 
-  constructor(
-    private http: HttpClient,
-    private cdr: ChangeDetectorRef,
-  ) {}
+  constructor(private cdr: ChangeDetectorRef) {}
 
   onBack(): void {
     this.back.emit();
@@ -84,29 +81,29 @@ export class BetaRegistrationFormComponent {
 
     this.loading = true;
 
-    const payload = {
-      field_of_study: this.formData.fieldOfStudy,
-      university: this.formData.university,
-      level_of_study: this.formData.levelOfStudy,
-      study_tools: this.formData.studyTools,
-      hours_per_week: this.formData.hoursPerWeek,
-      confidence_level: this.formData.confidenceLevel,
-      challenges: this.formData.challenges,
-    };
-
-    this.http.post('/beta/register', payload).subscribe({
-      next: () => {
-        this.loading = false;
-        this.notify.showSuccess("You're in! Welcome to Maestro Premium.");
-        this.submitted.emit();
-      },
-      error: (err) => {
-        this.loading = false;
-        this.notify.showError(
-          err?.error?.message || 'Something went wrong. Please try again.',
-        );
-        this.cdr.detectChanges();
-      },
-    });
+    this.betaService
+      .register({
+        field_of_study: this.formData.fieldOfStudy,
+        university: this.formData.university,
+        level_of_study: this.formData.levelOfStudy,
+        study_tools: this.formData.studyTools,
+        hours_per_week: this.formData.hoursPerWeek!,
+        confidence_level: this.formData.confidenceLevel!,
+        challenges: this.formData.challenges,
+      })
+      .subscribe({
+        next: () => {
+          this.loading = false;
+          this.notify.showSuccess("You're in! Welcome to Maestro Premium.");
+          this.submitted.emit();
+        },
+        error: (err) => {
+          this.loading = false;
+          this.notify.showError(
+            err?.error?.message || 'Something went wrong. Please try again.',
+          );
+          this.cdr.detectChanges();
+        },
+      });
   }
 }

@@ -42,6 +42,7 @@ import {
 } from '../../../core/models/api-response.model';
 import { TopicModel } from '../../../core/models/topic.model';
 
+import { JoinCommunityComponent } from '../../../shared/components/join-community/join-community';
 import { FreeTierNotification } from '../../../shared/components/free-tier-notification/free-tier-notification';
 import { BetaRegistrationFormComponent } from '../../../shared/components/beta-registration-form/beta-registration-form';
 
@@ -86,6 +87,7 @@ interface SubjectsListResponse {
     ContextMenu,
     FreeTierNotification,
     BetaRegistrationFormComponent,
+    JoinCommunityComponent,
   ],
   templateUrl: './subjects.html',
   styleUrls: ['./subjects.css'],
