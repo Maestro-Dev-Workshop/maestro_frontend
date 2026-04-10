@@ -15,9 +15,15 @@ import { FormsModule } from '@angular/forms';
 import { Header } from '../../../shared/components/header/header';
 import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-icon';
 import { TutorialElement } from '../../../shared/components/tutorial-element/tutorial-element';
-import { SubjectCard, SubjectCardData } from '../../../shared/components/subject-card/subject-card';
+import {
+  SubjectCard,
+  SubjectCardData,
+} from '../../../shared/components/subject-card/subject-card';
 import { RatingModal } from '../../../shared/components/rating-modal/rating-modal';
-import { ContextMenu, ContextMenuItem } from '../../../shared/components/context-menu/context-menu';
+import {
+  ContextMenu,
+  ContextMenuItem,
+} from '../../../shared/components/context-menu/context-menu';
 
 import { SubjectModel } from '../../../core/models/subject.model';
 import { SubjectStatus } from '../../../core/models/subject-status.model';
@@ -26,9 +32,19 @@ import { NotificationService } from '../../../core/services/notification.service
 import { SubscriptionService } from '../../../core/services/subscription.service';
 import { SubscriptionStatus } from '../../../core/models/subscription.model';
 import { ConfirmService } from '../../../core/services/confirm';
-import { OnboardingService, OnboardingStep } from '../../../core/services/onboarding.service';
-import { SubjectResponse, ExtensionModel } from '../../../core/models/api-response.model';
+import {
+  OnboardingService,
+  OnboardingStep,
+} from '../../../core/services/onboarding.service';
+import {
+  SubjectResponse,
+  ExtensionModel,
+} from '../../../core/models/api-response.model';
 import { TopicModel } from '../../../core/models/topic.model';
+
+import { JoinCommunityComponent } from '../../../shared/components/join-community/join-community';
+import { FreeTierNotification } from '../../../shared/components/free-tier-notification/free-tier-notification';
+import { BetaRegistrationFormComponent } from '../../../shared/components/beta-registration-form/beta-registration-form';
 
 /** Dashboard subject data with computed fields */
 interface DashboardSubject {
@@ -69,11 +85,20 @@ interface SubjectsListResponse {
     SubjectCard,
     RatingModal,
     ContextMenu,
+    FreeTierNotification,
+    BetaRegistrationFormComponent,
+    JoinCommunityComponent,
   ],
   templateUrl: './subjects.html',
   styleUrls: ['./subjects.css'],
 })
 export class Subjects implements OnInit, OnDestroy {
+  private readonly BETA_REGISTERED_KEY = 'maestro_beta_registered';
+  private readonly FROM_AUTH_KEY = 'maestro_from_auth';
+
+  showFreeTierModal = false;
+  showBetaForm = false;
+
   private router = inject(Router);
   private subjectService = inject(SubjectsService);
   private subscriptionService = inject(SubscriptionService);
@@ -109,7 +134,9 @@ export class Subjects implements OnInit, OnDestroy {
   // Onboarding
   createButton = viewChild<ElementRef>('createSubjectButton');
   onboardingSteps: OnboardingStep[] = [];
-  currentOnboardingStep = computed(() => this.onboardingService.currentStepIndex());
+  currentOnboardingStep = computed(() =>
+    this.onboardingService.currentStepIndex(),
+  );
 
   private globalClickHandler = () => {
     if (this.rightClickSubject()) {
@@ -130,6 +157,15 @@ export class Subjects implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    const fromAuth = sessionStorage.getItem(this.FROM_AUTH_KEY) === 'true';
+    const alreadyRegistered =
+      localStorage.getItem(this.BETA_REGISTERED_KEY) === 'true';
+
+    if (fromAuth && !alreadyRegistered) {
+      this.showFreeTierModal = true;
+    }
+
+    sessionStorage.removeItem(this.FROM_AUTH_KEY);
     this.loadSubscriptionData();
     this.loadSubjects();
     this.checkFeedbackBanner();
@@ -146,23 +182,55 @@ export class Subjects implements OnInit, OnDestroy {
         this.subscriptionData.set(response.subscription);
       },
       error: (res) => {
-        this.notify.showError(res.error?.message || 'Failed to load subscription data.');
+        this.notify.showError(
+          res.error?.message || 'Failed to load subscription data.',
+        );
       },
     });
+  }
+
+  onModalClose(dontShowAgain: boolean): void {
+    this.showFreeTierModal = false;
+    if (dontShowAgain) {
+      // User explicitly opted out — never show again
+      localStorage.setItem(this.BETA_REGISTERED_KEY, 'true');
+    }
+    // If dontShowAgain is false, localStorage stays untouched
+    // so the modal will reappear on next login
+  }
+
+  onGetAccess(): void {
+    this.showFreeTierModal = false;
+    this.showBetaForm = true;
+  }
+
+  onFormBack(): void {
+    this.showBetaForm = false;
+    this.showFreeTierModal = true;
+  }
+
+  onFormSubmitted(): void {
+    // Form submitted successfully — never show the modal again
+    localStorage.setItem(this.BETA_REGISTERED_KEY, 'true');
+    this.showBetaForm = false;
   }
 
   private loadSubjects(): void {
     this.subjectService.getAllSubjectsDetails().subscribe({
       next: (response: SubjectsListResponse) => {
-        const mapped: DashboardSubject[] = (response.sessions || []).map((s) => ({
-          id: s.session.id,
-          name: s.session.name ?? '',
-          created_at: s.session.created_at ? new Date(s.session.created_at) : new Date(),
-          status: s.session.status ?? SubjectStatus.PENDING_NAMING,
-          completion: this.normalizeCompletion(s.session.completion),
-          topics: s.topics.filter((t) => t.selected),
-          extensions: s.extensions.filter((e) => e.type !== 'lesson'),
-        }));
+        const mapped: DashboardSubject[] = (response.sessions || []).map(
+          (s) => ({
+            id: s.session.id,
+            name: s.session.name ?? '',
+            created_at: s.session.created_at
+              ? new Date(s.session.created_at)
+              : new Date(),
+            status: s.session.status ?? SubjectStatus.PENDING_NAMING,
+            completion: this.normalizeCompletion(s.session.completion),
+            topics: s.topics.filter((t) => t.selected),
+            extensions: s.extensions.filter((e) => e.type !== 'lesson'),
+          }),
+        );
         this.subjects.set(mapped);
 
         if (mapped.length === 0) {
@@ -178,7 +246,9 @@ export class Subjects implements OnInit, OnDestroy {
   }
 
   private checkFeedbackBanner(): void {
-    const dismissed = sessionStorage.getItem('maestro-feedback-banner-dismissed');
+    const dismissed = sessionStorage.getItem(
+      'maestro-feedback-banner-dismissed',
+    );
     this.showFeedbackBanner.set(dismissed !== 'true');
   }
 
@@ -216,7 +286,8 @@ export class Subjects implements OnInit, OnDestroy {
   getStatusColours(status: SubjectStatus | string | undefined): string {
     if (!status) return 'text-red-600 bg-red-50';
     if (status === SubjectStatus.COMPLETED) return 'text-green-600 bg-green-50';
-    if (status === SubjectStatus.IN_PROGRESS) return 'text-yellow-600 bg-yellow-50';
+    if (status === SubjectStatus.IN_PROGRESS)
+      return 'text-yellow-600 bg-yellow-50';
     return 'text-red-600 bg-red-50';
   }
 
@@ -228,12 +299,17 @@ export class Subjects implements OnInit, OnDestroy {
       (subscription?.subjects_created_this_month ?? 0) >=
       (subscription?.plan?.monthly_subject_creations ?? Infinity)
     ) {
-      this.notify.showError('You have reached the monthly subject creation limit.');
+      this.notify.showError(
+        'You have reached the monthly subject creation limit.',
+      );
       this.loadingAction.set(false);
       return;
     }
 
-    if (this.subjects().length >= (subscription?.plan?.subject_capacity ?? Infinity)) {
+    if (
+      this.subjects().length >=
+      (subscription?.plan?.subject_capacity ?? Infinity)
+    ) {
       this.notify.showError('You have reached the total subject limit.');
       this.loadingAction.set(false);
       return;
@@ -243,13 +319,18 @@ export class Subjects implements OnInit, OnDestroy {
       next: (response: SubjectResponse) => {
         const newSubjectId = response.session.id;
         const isBeginner = this.subjects().length === 0;
-        this.router.navigateByUrl(`/subject-create/${newSubjectId}/naming-upload`, {
-          state: { beginner: isBeginner },
-        });
+        this.router.navigateByUrl(
+          `/subject-create/${newSubjectId}/naming-upload`,
+          {
+            state: { beginner: isBeginner },
+          },
+        );
         this.loadingAction.set(false);
       },
       error: (res) => {
-        this.notify.showError(res.error?.message || 'Failed to create a new subject.');
+        this.notify.showError(
+          res.error?.message || 'Failed to create a new subject.',
+        );
         this.loadingAction.set(false);
       },
     });
@@ -320,7 +401,9 @@ export class Subjects implements OnInit, OnDestroy {
         this.rightClickSubject.set(null);
       },
       error: (res) => {
-        this.notify.showError(res.error?.message || 'Failed to delete subject.');
+        this.notify.showError(
+          res.error?.message || 'Failed to delete subject.',
+        );
         this.rightClickSubject.set(null);
       },
     });
@@ -397,7 +480,11 @@ export class Subjects implements OnInit, OnDestroy {
 
     const rateCall =
       (this.subjectService as any).rateSubject?.(payload) ??
-      (this.subjectService as any).submitFeedback?.(subject.id, payload.rating, payload.feedback);
+      (this.subjectService as any).submitFeedback?.(
+        subject.id,
+        payload.rating,
+        payload.feedback,
+      );
 
     if (!rateCall) {
       this.notify.showSuccess('Thanks for your feedback.');
@@ -411,7 +498,9 @@ export class Subjects implements OnInit, OnDestroy {
         this.closeRateModal();
       },
       error: (res: { error?: { message?: string } }) => {
-        this.notify.showError(res?.error?.message || 'Failed to submit feedback.');
+        this.notify.showError(
+          res?.error?.message || 'Failed to submit feedback.',
+        );
       },
     });
   }
@@ -431,11 +520,17 @@ export class Subjects implements OnInit, OnDestroy {
     this.navigateSubject(subject);
   }
 
-  onSubjectCardContextMenu(event: { event: MouseEvent; subject: DashboardSubject }): void {
+  onSubjectCardContextMenu(event: {
+    event: MouseEvent;
+    subject: DashboardSubject;
+  }): void {
     this.onSubjectRightClick(event.event, event.subject);
   }
 
-  onSubjectCardContinue(event: { event: MouseEvent; subject: DashboardSubject }): void {
+  onSubjectCardContinue(event: {
+    event: MouseEvent;
+    subject: DashboardSubject;
+  }): void {
     this.continueSubject(event.event, event.subject);
   }
 

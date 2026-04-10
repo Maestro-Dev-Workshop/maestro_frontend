@@ -1,0 +1,72 @@
+<!-- Floating Button (bottom-right, fixed) -->
+<button
+  type="button"
+  class="relative bottom-0 right-6 flex items-center gap-2 bg-prussian-blue-700 hover:bg-prussian-blue-400 text-white text-sm font-medium px-4 py-3 rounded-full shadow-lg transition-colors"
+  (click)="togglePopup()"
+>
+  <img src="images/join-community-icon.svg" alt="" class="w-4">
+  Join Community
+</button>
+
+<!-- Popup -->
+@if (showPopup) {
+  <div
+    class="fixed inset-0 z-40"
+    (click)="closePopup()"
+  ></div>
+
+  <!-- Popup Card -->
+  <div class="fixed bottom-20 right-6 z-50 bg-[var(--bg-page)] rounded-2xl shadow-xl w-80 p-6">
+
+
+    <button
+      type="button"
+      class="absolute top-4 right-4 hover:text-[var(--text-primary-hover)] text-lg leading-none transition-colors"
+      (click)="closePopup()"
+      aria-label="Close"
+    >
+      &#x2715;
+    </button>
+
+    <h2 class="font-bold text-xl text-[var(--text-alt)] text-center mb-5">
+      Join Our Community
+    </h2>
+
+    <!-- WhatsApp Row -->
+    <div class="flex items-center justify-between py-4">
+      <div class="flex items-center gap-3">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9" viewBox="0 0 48 48">
+          <circle cx="24" cy="24" r="24" fill="#25D366"/>
+          <path fill="#fff" d="M34.5 13.5A14.9 14.9 0 0024.1 9C16.3 9 10 15.3 10 23.1c0 2.5.7 5 1.9 7.1L10 39l9.1-1.9c2 1.1 4.3 1.7 6.6 1.7h.1c7.8 0 14.1-6.3 14.1-14.1 0-3.8-1.5-7.3-4-9.9zm-10.4 21.7h-.1c-2.1 0-4.2-.6-6-1.6l-.4-.2-4.4.9.9-4.3-.3-.4a11.8 11.8 0 01-1.8-6.4C12 16.5 17.4 11 24.1 11c3.2 0 6.2 1.2 8.4 3.5a11.8 11.8 0 013.5 8.4c0 6.6-5.4 12-12 12.3zm6.6-8.9c-.4-.2-2.2-1.1-2.5-1.2-.3-.1-.6-.2-.8.2-.3.4-1 1.2-1.2 1.5-.2.3-.5.3-.9.1-.4-.2-1.7-.6-3.2-2-1.2-1-2-2.3-2.2-2.7-.2-.4 0-.6.2-.8l.6-.7c.2-.2.2-.4.4-.6.1-.2.1-.4 0-.6-.1-.2-.8-2-1.1-2.7-.3-.7-.6-.6-.8-.6h-.7c-.2 0-.6.1-1 .5-.3.4-1.2 1.2-1.2 2.9s1.3 3.4 1.4 3.6c.2.2 2.6 4 6.3 5.6.9.4 1.6.6 2.1.8.9.3 1.7.2 2.3.1.7-.1 2.2-.9 2.5-1.8.3-.9.3-1.6.2-1.8-.1-.2-.4-.3-.8-.5z"/>
+        </svg>
+        <span class="font-medium">Whatsapp</span>
+      </div>
+      <button
+        type="button"
+        class="bg-prussian-blue-700 hover:bg-prussian-blue-400 text-white text-sm font-medium px-5 py-2 rounded-lg transition-colors"
+        (click)="joinWhatsapp()"
+      >
+        Join
+      </button>
+    </div>
+
+    <!-- Discord Row -->
+    <div class="flex items-center justify-between py-4">
+      <div class="flex items-center gap-3">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9" viewBox="0 0 48 48">
+          <circle cx="24" cy="24" r="24" fill="#5865F2"/>
+          <path fill="#fff" d="M33.5 14.5a22.5 22.5 0 00-5.6-1.7l-.2.1c-.2.4-.5 1-.6 1.4a20.8 20.8 0 00-6.2 0 13 13 0 00-.7-1.4l-.2-.1a22.4 22.4 0 00-5.6 1.7C11 19 9.9 23.4 10.4 27.7a22.7 22.7 0 006.9 3.5 17 17 0 001.5-2.4l-.1-.1a14.9 14.9 0 01-2.3-1.1l.5-.4a16.2 16.2 0 0013.9 0l.5.4a15 15 0 01-2.3 1.1l-.1.1c.4.8.9 1.6 1.5 2.4a22.6 22.6 0 006.9-3.5c.6-5-1-9.3-3.7-13.2zM19.4 25.2c-1.3 0-2.4-1.2-2.4-2.7s1-2.7 2.4-2.7c1.3 0 2.4 1.2 2.4 2.7-.1 1.5-1.1 2.7-2.4 2.7zm8.9 0c-1.3 0-2.4-1.2-2.4-2.7s1-2.7 2.4-2.7c1.3 0 2.4 1.2 2.4 2.7 0 1.5-1 2.7-2.4 2.7z"/>
+        </svg>
+        <span class="font-medium">Discord</span>
+      </div>
+      <button
+        type="button"
+        class="bg-prussian-blue-700 hover:bg-prussian-blue-400 text-white text-sm font-medium px-5 py-2 rounded-lg transition-colors"
+        (click)="joinDiscord()"
+      >
+        Join
+      </button>
+    </div>
+
+  </div>
+}

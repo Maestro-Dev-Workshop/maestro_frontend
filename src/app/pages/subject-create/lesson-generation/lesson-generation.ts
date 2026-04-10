@@ -76,7 +76,7 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
   
   subjectName = '';
   topics: GenerationTopic[] = [];
-  extensionSettings: ExtensionSettings = DEFAULT_EXTENSION_CONFIG;
+  extensionSettings: ExtensionSettings = structuredClone(DEFAULT_EXTENSION_CONFIG);;
   constraints: ExtensionConstraints = {
     exercise: {
       maxQuestions: 3

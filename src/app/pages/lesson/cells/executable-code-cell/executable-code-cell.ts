@@ -1,10 +1,11 @@
-import { ChangeDetectorRef, Component, effect, inject, input } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, inject, input, signal } from '@angular/core';
 import { NGX_MONACO_EDITOR_CONFIG, MonacoEditorModule } from 'ngx-monaco-editor-v2';
 import { FormsModule } from '@angular/forms';
 import { ThemeService } from '../../../../core/services/theme.service';
 import { LessonService } from '../../../../core/services/lesson.service';
 import { NotificationService } from '../../../../core/services/notification.service';
 import { CodeExecutionOutput } from '../../../../core/models/code-execution.model';
+import { ThemeIconComponent } from '../../../../shared/components/theme-icon/theme-icon';
 
 /** Input data structure for executable code cell */
 interface CodeCellData {
@@ -23,7 +24,7 @@ interface MonacoEditorOptions {
 
 @Component({
   selector: 'app-executable-code-cell',
-  imports: [MonacoEditorModule, FormsModule],
+  imports: [MonacoEditorModule, FormsModule, ThemeIconComponent],
   providers: [
     {
       provide: NGX_MONACO_EDITOR_CONFIG,
@@ -40,7 +41,7 @@ export class ExecutableCodeCell {
   language = '';
   height = '';
   output: CodeExecutionOutput = {};
-  loading = false;
+  loading = signal<boolean>(false);
   themeService = inject(ThemeService);
   lessonService = inject(LessonService);
   notify = inject(NotificationService);
@@ -52,7 +53,7 @@ export class ExecutableCodeCell {
     if (!cellData) return;
 
     this.output = {};
-    this.loading = false;
+    this.loading.set(false);
     this.language = cellData.metadata.language.toLowerCase();
     this.editorOptions = {
       theme: (this.themeService.getTheme() === 'light') ? 'vs-light' : 'vs-dark',
@@ -65,20 +66,23 @@ export class ExecutableCodeCell {
   });
 
   runCode() {
-    this.loading = true;
-    this.cdr.detectChanges();
+    this.loading.set(true);
 
     this.lessonService.executeCodeBlock(this.code, this.language).subscribe({
       next: (response) => {
         this.output = response.result as CodeExecutionOutput;
-        this.loading = false;
-        this.cdr.detectChanges();
+        this.loading.set(false);
       },
       error: (res) => {
         this.notify.showError(res.error?.message || "Code execution failed");
-        this.loading = false;
-        this.cdr.detectChanges();
+        this.loading.set(false);
       },
     });
+  }
+
+  copyCode() {
+    navigator.clipboard.writeText(this.code)
+      .then(() => this.notify.showSuccess("Code copied to clipboard"))
+      .catch(err => console.error('Copy failed:', err));
   }
 }
