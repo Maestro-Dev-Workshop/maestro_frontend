@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TopicPreferences } from './topic-preferences';
+import { ImageCell } from './image-cell';
 
-describe('TopicPreferences', () => {
-  let component: TopicPreferences;
-  let fixture: ComponentFixture<TopicPreferences>;
+describe('ImageCell', () => {
+  let component: ImageCell;
+  let fixture: ComponentFixture<ImageCell>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TopicPreferences]
+      imports: [ImageCell]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(TopicPreferences);
+    fixture = TestBed.createComponent(ImageCell);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

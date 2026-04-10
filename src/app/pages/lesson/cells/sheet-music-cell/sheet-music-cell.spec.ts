@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { QuestionSettings } from './question-settings';
+import { SheetMusicCell } from './sheet-music-cell';
 
-describe('QuestionSettings', () => {
-  let component: QuestionSettings;
-  let fixture: ComponentFixture<QuestionSettings>;
+describe('SheetMusicCell', () => {
+  let component: SheetMusicCell;
+  let fixture: ComponentFixture<SheetMusicCell>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [QuestionSettings]
+      imports: [SheetMusicCell]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(QuestionSettings);
+    fixture = TestBed.createComponent(SheetMusicCell);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

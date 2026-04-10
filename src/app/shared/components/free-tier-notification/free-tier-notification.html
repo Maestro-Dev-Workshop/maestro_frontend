@@ -1,0 +1,53 @@
+<!-- Backdrop -->
+<div
+  class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+  (click)="onClose()"
+>
+  <!-- Modal Card -->
+  <div
+    class="bg-[var(--bg-page)] rounded-2xl p-10 max-w-lg w-full relative"
+    (click)="$event.stopPropagation()"
+  >
+    <!-- Close Button -->
+    <button
+      type="button"
+      class="absolute top-4 right-5 hover:text-[var(--text-primary-hover)] text-xl leading-none transition-colors"
+      (click)="onClose()"
+      aria-label="Close"
+    >
+      &#x2715;
+    </button>
+
+    <!-- Content -->
+    <div class="flex flex-col items-center text-center gap-5">
+      <h1 class="font-bold text-3xl text-[var(--text-alt)] tracking-tight leading-tight">
+        Unlock Premium. For Free.
+      </h1>
+
+      <p class="text-sm leading-relaxed max-w-sm">
+        We want everyone to experience the full power of Maestro, so we're tearing down the tiers.
+        For a limited time, you can unlock our entire suite of personalized AI lessons and practice
+        tools for free. This offer is only available until May 31st, so don't wait to supercharge
+        your study routine.
+      </p>
+
+      <!-- Don't show again -->
+      <label class="flex items-center gap-2 cursor-pointer text-sm hover:text-[var(--text-primary-hover)] transition-colors">
+        <input
+          type="checkbox"
+          [(ngModel)]="dontShowAgain"
+          class="accent-prussian-blue-700 w-4 h-4 cursor-pointer"
+        />
+        Don't show this again
+      </label>
+
+      <button
+        type="button"
+        class="w-full rounded-md p-4 text-white font-bold bg-prussian-blue-700 lg:hover:bg-prussian-blue-400 disabled:bg-prussian-blue-400 transition-colors"
+        (click)="onGetAccess()"
+      >
+        Claim Premium Access
+      </button>
+    </div>
+  </div>
+</div>

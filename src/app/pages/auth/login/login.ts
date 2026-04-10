@@ -7,7 +7,6 @@ import { environment } from '../../../../environments/environment';
 
 declare var google: any;
 
-
 @Component({
   selector: 'app-login',
   imports: [FormsModule],
@@ -56,10 +55,11 @@ export class Login {
                 state: { email: this.email.toLowerCase() },
               });
             } else {
-              localStorage.setItem('accessToken', response.accessToken);
-              localStorage.setItem('refreshToken', response.refreshToken);
+              localStorage.setItem('accessToken', response.accessToken || '');
+              localStorage.setItem('refreshToken', response.refreshToken || '');
               const user = response.user;
-              localStorage.setItem('userEmail', user.email);
+              localStorage.setItem('userEmail', user?.email || '');
+              sessionStorage.setItem('maestro_from_auth', 'true');
               this.loading = false;
               this.router.navigateByUrl('/dashboard');
             }
@@ -98,9 +98,10 @@ export class Login {
 
     this.authService.googleAuth(idToken).subscribe({
       next: (res) => {
-        localStorage.setItem('accessToken', res.accessToken);
-        localStorage.setItem('refreshToken', res.refreshToken);
-        localStorage.setItem('userEmail', res.user.email);
+        localStorage.setItem('accessToken', res.accessToken || '');
+        localStorage.setItem('refreshToken', res.refreshToken || '');
+        localStorage.setItem('userEmail', res.user?.email || '');
+        sessionStorage.setItem('maestro_from_auth', 'true');
 
         this.loading = false;
         this.router.navigateByUrl('/dashboard');

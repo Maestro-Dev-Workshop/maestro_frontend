@@ -74,9 +74,19 @@ export class Signup implements AfterViewInit {
       })
       .subscribe({
         next: () => {
-          this.loading = false;
-          this.notify.showSuccess('Signup successful. Redirecting to login...');
-          this.router.navigateByUrl('/login');
+          if (environment.type?.toLowerCase() == 'prod') {
+            this.notify.showSuccess(
+              'Verification email sent. Please check your inbox.',
+            );
+            this.router.navigateByUrl('/check-email', {
+              state: { email: this.email.toLowerCase() },
+            });
+          } else {
+            this.notify.showSuccess(
+              'Signup successful. Redirecting to login...',
+            );
+            this.router.navigateByUrl('/login');
+          }
         },
         error: (res: any) => {
           this.loading = false;
@@ -115,6 +125,7 @@ export class Signup implements AfterViewInit {
         localStorage.setItem('accessToken', res.accessToken);
         localStorage.setItem('refreshToken', res.refreshToken);
         localStorage.setItem('userEmail', res.user.email);
+        sessionStorage.setItem('maestro_from_auth', 'true');
 
         this.loading = false;
         this.router.navigateByUrl('/dashboard');

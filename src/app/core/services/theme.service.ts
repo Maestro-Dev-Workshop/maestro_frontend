@@ -9,11 +9,11 @@ export class ThemeService {
   private storageKey = 'maestro-theme';
 
   // 🔹 Reactive theme state
-  readonly theme = signal<ThemeMode>('system');
+  readonly theme = signal<ThemeMode>('light');
 
   init() {
     const saved = localStorage.getItem(this.storageKey) as ThemeMode | null;
-    const mode: ThemeMode = saved ?? 'system';
+    const mode: ThemeMode = saved ?? 'light';
 
     this.theme.set(mode);
     this.applyTheme(mode);

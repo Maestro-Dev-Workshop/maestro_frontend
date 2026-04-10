@@ -1,11 +1,26 @@
 import { Component, effect, ElementRef, input, output, untracked, viewChild, ViewChild } from '@angular/core';
 import { MarkdownCell } from '../cells/markdown-cell/markdown-cell';
 import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-icon';
-// import { ChartCell } from '../cells/chart-cell/chart-cell';
+import { ChartCell } from "../cells/chart-cell/chart-cell";
+import { AudioSnippetCell } from '../cells/audio-snippet-cell/audio-snippet-cell';
+import { ExecutableCodeCell } from '../cells/executable-code-cell/executable-code-cell';
+import { DiagramCell } from '../cells/diagram-cell/diagram-cell';
+import { SheetMusicCell } from '../cells/sheet-music-cell/sheet-music-cell';
+import { ImageCell } from '../cells/image-cell/image-cell';
+
 
 @Component({
   selector: 'app-subtopic',
-  imports: [MarkdownCell, ThemeIconComponent],
+  imports: [
+    ThemeIconComponent, 
+    MarkdownCell, 
+    ChartCell,
+    AudioSnippetCell,
+    ExecutableCodeCell,
+    DiagramCell,
+    SheetMusicCell,
+    ImageCell
+  ],
   templateUrl: './subtopic.html',
   styleUrl: './subtopic.css'
 })

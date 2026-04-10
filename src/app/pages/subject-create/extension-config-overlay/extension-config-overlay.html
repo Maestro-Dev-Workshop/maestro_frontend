@@ -7,6 +7,114 @@
     max-h-[80%] overflow-y-auto scrollbar-none"
     (click)="$event.stopPropagation()"
   >
+    <!-- Content Cell Configuration -->
+    @if (config.cells.enabled) {
+      <form #form="ngForm" class="my-4 md:my-8">
+        <!-- Header -->
+        <div class="flex flex-row w-full justify-between items-center border-b-2 p-2 border-[var(--text-primary)]">
+          <div class="flex flex-row items-center">
+            <app-theme-icon name="cells-icon" className="w-5 mr-2"/>
+            {{ config.cells.displayName }}
+          </div>
+          <button (click)="toggleExtensionVisibility('cells')" class="p-2">
+            <app-theme-icon name="dropdown-icon" [className]="`w-2 ${extensionVisibility['cells'] ? 'rotate-90' : 'rotate-180'}`"/>
+          </button>
+        </div>
+
+        <div [class]="extensionVisibility['cells'] ? '' : 'hidden'">
+          <!-- Cell Types -->
+          <div class="px-2 pt-2 md:pt-6 flex flex-col md:flex-row">
+            <label for="" class="my-2">Supplement Types:</label>
+            <div class="flex flex-row flex-wrap items-start text-sm p-2 pt-3">
+              <div class="flex flex-row items-start">
+                <input 
+                  type="checkbox" 
+                  id="cell-graph" 
+                  class="mx-2 my-1 accent-blue-900" 
+                  value="graph" 
+                  [checked]="config.cells.types.includes('graph')" 
+                  (change)="toggleType($event, 'cells')"
+                  [disabled]="(config.cells.types.length >= 10) && (!config.cells.types.includes('graph'))"
+                >
+                <label for="cell-graph">Charts</label>
+              </div>
+              <div class="flex flex-row items-start">
+                <input 
+                  type="checkbox" 
+                  id="cell-audio" 
+                  class="mx-2 my-1 accent-blue-900" 
+                  value="audio_snippet" 
+                  [checked]="config.cells.types.includes('audio_snippet')" 
+                  (change)="toggleType($event, 'cells')"
+                  [disabled]="(config.cells.types.length >= 10) && (!config.cells.types.includes('audio_snippet'))"
+                >
+                <label for="cell-audio">Audio Snippets</label>
+              </div>
+              <div class="flex flex-row items-start">
+                <input 
+                  type="checkbox" 
+                  id="cell-code" 
+                  class="mx-2 my-1 accent-blue-900" 
+                  value="executable_code" 
+                  [checked]="config.cells.types.includes('executable_code')" 
+                  (change)="toggleType($event, 'cells')"
+                  [disabled]="(config.cells.types.length >= 10) && (!config.cells.types.includes('executable_code'))"
+                >
+                <label for="cell-code">Code Blocks</label>
+              </div>
+              <div class="flex flex-row items-start">
+                <input 
+                  type="checkbox" 
+                  id="cell-diagram" 
+                  class="mx-2 my-1 accent-blue-900" 
+                  value="diagram" 
+                  [checked]="config.cells.types.includes('diagram')" 
+                  (change)="toggleType($event, 'cells')"
+                  [disabled]="(config.cells.types.length >= 10) && (!config.cells.types.includes('diagram'))"
+                >
+                <label for="cell-diagram">Diagrams</label>
+              </div>
+              <div class="flex flex-row items-start">
+                <input 
+                  type="checkbox" 
+                  id="cell-music" 
+                  class="mx-2 my-1 accent-blue-900" 
+                  value="music_sheet" 
+                  [checked]="config.cells.types.includes('music_sheet')" 
+                  (change)="toggleType($event, 'cells')"
+                  [disabled]="(config.cells.types.length >= 10) && (!config.cells.types.includes('music_sheet'))"
+                >
+                <label for="cell-music">Sheet Music</label>
+              </div>
+              <div class="flex flex-row items-start">
+                <input 
+                  type="checkbox" 
+                  id="cell-image" 
+                  class="mx-2 my-1 accent-blue-900" 
+                  value="image" 
+                  [checked]="config.cells.types.includes('image')" 
+                  (change)="toggleType($event, 'cells')"
+                  [disabled]="(config.cells.types.length >= 10) && (!config.cells.types.includes('image'))"
+                >
+                <label for="cell-image">Images</label>
+              </div>
+              <!-- <div class="flex flex-row items-start">
+                <input 
+                  type="checkbox" 
+                  id="cell-card" 
+                  class="mx-2 my-1 accent-blue-900" 
+                  value="card" 
+                  [checked]="config.exercise.types.includes('card')" 
+                  (change)="toggleType($event, 'cells')"
+                >
+                <label for="cell-card">Flashcards</label>
+              </div> -->
+            </div>
+          </div>
+        </div>
+      </form>
+    }
+
     <!-- Exercise Configuration -->
     @if (config.exercise.enabled) {
       <form #form="ngForm" class="my-4 md:my-8">
@@ -31,14 +139,14 @@
               class="bg-[var(--bg-page)] p-2 border-b-2 border-[var(--text-primary-hover)] focus:border-[var(--text-primary)] focus:outline-none text-sm w-12 mx-4" 
               [(ngModel)]="config.exercise.numQuestions"
               min="1"
-              [max]="constraints()?.exercise?.maxQuestions"
+              [max]="constraints().exercise.maxQuestions"
             >
           </div>
   
           <!-- Question Types -->
           <div class="px-2 pt-2 md:pt-6 flex flex-col md:flex-row">
             <label for="" class="my-2">Questions Types:</label>
-            <div class="flex flex-row items-start text-sm p-2 pt-3">
+            <div class="flex flex-row flex-wrap items-start text-sm p-2 pt-3">
               <div class="flex flex-row items-start">
                 <input 
                   type="checkbox" 
@@ -103,14 +211,14 @@
               class="bg-[var(--bg-page)] p-2 border-b-2 border-[var(--text-primary-hover)] focus:border-[var(--text-primary)] focus:outline-none text-sm w-12 mx-4" 
               [(ngModel)]="config.exam.numQuestions"
               min="1"
-              [max]="constraints()?.exam.maxQuestions"
+              [max]="constraints().exam.maxQuestions"
             >
           </div>
   
           <!-- Question Types -->
           <div class="px-2 pt-2 md:pt-6 flex flex-col md:flex-row">
             <label for="" class="my-2">Questions Types:</label>
-            <div class="flex flex-row items-start text-sm p-2 pt-3">
+            <div class="flex flex-row flex-wrap items-start text-sm p-2 pt-3">
               <div class="flex flex-row items-start">
                 <input 
                   type="checkbox" 
@@ -175,14 +283,14 @@
               class="bg-[var(--bg-page)] p-2 border-b-2 border-[var(--text-primary-hover)] focus:border-[var(--text-primary)] focus:outline-none text-sm w-12 mx-4" 
               [(ngModel)]="config.flashcards.numCards"
               min="1"
-              [max]="constraints()?.flashcards.maxCards"
+              [max]="constraints().flashcards.maxCards"
             >
           </div>
   
           <!-- Question Types -->
           <div class="px-2 pt-2 md:pt-6 flex flex-col md:flex-row">
             <label for="" class="my-2">Card Types:</label>
-            <div class="flex flex-row items-start text-sm p-2 pt-3">
+            <div class="flex flex-row flex-wrap items-start text-sm p-2 pt-3">
               <div class="flex flex-row items-start">
                 <input 
                   type="checkbox" 

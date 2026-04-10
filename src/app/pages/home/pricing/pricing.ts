@@ -33,7 +33,7 @@ export class Pricing implements OnInit {
             this.premiumPrice = plan.display_price;
           }
         });
-        this.countryCode = res.country_code
+        this.countryCode = res['country_code']
         this.cdr.detectChanges();
       },
       error: (err) => {
