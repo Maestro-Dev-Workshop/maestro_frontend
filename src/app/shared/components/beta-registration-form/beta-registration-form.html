@@ -1,29 +1,26 @@
-<div class="flex flex-row w-screen h-screen justify-between">
+<div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
 
   <!-- Left Panel -->
-  <div class="w-full lg:w-6/12 h-full flex flex-col p-12 overflow-y-auto">
-
-    <!-- Header -->
-    <div class="flex flex-row my-8 items-center">
-      <img src="images/logo-coloured.svg" alt="Maestro Logo" class="w-12 mr-2" />
-      <span class="font-serif text-3xl h-max text-[var(--text-primary)]">Maestro</span>
-    </div>
+  <div class="w-full lg:w-6/12 h-full flex flex-col p-12 overflow-y-auto bg-[var(--bg-page)] p-6 lg:p-10">
 
     <!-- Back + Title -->
-    <div class="flex flex-row items-center gap-3 mb-1">
+    <div class="flex flex-row items-center justify-between gap-3 mb-1">
       <button
         type="button"
-        class="text-3xl text-gray-500 hover:text-gray-800 transition-colors leading-none pb-1"
+        class="text-3xl hover:text-[var(--text-primary-hover)] transition-colors leading-none pb-1"
         (click)="onBack()"
         aria-label="Go back"
       >
         &#8249;
       </button>
-      <h1 class="font-bold text-2xl text-[var(--text-alt)]">Unlock Premium Access</h1>
+      <div class="text-center">
+        <h1 class="font-bold text-2xl text-[var(--text-alt)]">Unlock Premium Access</h1>
+        <p class="text-sm text-gray-500">Tell us a bit about yourself to get started.</p>
+      </div>
+      <div></div>
     </div>
-    <p class="text-sm text-gray-500 mb-4 ml-9">Tell us a bit about yourself to get started.</p>
 
-    <form class="ml-9" #betaForm="ngForm" (ngSubmit)="onSubmit()">
+    <form class="" #betaForm="ngForm" (ngSubmit)="onSubmit()">
 
       <!-- Field of Study -->
       <div class="flex flex-col my-6 font-medium">
@@ -178,19 +175,6 @@
       </button>
 
     </form>
-  </div>
-
-  <!-- Right Panel (mirrors login) -->
-  <div class="w-full h-full relative hidden lg:block">
-    <img
-      src="images/person-studying-1.png"
-      alt="Student studying"
-      class="h-full w-full object-cover"
-    />
-    <div class="flex flex-row m-8 items-center absolute left-0 bottom-0">
-      <img src="images/logo-white.svg" alt="Maestro Logo" class="w-12 mr-2" />
-      <span class="font-serif text-3xl h-max text-white">Maestro</span>
-    </div>
   </div>
 
 </div>

@@ -84,12 +84,12 @@ export class BetaRegistrationFormComponent {
     this.betaService
       .register({
         field_of_study: this.formData.fieldOfStudy,
-        university: this.formData.university,
-        level_of_study: this.formData.levelOfStudy,
+        institution: this.formData.university,
+        education_level: this.formData.levelOfStudy,
         study_tools: this.formData.studyTools,
-        hours_per_week: this.formData.hoursPerWeek!,
+        weekly_study_hours: this.formData.hoursPerWeek!,
         confidence_level: this.formData.confidenceLevel!,
-        challenges: this.formData.challenges,
+        hopes_for_maestro: this.formData.challenges,
       })
       .subscribe({
         next: () => {
