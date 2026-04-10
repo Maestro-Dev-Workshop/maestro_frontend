@@ -7,12 +7,12 @@
 }
 
 @if (showBetaForm) {
-  <div class="fixed inset-0 z-50 bg-white overflow-y-auto">
-    <app-beta-registration-form
-      (back)="onFormBack()"
-      (submitted)="onFormSubmitted()"
-    />
-  </div>
+  <app-beta-registration-form
+    (back)="onFormBack()"
+    (submitted)="onFormSubmitted()"
+  />
+  <!-- <div class="fixed inset-0 z-50 bg-white overflow-y-auto">
+  </div> -->
 }
 @if (loadingSubjects()) {
   <div
@@ -98,44 +98,48 @@
         (close)="closeRateModal()"
         (submit)="onRatingSubmit($event)"
       />
-      <app-join-community
-        whatsappUrl="https://chat.whatsapp.com/wetin_be_link_"
-        discordUrl="https://discord.gg/wetin_be_link_"
-      />
 
-      <!-- Feedback Button -->
-      @if (showFeedbackBanner()) {
-        <div
-          class="fixed bottom-0 left-0 right-0 z-40 flex gap-4 items-center justify-between px-6 py-4 bg-[var(--bg-banner)] ]"
-        >
-          <!-- Text -->
-          <p class="text-sm text-[var(--text-secondary)]">
-            Got a minute? We'd love to hear how Maestro is working for you so
-            far.
-          </p>
+      <!-- Footer -->
+      <footer class="fixed bottom-0 right-0 w-full flex flex-col items-end">
+        <app-join-community
+          class="z-40 flex mb-4"
+        />
 
-          <!-- Actions -->
-          <div class="flex items-center gap-4">
-            <!-- CTA -->
-            <a
-              href="https://forms.gle/y6B3ReSJXCstUAE89"
-              target="_blank"
-              class="px-4 py-2 rounded-full text-center bg-[var(--bg-button)] lg:hover:bg-[var(--bg-button-hover)] text-[var(--text-primary)] transition-colors"
-            >
-              Share Feedback
-            </a>
-
-            <!-- Close -->
-            <button
-              class="text-xl leading-none text-[var(--text-alt-hover)] hover:text-[var(--text-primary)] transition"
-              (click)="closeFeedbackBanner()"
-              aria-label="Close feedback banner"
-            >
-              ×
-            </button>
+        <!-- Feedback Button -->
+        @if (showFeedbackBanner()) {
+          <div
+            class="w-full z-40 flex gap-4 items-center justify-between px-6 py-4 bg-[var(--bg-banner)] ]"
+          >
+            <!-- Text -->
+            <p class="text-sm text-[var(--text-secondary)]">
+              Got a minute? We'd love to hear how Maestro is working for you so
+              far.
+            </p>
+  
+            <!-- Actions -->
+            <div class="flex items-center gap-4">
+              <!-- CTA -->
+              <a
+                href="https://forms.gle/y6B3ReSJXCstUAE89"
+                target="_blank"
+                class="px-4 py-2 rounded-full text-center bg-[var(--bg-button)] lg:hover:bg-[var(--bg-button-hover)] text-[var(--text-primary)] transition-colors"
+              >
+                Share Feedback
+              </a>
+  
+              <!-- Close -->
+              <button
+                class="text-xl leading-none text-[var(--text-alt-hover)] hover:text-[var(--text-primary)] transition"
+                (click)="closeFeedbackBanner()"
+                aria-label="Close feedback banner"
+              >
+                ×
+              </button>
+            </div>
           </div>
-        </div>
-      }
+        }
+      </footer>
+
     </div>
   }
   @if (loadingAction()) {

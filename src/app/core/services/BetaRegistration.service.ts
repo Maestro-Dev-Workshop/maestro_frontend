@@ -4,12 +4,12 @@ import { HttpBaseService } from './http-base.service';
 
 export interface BetaRegistrationPayload {
   field_of_study: string;
-  university: string;
-  level_of_study: string;
+  institution: string;
+  education_level: string;
   study_tools: string;
-  hours_per_week: number;
+  weekly_study_hours: number;
   confidence_level: number;
-  challenges: string;
+  hopes_for_maestro: string;
 }
 
 @Injectable({

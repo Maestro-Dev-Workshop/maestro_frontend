@@ -8,8 +8,8 @@ import { CommonModule } from '@angular/common';
   templateUrl: './join-community.html',
 })
 export class JoinCommunityComponent {
-  @Input() whatsappUrl = 'https://chat.whatsapp.com/wetin_be_link_';
-  @Input() discordUrl = 'https://discord.gg/wetin_be_link_';
+  whatsappUrl = 'https://chat.whatsapp.com/IaR3ER6Zz7KFzbi4R9wKAi';
+  discordUrl = 'https://discord.gg/FNawhhghKC';
 
   showPopup = false;
 
