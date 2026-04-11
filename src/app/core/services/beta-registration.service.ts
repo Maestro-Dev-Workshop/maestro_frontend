@@ -19,6 +19,6 @@ export class BetaRegistrationService {
   private http = inject(HttpBaseService);
 
   register(payload: BetaRegistrationPayload): Observable<any> {
-    return this.http.post('/beta/register', payload);
+    return this.http.post('beta/register', payload);
   }
 }
