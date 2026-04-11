@@ -45,6 +45,7 @@ import { TopicModel } from '../../../core/models/topic.model';
 import { JoinCommunityComponent } from '../../../shared/components/join-community/join-community';
 import { FreeTierNotification } from '../../../shared/components/free-tier-notification/free-tier-notification';
 import { BetaRegistrationFormComponent } from '../../../shared/components/beta-registration-form/beta-registration-form';
+import { environment } from '../../../../environments/environment';
 
 /** Dashboard subject data with computed fields */
 interface DashboardSubject {
@@ -161,7 +162,7 @@ export class Subjects implements OnInit, OnDestroy {
     const alreadyRegistered =
       localStorage.getItem(this.BETA_REGISTERED_KEY) === 'true';
 
-    if (fromAuth && !alreadyRegistered) {
+    if (fromAuth && !alreadyRegistered && (environment.type !== 'beta')) {
       this.showFreeTierModal = true;
     }
 
