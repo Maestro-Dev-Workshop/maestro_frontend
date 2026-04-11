@@ -8,7 +8,7 @@ import {
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NotificationService } from '../../../core/services/notification.service';
-import { BetaRegistrationService } from '../../../core/services/BetaRegistration.service';
+import { BetaRegistrationService } from '../../../core/services/beta-registration.service';
 
 interface BetaFormData {
   fieldOfStudy: string;
