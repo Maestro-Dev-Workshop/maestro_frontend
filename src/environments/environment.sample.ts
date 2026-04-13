@@ -25,4 +25,6 @@ export const environment = {
   // Google OAuth Client ID (from Google Cloud Console)
   // Must match the GOOGLE_CLIENT_ID in your backend .env
   googleClientId: 'your_google_client_id.apps.googleusercontent.com',
+
+  gaMeasurementId: 'G-XXXXXXXXXX', // Google Analytics Measurement ID (optional)
 };
