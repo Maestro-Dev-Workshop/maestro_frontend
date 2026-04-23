@@ -4,10 +4,19 @@ import { ThemeService } from './app/core/services/theme.service';
 import { appConfig } from './app/app.config';
 import { App } from './app/app';
 import { environment } from './environments/environment';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
+import { AnalyticsService } from './app/core/services/analytics.service';
+
+function trackPageViews(router: Router, analytics: AnalyticsService) {
+  router.events
+    .pipe(filter(event => event instanceof NavigationEnd))
+    .subscribe((event: any) => {
+      analytics.trackPageView(event.urlAfterRedirects);
+    });
+}
 
 function initializeGoogleAnalytics(measurementId: string) {
-  if (!measurementId) return;
-
   // Load the gtag.js script dynamically
   const script = document.createElement('script');
   script.async = true;
@@ -21,13 +30,17 @@ function initializeGoogleAnalytics(measurementId: string) {
   }
   (window as any).gtag = gtag;
 
-  // Configure Google Analytics (automatically sends the initial page_view)
+  // Configure Google Analytics
   gtag('js', new Date());
-  gtag('config', measurementId);
+  gtag('config', measurementId, {
+    send_page_view: false,
+  });
 }
 
 // Initialize GA only in production
-initializeGoogleAnalytics(environment.gaMeasurementId);
+if (environment.type == 'prod' && environment.gaMeasurementId) {
+  initializeGoogleAnalytics(environment.gaMeasurementId);
+}
 
 bootstrapApplication(App, {
   ...appConfig,
@@ -40,5 +53,15 @@ bootstrapApplication(App, {
         themeService.init();
       },
     },
+    {
+      provide: 'GA_TRACKING',
+      useFactory: () => {
+        if (environment.type === 'prod' && environment.gaMeasurementId) {
+          const router = inject(Router);
+          const analytics = inject(AnalyticsService);
+          trackPageViews(router, analytics);
+        }
+      },
+    }
   ],
 }).catch(err => console.error(err));
