@@ -90,11 +90,11 @@
       ></app-glossary>
     }
     @if (currentView().type === 'flashcards') {
-      <app-flashcards
+      <app-lesson-flashcards
         class="w-full overflow-hidden flex flex-col"
         [topicId]="currentView().id"
         [cards]="currentView().content"
-      ></app-flashcards>
+      ></app-lesson-flashcards>
     }
   </div>
 

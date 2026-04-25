@@ -98,17 +98,30 @@
                 >
                 <label for="cell-image">Images</label>
               </div>
-              <!-- <div class="flex flex-row items-start">
+              <div class="flex flex-row items-start">
                 <input 
                   type="checkbox" 
-                  id="cell-card" 
+                  id="cell-flashcard" 
                   class="mx-2 my-1 accent-blue-900" 
-                  value="card" 
-                  [checked]="config.exercise.types.includes('card')" 
+                  value="flashcard" 
+                  [checked]="config.cells.types.includes('flashcard')" 
                   (change)="toggleType($event, 'cells')"
+                  [disabled]="(config.cells.types.length >= 10) && (!config.cells.types.includes('flashcard'))"
                 >
-                <label for="cell-card">Flashcards</label>
-              </div> -->
+                <label for="cell-flashcard">Flashcards</label>
+              </div>
+              <div class="flex flex-row items-start">
+                <input 
+                  type="checkbox" 
+                  id="cell-quote" 
+                  class="mx-2 my-1 accent-blue-900" 
+                  value="quote" 
+                  [checked]="config.cells.types.includes('quote')" 
+                  (change)="toggleType($event, 'cells')"
+                  [disabled]="(config.cells.types.length >= 10) && (!config.cells.types.includes('quote'))"
+                >
+                <label for="cell-qutoe">Quotes</label>
+              </div>
             </div>
           </div>
         </div>
