@@ -17,7 +17,7 @@ import { Chatbot } from '../chatbot/chatbot';
 import { Subtopic } from '../subtopic/subtopic';
 import { Practice } from '../practice/practice';
 import { Glossary } from '../glossary/glossary';
-import { Flashcards } from '../flashcards/flashcards';
+import { LessonFlashcards } from '../lesson-flashcards/lesson-flashcards';
 import { TutorialElement } from '../../../shared/components/tutorial-element/tutorial-element';
 
 import { SubjectsService } from '../../../core/services/subjects.service';
@@ -49,7 +49,7 @@ import {
 
 @Component({
   selector: 'app-lesson-page',
-  imports: [Header, Sidebar, Chatbot, Subtopic, Practice, Glossary, Flashcards, TutorialElement],
+  imports: [Header, Sidebar, Chatbot, Subtopic, Practice, Glossary, LessonFlashcards, TutorialElement],
   templateUrl: './lesson-page.html',
   styleUrl: './lesson-page.css',
 })

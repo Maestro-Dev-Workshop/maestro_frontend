@@ -7,6 +7,8 @@ import { ExecutableCodeCell } from '../cells/executable-code-cell/executable-cod
 import { DiagramCell } from '../cells/diagram-cell/diagram-cell';
 import { SheetMusicCell } from '../cells/sheet-music-cell/sheet-music-cell';
 import { ImageCell } from '../cells/image-cell/image-cell';
+import { FlashcardCell } from '../cells/flashcard-cell/flashcard-cell';
+import { QuoteCell } from '../cells/quote-cell/quote-cell';
 
 
 @Component({
@@ -19,7 +21,9 @@ import { ImageCell } from '../cells/image-cell/image-cell';
     ExecutableCodeCell,
     DiagramCell,
     SheetMusicCell,
-    ImageCell
+    ImageCell,
+    FlashcardCell,
+    QuoteCell
   ],
   templateUrl: './subtopic.html',
   styleUrl: './subtopic.css'

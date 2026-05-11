@@ -7,6 +7,7 @@ import { environment } from './environments/environment';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AnalyticsService } from './app/core/services/analytics.service';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 function trackPageViews(router: Router, analytics: AnalyticsService) {
   router.events
@@ -62,6 +63,7 @@ bootstrapApplication(App, {
           trackPageViews(router, analytics);
         }
       },
-    }
+    },
+    provideAnimations()
   ],
 }).catch(err => console.error(err));
