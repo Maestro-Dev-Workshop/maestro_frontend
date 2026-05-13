@@ -1,0 +1,18 @@
+<div class="max-w-[710px] flex flex-row items-center justify-center my-2">
+  <app-flashcards
+    class="w-full"
+    [cards]="cards()"
+    [loop]="true"
+    (cardChange)="onCardChange($event)"
+  >
+
+    <ng-template #front let-card>
+      <h2 class="text-2xl">{{ card.front }}</h2>
+    </ng-template>
+
+    <ng-template #back let-card>
+      <p class="text-lg text-green-400">{{ card.back }}</p>
+    </ng-template>
+
+  </app-flashcards>
+</div>
