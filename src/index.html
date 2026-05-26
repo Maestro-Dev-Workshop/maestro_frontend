@@ -9,6 +9,15 @@
 </head>
 <body>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
+  
   <app-root></app-root>
+
+  <script src="https://unpkg.com/@rdkit/rdkit/dist/RDKit_minimal.js"></script>
+  <script>
+    window.initRDKitModule()
+      .then((rdkit) => {
+        window.RDKit = rdkit;
+      });
+  </script>
 </body>
 </html>

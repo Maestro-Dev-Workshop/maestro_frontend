@@ -9,6 +9,8 @@ import { SheetMusicCell } from '../cells/sheet-music-cell/sheet-music-cell';
 import { ImageCell } from '../cells/image-cell/image-cell';
 import { FlashcardCell } from '../cells/flashcard-cell/flashcard-cell';
 import { QuoteCell } from '../cells/quote-cell/quote-cell';
+import { KetcherCell } from '../cells/ketcher-cell/ketcher-cell';
+import { MapCell } from '../cells/map-cell/map-cell';
 
 
 @Component({
@@ -23,7 +25,9 @@ import { QuoteCell } from '../cells/quote-cell/quote-cell';
     SheetMusicCell,
     ImageCell,
     FlashcardCell,
-    QuoteCell
+    QuoteCell,
+    KetcherCell,
+    MapCell
   ],
   templateUrl: './subtopic.html',
   styleUrl: './subtopic.css'
