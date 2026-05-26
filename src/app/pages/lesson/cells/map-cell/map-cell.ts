@@ -1,6 +1,18 @@
 import { Component, input, viewChild, effect, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
 import * as L from 'leaflet';
 
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: markerIcon2x,
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
+});
+
 @Component({
   selector: 'app-map-cell',
   imports: [],
@@ -17,7 +29,7 @@ export class MapCell implements AfterViewInit, OnDestroy  {
   private geoLayer?: L.GeoJSON;
 
   private updateOnInputChange = effect(() => {
-    console.log(this.data())
+    // console.log(this.data())
     this.geoJson = this.data()?.metadata
     this.renderGeoJson();
   })

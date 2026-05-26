@@ -1,72 +1,82 @@
-import { Component, input, viewChild, ElementRef, AfterViewInit, effect, OnDestroy } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  AfterViewInit,
+  OnDestroy,
+  input,
+  viewChild,
+  effect
+} from '@angular/core';
 
 declare global {
   interface Window {
-    ketcher: any;
+    initRDKitModule: any;
+    RDKit: any;
   }
 }
 
 @Component({
   selector: 'app-ketcher-cell',
-  imports: [],
   templateUrl: './ketcher-cell.html',
   styleUrl: './ketcher-cell.css',
 })
-export class KetcherCell
-implements AfterViewInit, OnDestroy {
+export class KetcherCell implements AfterViewInit, OnDestroy {
 
   data = input<any>();
 
-  container = viewChild.required<ElementRef<HTMLDivElement>>('container');
+  container =
+    viewChild.required<ElementRef<HTMLDivElement>>('container');
 
-  private initialized = false;
+  private rdkit: any;
+  private lastMol?: string;
 
-  private syncInput = effect(async () => {
-    const mol =this.data()?.content;
-    if (this.initialized && mol) {
-      await this.renderMol(mol);
+  private syncInput = effect(() => {
+    // console.log(this.data())
+    const mol = this.data()?.content;
+    if (mol && this.rdkit) {
+      void this.render(mol);
     }
   });
 
   async ngAfterViewInit() {
-    await this.initialize();
+    await this.initializeRDKit();
   }
 
   ngOnDestroy() {
     this.container().nativeElement.innerHTML = '';
   }
 
-  private async initialize() {
+  private async initializeRDKit() {
+    // IMPORTANT: load WASM module correctly
+    if (!window.initRDKitModule) {
+      throw new Error('RDKit WASM not loaded in index.html');
+    }
 
-    const host = this.container().nativeElement;
+    this.rdkit = await window.initRDKitModule();
 
-    host.innerHTML =
-      `
-      <iframe
-        src="/assets/ketcher/index.html"
-        class="w-full h-full">
-      </iframe>
-      `;
-
-    const iframe = host.querySelector('iframe');
-
-    iframe?.addEventListener('load', async () => {
-      this.initialized = true;
-      const mol = this.data()?.content;
-
-      if (mol) {
-        await this.renderMol(mol);
-      }
-    });
+    const mol = this.data()?.content;
+    if (mol) {
+      await this.render(mol);
+    }
   }
 
-  private async renderMol(molBlock: string) {
-    const iframe = this.container().nativeElement.querySelector('iframe') as HTMLIFrameElement;
+  private async render(molBlock: string) {
+    if (!molBlock || molBlock === this.lastMol) return;
 
-    const ketcher = iframe?.contentWindow?.ketcher;
-    if (!ketcher)
-      return;
+    const el = this.container().nativeElement;
 
-    await ketcher.setMolecule(molBlock);
+    try {
+      const molecule = this.rdkit.get_mol(molBlock);
+      const svg = molecule.get_svg();
+
+      el.innerHTML = svg;
+
+      this.lastMol = molBlock;
+
+      molecule.delete?.();
+    } catch (e) {
+      console.error('RDKit render error:', e);
+      el.innerHTML = '<div>Invalid molecule</div>';
+    }
   }
 }
