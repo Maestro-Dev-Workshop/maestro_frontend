@@ -67,11 +67,17 @@
           <app-flashcard-cell [data]="cell"></app-flashcard-cell>
         } @else if (cell.type === "quote") {
           <app-quote-cell [data]="cell"></app-quote-cell>
+        } @else if (cell.type === "ketcher diagram") {
+          <app-ketcher-cell [data]="cell"></app-ketcher-cell>
+        } @else if (cell.type === "maps") {
+          <app-map-cell [data]="cell"></app-map-cell>
         } @else {
-          <!-- Default Fallback Cells -->
-          <app-markdown-cell [data]="cell"></app-markdown-cell>
+          Incompatible cell type: "{{ cell.type }}"
           <!-- {{ cell.content }}
           {{ cell.metadata }} -->
+
+          <!-- Default Fallback Cells -->
+          <!-- <app-markdown-cell [data]="cell"></app-markdown-cell> -->
         }
       }
     </div>

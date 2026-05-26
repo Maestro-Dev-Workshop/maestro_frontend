@@ -120,7 +120,19 @@
                   (change)="toggleType($event, 'cells')"
                   [disabled]="(config.cells.types.length >= 10) && (!config.cells.types.includes('quote'))"
                 >
-                <label for="cell-qutoe">Quotes</label>
+                <label for="cell-quote">Quotes</label>
+              </div>
+              <div class="flex flex-row items-start">
+                <input 
+                  type="checkbox" 
+                  id="cell-maps" 
+                  class="mx-2 my-1 accent-blue-900" 
+                  value="maps" 
+                  [checked]="config.cells.types.includes('maps')" 
+                  (change)="toggleType($event, 'cells')"
+                  [disabled]="(config.cells.types.length >= 10) && (!config.cells.types.includes('maps'))"
+                >
+                <label for="cell-maps">Maps</label>
               </div>
             </div>
           </div>
