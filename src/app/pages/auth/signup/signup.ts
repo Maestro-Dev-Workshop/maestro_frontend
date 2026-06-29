@@ -27,6 +27,8 @@ export class Signup implements AfterViewInit {
   passwordVisible = 'password';
   loading = false;
 
+  private gaMeasurementId = environment.gaMeasurementId;
+
   authService = inject(AuthService);
   notify = inject(NotificationService);
 
@@ -44,6 +46,34 @@ export class Signup implements AfterViewInit {
   togglePasswordVisibility() {
     this.passwordVisible =
       this.passwordVisible === 'password' ? 'text' : 'password';
+  }
+
+/**
+   * 🛠️ Fetches tracking IDs from the global window context
+   * This specific syntax bypasses the TS2304 "Cannot find name 'gtag'" error
+   */
+  private getGa4Ids(callback: (clientId: string | null, sessionId: string | null) => void) {
+    if (!this.gaMeasurementId) {
+      callback(null, null);
+      return;
+    }
+
+    // Cast the global scope to 'any' to bypass strict compile-time checks
+    const globalWindow = window as any;
+
+    if (globalWindow && typeof globalWindow.gtag === 'function') {
+      try {
+        globalWindow.gtag('get', this.gaMeasurementId, 'client_id', (clientId: string) => {
+          globalWindow.gtag('get', this.gaMeasurementId, 'session_id', (sessionId: string) => {
+            callback(clientId, sessionId);
+          });
+        });
+        return;
+      } catch (e) {
+        console.error('Failed to fetch GA4 IDs:', e);
+      }
+    }
+    callback(null, null);
   }
 
   // 📨 Normal email/password signup
@@ -65,38 +95,43 @@ export class Signup implements AfterViewInit {
       return;
     }
 
-    this.authService
-      .signup({
-        first_name: this.firstname,
-        last_name: this.lastname,
-        email: this.email.toLowerCase(),
-        password: this.password,
-      })
-      .subscribe({
-        next: () => {
-          if (environment.type?.toLowerCase() == 'prod') {
-            this.notify.showSuccess(
-              'Verification email sent. Please check your inbox.',
+    // Capture IDs before calling the registration API
+    this.getGa4Ids((clientId, sessionId) => {
+      this.authService
+        .signup({
+          first_name: this.firstname,
+          last_name: this.lastname,
+          email: this.email.toLowerCase(),
+          password: this.password,
+          ga_client_id: clientId,   // Pass to Express backend
+          ga_session_id: sessionId, // Pass to Express backend
+        })
+        .subscribe({
+          next: () => {
+            if (environment.type?.toLowerCase() == 'prod') {
+              this.notify.showSuccess(
+                'Verification email sent. Please check your inbox.',
+              );
+              this.router.navigateByUrl('/check-email', {
+                state: { email: this.email.toLowerCase() },
+              });
+            } else {
+              this.notify.showSuccess(
+                'Signup successful. Redirecting to login...',
+              );
+              this.router.navigateByUrl('/login');
+            }
+          },
+          error: (res: any) => {
+            this.loading = false;
+            this.notify.showError(
+              res.error?.message || 'Signup failed. Please try again.',
             );
-            this.router.navigateByUrl('/check-email', {
-              state: { email: this.email.toLowerCase() },
-            });
-          } else {
-            this.notify.showSuccess(
-              'Signup successful. Redirecting to login...',
-            );
-            this.router.navigateByUrl('/login');
-          }
-        },
-        error: (res: any) => {
-          this.loading = false;
-          this.notify.showError(
-            res.error?.message || 'Signup failed. Please try again.',
-          );
-          this.cdr.detectChanges();
-        },
+            this.cdr.detectChanges();
+          },
+        });
       });
-  }
+    }
 
   // 🔐 Google Auth Init
   ngAfterViewInit(): void {
@@ -120,7 +155,14 @@ export class Signup implements AfterViewInit {
   handleGoogleResponse(response: any) {
     this.loading = true;
 
-    this.authService.googleAuth(response.credential).subscribe({
+    this.getGa4Ids((clientId, sessionId) => {
+    this.authService
+    .googleAuth({
+      credential: response.credential,
+      ga_client_id: clientId,   // Pass to Express backend
+      ga_session_id: sessionId, // Pass to Express backend
+    })
+    .subscribe({
       next: (res: any) => {
         localStorage.setItem('accessToken', res.accessToken);
         localStorage.setItem('refreshToken', res.refreshToken);
@@ -135,6 +177,7 @@ export class Signup implements AfterViewInit {
         this.notify.showError(err.error?.message || 'Google signup failed.');
         this.cdr.detectChanges();
       },
+    });
     });
   }
 }

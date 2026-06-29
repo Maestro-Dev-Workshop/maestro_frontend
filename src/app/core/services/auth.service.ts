@@ -9,6 +9,14 @@ export interface SignupPayload {
   last_name: string;
   email: string;
   password: string;
+  ga_client_id?: string | null;  // Added for GA4 tracking
+  ga_session_id?: string | null; // Added for GA4 tracking
+}
+
+export interface GoogleAuthPayload {
+  credential: string;
+  ga_client_id: string | null;
+  ga_session_id: string | null;
 }
 
 export interface LoginPayload {
@@ -45,8 +53,12 @@ export class AuthService {
     return this.http.post<LoginApiResponse>('auth/login', credentials);
   }
 
-  googleAuth(token: string): Observable<LoginApiResponse> {
-    return this.http.post<LoginApiResponse>('auth/google', { token });
+  googleAuth(data: GoogleAuthPayload): Observable<LoginApiResponse> {
+    return this.http.post<LoginApiResponse>('auth/google', { 
+      token: data.credential, // Maps 'credential' from frontend to 'token' if your backend expects 'token'
+      ga_client_id: data.ga_client_id,
+      ga_session_id: data.ga_session_id
+    });
   }
 
   refreshAccessToken(): Observable<RefreshTokenApiResponse> {
