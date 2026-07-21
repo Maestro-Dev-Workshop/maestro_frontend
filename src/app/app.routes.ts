@@ -27,4 +27,12 @@ export const routes: Routes = [
 
   // Not Found
   { path: '**', loadComponent: () => import('./pages/not-found/not-found').then(m => m.NotFound) },
+
+
+  // UI Overhaul Pages (All paths and imports are prefixed with `v2/`)
+  // Auth
+  // { path: 'v2/signup', loadComponent: () => import('./v2/pages/auth/signup/signup').then(m => m.Signup) },
+  // { path: 'v2/login', loadComponent: () => import('./v2/pages/auth/login/login').then(m => m.Login) },
+  // { path: 'v2/verify-email', loadComponent: () => import('./v2/pages/auth/verify-email/verify-email').then(m => m.VerifyEmail) },
+  // { path: 'v2/check-email', loadComponent: () => import('./v2/pages/auth/check-email/check-email').then(m => m.CheckEmail) },
 ];
