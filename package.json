@@ -22,7 +22,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^20.3.7",
+    "@angular/animations": "^20.3.4",
     "@angular/cdk": "^20.2.14",
     "@angular/common": "^20.3.2",
     "@angular/compiler": "^20.3.2",
@@ -32,6 +32,9 @@
     "@angular/router": "^20.3.2",
     "@rdkit/rdkit": "^2025.3.4-1.0.0",
     "@traptitech/markdown-it-katex": "^3.6.0",
+    "@tsparticles/angular": "^4.3.2",
+    "@tsparticles/engine": "^4.3.2",
+    "@tsparticles/slim": "^4.3.2",
     "katex": "^0.16.22",
     "leaflet": "^1.9.4",
     "markdown-it": "^14.1.0",
