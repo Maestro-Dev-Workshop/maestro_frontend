@@ -104,7 +104,52 @@
   --text-alt: #374151;
   --text-alt-hover: #6B7280;
 
-  /* BORDERS */
+  
+  /* OVERHAUL STYLES */
+  --surface-tint: #002843;
+  --primary: #002843;
+  --on-primary: #FFFFFF;
+  --primary-container: #CEE5FF;
+  --on-primary-container: #104A73;
+  --secondary: #DEA000;
+  --on-secondary: #FFFFFF;
+  --secondary-container: #FFDEA7;
+  --on-secondary-container: #5E4200;
+  --secondary-main: #DEA000;
+  --background: #F7F9FF;
+  --on-background: #181C20;
+  --surface: #F7F9FF;
+  --on-surface: #181C20;
+  --surface-variant: #42474E;
+  --on-surface-variant: #42474E;
+  --inverse-surface: #2D3135;
+  --inverse-on-surface: #EFF1F6;
+  --surface-dim: #D8DAE0;
+  --surface-bright: #F7F9FF;
+  --surface-container-lowest: #E0E2E8;
+  --surface-container-low: #F1F3F9;
+  --surface-container: #ECEEF4;
+  --surface-container-high: #E6E8EE;
+  --surface-container-highest: #E0E2E8;
+  --outline: #72777F;
+  --outline-variant: #C2C7CF;
+  --shadow: #000000;
+  --primary-dimmer: #001222;
+  --primary-dim: #001D33;
+  --primary-bright: #317AC3;
+  --primary-brighter: #ACCAEA;
+  --primary-dimmer-stable: #001222;
+  --primary-dim-stable: #001D33;
+  --primary-bright-stable: #317AC3;
+  --primary-brighter-stable: #ACCAEA;
+  --tertiary: #03A800;
+  --on-tertiary: #FFFFFF;
+  --tertiary-container: #C0EFB0;
+  --on-tertiary-container: #285020;
+  --error: #EF0000;
+  --on-error: #FFFFFF;
+  --error-container: #FFDAD4;
+  --on-error-container: #73342A;  
 }
 
 .light {
@@ -128,7 +173,52 @@
   --text-alt: #374151;
   --text-alt-hover: #6B7280;
 
-  /* BORDERS */
+
+  /* OVERHAUL STYLES */
+  --surface-tint: #002843;
+  --primary: #002843;
+  --on-primary: #FFFFFF;
+  --primary-container: #CEE5FF;
+  --on-primary-container: #104A73;
+  --secondary: #DEA000;
+  --on-secondary: #FFFFFF;
+  --secondary-container: #FFDEA7;
+  --on-secondary-container: #5E4200;
+  --secondary-main: #DEA000;
+  --background: #F7F9FF;
+  --on-background: #181C20;
+  --surface: #F7F9FF;
+  --on-surface: #181C20;
+  --surface-variant: #42474E;
+  --on-surface-variant: #42474E;
+  --inverse-surface: #2D3135;
+  --inverse-on-surface: #EFF1F6;
+  --surface-dim: #D8DAE0;
+  --surface-bright: #F7F9FF;
+  --surface-container-lowest: #E0E2E8;
+  --surface-container-low: #F1F3F9;
+  --surface-container: #ECEEF4;
+  --surface-container-high: #E6E8EE;
+  --surface-container-highest: #E0E2E8;
+  --outline: #72777F;
+  --outline-variant: #C2C7CF;
+  --shadow: #000000;
+  --primary-dimmer: #001222;
+  --primary-dim: #001D33;
+  --primary-bright: #317AC3;
+  --primary-brighter: #ACCAEA;
+  --primary-dimmer-stable: #001222;
+  --primary-dim-stable: #001D33;
+  --primary-bright-stable: #317AC3;
+  --primary-brighter-stable: #ACCAEA;
+  --tertiary: #03A800;
+  --on-tertiary: #FFFFFF;
+  --tertiary-container: #C0EFB0;
+  --on-tertiary-container: #285020;
+  --error: #EF0000;
+  --on-error: #FFFFFF;
+  --error-container: #FFDAD4;
+  --on-error-container: #73342A;  
 }
 
 .dark {
@@ -152,7 +242,52 @@
   --text-alt: #E0E5EA;
   --text-alt-hover: #A4ADB5;
 
-  /* BORDERS */
+
+  /* OVERHAUL STYLES */
+  --surface-tint: #DEA000;
+  --primary: #DEA000;
+  --on-primary: #190F00;
+  --primary-container: #5E4200;
+  --on-primary-container: #FFDEA7;
+  --secondary: #9CCBFB;
+  --on-secondary: #003354;
+  --secondary-container: #002843;
+  --on-secondary-container: #CEE5FF;
+  --secondary-main: #002843;
+  --background: #101418;
+  --on-background: #E0E2E8;
+  --surface: #101418;
+  --on-surface: #E0E2E8;
+  --surface-variant: #42474E;
+  --on-surface-variant: #C2C7CF;
+  --inverse-surface: #E0E2E8;
+  --inverse-on-surface: #2D3135;
+  --surface-dim: #101418;
+  --surface-bright: #36393E;
+  --surface-container-lowest: #0B0E12;
+  --surface-container-low: #181C20;
+  --surface-container: #1C2024;
+  --surface-container-high: #272A2F;
+  --surface-container-highest: #323539;
+  --outline: #8C9199;
+  --outline-variant: #42474E;
+  --shadow: #000000;
+  --primary-dimmer: #FFDEA7;
+  --primary-dim: #FEBB25;
+  --primary-bright: #7C5800;
+  --primary-brighter: #412D00;
+  --primary-dimmer-stable: #412D00;
+  --primary-dim-stable: #7C5800;
+  --primary-bright-stable: #FEBB25;
+  --primary-brighter-stable: #FFDEA7;
+  --tertiary: #A5D395;
+  --on-tertiary: #03A800;
+  --tertiary-container: #285020;
+  --on-tertiary-container: #C0EFB0;
+  --error: #FFB4A8;
+  --on-error: #EF0000;
+  --error-container: #73342A;
+  --on-error-container: #FFDAD4;  
 }
 
 html,
