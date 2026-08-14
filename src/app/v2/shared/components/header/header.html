@@ -1,0 +1,30 @@
+<header class="w-full flex items-center justify-between bg-surface-container-low p-4">
+  <div class="flex items-center gap-1">
+    <app-theme-icon name="maestro-logo" className="w-16"></app-theme-icon>
+    <span class="font-serif text-xl">Maestro</span>
+  </div>
+
+  <div class="flex items-center gap-6">
+    <div class="flex items-center gap-2 rounded-full p-2 bg-surface-container-highest font-semibold leading-3">
+      <app-theme-icon name="credits-icon" class="w-max"></app-theme-icon>
+      50
+      <button class="bg-primary text-on-primary block rounded-full p-2 text-lg leading-3">+</button>
+    </div>
+
+    <div class="flex items-center gap-4">
+      <button class="border border-outline-variant rounded-xl p-1" (click)="toggleTheme()">
+        <app-theme-icon name="theme-switch-icon" className="w-7"></app-theme-icon>
+      </button>
+      <button class="border border-outline-variant rounded-xl p-1">
+        <app-theme-icon name="help-circle-icon" className="w-7"></app-theme-icon>
+      </button>
+      <button class="border border-outline-variant rounded-xl p-1">
+        <app-theme-icon name="inbox-icon" className="w-7"></app-theme-icon>
+      </button>
+    </div>
+
+    <button class="rounded-full p-5 bg-primary-container text-on-primary-container text-xl leading-none font-medium">
+      {{ initials() }}
+    </button>
+  </div>
+</header>

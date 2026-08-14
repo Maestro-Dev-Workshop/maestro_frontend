@@ -1,0 +1,38 @@
+<div [class]="`w-${expanded() ? '80' : 'max'} h-full bg-surface-container-low flex flex-col p-4 gap-4 items-center`">
+  <div [class]="`w-${expanded() ? 'full' : 'max'} flex items-center justify-between p-4 border-b-[1px] border-outline`">
+    @if (expanded()) {
+      <span>Menu</span>
+    }
+    <button class="hover:opacity-70" (click)="toggleSidebar()">
+      <app-theme-icon name="close-sidebar-icon"></app-theme-icon>
+    </button>
+  </div>
+
+  <div [class]="`w-${expanded() ? 'full' : 'max'} flex flex-col gap-2`">
+    @for (page of dashboardPages; track $index) {
+      <app-sidebar-item 
+        [title]="page.title" 
+        [icon]="page.icon" 
+        [expanded]="expanded()"
+        [selected]="page.selected"
+        (clickedAction)="navigateToPage(page.route, $index)"
+      ></app-sidebar-item>
+    }
+  </div>
+
+  <button class="mt-auto mb-4 flex items-center gap-4 w-full hover:bg-surface-container-high p-2 rounded-lg" (click)="navigateToSettings()">
+    <div class="rounded-full p-5 bg-primary-container text-on-primary-container text-xl leading-none font-medium">
+      {{ initials() }}
+    </div>
+    @if (expanded()) {
+      <div class="flex flex-col items-start">
+        <span class="">
+          {{ fullName() }}
+        </span>
+        <span class="text-on-surface-variant text-sm">
+          {{ email() }}
+        </span>
+      </div>
+    }
+  </button>
+</div>
