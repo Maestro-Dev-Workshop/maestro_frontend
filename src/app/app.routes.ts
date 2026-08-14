@@ -31,6 +31,12 @@ export const routes: Routes = [
   { path: 'v2/login', loadComponent: () => import('./v2/pages/auth/login/login').then(m => m.Login) },
   // { path: 'v2/verify-email', loadComponent: () => import('./v2/pages/auth/verify-email/verify-email').then(m => m.VerifyEmail) },
   // { path: 'v2/check-email', loadComponent: () => import('./v2/pages/auth/check-email/check-email').then(m => m.CheckEmail) },
+  
+  // Dashboard Pages
+  { path: 'v2/lessons', loadComponent: () => import('./v2/pages/dashboard/lessons/lessons').then(m => m.Lessons) },
+  { path: 'v2/store', loadComponent: () => import('./v2/pages/dashboard/store/store').then(m => m.Store) },
+  { path: 'v2/usage-stats', loadComponent: () => import('./v2/pages/dashboard/usage-stats/usage-stats').then(m => m.UsageStats) },
+  { path: 'v2/settings', loadComponent: () => import('./v2/pages/dashboard/settings/settings').then(m => m.Settings) },
 
   // Not Found
   { path: '**', loadComponent: () => import('./pages/not-found/not-found').then(m => m.NotFound) },

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AuthBackground } from '../../../shared/auth-background/auth-background';
+import { AuthBackground } from '../../../shared/components/auth-background/auth-background';
 
 @Component({
   selector: 'app-login',

@@ -1,0 +1,10 @@
+<button 
+  [class]="`w-full flex items-center gap-2 p-4 rounded-lg 
+    ${selected() ? 'bg-primary' : 'bg-surface-container-low hover:bg-surface-container-highest'}`"
+  (click)="buttonClicked()"
+>
+  <app-theme-icon [name]="icon()" [invert]="selected()"></app-theme-icon>
+  @if (expanded()) {
+    <span [class]="selected() ? 'text-surface' : 'text-on-surface'">{{ title() }}</span>
+  }
+</button>
