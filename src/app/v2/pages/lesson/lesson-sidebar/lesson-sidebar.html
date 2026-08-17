@@ -1,0 +1,132 @@
+<div [class]="`w-${sidebarExpanded() ? '80' : 'max'} h-full overflow-auto bg-surface-container-low flex flex-col p-4 gap-4 items-center`">
+  <div [class]="`w-${sidebarExpanded() ? 'full' : 'max'} flex items-center justify-between p-4 border-b-[1px] border-outline`">
+    @if (sidebarExpanded()) {
+      <span>Lesson Content</span>
+    }
+    <button class="hover:opacity-70" (click)="toggleSidebar()">
+      <app-theme-icon name="close-sidebar-icon"></app-theme-icon>
+    </button>
+  </div>
+
+  <div 
+    [class]="`w-${sidebarExpanded() ? 'full' : 'max'} flex flex-col h-full gap-2`"
+    cdkDropList (cdkDropListDropped)="dropTopic($event)"
+  >
+    <!-- Topic List -->
+    @if (sidebarExpanded()) {
+      @for (topic of content().topics; track topic.id) {
+        @if (isTopicExpanded(topic.id)) {
+          <div class="flex flex-col pl-2 border-l-[1px] border-outline-variant gap-2" cdkDrag>
+            <app-sidebar-item 
+              [title]="topic.title" 
+              [expanded]="sidebarExpanded()"
+              (clickedAction)="toggleExpandTopic(topic.id)"
+            ></app-sidebar-item>
+            <div class="flex flex-col pl-4 border-t-[1px] border-outline-variant">
+              @for (subtopic of topic.subtopics; track subtopic.id) {
+                <!-- Subtopic -->
+                <app-sidebar-item 
+                  [title]="subtopic.title" 
+                  [expanded]="sidebarExpanded()"
+                  [selected]="(subtopic.id === currentView().id && currentView().type === 'subtopic')"
+                  (clickedAction)="selectView(subtopic.id, 'subtopic')"
+                ></app-sidebar-item>
+                
+              }
+
+              <!-- Exercise -->
+              @if (topic.exercise) {
+                <app-sidebar-item 
+                  title="Exercise" 
+                  icon="exercise-icon"
+                  [expanded]="sidebarExpanded()"
+                  [selected]="(topic.exercise.id === currentView().id && currentView().type === 'exercise')"
+                  (clickedAction)="selectView(topic.exercise.id, 'exercise')"
+                ></app-sidebar-item>
+              }
+            </div>
+          </div>
+        } @else {
+          <app-sidebar-item 
+            [title]="topic.title" 
+            [expanded]="sidebarExpanded()"
+            (clickedAction)="toggleExpandTopic(topic.id)"
+            cdkDrag
+          ></app-sidebar-item>
+        }
+      }
+    } @else {
+      <!-- Collapsed Topics -->
+      <app-sidebar-item 
+        title="" 
+        icon="triple-dot-icon"
+        [expanded]="sidebarExpanded()"
+        [selected]="false"
+        (clickedAction)="toggleSidebar()"
+      ></app-sidebar-item>
+    }
+
+    <!-- Flashcards -->
+    @if (content().card_decks && (content().card_decks.length > 0)) {
+      @if (flashcardExpanded()) {
+        <div class="flex flex-col pl-2 border-l-[1px] border-outline-variant gap-2">
+          <app-sidebar-item 
+            title="Flashcards" 
+            icon="flashcards-icon"
+            [expanded]="sidebarExpanded()"
+            (clickedAction)="toggleFlashcardExpansion()"
+          ></app-sidebar-item>
+          <div class="flex flex-col pl-4 border-t-[1px] border-outline-variant">
+            @for (deck of content().card_decks; track "flashcard_" + deck.topic_id) {
+              <app-sidebar-item 
+                [title]="deck.topic_name" 
+                [expanded]="sidebarExpanded()"
+                [selected]="(deck.topic_id === currentView().id && currentView().type === 'flashcards')"
+                (clickedAction)="selectView(deck.topic_id, 'flashcards')"
+              ></app-sidebar-item>
+            }
+          </div>
+        </div>
+      } @else {
+        <app-sidebar-item 
+          title="Flashcards" 
+          icon="flashcards-icon"
+          [expanded]="sidebarExpanded()"
+          (clickedAction)="toggleFlashcardExpansion()"
+        ></app-sidebar-item>
+      }
+    }
+
+    <!-- Glossary -->
+    @if (content().glossary && (content().glossary.length > 0)) {
+      <app-sidebar-item 
+        title="Glossary" 
+        icon="glossary-icon"
+        [expanded]="sidebarExpanded()"
+        [selected]="(currentView().type === 'glossary')"
+        (clickedAction)="selectView('glossary', 'glossary')"
+      ></app-sidebar-item>
+    }
+    
+    <!-- Exam -->
+    @if (content().exam) {
+      <app-sidebar-item 
+        title="Exam" 
+        icon="exam-icon"
+        [expanded]="sidebarExpanded()"
+        [selected]="(content().exam.id === currentView().id && currentView().type === 'exam')"
+        (clickedAction)="selectView(content().exam.id, 'exam')"
+      ></app-sidebar-item>
+    }
+    
+
+    <app-sidebar-item 
+      class="mt-auto"
+      title="Back to Dashboard" 
+      icon="arrow-left" 
+      [expanded]="sidebarExpanded()"
+      (clickedAction)="backToDashboard()"
+    ></app-sidebar-item>
+  </div>
+
+</div>

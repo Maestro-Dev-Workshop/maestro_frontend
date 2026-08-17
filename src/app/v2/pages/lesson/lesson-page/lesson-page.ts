@@ -9,25 +9,18 @@ import {
   computed,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { forkJoin, map, switchMap } from 'rxjs';
+import { forkJoin, map, of, switchMap } from 'rxjs';
 
 import { Header } from '../../../shared/components/header/header';
-import { Sidebar } from '../sidebar/sidebar';
-import { Chatbot } from '../chatbot/chatbot';
-import { Subtopic } from '../subtopic/subtopic';
-import { Practice } from '../practice/practice';
-import { Glossary } from '../glossary/glossary';
-import { LessonFlashcards } from '../lesson-flashcards/lesson-flashcards';
-import { TutorialElement } from '../../../shared/components/tutorial-element/tutorial-element';
+import { LessonSidebar } from '../lesson-sidebar/lesson-sidebar';
 
-import { SubjectsService } from '../../../core/services/subjects.service';
-import { LessonService } from '../../../core/services/lesson.service';
-import { ChatbotService } from '../../../core/services/chatbot.service';
-import { NotificationService } from '../../../core/services/notification.service';
-import { OnboardingService, OnboardingStep } from '../../../core/services/onboarding.service';
+import { SubjectsService } from '../../../../core/services/subjects.service';
+import { LessonService } from '../../../../core/services/lesson.service';
+import { ChatbotService } from '../../../../core/services/chatbot.service';
+import { NotificationService } from '../../../../core/services/notification.service';
 
-import { ChatMetadata } from '../../../core/models/chat-metadata.model';
-import { ChatMessage } from '../../../core/models/chat-message.model';
+import { ChatMetadata } from '../../../../core/models/chat-metadata.model';
+import { ChatMessage } from '../../../../core/models/chat-message.model';
 import {
   SubjectContent,
   LessonTopic,
@@ -36,7 +29,8 @@ import {
   ViewChangeEvent,
   SubtopicChangeEvent,
   QuestionChangeEvent,
-} from '../../../core/models/lesson-content.model';
+  FlashcardDeck,
+} from '../../../../core/models/lesson-content.model';
 import {
   SubjectResponse,
   TopicListResponse,
@@ -45,11 +39,11 @@ import {
   FlashcardResponse,
   ExamResponse,
   GlossaryResponse,
-} from '../../../core/models/api-response.model';
+} from '../../../../core/models/api-response.model';
 
 @Component({
   selector: 'app-lesson-page',
-  imports: [Header, Sidebar, Chatbot, Subtopic, Practice, Glossary, LessonFlashcards, TutorialElement],
+  imports: [Header, LessonSidebar],
   templateUrl: './lesson-page.html',
   styleUrl: './lesson-page.css',
 })
@@ -61,7 +55,6 @@ export class LessonPage implements OnInit {
   private lessonService = inject(LessonService);
   private chatbotService = inject(ChatbotService);
   private notify = inject(NotificationService);
-  private onboardingService = inject(OnboardingService);
 
   // Route params
   subjectId = signal('');
@@ -86,31 +79,6 @@ export class LessonPage implements OnInit {
   chatMetadata = signal<ChatMetadata>({});
 
   @ViewChild('contentContainer') private contentContainer!: ElementRef<HTMLDivElement>;
-
-  // Onboarding
-  chatPopupButton = viewChild<ElementRef>('chatPopupButton');
-  onboardingSteps: OnboardingStep[] = [];
-  currentOnboardingStep = computed(() => this.onboardingService.currentStepIndex());
-
-  constructor() {
-    const nav = this.router.currentNavigation();
-    const isBeginner = nav?.extras?.state?.['beginner'] ?? false;
-
-    // Initialize onboarding steps after chatPopupButton is available
-    this.onboardingSteps = [
-      {
-        title: 'Need Help?',
-        text: 'Ask the chatbot about the lesson content or get feedback on practice questions.',
-        object: this.chatPopupButton,
-        tipPosition: 'top',
-        tipAlignment: 'end',
-      },
-    ];
-
-    if (isBeginner) {
-      this.onboardingService.startOnboarding();
-    }
-  }
 
   ngOnInit(): void {
     // Get subjectId from route params
@@ -149,7 +117,7 @@ export class LessonPage implements OnInit {
             topics: [],
             exam: null,
             glossary: [],
-            card_decks: []
+            card_decks: [],
           });
 
           return this.lessonService.getAllTopics(subjectId);
@@ -166,27 +134,55 @@ export class LessonPage implements OnInit {
               selected: topic.selected,
               subtopics: [],
               exercise: null,
+            }));
+
+          const card_decks: FlashcardDeck[] = topicsResponse
+            .filter((topic) => topic.selected)
+            .map((topic) => ({
+              topic_id: topic.id,
+              topic_name: topic.title,
               flashcards: [],
             }));
 
-          this.subjectContent.update((content) => ({ ...content, topics }));
+          this.subjectContent.update((content) => ({ ...content, topics, card_decks }));
 
           const topicRequests = topics.map((topic: LessonTopic) =>
             forkJoin({
               subtopics: this.lessonService.getAllSubtopics(topic.id).pipe(map((r: TopicContentResponse) => r.subtopics || [])),
               exercise: this.lessonService.getExercise(topic.id).pipe(map((r: ExerciseResponse) => r.exercise || null)),
-              flashcards: this.lessonService.getFlashcards(topic.id).pipe(map((r: FlashcardResponse) => r.flashcards || [])),
             }).pipe(
               map((res) => {
                 topic.subtopics = res.subtopics as LessonSubtopic[];
                 topic.exercise = res.exercise;
-                topic.flashcards = res.flashcards;
                 return topic;
               })
             )
           );
 
           return forkJoin(topicRequests);
+        }),
+        switchMap(() => {
+          const flashcardRequests = this.subjectContent().card_decks.map((deck: FlashcardDeck) =>
+            forkJoin({
+              flashcards: this.lessonService.getFlashcards(deck.topic_id).pipe(map((r: FlashcardResponse) => r.flashcards || [])),
+            }).pipe(
+              map((res) => {
+                deck.flashcards = res.flashcards;
+                return deck;
+              })
+            )
+          );
+
+          return forkJoin(flashcardRequests);
+        }),
+        switchMap(() => {
+          const content = this.subjectContent();
+        
+          content.card_decks = content.card_decks.filter(
+            (deck: FlashcardDeck) => deck.flashcards?.length > 0
+          );
+        
+          return of(content);
         }),
         switchMap(() =>
           this.lessonService.getExam(subjectId).pipe(
@@ -266,7 +262,7 @@ export class LessonPage implements OnInit {
         viewContent = content.glossary;
         break;
       case 'flashcards':
-        viewContent = content.topics.find((topic) => topic.id === event.id)?.flashcards || [];
+        viewContent = content.card_decks.find((deck) => deck.topic_id === event.id) || [];
         break;
     }
 
@@ -479,44 +475,5 @@ export class LessonPage implements OnInit {
 
   reorderTopics(topicIds: string[]): void {
     this.subjectService.reorderSubjectTopics(this.subjectId(), topicIds).subscribe();
-  }
-
-  capitalizeFirstLetter(str: string): string {
-    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-  }
-
-  // Onboarding helpers (delegated to service)
-  getTutorialObjectPosition(stepIndex: number) {
-    const step = this.onboardingSteps[stepIndex];
-    if (!step) return { top: 0, left: 0, bottom: 0, right: 0 };
-    return this.onboardingService.getObjectPosition(step);
-  }
-
-  cycleOnboarding(): void {
-    this.onboardingService.nextStep();
-  }
-
-  get isExerciseOrExam(): boolean {
-    return this.currentView().type === 'exercise' || this.currentView().type === 'exam';
-  }
-  
-  get questionsCount(): number {
-    if (this.isExerciseOrExam) {
-      const content = this.currentView().content;
-      if (content && 'questions' in content) {
-        return content.questions.length;
-      }
-    }
-    return 0;
-  }
-  
-  get score(): number | null {
-    if (this.isExerciseOrExam) {
-      const content = this.currentView().content;
-      if (content && 'score' in content) {
-        return content.score || null;
-      }
-    }
-    return null;
   }
 }

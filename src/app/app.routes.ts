@@ -24,7 +24,7 @@ export const routes: Routes = [
 
   // Lesson (protected)
   { path: 'lesson/:subjectId', loadComponent: () => import('./pages/lesson/lesson-page/lesson-page').then(m => m.LessonPage), canActivate: [authGuard] },
-
+  
   // UI Overhaul Pages (All paths and imports are prefixed with `v2/`)
   // Auth
   // { path: 'v2/signup', loadComponent: () => import('./v2/pages/auth/signup/signup').then(m => m.Signup) },
@@ -37,6 +37,9 @@ export const routes: Routes = [
   { path: 'v2/store', loadComponent: () => import('./v2/pages/dashboard/store/store').then(m => m.Store) },
   { path: 'v2/usage-stats', loadComponent: () => import('./v2/pages/dashboard/usage-stats/usage-stats').then(m => m.UsageStats) },
   { path: 'v2/settings', loadComponent: () => import('./v2/pages/dashboard/settings/settings').then(m => m.Settings) },
+
+  // Lesson Page
+  { path: 'v2/lesson/:subjectId', loadComponent: () => import('./v2/pages/lesson/lesson-page/lesson-page').then(m => m.LessonPage), canActivate: [authGuard] },
 
   // Not Found
   { path: '**', loadComponent: () => import('./pages/not-found/not-found').then(m => m.NotFound) },
