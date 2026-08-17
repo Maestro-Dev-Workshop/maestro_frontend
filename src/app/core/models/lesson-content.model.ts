@@ -48,7 +48,13 @@ export interface LessonTopic {
   selected: boolean;
   subtopics: LessonSubtopic[];
   exercise: ExerciseModel | null;
-  flashcards: Flashcard[];
+  flashcards?: Flashcard[];
+}
+
+export interface FlashcardDeck {
+  topic_id: string;
+  topic_name: string;
+  flashcards: Flashcard[]
 }
 
 /**
@@ -60,6 +66,7 @@ export interface SubjectContent {
   topics: LessonTopic[];
   exam: ExamModel | null;
   glossary: GlossaryTerm[];
+  card_decks: FlashcardDeck[];
 }
 
 /**
@@ -71,7 +78,7 @@ export type LessonViewType = 'subtopic' | 'exercise' | 'exam' | 'glossary' | 'fl
 export interface LessonViewState {
   type: LessonViewType;
   id: string;
-  content: LessonSubtopic | ExerciseModel | ExamModel | GlossaryTerm[] | Flashcard[] | null;
+  content: LessonSubtopic | ExerciseModel | ExamModel | GlossaryTerm[] | Flashcard[] | FlashcardDeck | null;
 }
 
 /**

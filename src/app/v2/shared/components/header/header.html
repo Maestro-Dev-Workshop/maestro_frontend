@@ -1,29 +1,29 @@
-<header class="w-full flex items-center justify-between bg-surface-container-low p-4">
+<header class="p-3 md:p-4 w-full flex items-center justify-between bg-surface-container-low">
   <div class="flex items-center gap-1">
-    <app-theme-icon name="maestro-logo" className="w-16"></app-theme-icon>
-    <span class="font-serif text-xl">Maestro</span>
+    <app-theme-icon name="maestro-logo" className="w-12 md:w-16"></app-theme-icon>
+    <span class="text-lg md:text-2xl font-serif">Maestro</span>
   </div>
 
-  <div class="flex items-center gap-6">
-    <div class="flex items-center gap-2 rounded-full p-2 bg-surface-container-highest font-semibold leading-3">
-      <app-theme-icon name="credits-icon" class="w-max"></app-theme-icon>
+  <div class="flex items-center gap-3 md:gap-6">
+    <div class="text-xs md:text-base leading-[0.5rem] md:leading-3 p-[0.35rem] md:p-2 flex items-center gap-2 rounded-full bg-surface-container-highest font-semibold">
+      <app-theme-icon name="credits-icon" class="w-4 md:w-max"></app-theme-icon>
       50
-      <button class="bg-primary text-on-primary block rounded-full p-2 text-lg leading-3">+</button>
+      <button class="text-md md:text-lg leading-[0.5rem] md:leading-3 p-[0.35rem] md:p-2 bg-primary text-on-primary block rounded-full">+</button>
     </div>
 
-    <div class="flex items-center gap-4">
-      <button class="border border-outline-variant rounded-xl p-1" (click)="toggleTheme()">
-        <app-theme-icon name="theme-switch-icon" className="w-7"></app-theme-icon>
+    <div class="flex items-center gap-2 md:gap-4">
+      <button class="rounded-lg md:rounded-xl border border-outline-variant p-1" (click)="toggleTheme()">
+        <app-theme-icon name="theme-switch-icon" className="w-4 md:w-7"></app-theme-icon>
       </button>
-      <button class="border border-outline-variant rounded-xl p-1">
-        <app-theme-icon name="help-circle-icon" className="w-7"></app-theme-icon>
+      <button class="rounded-lg md:rounded-xl border border-outline-variant p-1">
+        <app-theme-icon name="help-circle-icon" className="w-4 md:w-7"></app-theme-icon>
       </button>
-      <button class="border border-outline-variant rounded-xl p-1">
-        <app-theme-icon name="inbox-icon" className="w-7"></app-theme-icon>
+      <button class="rounded-lg md:rounded-xl border border-outline-variant p-1">
+        <app-theme-icon name="inbox-icon" className="w-4 md:w-7"></app-theme-icon>
       </button>
     </div>
 
-    <button class="rounded-full p-5 bg-primary-container text-on-primary-container text-xl leading-none font-medium">
+    <button class="p-3 md:p-5 text-md md:text-xl rounded-full bg-primary-container text-on-primary-container leading-none font-medium">
       {{ initials() }}
     </button>
   </div>

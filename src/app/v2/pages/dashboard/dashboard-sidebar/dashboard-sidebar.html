@@ -1,14 +1,22 @@
-<div [class]="`w-${expanded() ? '80' : 'max'} h-full bg-surface-container-low flex flex-col p-4 gap-4 items-center`">
-  <div [class]="`w-${expanded() ? 'full' : 'max'} flex items-center justify-between p-4 border-b-[1px] border-outline`">
+<div [class]="`${expanded() ? 'w-80' : 'md:w-max -translate-x-20 md:translate-x-0'} p-3 md:p-4 gap-2 md:gap-4 relative h-full bg-surface-container-low flex flex-col items-center`">
+  <!-- Sidebar Toggle -->
+  <button
+    [class]="`${expanded() ? 'hidden' : ''} md:hidden absolute z-20 top-4 -right-10 rounded-r-full p-3 bg-primary-container`"
+    (click)="toggleSidebar()"
+  >
+    <app-theme-icon name="open-sidebar-icon" className="w-5"></app-theme-icon>
+  </button>
+
+  <div [class]="`w-${expanded() ? 'full' : 'max'} text-sm md:text-base flex items-center justify-between p-4 border-b-[1px] border-outline`">
     @if (expanded()) {
       <span>Menu</span>
     }
-    <button class="hover:opacity-70" (click)="toggleSidebar()">
-      <app-theme-icon name="close-sidebar-icon"></app-theme-icon>
+    <button class="md:hover:opacity-70" (click)="toggleSidebar()">
+      <app-theme-icon name="close-sidebar-icon" className="w-5 md:w-6"></app-theme-icon>
     </button>
   </div>
 
-  <div [class]="`w-${expanded() ? 'full' : 'max'} flex flex-col gap-2`">
+  <div [class]="`w-${expanded() ? 'full' : 'max'} gap-1 md:gap-2 flex flex-col`">
     @for (page of dashboardPages; track $index) {
       <app-sidebar-item 
         [title]="page.title" 
@@ -20,16 +28,16 @@
     }
   </div>
 
-  <button class="mt-auto mb-4 flex items-center gap-4 w-full hover:bg-surface-container-high p-2 rounded-lg" (click)="navigateToSettings()">
-    <div class="rounded-full p-5 bg-primary-container text-on-primary-container text-xl leading-none font-medium">
+  <button class="mt-auto mb-2 md:mb-4 flex items-center gap-4 w-full hover:bg-surface-container-high p-2 rounded-lg" (click)="navigateToSettings()">
+    <div class="p-3 md:p-5 text-md md:text-xl rounded-full bg-primary-container text-on-primary-container leading-none font-medium">
       {{ initials() }}
     </div>
     @if (expanded()) {
       <div class="flex flex-col items-start">
-        <span class="">
+        <span class="text-sm md:text-base">
           {{ fullName() }}
         </span>
-        <span class="text-on-surface-variant text-sm">
+        <span class="text-on-surface-variant text-xs md:text-sm">
           {{ email() }}
         </span>
       </div>
