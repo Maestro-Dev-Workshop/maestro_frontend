@@ -6,7 +6,6 @@ export interface SidebarItemModel {
   icon: string;
   selected: boolean;
   route?: string;
-  type?: "link" | "button" | "dropdown";
 }
 
 @Component({

@@ -47,6 +47,11 @@ export class DashboardSidebar implements OnInit {
     this.dashboardPages.forEach((page) => {
       page.selected = (page.title === this.currentPage());
     });
+
+    const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+    if (isMobile) {
+      this.expanded.set(false)
+    }
   }
 
   toggleSidebar() {

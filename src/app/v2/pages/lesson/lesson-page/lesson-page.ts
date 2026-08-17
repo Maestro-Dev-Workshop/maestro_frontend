@@ -40,10 +40,11 @@ import {
   ExamResponse,
   GlossaryResponse,
 } from '../../../../core/models/api-response.model';
+import { ThemeIconComponent } from "../../../../shared/components/theme-icon/theme-icon";
 
 @Component({
   selector: 'app-lesson-page',
-  imports: [Header, LessonSidebar],
+  imports: [Header, LessonSidebar, ThemeIconComponent],
   templateUrl: './lesson-page.html',
   styleUrl: './lesson-page.css',
 })

@@ -2,8 +2,17 @@
   <app-header></app-header>
   
   <div class="flex-grow w-full flex flex-row flex-grow overflow-hidden relative">
+    <!-- Sidebar Toggle -->
+    <button
+      [class]="`${sidebarOpen() ? 'hidden' : ''} md:hidden absolute z-20 top-4 left-0 rounded-r-full p-3 bg-primary-container`"
+      (click)="toggleSidebar()"
+    >
+      <app-theme-icon name="open-sidebar-icon" className="w-5"></app-theme-icon>
+    </button>
+
+    <!-- Sidebar -->
     <app-lesson-sidebar
-      class="h-full"
+      [class]="`${sidebarOpen() ? '' : 'hidden'} md:block h-full`"
       [content]="subjectContent()"
       [currentView]="currentView()"
       (updateView)="updateCurrentView($event)"
