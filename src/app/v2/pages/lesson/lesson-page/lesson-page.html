@@ -12,12 +12,25 @@
 
     <!-- Sidebar -->
     <app-lesson-sidebar
-      [class]="`${sidebarOpen() ? '' : 'hidden'} md:block h-full`"
+      [class]="`${sidebarOpen() ? '' : 'hidden'} md:block h-full absolute md:relative`"
       [content]="subjectContent()"
       [currentView]="currentView()"
       (updateView)="updateCurrentView($event)"
       (closeSidebar)="toggleSidebar()"
       (reorderTopicEvent)="reorderTopics($event)"
     ></app-lesson-sidebar>
+
+    <!-- Main View Container -->
+  <div
+    #contentContainer
+    [class]="`overflow-hidden flex flex-grow`"
+  >
+    @if (currentView().type === 'glossary') {
+      <app-glossary
+        class="w-full overflow-hidden flex flex-col"
+        [glossaryItems]="subjectContent().glossary"
+        (scroll)="scrollToPosition($event)"
+      ></app-glossary>
+    }
   </div>
 </div>

@@ -12,7 +12,7 @@
       <span>Menu</span>
     }
     <button class="md:hover:opacity-70" (click)="toggleSidebar()">
-      <app-theme-icon name="close-sidebar-icon" className="w-5 md:w-6"></app-theme-icon>
+      <app-theme-icon [name]="`${expanded() ? 'close-sidebar-icon' : 'open-sidebar-icon'}`" className="w-5 md:w-6"></app-theme-icon>
     </button>
   </div>
 

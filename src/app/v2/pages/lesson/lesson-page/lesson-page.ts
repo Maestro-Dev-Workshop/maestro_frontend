@@ -13,6 +13,7 @@ import { forkJoin, map, of, switchMap } from 'rxjs';
 
 import { Header } from '../../../shared/components/header/header';
 import { LessonSidebar } from '../lesson-sidebar/lesson-sidebar';
+import { Glossary } from '../glossary/glossary';
 
 import { SubjectsService } from '../../../../core/services/subjects.service';
 import { LessonService } from '../../../../core/services/lesson.service';
@@ -44,7 +45,7 @@ import { ThemeIconComponent } from "../../../../shared/components/theme-icon/the
 
 @Component({
   selector: 'app-lesson-page',
-  imports: [Header, LessonSidebar, ThemeIconComponent],
+  imports: [Header, LessonSidebar, ThemeIconComponent, Glossary],
   templateUrl: './lesson-page.html',
   styleUrl: './lesson-page.css',
 })

@@ -1,0 +1,56 @@
+<div class="p-4 md:p-6 h-full flex flex-col gap-4 overflow-hidden">
+  <!-- Fixed Header -->
+  <h1 class="gap-4 md:gap-6 p-4 md:p-6 flex flex-row items-center flex-shrink-0 border-b-[1px] border-outline-variant rounded-xl">
+    <span class="text-2xl md:text-4xl font-medium">Glossary</span>
+    <app-theme-icon name="glossary-icon" className="w-6 md:w-8"></app-theme-icon>
+  </h1>
+
+  <!-- Scrollable Content Area -->
+  <div class="flex-1 min-h-0 flex flex-row gap-4 px-2 pr-0 md:px-4">
+    <!-- Main Glossary List (Scrollable) -->
+    <div 
+      #mainGlossary
+      class="p-2 md:p-6 flex-1 overflow-y-auto pb-16 custom-scrollbar"
+    >
+      @for (group of arrangedGlossary(); track group.letter) {
+        <div class="mb-6 md:mb-8 pt-2" [id]="group.letter">
+          <h2 class="text-2xl md:text-3xl mb-4 font-bold">{{ group.letter }}</h2>
+          @for (item of group.terms; track $index) {
+            <div class="mb-4 w-full" [id]="group.letter + $index">
+              <h3 class="text-md md:text-xl font-semibold">{{ item.term }}</h3>
+              <div 
+                class="text-sm md:text-base block w-full prose prose-math dark:prose-invert" 
+                [innerHTML]="item.definition | markdown"
+              ></div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Alphabetical Navigation (Scrollable & Sticky) -->
+    <div 
+      #sideNavigation
+      class="max-w-1/5 w-max pr-2 pb-4 overflow-y-auto custom-scrollbar"
+    >
+      <div class="p-3 md:p-4 sticky top-0 bg-surface-container rounded-lg w-max shadow-[4px_4px_8px_0px_rgba(0,0,0,0.2)] text-primary">
+        @for (group of arrangedGlossary(); track $index) {
+          <a 
+            class="text-sm md:text-lg block text-center hover:underline font-bold cursor-pointer" 
+            (click)="scrollToElementSmooth(group.letter)"
+          >
+            {{ group.letter }}
+          </a>
+          <!-- @for (item of group.terms; track $index) {
+            <a 
+              class="block text-[var(--text-link)] hover:underline cursor-pointer text-sm ml-2 mb-1" 
+              (click)="scrollToElementSmooth(group.letter + $index)"
+            >
+              {{ item.term }}
+            </a>
+          } -->
+        }
+      </div>
+    </div>
+  </div>
+</div>
