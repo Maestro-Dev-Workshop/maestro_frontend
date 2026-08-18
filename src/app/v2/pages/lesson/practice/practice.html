@@ -1,0 +1,186 @@
+<div 
+  #viewContainer
+  class="p-4 md:p-6 h-full flex flex-col gap-4 md:gap-6 overflow-y-auto custom-scrollbar"
+>
+  <!-- Fixed Header -->
+  <h1 class="p-4 md:p-6 flex items-center justify-between flex-shrink-0 border-b-[1px] border-outline-variant rounded-xl">
+    <div class="gap-4 md:gap-6 flex items-center">
+      <span class="text-2xl md:text-4xl font-medium capitalize">{{ currentView().type }}</span>
+      <app-theme-icon [name]="currentView().type + '-icon'" className="w-6 md:w-8"></app-theme-icon>
+    </div>
+    <span class="text-2xl md:text-4xl hidden md:block font-medium capitalize">{{ title() }}</span>
+  </h1>
+
+  <div class="text-lg md:text-2xl px-4 font-medium flex items-center justify-between w-full">
+    <span>
+      Total Questions: {{currentView().content.questions.length}}
+    </span>
+    <span>
+      Score: 
+      @if (currentView().content.score == null) {
+        Not Graded
+      } @else {
+        {{currentView().content.score}} / {{currentView().content.questions.length}}
+      }
+    </span>
+  </div>
+
+  
+  @if (question) {
+    <div class="w-full px-4 flex flex-col gap-2 md:gap-3">
+      <h1 class="text-lg md:text-2xl font-medium flex gap-4 md:gap-6">
+        Question {{getQuestionNumber()}}
+        @if (question.scored != null) {
+          @if (question.scored) {
+            <span class="text-tertiary flex items-center gap-2">
+              Correct
+              <app-theme-icon name="correct-icon" class="" className="min-w-6 w-6 md:min-w-8 md:w-8"></app-theme-icon>
+            </span>
+          } @else {
+            <span class="text-error flex items-center gap-2">
+              Wrong
+              <app-theme-icon name="wrong-icon" class="" className="min-w-6 w-6 md:min-w-8 md:w-8"></app-theme-icon>
+            </span>
+          }
+        }
+      </h1>
+      <h2 class="text-sm md:text-lg mb-2 prose prose-math dark:prose-invert" [innerHTML]="question.text | markdown"></h2>
+      @if (question.type === 'essay') {
+        <!-- Essay Answering -->
+        <textarea
+          class="text-sm md:text-base w-full p-2 bg-surface-container-low border-b-2 border-outline-variant resize-none overflow-hidden 
+          focus:outline-none focus:border-b-2 focus:border-primary"
+          rows="1"
+          placeholder="Type your answer here..."
+          [(ngModel)]="question.essay_answer"
+          oninput="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px';"
+          onmousemove="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px';"
+          [disabled]="!(currentView().content.score == null) || loading"
+        ></textarea>
+        @if (currentView().content.score) {
+          <div class="w-full my-2 text-on-surface-variant">
+            <strong><em>Feedback: </em></strong>
+            <span class="text-sm md:text-base block prose prose-math dark:prose-invert" [innerHTML]="question.essay_feedback | markdown"></span>
+          </div>
+        }
+      } @else {
+        @for (option of question.options; track option.id) {
+          <!-- Multiple Choice / Multiple Select Answering -->
+          <div class="flex flex-col">
+            <div class="flex flex-row">
+              <input 
+                [type]="`${question.type === 'multiple choice' ? 'radio' : 'checkbox'}`" 
+                [name]="question.id" 
+                [id]="option.id" 
+                class="m-2 accent-primary cursor-pointer h-3" 
+                [value]="option.id"
+                [checked]="option.selected"
+                (change)="toggleSelectOption(option.id)"
+                [disabled]="!(currentView().content.score == null) || loading"
+              >
+              <label 
+                [for]="option.id" 
+                [class]="`text-sm md:text-base prose prose-math dark:prose-invert cursor-pointer
+                ${!(currentView().content.score == null) ? (option.correct ? 'text-tertiary' : (option.selected ? 'text-error' : '')) : ''}`"
+                [innerHTML]="option.text | markdown"
+                >
+              </label>
+              @if (!(currentView().content.score == null)) {
+                @if (option.correct) {
+                  <app-theme-icon name="correct-icon" class="px-2" className="min-w-5 w-5 md:min-w-6 md:w-6"></app-theme-icon>
+                } @else if (option.selected) {
+                  <app-theme-icon name="wrong-icon" class="px-2" className="min-w-5 w-5 md:min-w-6 md:w-6"></app-theme-icon>
+                }
+              }
+            </div>
+            @if (!(currentView().content.score == null)) {
+              <div class="w-full my-1 text-on-surface-variant">
+                <strong><em><span class="text-sm md:text-base block prose prose-math dark:prose-invert" [innerHTML]="option.explanation | markdown"></span></em></strong>
+              </div>
+            }
+          </div>
+        }
+      }
+    </div>
+  }
+  
+  <!-- Question Cycling -->
+  <div class="text-sm md:text-base flex gap-4 px-4">
+    <button 
+      [class]="`flex gap-2 items-center text-primary md:hover:opacity-60 disabled:opacity-60 ${currentIndex === 0 ? 'invisible' : ''}`" 
+      (click)="cycleQuestion('prev')"
+      [disabled]="currentIndex === 0"
+    >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      class="size-4 md:size-6 text-primary"
+      aria-hidden="true"
+    >
+      <path
+        d="M15 18C15 18 9.00001 13.581 9 11.9999C8.99999 10.4188 15 6 15 6"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+      Previous
+    </button>
+    <button 
+      [class]="`flex gap-2 items-center text-primary md:hover:opacity-60 disabled:opacity-60 ${currentIndex === (currentView().content.questions.length - 1) ? 'invisible' : ''}`" 
+      (click)="cycleQuestion('next')"
+      [disabled]="currentIndex === (currentView().content.questions.length - 1)"
+    >
+      Next
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        class="size-4 md:size-6 text-primary rotate-180"
+        aria-hidden="true"
+      >
+        <path
+          d="M15 18C15 18 9.00001 13.581 9 11.9999C8.99999 10.4188 15 6 15 6"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Question Navigation -->
+  <div class="flex flex-wrap w-full px-4 gap-2">
+    @for (question of currentView().content.questions; track $index) {
+      <button 
+        [class]="`md:text-lg w-8 h-8 rounded-md md:hover:scale-110 md:hover:brightness-125 transition duration-100
+        ${(currentIndex === $index) ? 'bg-primary text-on-primary' : 
+          ((question.scored == null) ? 'bg-primary-container text-on-primary-container' :
+            (question.scored ? 'bg-tertiary-container text-on-tertiary-container' : 'bg-error-container text-on-error-container'))}`"
+        (click)="goToQuestion($index)"
+        [disabled]="loading"
+      >
+        {{$index + 1}}
+      </button>
+    }
+  </div>
+
+  <!-- Submission Button -->
+  <div class="flex items-center">
+    <button 
+      class="self-start w-max text-base font-medium text-on-primary bg-primary m-4 px-12 py-3 rounded-lg 
+      md:hover:brightness-150 disabled:opacity-60 md:hover:disabled:brightness-100 transition duration-100" 
+      (click)="openSubmit()"
+      [disabled]="loading || !(currentView().content.score == null)"
+    >
+      Submit
+    </button>
+    <div [class]="`flex items-center ${loading ? '' : 'hidden'}`">
+      <img src="images/spinner.gif" alt="" class="w-8 h-8 mx-2">
+      loading...
+    </div>
+  </div>
+</div>
