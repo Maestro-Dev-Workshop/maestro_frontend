@@ -1,6 +1,9 @@
+// Read Documentation: {projectRoot}/documentation/architecture/themeing.md
+
 import { Injectable, signal } from '@angular/core';
 
 export type ThemeMode = 'light' | 'dark' | 'system';
+export type EffectiveTheme = 'light' | 'dark';
 
 @Injectable({
   providedIn: 'root',
@@ -8,8 +11,9 @@ export type ThemeMode = 'light' | 'dark' | 'system';
 export class ThemeService {
   private storageKey = 'maestro-theme';
 
-  // 🔹 Reactive theme state
   readonly theme = signal<ThemeMode>('light');
+
+  readonly effectiveTheme = signal<EffectiveTheme>('light');
 
   init() {
     const saved = localStorage.getItem(this.storageKey) as ThemeMode | null;
@@ -21,7 +25,8 @@ export class ThemeService {
 
   setTheme(mode: ThemeMode) {
     localStorage.setItem(this.storageKey, mode);
-    this.theme.set(mode);          // 🔹 notify listeners
+
+    this.theme.set(mode);
     this.applyTheme(mode);
   }
 
@@ -31,22 +36,91 @@ export class ThemeService {
 
   toggleTheme() {
     const current = this.theme();
-    const next = current === 'dark' ? 'light' : 'dark';
+
+    const next = current === 'dark'
+      ? 'light'
+      : 'dark';
+
     this.setTheme(next);
   }
 
   private applyTheme(mode: ThemeMode) {
     const root = document.documentElement;
+
     root.classList.remove('dark');
 
+    let effective: EffectiveTheme;
+
     if (mode === 'dark') {
+      effective = 'dark';
+    } else if (mode === 'light') {
+      effective = 'light';
+    } else {
+      const prefersDark =
+        window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+      effective = prefersDark ? 'dark' : 'light';
+    }
+
+    this.effectiveTheme.set(effective);
+
+    if (effective === 'dark') {
       root.classList.add('dark');
-    } 
-    else if (mode === 'system') {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (prefersDark) {
-        root.classList.add('dark');
-      }
     }
   }
 }
+
+
+
+// import { Injectable, signal } from '@angular/core';
+
+// export type ThemeMode = 'light' | 'dark' | 'system';
+
+// @Injectable({
+//   providedIn: 'root',
+// })
+// export class ThemeService {
+//   private storageKey = 'maestro-theme';
+
+//   // 🔹 Reactive theme state
+//   readonly theme = signal<ThemeMode>('light');
+
+//   init() {
+//     const saved = localStorage.getItem(this.storageKey) as ThemeMode | null;
+//     const mode: ThemeMode = saved ?? 'light';
+
+//     this.theme.set(mode);
+//     this.applyTheme(mode);
+//   }
+
+//   setTheme(mode: ThemeMode) {
+//     localStorage.setItem(this.storageKey, mode);
+//     this.theme.set(mode);          // 🔹 notify listeners
+//     this.applyTheme(mode);
+//   }
+
+//   getTheme(): ThemeMode {
+//     return this.theme();
+//   }
+
+//   toggleTheme() {
+//     const current = this.theme();
+//     const next = current === 'dark' ? 'light' : 'dark';
+//     this.setTheme(next);
+//   }
+
+//   private applyTheme(mode: ThemeMode) {
+//     const root = document.documentElement;
+//     root.classList.remove('dark');
+
+//     if (mode === 'dark') {
+//       root.classList.add('dark');
+//     } 
+//     else if (mode === 'system') {
+//       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+//       if (prefersDark) {
+//         root.classList.add('dark');
+//       }
+//     }
+//   }
+// }
