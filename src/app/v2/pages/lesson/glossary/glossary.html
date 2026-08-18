@@ -36,7 +36,7 @@
       <div class="p-3 md:p-4 sticky top-0 bg-surface-container rounded-lg w-max shadow-[4px_4px_8px_0px_rgba(0,0,0,0.2)] text-primary">
         @for (group of arrangedGlossary(); track $index) {
           <a 
-            class="text-sm md:text-lg block text-center hover:underline font-bold cursor-pointer" 
+            class="text-sm md:text-lg block text-center hover:opacity-60 font-bold cursor-pointer" 
             (click)="scrollToElementSmooth(group.letter)"
           >
             {{ group.letter }}

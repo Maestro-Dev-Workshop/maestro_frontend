@@ -25,6 +25,18 @@
     #contentContainer
     [class]="`overflow-hidden flex flex-grow`"
   >
+    @if (currentView().type === 'exercise' || currentView().type === 'exam') {
+      <app-practice
+        class="w-full overflow-hidden flex flex-col"
+        [currentView]="currentView()"
+        [subjectId]="subjectId()"
+        [title]="(currentView().type == 'exercise') ? getTopicDataFromExercise().title : subjectContent().subject_name"
+        [topicId]="(currentView().type == 'exercise') ? getTopicDataFromExercise().id : null"
+        (changeQuestion)="updateChatMetadata($event)"
+        (exerciseCompleted)="checkForTopicCompleteness($event)"
+        (changeProgress)="updateProgress()"
+      ></app-practice>
+    }
     @if (currentView().type === 'glossary') {
       <app-glossary
         class="w-full overflow-hidden flex flex-col"

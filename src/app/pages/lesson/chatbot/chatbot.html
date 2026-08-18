@@ -15,7 +15,7 @@
   <!-- Header -->
   <div class="z-10 flex items-center justify-between gap-3 px-3 pb-2 border-b border-transparent">
     <button
-      class="ml-auto p-2 rounded-full lg:hover:opacity-50"
+      class="ml-auto p-2 rounded-full lg:hover:opacity-60"
       (click)="onCloseChat()"
       aria-label="Close chat"
       title="Close"
@@ -96,7 +96,7 @@
       ></textarea>
 
       <button
-        class="flex items-center justify-center w-8 h-8 rounded-full lg:hover:opacity-50 disabled:opacity-50"
+        class="flex items-center justify-center w-8 h-8 rounded-full lg:hover:opacity-60 disabled:opacity-60"
         (click)="sendMessage()"
         [disabled]="loading || !currentMessage.trim()"
         aria-label="Send message"
