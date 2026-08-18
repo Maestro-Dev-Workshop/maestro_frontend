@@ -45,23 +45,25 @@ export class AuthBackground implements OnInit {
         type: 'image',
         options: {
           image: [
-            { src: '/images/auth-bg-particles/particle-1.svg', width: 100, height: 100 },
-            { src: '/images/auth-bg-particles/particle-2.svg', width: 100, height: 100 },
-            { src: '/images/auth-bg-particles/particle-3.svg', width: 100, height: 100 },   
-            { src: '/images/auth-bg-particles/particle-4.svg', width: 100, height: 100 },
-            { src: '/images/auth-bg-particles/particle-5.svg', width: 100, height: 100 },
-            { src: '/images/auth-bg-particles/particle-6.svg', width: 100, height: 100 },
-            { src: '/images/auth-bg-particles/particle-8.svg', width: 100, height: 100 },
-            { src: '/images/auth-bg-particles/particle-9.svg', width: 100, height: 100 },
-            { src: '/images/auth-bg-particles/particle-10.svg', width: 100, height: 100 },
-            { src: '/images/auth-bg-particles/particle-11.svg', width: 100, height: 100 },
-            { src: '/images/auth-bg-particles/particle-12.svg', width: 100, height: 100 },
-            { src: '/images/auth-bg-particles/particle-13.svg', width: 100, height: 100 },
-            { src: '/images/auth-bg-particles/particle-14.svg', width: 100, height: 100 },
+            { src: '/images/dark/auth-bg-particles/particle-1.svg', width: 100, height: 100 },
+            { src: '/images/dark/auth-bg-particles/particle-2.svg', width: 100, height: 100 },
+            { src: '/images/dark/auth-bg-particles/particle-3.svg', width: 100, height: 100 },   
+            { src: '/images/dark/auth-bg-particles/particle-4.svg', width: 100, height: 100 },
+            { src: '/images/dark/auth-bg-particles/particle-5.svg', width: 100, height: 100 },
+            { src: '/images/dark/auth-bg-particles/particle-6.svg', width: 100, height: 100 },
+            { src: '/images/dark/auth-bg-particles/particle-7.svg', width: 100, height: 100 },
+            { src: '/images/dark/auth-bg-particles/particle-8.svg', width: 100, height: 100 },
+            { src: '/images/dark/auth-bg-particles/particle-9.svg', width: 100, height: 100 },
+            { src: '/images/dark/auth-bg-particles/particle-10.svg', width: 100, height: 100 },
+            { src: '/images/dark/auth-bg-particles/particle-11.svg', width: 100, height: 100 },
+            { src: '/images/dark/auth-bg-particles/particle-12.svg', width: 100, height: 100 },
+            { src: '/images/dark/auth-bg-particles/particle-13.svg', width: 100, height: 100 },
+            { src: '/images/dark/auth-bg-particles/particle-14.svg', width: 100, height: 100 },
+            { src: '/images/dark/auth-bg-particles/particle-15.svg', width: 100, height: 100 },
+
           ]
         }
-      },
-      color: { value: '#317AC3' }
+      }
     }
   };
 }
