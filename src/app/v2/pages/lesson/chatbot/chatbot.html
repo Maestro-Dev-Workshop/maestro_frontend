@@ -1,0 +1,114 @@
+<!-- chatbot.html -->
+<div class="relative flex flex-col h-full w-full bg-surface-container">
+  <!-- Background Logo -->
+  <div class="absolute w-full h-full flex items-center justify-center z-0">
+    <app-theme-icon name="chat-bg-logo" class="w-[75%] flex items-center justify-center opacity-20"/>
+  </div>
+
+  <!-- Empty / Prompt state -->
+  @if (chatHistory().length === 0) {
+    <div class="absolute z-10 w-full h-full flex flex-col text-center items-center justify-center py-8">
+      <h3 class="text-xl">What would you like to explore?</h3>
+    </div>
+  }
+
+  <!-- Header -->
+  <div class="z-10 flex items-center justify-between p-4">
+    <button
+      class="ml-auto p-2 flex items-center gap-2 text-primary rounded-full md:hover:opacity-60"
+      (click)="onCloseChat()"
+      aria-label="Close chat"
+      title="Close"
+    >
+      <app-theme-icon name="x-icon" className="w-4"/>
+      Close
+    </button>
+  </div>
+
+  <!-- Chat Messages -->
+  <div
+    #chatContainer
+    class="z-10 flex flex-col w-full flex-1 overflow-y-auto px-2 gap-4 md:gap-6 custom-scrollbar"
+    [class.backdrop-blur-sm]="(chatHistory().length > 0)"
+    role="log"
+    aria-live="polite"
+  > 
+
+    <!-- Messages -->
+    @for (chat of chatHistory(); track $index) {
+      <div class="flex items-start gap-2" [class.justify-end]="chat.sender === 'user'">
+        <!-- Avatar -->
+        @if (chat.sender !== 'user') {
+          <app-theme-icon name="maestro-logo-alt" className="w-10 md:w-12"></app-theme-icon>
+        }
+
+        <!-- Bubble -->
+        <div
+          [class]="
+            'max-w-[80%] break-words text-xs md:text-sm rounded-2xl ' +
+            (chat.sender === 'user'
+              ? 'self-end bg-primary text-on-primary p-2 md:p-4 rounded-br-none'
+              : 'self-start')
+          "
+        >
+          @if (chat.sender !== 'user') {
+            <div [innerHTML]="chat.message | markdown"></div>
+          } @else {
+            <div>{{ chat.message }}</div>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Typing / Loading indicator -->
+    @if (loading) {
+      <div class="flex items-start gap-2">
+        <app-theme-icon name="maestro-logo-alt" className="w-10 md:w-12"></app-theme-icon>
+        <div class="bg-transparent text-gray-900 p-2 rounded-2xl rounded-bl-none">
+          <div class="flex items-center gap-1">
+            <span class="w-2 h-2 bg-primary rounded-full animate-bounce"></span>
+            <span class="w-2 h-2 bg-primary rounded-full animate-bounce delay-75"></span>
+            <span class="w-2 h-2 bg-primary rounded-full animate-bounce delay-150"></span>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Composer -->
+  <div class="z-10 w-full mt-3 px-3">
+    <div class="flex items-center gap-2">
+      <textarea
+        #messageInput
+        class="overflow-auto scrollbar-none w-full max-h-40 p-3 rounded-2xl border border-outline-variant 
+        bg-surface-container-lowest text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-outline"
+        rows="1"
+        [(ngModel)]="currentMessage"
+        [disabled]="loading"
+        (keydown)="handleKeyDown($event)"
+        (input)="adjustInputHeight()"
+        (mousemove)="adjustInputHeight()"
+        placeholder="Ask Maestro anything about this subject..."
+        aria-label="Message input"
+      ></textarea>
+
+      <button
+        class="flex items-center justify-center w-8 h-8 rounded-full lg:hover:opacity-60 disabled:opacity-60"
+        (click)="sendMessage()"
+        [disabled]="loading || !currentMessage.trim()"
+        aria-label="Send message"
+        title="Send"
+      >
+        <app-theme-icon name="send-icon"/>
+      </button>
+    </div>
+
+    <!-- Secondary actions row (mobile friendly) -->
+    <div class="py-1 md:py-2 w-full text-center text-[0.6rem] md:text-xs text-on-surface-variant">
+      Press Enter to send · Shift+Enter for newline
+    </div>
+  </div>
+
+  <!-- Floating spinner for global loading (keeps previous behavior) -->
+  <!-- <img src="images/spinner.gif" alt="loading" class="absolute bottom-3 right-3 h-8" [hidden]="!loading"> -->
+</div>

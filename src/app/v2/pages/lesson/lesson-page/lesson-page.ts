@@ -15,6 +15,8 @@ import { Header } from '../../../shared/components/header/header';
 import { LessonSidebar } from '../lesson-sidebar/lesson-sidebar';
 import { Glossary } from '../glossary/glossary';
 import { Practice } from '../practice/practice';
+import { Subtopic } from '../subtopic/subtopic';
+import { Chatbot } from '../chatbot/chatbot';
 
 import { SubjectsService } from '../../../../core/services/subjects.service';
 import { LessonService } from '../../../../core/services/lesson.service';
@@ -46,7 +48,7 @@ import { ThemeIconComponent } from "../../../../shared/components/theme-icon/the
 
 @Component({
   selector: 'app-lesson-page',
-  imports: [Header, LessonSidebar, ThemeIconComponent, Glossary, Practice],
+  imports: [Header, LessonSidebar, ThemeIconComponent, Glossary, Practice, Subtopic, Chatbot],
   templateUrl: './lesson-page.html',
   styleUrl: './lesson-page.css',
 })
@@ -478,5 +480,19 @@ export class LessonPage implements OnInit {
 
   reorderTopics(topicIds: string[]): void {
     this.subjectService.reorderSubjectTopics(this.subjectId(), topicIds).subscribe();
+  }
+
+  get isExerciseOrExam(): boolean {
+    return this.currentView().type === 'exercise' || this.currentView().type === 'exam';
+  }
+  
+  get score(): number | null {
+    if (this.isExerciseOrExam) {
+      const content = this.currentView().content;
+      if (content && 'score' in content) {
+        return content.score || null;
+      }
+    }
+    return null;
   }
 }

@@ -126,7 +126,7 @@
   --inverse-on-surface: #EFF1F6;
   --surface-dim: #D8DAE0;
   --surface-bright: #F7F9FF;
-  --surface-container-lowest: #E0E2E8;
+  --surface-container-lowest: #FFFFFF;
   --surface-container-low: #F1F3F9;
   --surface-container: #ECEEF4;
   --surface-container-high: #E6E8EE;
@@ -450,7 +450,7 @@ body {
 }
 
 .prose {
-  max-width: none;
+  max-width: 100ch;
 }
 
 /* Remove prose styling from all KaTeX elements */

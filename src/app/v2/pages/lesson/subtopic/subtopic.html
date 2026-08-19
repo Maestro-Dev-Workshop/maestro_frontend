@@ -1,0 +1,111 @@
+<div 
+  #viewContainer 
+  class="px-8 md:px-12 w-full flex flex-col overflow-y-auto custom-scrollbar"
+>
+  <!-- Top Section -->
+  <div class="flex flex-row justify-between pt-8 md:pt-12 pb-4 md:pb-8 sticky z-[9] top-0 bg-surface">
+    <!-- Topic tree display -->
+    @if (currentTopic() && currentView().content) {
+      <div class="hidden md:flex flex-row items-center gap-4 text-on-surface-variant">
+        {{ subjectName() }}
+        <app-theme-icon name="tiny-arrow" className="w-2"></app-theme-icon>
+        {{ currentTopic().title }}
+        <app-theme-icon name="tiny-arrow" className="w-2"></app-theme-icon>
+        <span class="text-primary font-medium">{{ currentView().content.title }}</span>
+      </div>
+    }
+    <!-- Subtopic Navigation -->
+    <div class="flex flex-row ml-auto gap-4">
+      <button 
+        [class]="`flex gap-2 items-center text-primary md:hover:opacity-60 disabled:opacity-60 ${getPosition().includes('top') ? 'invisible' : ''}`" 
+        (click)="prevSubtopic()"
+        [disabled]="getPosition() === 'top'"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          class="size-4 md:size-6 text-primary"
+          aria-hidden="true"
+        >
+          <path
+            d="M15 18C15 18 9.00001 13.581 9 11.9999C8.99999 10.4188 15 6 15 6"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        Previous
+      </button>
+      <button 
+        [class]="`flex gap-2 items-center text-primary md:hover:opacity-60 disabled:opacity-60 ${getPosition().includes('bottom') ? 'invisible' : ''}`" 
+        (click)="nextSubtopic()"
+        [disabled]="getPosition() === 'bottom'"
+      >
+        Next
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          class="size-4 md:size-6 text-primary rotate-180"
+          aria-hidden="true"
+        >
+          <path
+            d="M15 18C15 18 9.00001 13.581 9 11.9999C8.99999 10.4188 15 6 15 6"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Subtopic Name -->
+  <h1 class="py-4 text-3xl md:text-4xl font-medium">
+    @if (currentView().content) {
+      {{ currentView().content.title }}
+    }
+  </h1>
+
+  <!-- Subtopic Content -->
+  @if (currentView().content) {
+    <div class="text-md md:text-lg pb-32">
+      @for (cell of currentView().content.cells; track $index) {
+        @if (cell.type === "text") {
+          <!-- Markdown Text Cells -->
+          <app-markdown-cell [data]="cell"></app-markdown-cell>
+        } @else if (cell.type === "graph") {
+          <app-chart-cell [data]="cell"></app-chart-cell>
+        } @else if (cell.type === "audio_snippet") {
+          <app-audio-snippet-cell [data]="cell"></app-audio-snippet-cell>
+        } @else if (cell.type === "executable_code") {
+          <app-executable-code-cell [data]="cell"></app-executable-code-cell>
+        } @else if (cell.type === "diagram") {
+          <app-diagram-cell [data]="cell"></app-diagram-cell>
+        } @else if (cell.type === "music_sheet") {
+          <app-sheet-music-cell [data]="cell"></app-sheet-music-cell>
+        } @else if (cell.type === "image") {
+          <app-image-cell [data]="cell"></app-image-cell>
+        } @else if (cell.type === "flashcard") {
+          <app-flashcard-cell [data]="cell"></app-flashcard-cell>
+        } @else if (cell.type === "quote") {
+          <app-quote-cell [data]="cell"></app-quote-cell>
+        } @else if (cell.type === "ketcher diagram") {
+          <app-ketcher-cell [data]="cell"></app-ketcher-cell>
+        } @else if (cell.type === "maps") {
+          <app-map-cell [data]="cell"></app-map-cell>
+        } @else {
+          Incompatible cell type: "{{ cell.type }}"
+          <!-- {{ cell.content }}
+          {{ cell.metadata }} -->
+
+          <!-- Default Fallback Cells -->
+          <!-- <app-markdown-cell [data]="cell"></app-markdown-cell> -->
+        }
+      }
+    </div>
+  }
+</div>
