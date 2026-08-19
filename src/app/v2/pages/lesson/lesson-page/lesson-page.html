@@ -12,7 +12,7 @@
 
     <!-- Sidebar -->
     <app-lesson-sidebar
-      [class]="`${sidebarOpen() ? '' : 'hidden'} md:block h-full absolute md:relative`"
+      [class]="`${sidebarOpen() ? '' : 'hidden'} z-20 md:block h-full absolute md:relative`"
       [content]="subjectContent()"
       [currentView]="currentView()"
       (updateView)="updateCurrentView($event)"
@@ -25,6 +25,16 @@
     #contentContainer
     [class]="`overflow-hidden flex flex-grow`"
   >
+    @if (currentView().type === 'subtopic') {
+      <app-subtopic
+        class="w-full overflow-hidden flex flex-col"
+        [subjectName]="subjectContent().subject_name"
+        [currentView]="currentView()"
+        [currentTopic]="getTopicDataFromSubtopic()"
+        [getPosition]="getSubtopicPosition()"
+        (cycleSubtopic)="changeSubtopic($event)"
+      ></app-subtopic>
+    }
     @if (currentView().type === 'exercise' || currentView().type === 'exam') {
       <app-practice
         class="w-full overflow-hidden flex flex-col"
@@ -44,5 +54,36 @@
         (scroll)="scrollToPosition($event)"
       ></app-glossary>
     }
+
+    <!-- Chatbot Container -->
+    <app-chatbot
+      [class]="`w-[24rem] md:w-[32rem] absolute z-30 right-0 top-0 h-full
+      ${(
+          !chatOpen() ||
+          (isExerciseOrExam  && (score == null)) ||
+          (currentView().type === 'glossary') ||
+          (currentView().type === 'flashcards')
+        ) ? 'hidden' : ''}`"
+      [chatHistory]="chatHistory()"
+      [subjectId]="subjectId()"
+      [metadata]="chatMetadata()"
+      (closeChat)="toggleChatPopup()"
+    ></app-chatbot>
   </div>
 </div>
+
+<!-- Chatbot Popup -->
+<button
+  [class]="`absolute z-20 right-6 md:right-16 bottom-12 md:hover:scale-125 transition-transform duration-200
+  ${(
+      chatOpen() ||
+      (['exercise', 'exam'].includes(currentView().type)  && (score == null)) ||
+      (currentView().type === 'glossary') ||
+      (currentView().type === 'flashcards')
+    ) ? 'hidden' : ''}`"
+  (click)="toggleChatPopup()"
+  [disabled]="(currentView().type !== 'subtopic' && (score == null))"
+  #chatPopupButton
+>
+  <img src="images/Chat-Button.png" alt="Chat" class="w-16 lg:w-20">
+</button>

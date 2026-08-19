@@ -1,0 +1,68 @@
+import { Component, effect, ElementRef, input, output, untracked, viewChild, ViewChild } from '@angular/core';
+
+import { ThemeIconComponent } from '../../../../shared/components/theme-icon/theme-icon';
+
+import { MarkdownCell } from '../cells/markdown-cell/markdown-cell';
+import { ChartCell } from "../cells/chart-cell/chart-cell";
+import { AudioSnippetCell } from '../cells/audio-snippet-cell/audio-snippet-cell';
+import { ExecutableCodeCell } from '../cells/executable-code-cell/executable-code-cell';
+import { DiagramCell } from '../cells/diagram-cell/diagram-cell';
+import { SheetMusicCell } from '../cells/sheet-music-cell/sheet-music-cell';
+import { ImageCell } from '../cells/image-cell/image-cell';
+import { FlashcardCell } from '../cells/flashcard-cell/flashcard-cell';
+import { QuoteCell } from '../cells/quote-cell/quote-cell';
+import { KetcherCell } from '../cells/ketcher-cell/ketcher-cell';
+import { MapCell } from '../cells/map-cell/map-cell';
+
+
+@Component({
+  selector: 'app-subtopic',
+  imports: [
+    ThemeIconComponent, 
+    MarkdownCell, 
+    ChartCell,
+    AudioSnippetCell,
+    ExecutableCodeCell,
+    DiagramCell,
+    SheetMusicCell,
+    ImageCell,
+    FlashcardCell,
+    QuoteCell,
+    KetcherCell,
+    MapCell
+  ],
+  templateUrl: './subtopic.html',
+  styleUrl: './subtopic.css'
+})
+export class Subtopic {
+  subjectName = input<any>();
+  currentTopic = input<any>();
+  currentView = input<any>();
+  cycleSubtopic = output<any>();
+  getPosition = input<any>();
+  viewContainer = viewChild<ElementRef>('viewContainer');
+
+  private updateOnInputChange = effect(() => {
+    const view = this.currentView();
+    if (view?.content) {
+      untracked(() => {
+        setTimeout(() => this.scrollToTop(), 0);
+      });
+    }
+  });
+
+  scrollToTop() {
+    const element = this.viewContainer();
+    if (element?.nativeElement) {
+      element.nativeElement.scrollTop = 0;
+    }
+  }
+
+  prevSubtopic() {
+    this.cycleSubtopic.emit({ id: this.currentTopic().id, direction: 'prev' });
+  }
+
+  nextSubtopic() {
+    this.cycleSubtopic.emit({ id: this.currentTopic().id, direction: 'next' });
+  }
+}
