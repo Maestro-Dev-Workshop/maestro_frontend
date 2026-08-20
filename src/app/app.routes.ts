@@ -40,7 +40,9 @@ export const routes: Routes = [
 
   // Lesson Page
   { path: 'v2/lesson/:subjectId', loadComponent: () => import('./v2/pages/lesson/lesson-page/lesson-page').then(m => m.LessonPage), canActivate: [authGuard] },
-
+  
+  // view btn component
+  { path: 'v2/view-btn', loadComponent: () => import('./v2/shared/components/shiny-btn/shiny-btn').then(m => m.ShinyBtnComponent) },
   // Not Found
   { path: '**', loadComponent: () => import('./pages/not-found/not-found').then(m => m.NotFound) },
 
