@@ -47,6 +47,12 @@
         (changeProgress)="updateProgress()"
       ></app-practice>
     }
+    @if (currentView().type === 'flashcards') {
+      <app-lesson-flashcards
+        class="w-full overflow-hidden flex flex-col"
+        [deckContent]="currentView().content"
+      ></app-lesson-flashcards>
+    }
     @if (currentView().type === 'glossary') {
       <app-glossary
         class="w-full overflow-hidden flex flex-col"

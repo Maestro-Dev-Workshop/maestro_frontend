@@ -4,15 +4,27 @@
     [cards]="cards()"
     [loop]="true"
     (cardChange)="onCardChange($event)"
+    [frontTemplate]="front"
+    [backTemplate]="back"
   >
 
-    <ng-template #front let-card>
-      <h2 class="text-2xl">{{ card.front }}</h2>
-    </ng-template>
+  <ng-template #front let-card="card" let-toggleAnswer="toggleAnswer" let-toggleHint="toggleHint">
+    <app-flashcard-template
+      face="front"
+      [content]="card.front"
+      (toggleFlip)="toggleAnswer()"
+      (toggleHint)="toggleHint()"
+    ></app-flashcard-template>
+  </ng-template>
 
-    <ng-template #back let-card>
-      <p class="text-lg text-green-400">{{ card.back }}</p>
-    </ng-template>
+  <ng-template #back let-card="card" let-toggleAnswer="toggleAnswer" let-toggleHint="toggleHint">
+    <app-flashcard-template
+      face="back"
+      [content]="card.back"
+      (toggleFlip)="toggleAnswer()"
+      (toggleHint)="toggleHint()"
+    ></app-flashcard-template>
+  </ng-template>
 
   </app-flashcards>
 </div>
