@@ -1,9 +1,10 @@
 import { Component, effect, input, signal } from '@angular/core';
 import { FlashcardsComponent } from '../../../../../shared/components/flashcards/flashcards';
+import { FlashcardTemplate } from '../../../../shared/components/flashcard-template/flashcard-template';
 
 @Component({
   selector: 'app-flashcard-cell',
-  imports: [FlashcardsComponent],
+  imports: [FlashcardsComponent, FlashcardTemplate],
   templateUrl: './flashcard-cell.html',
   styleUrl: './flashcard-cell.css',
 })

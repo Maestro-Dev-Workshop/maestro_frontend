@@ -17,6 +17,7 @@ import { Glossary } from '../glossary/glossary';
 import { Practice } from '../practice/practice';
 import { Subtopic } from '../subtopic/subtopic';
 import { Chatbot } from '../chatbot/chatbot';
+import { LessonFlashcards } from '../lesson-flashcards/lesson-flashcards';
 
 import { SubjectsService } from '../../../../core/services/subjects.service';
 import { LessonService } from '../../../../core/services/lesson.service';
@@ -48,7 +49,7 @@ import { ThemeIconComponent } from "../../../../shared/components/theme-icon/the
 
 @Component({
   selector: 'app-lesson-page',
-  imports: [Header, LessonSidebar, ThemeIconComponent, Glossary, Practice, Subtopic, Chatbot],
+  imports: [Header, LessonSidebar, ThemeIconComponent, Glossary, Practice, Subtopic, Chatbot, LessonFlashcards],
   templateUrl: './lesson-page.html',
   styleUrl: './lesson-page.css',
 })

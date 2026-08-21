@@ -1,0 +1,104 @@
+<div class="w-full flex flex-col items-center justify-center text-center relative md:gap-8">
+
+  <!-- CARD -->
+  <div class="md:my-4 relative">
+    <div
+      [@slide]="currentIndex()"
+      [@flip]="flipState()"
+      (@flip.done)="onFlipDone()"
+      (@slide.done)="onSlideDone()"
+      class="z-10 relative"
+    >
+      <div class="relative">
+        @if (showAnswer()) {
+  
+          @if (backTemplate()) {
+            <ng-container
+              *ngTemplateOutlet="backTemplate()!; context: { 
+                card: currentCard,
+                toggleAnswer: toggleAnswer.bind(this), 
+                toggleHint: toggleHint.bind(this), 
+              }"
+              class="z-10 relative"
+            />
+          } @else {
+            <p class="text-lg">{{ currentCard?.back }}</p>
+          }
+  
+        } @else {
+  
+          @if (frontTemplate()) {
+            <ng-container
+              *ngTemplateOutlet="frontTemplate()!; context: { 
+                card: currentCard,
+                toggleAnswer: toggleAnswer.bind(this), 
+                toggleHint: toggleHint.bind(this), 
+              }"
+              class="z-10 relative"
+            />
+          } @else {
+            <p class="text-2xl font-medium">{{ currentCard?.front }}</p>
+          }
+  
+        }
+  
+      </div>
+    </div>
+
+    @if ((cards().length - (currentAnimationIndex() + 1)) >= 1) {
+      <app-flashcard-template 
+        class="z-[9] absolute top-3 left-3"
+        [content]="cards()[currentAnimationIndex() + 1].front"
+        [@behind-slide]="currentIndex()"
+      ></app-flashcard-template>
+    }
+    <!-- translate-x-3 translate-y-3 duration-[400ms] ease-in-out -->
+    @if ((cards().length - (currentAnimationIndex() + 1)) >= 2) {
+      <app-flashcard-template 
+        class="z-[8] absolute top-6 left-6"
+        [@behind-slide]="currentIndex()"
+      ></app-flashcard-template>
+    }
+  </div>
+
+  <!-- CONTROLS -->
+  <div class="flex flex-row w-[375px] md:w-[500px] items-start justify-between gap-4 relative z-10">
+    <!-- PREV -->
+    <button
+      (click)="previousCard()"
+      [disabled]="isFirst && !loop()"
+      [class.invisible]="isFirst && !loop()"
+      class="flex items-center bg-primary text-on-primary gap-2 p-2 pr-4 rounded-lg md:rounded-xl text-xs md:text-sm md:hover:opacity-60"
+    >
+      <app-theme-icon name="arrow-left" [invert]="true" className="w-4 md:w-6"/>
+      Previous
+    </button>
+
+    <!-- HINT -->
+    @if (enableHint()) {
+      <div 
+        class="flex-1 flex flex-col items-center p-4 rounded-t-xl md:rounded-t-3xl transition-all duration-200
+        bg-gradient-to-b from-primary-container to-transparent text-on-primary-container text-center"
+        [class.opacity-0]="!showHint()"
+        [class.translate-y-1]="!showHint()"
+        [class.opacity-100]="showHint()"
+        [class.translate-y-0]="showHint()"
+      >
+        <div class="text-xs md:text-sm">
+          {{ currentCard?.hint }}
+        </div>
+      </div>
+    }
+
+    <!-- NEXT -->
+    <button
+      (click)="nextCard()"
+      [disabled]="isLast && !loop()"
+      [class.invisible]="isLast && !loop()"
+      class="flex items-center bg-primary text-on-primary gap-2 p-2 pl-4 rounded-lg md:rounded-xl text-xs md:text-sm md:hover:opacity-60"
+    >
+      Next
+      <app-theme-icon name="arrow-left" [invert]="true" className="w-4 md:w-6 rotate-180"/>
+    </button>
+  </div>
+</div>

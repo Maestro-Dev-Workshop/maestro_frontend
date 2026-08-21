@@ -1,0 +1,227 @@
+@if (face() == "front") {
+  <div class="bg-primary p-[1px] rounded-3xl w-[500px] h-[300px] scale-75 md:scale-100 shadow-[8px_8px_16px_4px_rgba(0,0,0,0.25)]">
+    <div class="bg-primary border border-on-primary border-8 rounded-3xl px-3 py-2 h-full flex flex-col items-center justify-between text-on-primary">
+      <div class="w-full flex items-center justify-between">
+        <app-theme-icon name="cards-primary-icon" className="w-6"></app-theme-icon>
+        <app-theme-icon name="stripped-logo" className="w-7"></app-theme-icon>
+      </div>
+  
+      <div class="text-xl flex-1 text-center px-4 flex flex-col justify-center overflow-y-auto scrollbar-none">
+        {{ content() }}
+      </div>
+  
+      <div class="w-full flex items-center justify-between">
+        <button class="flex items-center gap-2 text-sm md:hover:opacity-60" (click)="hint()">
+          <app-theme-icon name="hint-primary-icon" className="w-4"></app-theme-icon>
+          Show Hint
+        </button>
+        <button class="flex items-center gap-2 text-sm md:hover:opacity-60" (click)="flip()">
+          Reveal Answer
+          <app-theme-icon name="eye-primary-icon" className="w-5"></app-theme-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="bg-surface-container relative p-[1px] rounded-3xl w-[500px] h-[300px] scale-75 md:scale-100 shadow-[8px_8px_16px_4px_rgba(0,0,0,0.25)]">
+    <div class="p-3 h-full flex flex-col items-center justify-between text-primary relative z-10">
+      <div class="w-full text-center text-3xl font-bold">
+        Answer
+      </div>
+  
+      <div class="text-xl flex-1 text-center px-4 flex flex-col justify-center overflow-y-auto scrollbar-none">
+        {{ content() }}
+      </div>
+  
+      <div class="w-full flex items-center justify-end">
+        <button class="p-3 rounded-full bg-primary md:hover:opacity-60" (click)="flip()">
+          <app-theme-icon name="stripped-logo" className="w-7"></app-theme-icon>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Background -->
+    <div class="w-full h-full absolute top-0 left-0 overflow-hidden opacity-10 z-[9]">
+      <app-theme-icon 
+        name="stripped-logo" 
+        className="w-7"
+        [invert]="true"
+        class="absolute"
+        [style.left.px]="23" 
+        [style.top.px]="25" 
+        [style.transform]="'rotate(-21deg)'"
+      ></app-theme-icon>
+      <app-theme-icon 
+        name="stripped-logo" 
+        className="w-7"
+        [invert]="true"
+        class="absolute"
+        [style.left.px]="26" 
+        [style.top.px]="246" 
+        [style.transform]="'rotate(-42deg)'"
+      ></app-theme-icon>
+      <app-theme-icon 
+        name="stripped-logo" 
+        className="w-7"
+        [invert]="true"
+        class="absolute"
+        [style.left.px]="466" 
+        [style.top.px]="213" 
+        [style.transform]="'rotate(79deg)'"
+      ></app-theme-icon>
+      <app-theme-icon 
+        name="stripped-logo" 
+        className="w-7"
+        [invert]="true"
+        class="absolute"
+        [style.left.px]="45" 
+        [style.top.px]="85" 
+        [style.transform]="'rotate(-108deg)'"
+      ></app-theme-icon>
+      <app-theme-icon 
+        name="stripped-logo" 
+        className="w-7"
+        [invert]="true"
+        class="absolute"
+        [style.left.px]="127" 
+        [style.top.px]="33" 
+        [style.transform]="'rotate(0deg)'"
+      ></app-theme-icon>
+      <app-theme-icon 
+        name="stripped-logo" 
+        className="w-7"
+        [invert]="true"
+        class="absolute"
+        [style.left.px]="27" 
+        [style.top.px]="176" 
+        [style.transform]="'rotate(37deg)'"
+      ></app-theme-icon>
+      <app-theme-icon 
+        name="stripped-logo" 
+        className="w-7"
+        [invert]="true"
+        class="absolute"
+        [style.left.px]="132" 
+        [style.top.px]="91" 
+        [style.transform]="'rotate(-18deg)'"
+      ></app-theme-icon>
+      <app-theme-icon 
+        name="stripped-logo" 
+        className="w-7"
+        [invert]="true"
+        class="absolute"
+        [style.left.px]="113" 
+        [style.top.px]="164" 
+        [style.transform]="'rotate(36deg)'"
+      ></app-theme-icon>
+      <app-theme-icon 
+        name="stripped-logo" 
+        className="w-7"
+        [invert]="true"
+        class="absolute"
+        [style.left.px]="118" 
+        [style.top.px]="240" 
+        [style.transform]="'rotate(40deg)'"
+      ></app-theme-icon>
+      <app-theme-icon 
+        name="stripped-logo" 
+        className="w-7"
+        [invert]="true"
+        class="absolute"
+        [style.left.px]="218" 
+        [style.top.px]="93" 
+        [style.transform]="'rotate(-18deg)'"
+      ></app-theme-icon>
+      <app-theme-icon 
+        name="stripped-logo" 
+        className="w-7"
+        [invert]="true"
+        class="absolute"
+        [style.left.px]="202" 
+        [style.top.px]="192" 
+        [style.transform]="'rotate(-86deg)'"
+      ></app-theme-icon>
+      <app-theme-icon 
+        name="stripped-logo" 
+        className="w-7"
+        [invert]="true"
+        class="absolute"
+        [style.left.px]="275" 
+        [style.top.px]="220" 
+        [style.transform]="'rotate(16deg)'"
+      ></app-theme-icon>
+      <app-theme-icon 
+        name="stripped-logo" 
+        className="w-7"
+        [invert]="true"
+        class="absolute"
+        [style.left.px]="212" 
+        [style.top.px]="269" 
+        [style.transform]="'rotate(-18deg)'"
+      ></app-theme-icon>
+      <app-theme-icon 
+        name="stripped-logo" 
+        className="w-7"
+        [invert]="true"
+        class="absolute"
+        [style.left.px]="308" 
+        [style.top.px]="55" 
+        [style.transform]="'rotate(-36deg)'"
+      ></app-theme-icon>
+      <app-theme-icon 
+        name="stripped-logo" 
+        className="w-7"
+        [invert]="true"
+        class="absolute"
+        [style.left.px]="340" 
+        [style.top.px]="112" 
+        [style.transform]="'rotate(30deg)'"
+      ></app-theme-icon>
+      <app-theme-icon 
+        name="stripped-logo" 
+        className="w-7"
+        [invert]="true"
+        class="absolute"
+        [style.left.px]="354" 
+        [style.top.px]="177" 
+        [style.transform]="'rotate(33deg)'"
+      ></app-theme-icon>
+      <app-theme-icon 
+        name="stripped-logo" 
+        className="w-7"
+        [invert]="true"
+        class="absolute"
+        [style.left.px]="357" 
+        [style.top.px]="253" 
+        [style.transform]="'rotate(-17deg)'"
+      ></app-theme-icon>
+      <app-theme-icon 
+        name="stripped-logo" 
+        className="w-7"
+        [invert]="true"
+        class="absolute"
+        [style.left.px]="364" 
+        [style.top.px]="21" 
+        [style.transform]="'rotate(16deg)'"
+      ></app-theme-icon>
+      <app-theme-icon 
+        name="stripped-logo" 
+        className="w-7"
+        [invert]="true"
+        class="absolute"
+        [style.left.px]="435" 
+        [style.top.px]="40" 
+        [style.transform]="'rotate(29deg)'"
+      ></app-theme-icon>
+      <app-theme-icon 
+        name="stripped-logo" 
+        className="w-7"
+        [invert]="true"
+        class="absolute"
+        [style.left.px]="423" 
+        [style.top.px]="160" 
+        [style.transform]="'rotate(23deg)'"
+      ></app-theme-icon>
+    </div>
+  </div>
+}

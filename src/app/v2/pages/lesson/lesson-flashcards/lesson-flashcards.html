@@ -1,0 +1,53 @@
+<div class="p-4 md:p-6 gap-12 md:gap-20 relative h-full flex flex-col items-center ">
+
+  <h1 class="p-4 md:p-6 w-full flex items-center justify-between flex-shrink-0 border-b-[1px] border-outline-variant rounded-xl">
+    <div class="gap-4 md:gap-6 flex items-center">
+      <span class="text-2xl md:text-4xl font-medium capitalize">Flashcard Practice</span>
+      <app-theme-icon name="flashcards-icon" className="w-6 md:w-8"></app-theme-icon>
+    </div>
+    <span class="text-2xl md:text-4xl hidden md:block font-medium capitalize">{{ deckContent().topic_name }}</span>
+  </h1>
+
+  <div class="flex flex-col gap-0 md:gap-4 items-center">
+    <div class="flex flex-col gap-2">
+      <div class="flex items-center justify-between">
+        <span class="block text-sm md:text-base">Progress</span>
+        <span class="block text-sm md:text-base text-primary font-medium">{{ currentCardNumber() }}/{{ totalCards() }}</span>
+      </div>
+      <div class="flex items-center justify-start p-0 rounded-full bg-surface-container-highest w-[375px] md:w-[500px]">
+        <div 
+          class="h-2 md:h-3 p-0 bg-primary rounded-full"
+          [style.width.%]="(currentCardNumber()/totalCards())*100"
+        ></div>
+      </div>
+    </div>
+  
+    <app-flashcards
+      [cards]="deckContent().flashcards"
+      [loop]="true"
+      (cardChange)="onCardChange($event)"
+      [frontTemplate]="front"
+      [backTemplate]="back"
+    >
+  
+      <ng-template #front let-card="card" let-toggleAnswer="toggleAnswer" let-toggleHint="toggleHint">
+        <app-flashcard-template
+          face="front"
+          [content]="card.front"
+          (toggleFlip)="toggleAnswer()"
+          (toggleHint)="toggleHint()"
+        ></app-flashcard-template>
+      </ng-template>
+  
+      <ng-template #back let-card="card" let-toggleAnswer="toggleAnswer" let-toggleHint="toggleHint">
+        <app-flashcard-template
+          face="back"
+          [content]="card.back"
+          (toggleFlip)="toggleAnswer()"
+          (toggleHint)="toggleHint()"
+        ></app-flashcard-template>
+      </ng-template>
+  
+    </app-flashcards>
+  </div>
+</div>
