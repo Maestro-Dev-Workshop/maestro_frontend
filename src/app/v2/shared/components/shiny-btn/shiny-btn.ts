@@ -1,5 +1,5 @@
 // shiny-btn.ts
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ThemeService } from '../../../../core/services/theme.service';
 
@@ -53,14 +53,18 @@ export class ShinyBtnStyles {
   standalone: true,
   imports: [CommonModule],
   templateUrl: './shiny-btn.html',
-  styleUrl: './shiny-btn.css'
+  styleUrl: './shiny-btn.css',
 })
 export class ShinyBtnComponent {
   private readonly themeService = inject(ThemeService);
+  additionalClasses = input<string>('');
 
   // 🔄 Automatically triggers whenever themeService.effectiveTheme changes
   protected readonly btnClasses = computed(() => {
     const activeTheme = this.themeService.effectiveTheme();
-    return ShinyBtnStyles.getThemeClasses(activeTheme);
+    return `${ShinyBtnStyles.getThemeClasses(activeTheme)} ${this.additionalClasses()}`;
   });
 }
+
+
+
