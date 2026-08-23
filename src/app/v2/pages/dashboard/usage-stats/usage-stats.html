@@ -1,7 +1,213 @@
-<div class="w-screen h-screen flex flex-col">
+<div class="w-screen h-screen flex flex-col overflow-hidden">
   <app-header></app-header>
-  <div class="relative w-full flex flex-row flex-1">
-    <app-dashboard-sidebar class="absolute md:relative h-full" currentPage="Membership & Usage"></app-dashboard-sidebar>
-    <section class="flex-1">Membership & Usage Content</section>
+
+  <div class="relative w-full flex flex-row flex-1 overflow-hidden">
+    <app-dashboard-sidebar
+      class="absolute md:relative h-full flex-shrink-0"
+      currentPage="Membership & Usage"
+    ></app-dashboard-sidebar>
+
+    <section class="flex-1 overflow-y-auto overflow-x-hidden p-8">
+      <div class="w-full">
+        <!-- HEADER -->
+        <div class="flex justify-between items-center mb-8">
+          <div class="flex items-center gap-3">
+            <h1 class="text-4xl font-medium text-on-surface">Membership</h1>
+            <app-theme-icon
+              name="member-icon"
+              className="w-8 h-8 text-on-surface"
+            ></app-theme-icon>
+          </div>
+          <div class="flex gap-2">
+            <button
+              class="bg-primary text-on-primary px-4 py-2 rounded-md text-sm hover:opacity-90 transition-opacity shadow-[inset_0_6px_12px_-2px_rgba(255,255,255,0.25)]"
+            >
+              Upgrade Plan
+            </button>
+            <button
+              class="bg-primary-container text-on-primary-container px-4 py-2 rounded-md text-sm hover:opacity-90 transition-opacity"
+            >
+              Cancel Plan
+            </button>
+          </div>
+        </div>
+
+        <!-- Free Tier Box -->
+        <div class="bg-surface-container rounded-xl p-6 mb-8">
+          <h2 class="text-xl font-semibold text-on-surface">Free Tier</h2>
+
+          <button
+            class="text-xs text-primary mt-1 mb-6 hover:opacity-80 transition-opacity"
+            (click)="showDetails.set(!showDetails())"
+          >
+            {{ showDetails() ? "Hide details" : "Show details" }}
+          </button>
+
+          @if (showDetails()) {
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              @for (
+                feature of membershipFeatures();
+                track feature.title;
+                let i = $index
+              ) {
+                <div
+                  class="rounded-xl p-5 bg-surface-container-lowest border border-outline-variant"
+                  [class.card-shadow]="i !== 1 && i !== 6"
+                  [class.opacity-60]="i === 1 || i === 6"
+                  [class.lg:col-start-2]="i === 6"
+                >
+                  <div class="flex items-center gap-2 mb-3">
+                    <!-- HARDCODED ICONS FOR EACH FEATURE -->
+                    @if (i === 0) {
+                      <app-theme-icon
+                        name="monthly-credit-icon"
+                        className="w-5 h-5 text-on-surface-variant"
+                      ></app-theme-icon>
+                    } @else if (i === 1) {
+                      <app-theme-icon
+                        name="discount-icon"
+                        className="w-5 h-5 text-on-surface-variant"
+                      ></app-theme-icon>
+                    } @else if (i === 2) {
+                      <app-theme-icon
+                        name="upload-limit-icon"
+                        className="w-5 h-5 text-on-surface-variant"
+                      ></app-theme-icon>
+                    } @else if (i === 3) {
+                      <app-theme-icon
+                        name="word-limit-icon"
+                        className="w-5 h-5 text-on-surface-variant"
+                      ></app-theme-icon>
+                    } @else if (i === 4) {
+                      <app-theme-icon
+                        name="max-lesson-icon"
+                        className="w-5 h-5 text-on-surface-variant"
+                      ></app-theme-icon>
+                    } @else if (i === 5) {
+                      <app-theme-icon
+                        name="chatbot-messages-icon"
+                        className="w-5 h-5 text-on-surface-variant"
+                      ></app-theme-icon>
+                    } @else if (i === 6) {
+                      <app-theme-icon
+                        name="limited-cell-icon"
+                        className="w-5 h-5 text-on-surface-variant"
+                      ></app-theme-icon>
+                    }
+
+                    <h3 class="text-sm font-semibold text-on-surface">
+                      {{ feature.title }}
+                    </h3>
+                  </div>
+                  <p class="text-xs text-on-surface-variant leading-relaxed">
+                    {{ feature.desc }}
+                  </p>
+                </div>
+              }
+            </div>
+          }
+        </div>
+
+        <!-- CREDIT BALANCE -->
+        <div class="mt-12 mb-8">
+          <div class="flex justify-between items-center mb-8">
+            <div class="flex items-center gap-3">
+              <h2 class="text-3xl font-medium text-on-surface">
+                Credit Balance
+              </h2>
+              <app-theme-icon
+                name="credits-icon"
+                className="w-7 h-7 text-on-surface"
+              ></app-theme-icon>
+            </div>
+            <button
+              class="bg-primary text-on-primary px-4 py-2 rounded-md text-sm hover:opacity-90 transition-opacity shadow-[inset_0_6px_12px_-2px_rgba(255,255,255,0.25)]"
+            >
+              Get More Credit
+            </button>
+          </div>
+
+          <div class="bg-surface-container-lowest rounded-xl p-6">
+            <div class="flex items-center gap-8">
+              @for (box of creditBalance(); track box.title; let i = $index) {
+                @if (i > 0) {
+                  <span class="text-4xl text-on-surface font-light">{{
+                    i === 1 ? "+" : "="
+                  }}</span>
+                }
+
+                <div
+                  class="flex-1 bg-surface-container-high rounded-b-xl p-8 text-center border-t-8 border-t-primary"
+                >
+                  <h3
+                    class="text-lg font-medium mb-6"
+                    [ngClass]="i === 2 ? 'text-primary' : 'text-on-surface'"
+                  >
+                    {{ box.title }}
+                  </h3>
+                  <p
+                    class="text-5xl font-bold mb-6"
+                    [ngClass]="i === 2 ? 'text-primary' : 'text-on-surface'"
+                  >
+                    {{ box.value }}
+                  </p>
+                  <p class="text-xs text-on-surface-variant">{{ box.desc }}</p>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- CREDIT HISTORY -->
+        <div class="mt-12 mb-8">
+          <div class="flex items-center gap-3 mb-4">
+            <h2 class="text-3xl font-medium text-on-surface">Credit History</h2>
+            <app-theme-icon
+              name="clock-icon"
+              className="w-7 h-7 text-on-surface"
+            ></app-theme-icon>
+          </div>
+
+          <div
+            class="bg-surface-container-low rounded-xl border border-outline-variant overflow-hidden"
+          >
+            <div
+              class="grid grid-cols-3 bg-outline-variant border-b border-outline-variant p-4 text-sm font-medium text-on-surface"
+            >
+              <div>Date</div>
+              <div>Amount</div>
+              <div>Context</div>
+            </div>
+
+            @for (
+              history of creditHistory();
+              track history.date;
+              let i = $index
+            ) {
+              <div
+                class="grid grid-cols-3 p-4 border-b border-outline-variant text-sm text-on-surface"
+                [ngClass]="
+                  i % 2 === 0
+                    ? 'bg-surface-container-low'
+                    : 'bg-surface-container-high'
+                "
+              >
+                <div>{{ history.date }}</div>
+                <div
+                  [class]="
+                    history.amount > 0
+                      ? 'text-tertiary font-medium'
+                      : 'text-error font-medium'
+                  "
+                >
+                  {{ history.amount > 0 ? "+" : "" }}{{ history.amount }}
+                </div>
+                <div class="font-bold">{{ history.context }}</div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </div>
