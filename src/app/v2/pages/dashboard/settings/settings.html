@@ -9,7 +9,6 @@
 
     <section class="flex-1 overflow-y-auto overflow-x-hidden p-8">
       <div class="max-w-4xl mx-auto">
-
         <div class="flex items-center gap-3 mb-8">
           <h1 class="text-4xl font-medium text-on-surface">Settings</h1>
           <app-theme-icon
@@ -18,9 +17,7 @@
           ></app-theme-icon>
         </div>
 
-
         <div class="bg-surface-container-high rounded-xl p-6 mb-6">
-
           <p class="text-sm mb-6">
             <span class="text-on-surface">Signed in as </span>
             <span class="text-primary font-medium">test@example.com</span>
@@ -63,7 +60,6 @@
             </div>
           </div>
 
-
           <div class="flex justify-start gap-2 mb-8">
             <button
               class="bg-primary text-on-primary px-4 py-2 rounded-md text-sm hover:opacity-90 transition-opacity shadow-[inset_0_6px_12px_-2px_rgba(255,255,255,0.25)]"
@@ -81,11 +77,9 @@
 
           <div class="border-t border-outline-variant mb-6"></div>
 
-
           <h3 class="text-sm font-semibold text-primary underline mb-4">
             Change Password
           </h3>
-
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
             <div>
@@ -124,7 +118,6 @@
             />
           </div>
 
-
           <div class="flex justify-end gap-2">
             <button
               class="bg-primary text-on-primary px-4 py-2 rounded-md text-sm hover:opacity-90 transition-opacity shadow-[inset_0_6px_12px_-2px_rgba(255,255,255,0.25)]"
@@ -143,19 +136,20 @@
           </div>
         </div>
 
-
         <div class="bg-surface-container-high rounded-xl p-6 mb-6">
-
           <div class="flex justify-between items-center mb-6">
             <div class="flex items-center gap-2">
               <span class="text-sm font-medium text-on-surface">Theme: </span>
-              <span class="text-primary font-medium">Light</span>
+              <span class="text-primary font-medium">
+                {{
+                  themeService.effectiveTheme() === "dark" ? "Dark" : "Light"
+                }}
+              </span>
               <app-theme-icon
                 name="theme-icon"
                 className="w-4 h-4 text-primary"
               ></app-theme-icon>
             </div>
-
 
             <div class="flex items-center gap-2">
               <app-theme-icon
@@ -167,7 +161,6 @@
                 (click)="toggleTheme()"
                 aria-label="Toggle Theme"
               >
-
                 <div
                   class="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-primary transition-all duration-300"
                   [ngClass]="{
@@ -197,7 +190,6 @@
             </button>
           </div>
         </div>
-
 
         <div class="flex justify-end">
           <button
