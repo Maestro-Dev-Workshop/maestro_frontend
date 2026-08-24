@@ -15,41 +15,47 @@ export class UsageStats {
   membershipFeatures = signal([
     {
       title: '50 Monthly Credits',
-      desc: 'Gain 50 membership credits that expire and renew every 30 days.',
-      icon: 'credits-icon',
+      desc: '...',
+      icon: 'monthly-credit-icon',
+      enabled: true,
     },
     {
       title: '0% Discount',
-      desc: 'Your current membership offers no interest discount on credit purchases from the shop.',
-      icon: 'percentage-icon',
+      desc: '...',
+      icon: 'discount-icon',
+      enabled: false,
     },
     {
       title: '100MB Upload Limit',
-      desc: 'Upload files with cumulative size up to a total of 100MB per lesson.',
-      icon: 'upload-icon',
+      desc: '...',
+      icon: 'upload-limit-icon',
+      enabled: true,
     },
     {
       title: '10,000 Words Soft Limit',
-      desc: 'Process files for each lesson with total word count up to 10,000 before overcharge fees kick in.',
-      icon: 'document-icon',
+      desc: '...',
+      icon: 'word-limit-icon',
+      enabled: true,
     },
     {
       title: '20 Max Lesson Capacity',
-      desc: 'Keep up to a maximum of 20 lessons within Maestro.',
-      icon: 'book-icon',
+      desc: '...',
+      icon: 'max-lesson-icon',
+      enabled: true,
     },
     {
       title: '10 Free Chatbot Messages',
-      desc: 'Send up to 10 free messages to the chatbot per lesson, before overcharge fees kick in.',
-      icon: 'chat-icon',
+      desc: '...',
+      icon: 'chatbot-messages-icon',
+      enabled: true,
     },
     {
       title: 'Limited Cell Types',
-      desc: 'Restricted access to the full catalog of content code for lesson generation.',
-      icon: 'grid-icon',
+      desc: '...',
+      icon: 'limited-cell-icon',
+      enabled: false,
     },
   ]);
-
 
   creditBalance = signal([
     {

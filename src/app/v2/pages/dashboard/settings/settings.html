@@ -37,6 +37,7 @@
               <input
                 type="text"
                 [(ngModel)]="firstName"
+                [disabled]="!isEditingName"
                 placeholder="First Name"
                 class="w-full p-3 rounded-lg border border-outline bg-surface text-on-surface placeholder-on-surface-variant focus:outline-none focus:border-primary"
               />
@@ -54,86 +55,95 @@
               <input
                 type="text"
                 [(ngModel)]="lastName"
+                [disabled]="!isEditingName"
                 placeholder="Last Name"
                 class="w-full p-3 rounded-lg border border-outline bg-surface text-on-surface placeholder-on-surface-variant focus:outline-none focus:border-primary"
               />
             </div>
           </div>
 
-          <div class="flex justify-start gap-2 mb-8">
-            <button
-              class="bg-primary text-on-primary px-4 py-2 rounded-md text-sm hover:opacity-90 transition-opacity shadow-[inset_0_6px_12px_-2px_rgba(255,255,255,0.25)]"
-              (click)="savePersonalInfo()"
-            >
-              Save
-            </button>
-            <button
-              class="bg-primary-container text-on-primary-container px-4 py-2 rounded-md text-sm hover:opacity-90 transition-opacity shadow-[inset_0_6px_12px_-2px_rgba(255,255,255,0.25)]"
-              (click)="firstName = 'John'; lastName = 'Doe'"
-            >
-              Cancel
-            </button>
-          </div>
+          @if (isEditingName) {
+            <div class="flex justify-start gap-2 mb-8">
+              <button
+                class="bg-primary text-on-primary px-4 py-2 rounded-md text-sm hover:opacity-90 transition-opacity shadow-[inset_0_6px_12px_-2px_rgba(255,255,255,0.25)]"
+                [disabled]="!canSaveName()"
+                (click)="savePersonalInfo()"
+              >
+                Save
+              </button>
+              <button
+                class="bg-primary-container text-on-primary-container px-4 py-2 rounded-md text-sm hover:opacity-90 transition-opacity shadow-[inset_0_6px_12px_-2px_rgba(255,255,255,0.25)]"
+                (click)="cancelNameEdit()"
+              >
+                Cancel
+              </button>
+            </div>
+          }
 
           <div class="border-t border-outline-variant mb-6"></div>
 
-          <h3 class="text-sm font-semibold text-primary underline mb-4">
+          <button
+            class="text-sm font-semibold text-primary underline mb-4"
+            (click)="togglePasswordFields()"
+          >
             Change Password
-          </h3>
+          </button>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
-            <div>
-              <label class="block text-xs font-medium text-on-surface mb-2"
-                >Current Password</label
-              >
-              <input
-                type="password"
-                [(ngModel)]="currentPassword"
-                placeholder="Current Password"
-                class="w-full p-3 rounded-lg border border-outline bg-surface text-on-surface placeholder-on-surface-variant focus:outline-none focus:border-primary"
-              />
+          @if (showPasswordFields) {
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+              <div>
+                <label class="block text-xs font-medium text-on-surface mb-2"
+                  >Current Password</label
+                >
+                <input
+                  type="password"
+                  [(ngModel)]="currentPassword"
+                  placeholder="Current Password"
+                  class="w-full p-3 rounded-lg border border-outline bg-surface text-on-surface placeholder-on-surface-variant focus:outline-none focus:border-primary"
+                />
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-on-surface mb-2"
+                  >New Password</label
+                >
+                <input
+                  type="password"
+                  [(ngModel)]="newPassword"
+                  placeholder="New Password"
+                  class="w-full p-3 rounded-lg border border-outline bg-surface text-on-surface placeholder-on-surface-variant focus:outline-none focus:border-primary"
+                />
+              </div>
             </div>
-            <div>
+
+            <div class="mb-4">
               <label class="block text-xs font-medium text-on-surface mb-2"
-                >New Password</label
+                >Confirm New Password</label
               >
               <input
                 type="password"
-                [(ngModel)]="newPassword"
+                [(ngModel)]="confirmPassword"
                 placeholder="New Password"
                 class="w-full p-3 rounded-lg border border-outline bg-surface text-on-surface placeholder-on-surface-variant focus:outline-none focus:border-primary"
               />
             </div>
-          </div>
 
-          <div class="mb-4">
-            <label class="block text-xs font-medium text-on-surface mb-2"
-              >Confirm New Password</label
-            >
-            <input
-              type="password"
-              [(ngModel)]="confirmPassword"
-              placeholder="New Password"
-              class="w-full p-3 rounded-lg border border-outline bg-surface text-on-surface placeholder-on-surface-variant focus:outline-none focus:border-primary"
-            />
-          </div>
-
-          <div class="flex justify-end gap-2">
-            <button
-              class="bg-primary text-on-primary px-4 py-2 rounded-md text-sm hover:opacity-90 transition-opacity shadow-[inset_0_6px_12px_-2px_rgba(255,255,255,0.25)]"
-              (click)="savePassword()"
-            >
-              Save
-            </button>
-            <button
-              class="bg-primary-container text-on-primary-container px-4 py-2 rounded-md text-sm hover:opacity-90 transition-opacity shadow-[inset_0_6px_12px_-2px_rgba(255,255,255,0.25)]"
-              (click)="
-                currentPassword = ''; newPassword = ''; confirmPassword = ''
-              "
-            >
-              Cancel
-            </button>
-          </div>
+            <div class="flex justify-end gap-2">
+              <button
+                class="bg-primary text-on-primary px-4 py-2 rounded-md text-sm hover:opacity-90 transition-opacity shadow-[inset_0_6px_12px_-2px_rgba(255,255,255,0.25)]"
+                (click)="savePassword()"
+              >
+                Save
+              </button>
+              <button
+                class="bg-primary-container text-on-primary-container px-4 py-2 rounded-md text-sm hover:opacity-90 transition-opacity shadow-[inset_0_6px_12px_-2px_rgba(255,255,255,0.25)]"
+                (click)="
+                  currentPassword = ''; newPassword = ''; confirmPassword = ''
+                "
+              >
+                Cancel
+              </button>
+            </div>
+          }
         </div>
 
         <div class="bg-surface-container-high rounded-xl p-6 mb-6">
