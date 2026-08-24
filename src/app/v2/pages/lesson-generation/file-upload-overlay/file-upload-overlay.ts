@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Component, computed, effect, ElementRef, inject, input, OnInit, output, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -269,4 +270,16 @@ export class FileUploadOverlay implements OnInit {
   get documents() {
     return this.uploadedDocs() ? this.storedDocs() : this.files;
   }
+=======
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-file-upload-overlay',
+  imports: [],
+  templateUrl: './file-upload-overlay.html',
+  styleUrl: './file-upload-overlay.css',
+})
+export class FileUploadOverlay {
+
+>>>>>>> 0a98413 (modifications to lessons, store, and shiny button)
 }
