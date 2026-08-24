@@ -37,6 +37,9 @@ export const routes: Routes = [
   { path: 'v2/store', loadComponent: () => import('./v2/pages/dashboard/store/store').then(m => m.Store) },
   { path: 'v2/usage-stats', loadComponent: () => import('./v2/pages/dashboard/usage-stats/usage-stats').then(m => m.UsageStats) },
   { path: 'v2/settings', loadComponent: () => import('./v2/pages/dashboard/settings/settings').then(m => m.Settings) },
+  
+  // Lesson Generation Page
+  { path: 'v2/lesson-generation', loadComponent: () => import('./v2/pages/lesson-generation/lesson-generation').then(m => m.LessonGeneration) },
 
   // Lesson Page
   { path: 'v2/lesson/:subjectId', loadComponent: () => import('./v2/pages/lesson/lesson-page/lesson-page').then(m => m.LessonPage), canActivate: [authGuard] },
