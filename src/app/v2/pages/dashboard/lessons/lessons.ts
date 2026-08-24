@@ -92,7 +92,7 @@ export class Lessons {
   selectedLesson = signal<any | null>(null);
 
   createNewLesson(): void {
-    this.router.navigate(['/v2/lessons/new']);
+    this.router.navigate(['/v2/lesson-generation']);
   }
 
 
