@@ -79,13 +79,13 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
   extensionSettings: ExtensionSettings = structuredClone(DEFAULT_EXTENSION_CONFIG);;
   constraints: ExtensionConstraints = {
     exercise: {
-      maxQuestions: 3
+      maxAmount: 3
     },
     exam: {
-      maxQuestions: 10
+      maxAmount: 10
     },
     flashcards: {
-      maxCards: 10
+      maxAmount: 10
     }
   };
 
@@ -237,10 +237,10 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
 
     // Exercise checks
     if (this.extensionSettings.exercise.enabled) {
-      if (this.extensionSettings.exercise.numQuestions <= 0 || this.extensionSettings.exercise.numQuestions > this.constraints.exercise.maxQuestions) {
+      if (this.extensionSettings.exercise.amount <= 0 || this.extensionSettings.exercise.amount > this.constraints.exercise.maxAmount) {
         return {
           status: false,
-          message: `Number of exercise questions must be between 1 and ${this.constraints.exercise.maxQuestions}.`
+          message: `Number of exercise questions must be between 1 and ${this.constraints.exercise.maxAmount}.`
         };
       }
       if (this.extensionSettings.exercise.types.length === 0) {
@@ -253,10 +253,10 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
 
     // Exam checks
     if (this.extensionSettings.exam.enabled) {
-      if (this.extensionSettings.exam.numQuestions <= 0 || this.extensionSettings.exam.numQuestions > this.constraints.exam.maxQuestions) {
+      if (this.extensionSettings.exam.amount <= 0 || this.extensionSettings.exam.amount > this.constraints.exam.maxAmount) {
         return {
           status: false,
-          message: `Number of exam questions must be between 1 and ${this.constraints.exam.maxQuestions}.`
+          message: `Number of exam questions must be between 1 and ${this.constraints.exam.maxAmount}.`
         };
       }
       if (this.extensionSettings.exam.types.length === 0) {
@@ -269,10 +269,10 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
 
     // Flashcards checks
     if (this.extensionSettings.flashcards.enabled) {
-      if (this.extensionSettings.flashcards.numCards <= 0 || this.extensionSettings.flashcards.numCards > this.constraints.flashcards.maxCards) {
+      if (this.extensionSettings.flashcards.amount <= 0 || this.extensionSettings.flashcards.amount > this.constraints.flashcards.maxAmount) {
         return {
           status: false,
-          message: `Number of flashcards must be between 1 and ${this.constraints.flashcards.maxCards}.`
+          message: `Number of flashcards must be between 1 and ${this.constraints.flashcards.maxAmount}.`
         };
       }
       if (this.extensionSettings.flashcards.types.length === 0) {
@@ -328,19 +328,19 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
       }
       if (ext.type === 'exercise' && ext.configuration) {
         this.extensionSettings.exercise.enabled = true;
-        this.extensionSettings.exercise.numQuestions = ext.configuration.no_of_questions ?? 3;
+        this.extensionSettings.exercise.amount = ext.configuration.no_of_questions ?? 3;
         this.extensionSettings.exercise.types = ext.configuration.question_types ?? [];
         this.extensionsEnabled = true;
       }
       if (ext.type === 'exam' && ext.configuration) {
         this.extensionSettings.exam.enabled = true;
-        this.extensionSettings.exam.numQuestions = ext.configuration.no_of_questions ?? 10;
+        this.extensionSettings.exam.amount = ext.configuration.no_of_questions ?? 10;
         this.extensionSettings.exam.types = ext.configuration.question_types ?? [];
         this.extensionsEnabled = true;
       }
       if (ext.type === 'flashcards' && ext.configuration) {
         this.extensionSettings.flashcards.enabled = true;
-        this.extensionSettings.flashcards.numCards = ext.configuration.no_of_cards ?? 5;
+        this.extensionSettings.flashcards.amount = ext.configuration.no_of_cards ?? 5;
         this.extensionSettings.flashcards.types = ext.configuration.card_types ?? [];
         this.extensionsEnabled = true;
       }
@@ -373,8 +373,8 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
           next: (response) => {
             const subscriptionData: SubscriptionStatus | null = response.subscription;
             if (subscriptionData && subscriptionData.plan) {
-              this.constraints.exercise.maxQuestions = subscriptionData.plan.exercise_question_count || 3;
-              this.constraints.exam.maxQuestions = subscriptionData.plan.exam_question_count || 10;
+              this.constraints.exercise.maxAmount = subscriptionData.plan.exercise_question_count || 3;
+              this.constraints.exam.maxAmount = subscriptionData.plan.exam_question_count || 10;
             }
           },
           error: (res) => {
