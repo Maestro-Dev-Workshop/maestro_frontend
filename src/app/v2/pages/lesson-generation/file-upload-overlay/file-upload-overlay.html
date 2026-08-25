@@ -1,1 +1,100 @@
-<p>file-upload-overlay works!</p>
+<app-base-overlay> 
+  <div class="flex flex-col gap-6 p-4 pt-12">
+    <!-- Top Section -->
+    <div>
+      <h1 class="text-3xl font-medium">
+        Upload Files and Generate
+      </h1>
+      <span class="pt-1 text-sm text-on-surface-variant block max-w-[480px]">
+        Accepted file types: PDF, DOC, DOCX, PPT, PPTX, EPUB. Max file size: 100MB.
+      </span>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      @for (file of documents; track $index) {
+        <div
+          class="w-full flex items-center justify-between bg-surface-container border border-outline-variant p-4 rounded-2xl"
+        >
+          <div class="flex items-center gap-3 flex-grow max-w-[90%]">
+            <app-theme-icon
+              name="upload-file-icon"
+              className="w-5"
+              class="w-5"
+            ></app-theme-icon>
+
+            <div class="flex flex-col flex-grow max-w-[90%]">
+              <span class="text-sm font-medium truncate block">
+                {{ file.name }}
+              </span>
+
+              <span class="text-xs text-on-surface-variant block w-max">
+                Ready for {{ (uploadedDocs() ? "processing" : "upload") }} ({{ formatFileSize(file) }})
+              </span>
+            </div>
+          </div>
+
+          @if (!uploadedDocs()) {
+            <button
+              type="button"
+              (click)="removeFile(file)"
+              [disabled]="loading()"
+              class="transition w-6"
+            >
+              <app-theme-icon
+                name="close-icon"
+                className="w-full"
+                class="w-full"
+              ></app-theme-icon>
+            </button>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Upload Box -->
+    @if (!uploadedDocs()) {
+      <div>
+        <div
+          class="flex flex-col items-center justify-center w-full border-2 border-dashed border-outline-variant rounded-2xl my-2 px-6 py-6 
+          cursor-pointer transition-all md:hover:border-primary bg-surface-container-high"
+          (drop)="onFileDrop($event)"
+          (dragover)="onDragOver($event)"
+          (dragleave)="onDragLeave($event)"
+          [class.bg-blue-50]="isDragging"
+        >
+          <div class="flex gap-[0.4rem] items-center">
+            <app-theme-icon name="folder-primary"></app-theme-icon>
+            Drop your files here or 
+            <label for="fileInput" class="inline text-primary md:hover:underline cursor-pointer" #fileUploadIcon>choose files</label>
+          </div>
+          
+  
+          <input
+            type="file"
+            id="fileInput"
+            (change)="onFileSelect($event)"
+            class="hidden"
+            multiple
+            [accept]="acceptString"
+          />
+        </div>
+      </div>
+    }
+
+    <!-- Bottom Section -->
+    <div class="self-end flex items-center gap-4">
+      @if (loading()) {
+        <img src="images/spinner.gif" class="w-6 h-6" />
+      }
+
+      <button
+        class="w-max text-base font-medium text-on-primary bg-primary px-6 py-3 rounded-lg 
+        md:hover:brightness-150 disabled:opacity-60 md:hover:disabled:brightness-100 transition duration-100" 
+        [disabled]="loading() || !documents.length"
+        (click)="closeOverlay()"
+      >
+        {{ (uploadedDocs() ? "Process" : "Upload") }}
+      </button>
+    </div>
+  </div>
+</app-base-overlay>

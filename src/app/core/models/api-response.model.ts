@@ -309,19 +309,19 @@ export interface ExtensionSettingsPayload {
   exercise: {
     enabled: boolean;
     types: string[];
-    numQuestions: number;
+    amount: number;
     name: string;
   };
   exam: {
     enabled: boolean;
     types: string[];
-    numQuestions: number;
+    amount: number;
     timeLimit: boolean | null;
     name: string;
   };
   flashcards: {
     enabled: boolean;
-    numCards: number;
+    amount: number;
     types: string[];
     name: string;
   };

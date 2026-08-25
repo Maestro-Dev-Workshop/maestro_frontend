@@ -14,6 +14,6 @@ import { NG_VALIDATORS, Validator, AbstractControl, ValidationErrors } from '@an
 export class SubjectNameValidator implements Validator {
   validate(control: AbstractControl): ValidationErrors | null {
     if (!control.value) return null;
-    return (control.value.length <= 30) ? null : { invalidName: true };
+    return (control.value.length <= 40) ? null : { invalidName: true };
   }
 }

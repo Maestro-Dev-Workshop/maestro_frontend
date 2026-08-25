@@ -1,1 +1,111 @@
-<p>extension-config-overlay works!</p>
+<app-base-overlay> 
+  <div class="flex flex-col gap-6 p-4 pt-12">
+    <!-- Top Section -->
+    <div>
+      <h1 class="text-3xl font-medium">
+        Learning Extensions
+      </h1>
+      <span class="pt-1 text-sm text-on-surface-variant block max-w-[480px]">
+        Enhance your learning experience by selecting extensions that align with your interests.
+      </span>
+    </div>
+
+    <!-- Extension Configurations -->
+    <div class="flex flex-col gap-2">
+      @for (ext of extensions; track $index) {
+        <div class="p-4 border-[1px] rounded-lg border-outline-variant flex flex-col gap-4 w-[480px]">
+          <div class="flex items-center justify-between">
+            <!-- Extension Name and Description -->
+            <div class="flex items-center gap-4">
+              <div class="rounded-lg p-2" [style.background-color]="ext.desaturatedColour">
+                <img class="w-6 h-6" [src]="`images/${ext.icon}.svg`" [alt]="ext.name">
+              </div>
+              <div class="flex flex-col">
+                <span class="font-medium">{{ext.displayName}}</span>
+                <span class="text-xs text-on-surface-variant">{{ext.shortDescription}}</span>
+              </div>
+            </div>
+
+            <!-- Toggle Switch -->
+            <button
+              [class]="`flex items-center w-12 p-1 rounded-full border-[1px] border-outline-variant transition-all duration-100 
+              ${ext.enabled ? 'bg-primary justify-end' : 'bg-surface-container-low justify-start'}`"
+              (click)="ext.enabled = !ext.enabled"
+            >
+              <div [class]="`rounded-full h-4 w-4 ${ext.enabled ? 'bg-white' : 'bg-on-surface-variant'}`"></div>
+            </button>
+          </div>
+
+          @if (ext.enabled && (ext.upperLimit || ext.options)) {
+            <div class="flex items-center gap-2">
+              @if (ext.upperLimit) {
+                <div class="w-1/2 flex flex-col items-start gap-2">
+                  <span class="text-sm text-on-surface-variant">Amount</span>
+                  <input
+                    type="number"
+                    class="w-full p-2 rounded-lg bg-surface-container-high border-[1px] border-outline-variant text-sm text-on-surface-variant
+                      [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                    [(ngModel)]="ext.amount"
+                    min="1"
+                    [max]="ext.upperLimit"
+                  />
+                </div>
+              }
+              @if (ext.options && ext.types) {
+                <div class="w-1/2 flex flex-col items-start gap-2">
+                  <span class="text-sm text-on-surface-variant">Types</span>
+                  <div class="relative w-full">
+                    <!-- Trigger -->
+                    <button
+                      type="button"
+                      class="w-full p-2 rounded-lg bg-surface-container-high border border-outline-variant text-sm text-on-surface-variant flex items-center justify-between"
+                      (click)="ext.typesOpen = !ext.typesOpen"
+                    >
+                      <span>
+                        @if (ext.types) {
+                          {{ ext.types.length - (ext.name == 'cells' ? 1 : 0) }} selected
+                        } @else {
+                          Select types
+                        }
+                      </span>
+                  
+                      <span class="text-xs">▼</span>
+                    </button>
+                  
+                    <!-- Dropdown -->
+                    @if (ext.typesOpen) {
+                      <div class="absolute z-50 mt-1 w-full rounded-lg border border-outline-variant bg-surface-container-high shadow-lg overflow-hidden">
+                        @for (option of ext.options; track $index) {
+                          <label class="flex items-center gap-3 px-3 py-2 cursor-pointer hover:bg-surface-container">
+                            <input
+                              type="checkbox"
+                              [checked]="ext.types.includes(option.value)"
+                              (change)="$event.target.checked ? ext.types.push(option.value) : ext.types.splice(ext.types.indexOf(option.value), 1)"
+                              class="h-4 w-4 accent-primary cursor-pointer"
+                            />
+                            <span class="text-sm text-on-surface-variant">
+                              {{ option.label }}
+                            </span>
+                          </label>
+                        }
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Bottom Section -->
+    <button
+      class="self-end w-max text-base font-medium text-on-primary bg-primary px-6 py-3 rounded-lg 
+      md:hover:brightness-150 disabled:opacity-60 md:hover:disabled:brightness-100 transition duration-100" 
+      (click)="save()"
+    >
+      Save Changes
+    </button>
+  </div>
+</app-base-overlay>
