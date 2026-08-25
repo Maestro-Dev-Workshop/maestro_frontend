@@ -1,1 +1,121 @@
-<app-auth-background></app-auth-background>
+<!-- 1. Background Layer: Force it to stay strictly in the deep background -->
+<div class="fixed inset-0 z-0">
+  <app-auth-background></app-auth-background>
+</div>
+
+<!-- 2. Overlay Container Layer: Full screen invisible window that perfectly handles layout centering -->
+<div class="fixed inset-0 z-10 flex items-center justify-center p-4 overflow-y-auto">
+  
+  <!-- 3. The Form Card Content Layer: Give this explicit constraints so it cannot expand past standard sizing -->
+  <div class="w-full max-w-[577px] bg-[var(--background)] rounded-2xl shadow-xl py-16 px-8 flex flex-col">
+    
+    <!-- Header -->
+     <img
+        src="{{ logoSrc() }}"
+        alt="Maestro Logo"
+        class="w-12 mr-2"
+    />
+    
+
+    <h1 class="pt-6 pb-8 text-2xl text-[var(--on-surface)] mb-2 ">
+      Welcome Back
+    </h1>
+    
+    <form class="w-full" #form="ngForm">
+      <!-- Email Input -->
+      <div class="flex flex-col mb-4 font-medium">
+        <label class="text-[var(--on-surface)] mb-1 text-sm">Email Address</label>
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          class="bg-gray-100 p-4 rounded-md text-gray-900 border border-transparent focus:border-[var(--on-surface-variant)] focus:bg-white outline-none transition"
+          [(ngModel)]="email"
+          required
+          email
+          #emailCtrl="ngModel"
+        />
+        <!-- Error messages -->
+        @if (emailCtrl.invalid && emailCtrl.touched) {
+          <div class="text-red-500 text-sm mt-1">
+            @if (emailCtrl.errors?.["required"]) {
+              <span>Email is required</span>
+            }
+            @if (emailCtrl.errors?.["email"]) {
+              <span>Invalid email format</span>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Password Input -->
+      <div class="flex flex-col mb-4 font-medium relative">
+        <label class="text-[var(--on-surface)] mb-1 text-sm">Password</label>
+        <input
+          [type]="passwordVisible"
+          name="password"
+          placeholder="Password"
+          class="bg-gray-100 p-4 rounded-md text-gray-900 border border-transparent focus:border-[var(--on-surface-variant)] focus:bg-white outline-none transition w-full"
+          [(ngModel)]="password"
+          required
+          #passwordCtrl="ngModel"
+        />
+        <!-- Error messages -->
+        @if (passwordCtrl.invalid && passwordCtrl.touched) {
+          <div class="text-red-500 text-sm mt-1">
+            <span>Password is required</span>
+          </div>
+        }
+        <button
+          type="button"
+          (click)="togglePasswordVisibility()"
+          class="absolute p-4 right-0 bottom-0 top-6 flex items-center justify-center"
+        >
+          <img src="images/eye-icon.svg" alt="Toggle Visibility" class="w-6" />
+        </button>
+      </div>
+
+      <div class="text-right mb-6">
+        <a
+          href="/forgot-password"
+          class="text-sm text-[var(--primary)] lg:hover:text-[var(--primary-hover)] font-semibold"
+          >Forgot Password?</a
+        >
+      </div>
+      <app-shiny-btn
+      class="w-full"
+        type="submit"
+        (click)="onSubmit()"
+        [disabled]="loading"
+      >
+        Log In
+        <img
+          src="images/spinner.gif"
+          alt=""
+          [class]="
+            `absolute right-4 top-4 w-6 h-6 ${loading ? '' : 'hidden'}`
+          "
+        />
+      </app-shiny-btn>
+    </form>
+
+    <div class="w-full my-4 flex flex-col items-center">
+      <div class="flex items-center w-full my-2">
+        <div class="flex-grow h-px bg-gray-300"></div>
+        <span class="mx-3 text-gray-400 text-xs font-bold">OR</span>
+        <div class="flex-grow h-px bg-gray-300"></div>
+      </div>
+
+      <div id="google-login-btn" class="w-full flex justify-center mt-4"></div>
+    </div>
+
+    <div class="text-center mt-4 text-sm text-gray-600">
+      Don't have an account?
+      <a
+        href="/signup"
+        class="font-semibold text-[var(--primary)] lg:hover:text-[var(--primary-hover)] ml-1"
+        >Sign Up!</a
+      >
+    </div>
+  </div>
+</div>
