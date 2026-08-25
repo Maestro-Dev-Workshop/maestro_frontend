@@ -39,11 +39,7 @@ export const routes: Routes = [
   { path: 'v2/settings', loadComponent: () => import('./v2/pages/dashboard/settings/settings').then(m => m.Settings) },
   
   // Lesson Generation Page
-<<<<<<< HEAD
-  { path: 'v2/lesson-generation/:sessionId', loadComponent: () => import('./v2/pages/lesson-generation/lesson-generation').then(m => m.LessonGeneration) },
-=======
   { path: 'v2/lesson-generation', loadComponent: () => import('./v2/pages/lesson-generation/lesson-generation').then(m => m.LessonGeneration) },
->>>>>>> 0a98413 (modifications to lessons, store, and shiny button)
 
   // Lesson Page
   { path: 'v2/lesson/:subjectId', loadComponent: () => import('./v2/pages/lesson/lesson-page/lesson-page').then(m => m.LessonPage), canActivate: [authGuard] },
