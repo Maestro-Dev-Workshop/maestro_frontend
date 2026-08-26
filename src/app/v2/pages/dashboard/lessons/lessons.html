@@ -13,7 +13,11 @@
         </button>
       </div>
 
-      @if (lessons().length == 0) {
+      @if (loadingLessons()) {
+        <div class="flex justify-center items-center h-[80vh]">
+          <img src="images/spinner.gif" class="w-12 h-12" alt="Loading..." />
+        </div>
+      } @else if (lessons().length == 0) {
         <div class="flex flex-col items-center justify-center h-[80vh] text-center">
           <app-theme-icon name="book-icon" className="w-16 h-16 text-secondary-main mb-4"></app-theme-icon>
           <h2 class="text-2xl font-medium text-on-surface">Build your first lesson</h2>
@@ -59,7 +63,6 @@
                     </div>
                     <span class="text-xs text-on-surface-variant whitespace-nowrap">{{ lesson.completion }}% Complete</span>
                   </div>
-                  
                   <button 
                     class="bg-primary text-on-primary px-4 py-2 rounded-md text-xs font-medium hover:opacity-90 transition-opacity shadow-[inset_0_3.6px_7.2px_-1.2px_rgba(255,255,255,0.25)]"
                     (click)="goToLesson(lesson)">
@@ -72,13 +75,11 @@
         </div>
       }
 
-      <!-- Rating Modal -->
       <app-rating-modal
         [visible]="showRateModal()"
         (close)="closeRateModal()"
         (submit)="onRatingSubmit($event)"
       />
-
     </section>
   </div>
 </div>

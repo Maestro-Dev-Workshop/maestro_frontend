@@ -42,7 +42,6 @@
           >
             {{ showDetails() ? "Hide details" : "Show details" }}
           </button>
-
           @if (showDetails()) {
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               @for (
@@ -52,49 +51,15 @@
               ) {
                 <div
                   class="rounded-xl p-5 bg-surface-container-lowest border border-outline-variant"
-                  [class.card-shadow]="i !== 1 && i !== 6"
-                  [class.opacity-60]="i === 1 || i === 6"
+                  [class.card-shadow]="feature.enabled"
+                  [class.opacity-60]="!feature.enabled"
                   [class.lg:col-start-2]="i === 6"
                 >
                   <div class="flex items-center gap-2 mb-3">
-                    <!-- HARDCODED ICONS FOR EACH FEATURE -->
-                    @if (i === 0) {
-                      <app-theme-icon
-                        name="monthly-credit-icon"
-                        className="w-5 h-5 text-on-surface-variant"
-                      ></app-theme-icon>
-                    } @else if (i === 1) {
-                      <app-theme-icon
-                        name="discount-icon"
-                        className="w-5 h-5 text-on-surface-variant"
-                      ></app-theme-icon>
-                    } @else if (i === 2) {
-                      <app-theme-icon
-                        name="upload-limit-icon"
-                        className="w-5 h-5 text-on-surface-variant"
-                      ></app-theme-icon>
-                    } @else if (i === 3) {
-                      <app-theme-icon
-                        name="word-limit-icon"
-                        className="w-5 h-5 text-on-surface-variant"
-                      ></app-theme-icon>
-                    } @else if (i === 4) {
-                      <app-theme-icon
-                        name="max-lesson-icon"
-                        className="w-5 h-5 text-on-surface-variant"
-                      ></app-theme-icon>
-                    } @else if (i === 5) {
-                      <app-theme-icon
-                        name="chatbot-messages-icon"
-                        className="w-5 h-5 text-on-surface-variant"
-                      ></app-theme-icon>
-                    } @else if (i === 6) {
-                      <app-theme-icon
-                        name="limited-cell-icon"
-                        className="w-5 h-5 text-on-surface-variant"
-                      ></app-theme-icon>
-                    }
-
+                    <app-theme-icon
+                      [name]="feature.icon"
+                      className="w-5 h-5 text-on-surface-variant"
+                    ></app-theme-icon>
                     <h3 class="text-sm font-semibold text-on-surface">
                       {{ feature.title }}
                     </h3>

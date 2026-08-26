@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Header } from '../../../shared/components/header/header';
@@ -7,6 +7,9 @@ import { ThemeIconComponent } from '../../../../shared/components/theme-icon/the
 import { RatingModal } from '../../../../shared/components/rating-modal/rating-modal';
 import { NotificationService } from '../../../../core/services/notification.service';
 import { ConfirmService } from '../../../../core/services/confirm';
+import { SubjectsService } from '../../../../core/services/subjects.service';
+import { SubscriptionService } from '../../../../core/services/subscription.service';
+import { SubjectStatus } from '../../../../core/models/subject-status.model';
 
 @Component({
   selector: 'app-lessons',
@@ -20,81 +23,106 @@ import { ConfirmService } from '../../../../core/services/confirm';
   templateUrl: './lessons.html',
   styleUrl: './lessons.css',
 })
-export class Lessons {
+export class Lessons implements OnInit {
   private router = inject(Router);
   private notify = inject(NotificationService);
   private confirmation = inject(ConfirmService);
+  private subjectsService = inject(SubjectsService);
+  private subscriptionService = inject(SubscriptionService);
 
-  lessons = signal([
-    {
-      id: 1,
-      title: 'The Design of Everyday Things',
-      tags: ['Design', 'Development'],
-      completion: 72,
-    },
-    {
-      id: 2,
-      title: 'The Design of Everyday Things',
-      tags: ['Design', 'Development'],
-      completion: 72,
-    },
-    {
-      id: 3,
-      title: 'The Design of Everyday Things',
-      tags: ['Design', 'Development'],
-      completion: 72,
-    },
-    {
-      id: 4,
-      title: 'The Design of Everyday Things',
-      tags: ['Design', 'Development'],
-      completion: 72,
-    },
-    {
-      id: 5,
-      title: 'The Design of Everyday Things',
-      tags: ['Design', 'Development'],
-      completion: 72,
-    },
-    {
-      id: 6,
-      title: 'The Design of Everyday Things',
-      tags: ['Design', 'Development'],
-      completion: 72,
-    },
-    {
-      id: 7,
-      title: 'The Design of Everyday Things',
-      tags: ['Design', 'Development'],
-      completion: 72,
-    },
-    {
-      id: 8,
-      title: 'The Design of Everyday Things',
-      tags: ['Design', 'Development'],
-      completion: 72,
-    },
-    {
-      id: 9,
-      title: 'The Design of Everyday Things',
-      tags: ['Design', 'Development'],
-      completion: 72,
-    },
-    {
-      id: 10,
-      title: 'The Design of Everyday Things',
-      tags: ['Design', 'Development'],
-      completion: 72,
-    },
-  ]);
+  loadingLessons = signal(true);
+  loadingAction = signal(false);
+  lessons = signal<any[]>([]);
+  subscriptionData = signal<any | null>(null);
 
   showRateModal = signal(false);
   selectedLesson = signal<any | null>(null);
 
-  createNewLesson(): void {
-    this.router.navigate(['/v2/lesson-generation']);
+  ngOnInit() {
+    this.loadSubscriptionData();
+    this.loadLessons();
   }
 
+  private loadSubscriptionData() {
+    this.subscriptionService.getSubscription().subscribe({
+      next: (response) => {
+        this.subscriptionData.set(response.subscription);
+      },
+      error: (res) => {
+        this.notify.showError(
+          res.error?.message || 'Failed to load subscription data.',
+        );
+      },
+    });
+  }
+
+  private loadLessons() {
+    this.loadingLessons.set(true);
+    this.subjectsService.getAllSubjectsDetails().subscribe({
+      next: (response: any) => {
+        const mapped = (response.sessions || []).map((s: any) => ({
+          id: s.session.id,
+          title: s.session.name ?? '',
+          completion: this.normalizeCompletion(s.session.completion),
+          tags: ['Design', 'Development'],
+          status: s.session.status ?? SubjectStatus.PENDING_NAMING,
+        }));
+        this.lessons.set(mapped);
+        this.loadingLessons.set(false);
+      },
+      error: (res) => {
+        this.notify.showError(res.error?.message || 'Failed to load lessons.');
+        this.loadingLessons.set(false);
+      },
+    });
+  }
+
+  normalizeCompletion(value: any): number {
+    if (value === null || value === undefined) return 0;
+    const n = Number(value);
+    if (isNaN(n)) return 0;
+    if (n >= 0 && n <= 1) return Math.round(n * 100);
+    return Math.round(Math.max(0, Math.min(100, n)));
+  }
+
+  createNewLesson(): void {
+    this.loadingAction.set(true);
+    const subscription = this.subscriptionData();
+    if (
+      (subscription?.subjects_created_this_month ?? 0) >=
+      (subscription?.plan?.monthly_subject_creations ?? Infinity)
+    ) {
+      this.notify.showError(
+        'You have reached the monthly subject creation limit.',
+      );
+      this.loadingAction.set(false);
+      return;
+    }
+    if (
+      this.lessons().length >=
+      (subscription?.plan?.subject_capacity ?? Infinity)
+    ) {
+      this.notify.showError('You have reached the total subject limit.');
+      this.loadingAction.set(false);
+      return;
+    }
+
+    this.subjectsService.createSubject().subscribe({
+      next: (response: any) => {
+        const newSubjectId = response.session.id;
+        this.router.navigateByUrl(
+          `/subject-create/${newSubjectId}/naming-upload`,
+        );
+        this.loadingAction.set(false);
+      },
+      error: (res) => {
+        this.notify.showError(
+          res.error?.message || 'Failed to create a new subject.',
+        );
+        this.loadingAction.set(false);
+      },
+    });
+  }
 
   deleteLesson(lesson: any): void {
     this.confirmation
@@ -106,23 +134,47 @@ export class Lessons {
       })
       .subscribe((confirmed) => {
         if (confirmed) {
-          // Call API to delete here
-          this.notify.showSuccess('Lesson deleted successfully.');
-          this.lessons.update((list) => list.filter((l) => l.id !== lesson.id));
+          this.subjectsService.deleteSubject(lesson.id).subscribe({
+            next: () => {
+              this.notify.showSuccess('Lesson deleted successfully.');
+              this.lessons.update((list) =>
+                list.filter((l) => l.id !== lesson.id),
+              );
+            },
+            error: (res) =>
+              this.notify.showError(
+                res.error?.message || 'Failed to delete lesson.',
+              ),
+          });
         }
       });
   }
 
-  // Heart Icon: Opens Rating Modal
+  goToLesson(lesson: any): void {
+    if (this.loadingAction()) return;
+    this.loadingAction.set(true);
+    const status = lesson.status;
+    if (
+      status === SubjectStatus.PENDING_NAMING ||
+      status === SubjectStatus.PENDING_DOCUMENT_UPLOAD ||
+      status === SubjectStatus.PENDING_TOPIC_LABELLING
+    ) {
+      this.router.navigate([`/subject-create/${lesson.id}/naming-upload`]);
+    } else if (
+      status === SubjectStatus.PENDING_TOPIC_SELECTION ||
+      status === SubjectStatus.PENDING_EXTENSION_CONFIG ||
+      status === SubjectStatus.PENDING_LESSON_GENERATION
+    ) {
+      this.router.navigate([`/subject-create/${lesson.id}/lesson-generation`]);
+    } else {
+      this.router.navigate([`/v2/lesson/${lesson.id}`]);
+    }
+    this.loadingAction.set(false);
+  }
+
   openRateModal(lesson: any): void {
     this.selectedLesson.set(lesson);
     this.showRateModal.set(true);
-  }
-
-  // Continue Button: Navigate to the lesson page
-  goToLesson(lesson: any): void {
-    // Route is /v2/lesson/:subjectId
-    this.router.navigate(['/v2/lesson', lesson.id]);
   }
 
   closeRateModal(): void {
@@ -133,7 +185,6 @@ export class Lessons {
   onRatingSubmit(data: { rating: number; feedback: string }): void {
     const lesson = this.selectedLesson();
     if (!lesson) return;
-
     this.notify.showSuccess('Thanks for your feedback.');
     this.closeRateModal();
   }
