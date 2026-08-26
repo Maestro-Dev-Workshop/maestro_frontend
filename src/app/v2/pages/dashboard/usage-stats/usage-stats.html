@@ -102,21 +102,23 @@
                 }
 
                 <div
-                  class="flex-1 bg-surface-container-high rounded-b-xl p-8 text-center border-t-8 border-t-primary"
+                  class="flex-1 bg-surface-container-high rounded-2xl p-8 text-center border-t-8 border-t-primary"
                 >
                   <h3
-                    class="text-lg font-medium mb-6"
+                    class="text-lg font-medium mb-14"
                     [ngClass]="i === 2 ? 'text-primary' : 'text-on-surface'"
                   >
                     {{ box.title }}
                   </h3>
                   <p
-                    class="text-5xl font-bold mb-6"
+                    class="text-5xl  mb-14"
                     [ngClass]="i === 2 ? 'text-primary' : 'text-on-surface'"
                   >
                     {{ box.value }}
                   </p>
-                  <p class="text-xs text-on-surface-variant">{{ box.desc }}</p>
+                  <p class="text-xs text-on-surface-variant mt-8">
+                    {{ box.desc }}
+                  </p>
                 </div>
               }
             </div>
@@ -133,9 +135,7 @@
             ></app-theme-icon>
           </div>
 
-          <div
-            class="bg-surface-container-low rounded-xl overflow-hidden"
-          >
+          <div class="bg-surface-container-low rounded-xl overflow-hidden">
             <div
               class="grid grid-cols-3 bg-outline-variant border-b border-outline p-4 text-sm font-medium text-on-surface"
             >

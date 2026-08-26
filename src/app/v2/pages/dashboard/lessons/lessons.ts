@@ -110,9 +110,7 @@ export class Lessons implements OnInit {
     this.subjectsService.createSubject().subscribe({
       next: (response: any) => {
         const newSubjectId = response.session.id;
-        this.router.navigateByUrl(
-          `/subject-create/${newSubjectId}/naming-upload`,
-        );
+        this.router.navigateByUrl(`/v2/lesson-generation/${newSubjectId}`);
         this.loadingAction.set(false);
       },
       error: (res) => {
@@ -159,13 +157,13 @@ export class Lessons implements OnInit {
       status === SubjectStatus.PENDING_DOCUMENT_UPLOAD ||
       status === SubjectStatus.PENDING_TOPIC_LABELLING
     ) {
-      this.router.navigate([`/subject-create/${lesson.id}/naming-upload`]);
+      this.router.navigate([`/v2/lesson-generation/${lesson.id}`]);
     } else if (
       status === SubjectStatus.PENDING_TOPIC_SELECTION ||
       status === SubjectStatus.PENDING_EXTENSION_CONFIG ||
       status === SubjectStatus.PENDING_LESSON_GENERATION
     ) {
-      this.router.navigate([`/subject-create/${lesson.id}/lesson-generation`]);
+      this.router.navigate([`/v2/lesson-generation/${lesson.id}`]);
     } else {
       this.router.navigate([`/v2/lesson/${lesson.id}`]);
     }
