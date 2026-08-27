@@ -1,17 +1,17 @@
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
   @for (membership of memberships; track membership.title) {
     <div class="membership-card flex flex-col">
-      <div class="membership-header p-6 text-on-primary">
-        <h3 class="text-xl font-semibold">{{ membership.title }}</h3>
+      <div class="membership-header p-6 text-on-primary rounded-3xl flex flex-col gap-4">
+        <h3 class="text-xl">{{ membership.title }}</h3>
         <div class="mt-2 flex items-baseline">
-          <span class="text-3xl font-bold">{{ membership.price }}</span>
+          <span class="text-4xl font-bold">{{ membership.price }}</span>
           <span class="text-sm opacity-80 ml-1">/ month</span>
         </div>
       </div>
       <div class="p-6 flex flex-col flex-1">
         <p class="text-on-surface mb-6">{{ membership.subtitle }}</p>
         <div class="mb-6 w-full">
-          <app-shiny-btn class="'w-full'">Join Membership</app-shiny-btn>
+          <app-shiny-btn class="w-full">Join Membership</app-shiny-btn>
         </div>
         <div class="border-t border-outline pt-4 mt-auto">
           <h4 class="text-sm font-semibold text-on-surface mb-3">Features</h4>

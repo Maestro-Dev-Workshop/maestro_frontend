@@ -3,7 +3,7 @@
   class="px-8 md:px-12 w-full flex flex-col overflow-y-auto custom-scrollbar"
 >
   <!-- Top Section -->
-  <div class="flex flex-row justify-between pt-8 md:pt-12 pb-4 md:pb-8 sticky z-[9] top-0 bg-surface">
+  <div class="flex flex-row justify-between pt-8 md:pt-12 pb-4 md:pb-8 sticky z-20 top-0 bg-surface">
     <!-- Topic tree display -->
     @if (currentTopic() && currentView().content) {
       <div class="hidden md:flex flex-row items-center gap-4 text-on-surface-variant">
@@ -72,7 +72,7 @@
 
   <!-- Subtopic Content -->
   @if (currentView().content) {
-    <div class="text-md md:text-lg pb-32">
+    <div class="text-md md:text-lg pb-32 flex flex-col w-full gap-4 z-10">
       @for (cell of currentView().content.cells; track $index) {
         @if (cell.type === "text") {
           <!-- Markdown Text Cells -->

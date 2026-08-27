@@ -2,29 +2,26 @@
   <app-flashcards
     class="w-full"
     [cards]="cards()"
-    [loop]="true"
     (cardChange)="onCardChange($event)"
     [frontTemplate]="front"
     [backTemplate]="back"
   >
+    <ng-template #front let-card="card" let-toggleAnswer="toggleAnswer" let-toggleHint="toggleHint">
+      <app-flashcard-template
+        face="front"
+        [content]="card.front"
+        (toggleFlip)="toggleAnswer()"
+        (toggleHint)="toggleHint()"
+      ></app-flashcard-template>
+    </ng-template>
 
-  <ng-template #front let-card="card" let-toggleAnswer="toggleAnswer" let-toggleHint="toggleHint">
-    <app-flashcard-template
-      face="front"
-      [content]="card.front"
-      (toggleFlip)="toggleAnswer()"
-      (toggleHint)="toggleHint()"
-    ></app-flashcard-template>
-  </ng-template>
-
-  <ng-template #back let-card="card" let-toggleAnswer="toggleAnswer" let-toggleHint="toggleHint">
-    <app-flashcard-template
-      face="back"
-      [content]="card.back"
-      (toggleFlip)="toggleAnswer()"
-      (toggleHint)="toggleHint()"
-    ></app-flashcard-template>
-  </ng-template>
-
+    <ng-template #back let-card="card" let-toggleAnswer="toggleAnswer" let-toggleHint="toggleHint">
+      <app-flashcard-template
+        face="back"
+        [content]="card.back"
+        (toggleFlip)="toggleAnswer()"
+        (toggleHint)="toggleHint()"
+      ></app-flashcard-template>
+    </ng-template>
   </app-flashcards>
 </div>

@@ -6,9 +6,10 @@
         <app-theme-icon name="stripped-logo" className="w-7"></app-theme-icon>
       </div>
   
-      <div class="text-xl flex-1 text-center px-4 flex flex-col justify-center overflow-y-auto scrollbar-none">
-        {{ content() }}
-      </div>
+      <div 
+        class="text-xl flex-1 text-center px-4 flex flex-col justify-center overflow-y-auto scrollbar-none"
+        [innerHTML]="content() | markdown"
+      ></div>
   
       <div class="w-full flex items-center justify-between">
         <button class="flex items-center gap-2 text-sm md:hover:opacity-60" (click)="hint()">

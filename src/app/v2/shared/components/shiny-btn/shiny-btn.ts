@@ -8,4 +8,5 @@ import { Component, input } from '@angular/core';
 })
 export class ShinyBtnComponent {
   additionalClasses = input<string>('');
+  disabled = input<boolean>(false);
 }

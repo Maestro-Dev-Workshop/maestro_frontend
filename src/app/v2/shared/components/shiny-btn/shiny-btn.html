@@ -1,13 +1,16 @@
 <button
+  [disabled]="disabled()"
+  [type]="'button'"
   [class]="`
     relative overflow-hidden w-full
     font-bold py-3 px-6 rounded-lg md:text-lg text-on-primary
     transition-opacity duration-200 brightness-110 md:hover:brightness-125
     bg-[radial-gradient(circle,var(--primary-dim)_40%,var(--primary-bright)_100%)]
     ${additionalClasses()}
+    ${disabled() ? 'opacity-50 cursor-not-allowed pointer-events-none' : ''}
   `"
 >
-  <span class="relative z-10">
-    <ng-content>Button</ng-content>
+  <span class="relative z-10 flex items-center justify-center">
+    <ng-content></ng-content>
   </span>
 </button>
