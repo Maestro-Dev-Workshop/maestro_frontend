@@ -17,19 +17,19 @@
     />
     
 
-    <h1 class="pt-6 pb-8 text-2xl text-[var(--on-surface)] mb-2 ">
+    <h1 class="pt-6 pb-8 text-2xl text-[var(--on-surface)] mb-2">
       Welcome Back
     </h1>
     
     <form class="w-full" #form="ngForm">
       <!-- Email Input -->
-      <div class="flex flex-col mb-4 font-medium">
-        <label class="text-[var(--on-surface)] mb-1 text-sm">Email Address</label>
+      <div class="flex flex-col mb-6 font-normal">
+        <label class="text-[var(--on-surface)] mb-2 text-sm">Email Address</label>
         <input
           type="email"
           name="email"
           placeholder="Email"
-          class="bg-gray-100 p-4 rounded-md text-gray-900 border border-transparent focus:border-[var(--on-surface-variant)] focus:bg-white outline-none transition"
+          class="bg-[var(--background)] p-4 rounded-md text-[var(--on-surface-variant)] border border-[var(--outline)] focus:border-[var(--outline-variant)] outline-none transition"
           [(ngModel)]="email"
           required
           email
@@ -49,13 +49,13 @@
       </div>
 
       <!-- Password Input -->
-      <div class="flex flex-col mb-4 font-medium relative">
-        <label class="text-[var(--on-surface)] mb-1 text-sm">Password</label>
+      <div class="flex flex-col mb-6 font-normal relative">
+        <label class="text-[var(--on-surface)] mb-2 text-sm">Password</label>
         <input
           [type]="passwordVisible"
           name="password"
           placeholder="Password"
-          class="bg-gray-100 p-4 rounded-md text-gray-900 border border-transparent focus:border-[var(--on-surface-variant)] focus:bg-white outline-none transition w-full"
+          class="bg-[var(--background)] p-4 rounded-md text-[var(--on-surface-variant)] border border-[var(--outline)] focus:border-[var(--outline-variant)] outline-none transition w-full"
           [(ngModel)]="password"
           required
           #passwordCtrl="ngModel"
@@ -71,7 +71,7 @@
           (click)="togglePasswordVisibility()"
           class="absolute p-4 right-0 bottom-0 top-6 flex items-center justify-center"
         >
-          <img src="images/eye-icon.svg" alt="Toggle Visibility" class="w-6" />
+          <img src="images/eye.svg" alt="Toggle Visibility" class="w-6" />
         </button>
       </div>
 
