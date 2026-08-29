@@ -17,6 +17,8 @@ export interface Plan {
   exercise_question_count: number | null;
   exam_question_count: number | null;
   chatbot_token_count: number | null;
+  membership_credits: number | null;
+  word_soft_limit: number | null;
 }
 
 export interface SubscriptionStatus {

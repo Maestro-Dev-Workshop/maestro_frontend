@@ -27,13 +27,26 @@
             </div>
 
             <!-- Toggle Switch -->
-            <button
-              [class]="`flex items-center w-12 p-1 rounded-full border-[1px] border-outline-variant transition-all duration-100 
-              ${ext.enabled ? 'bg-primary justify-end' : 'bg-surface-container-low justify-start'}`"
-              (click)="ext.enabled = !ext.enabled"
-            >
-              <div [class]="`rounded-full h-4 w-4 ${ext.enabled ? 'bg-white' : 'bg-on-surface-variant'}`"></div>
-            </button>
+            <div class="flex items-center gap-1">
+              @if (ext.enabled) {
+                <div class="flex items-center justify-center gap-1 font-medium text-sm">
+                  <app-theme-icon name="credits-icon" className="w-4"></app-theme-icon> 
+                  {{ getCost(ext.name, ext) }}
+                  @if (costPerTopic(ext.name)) {
+                    <span class="text-xs text-on-surface-variant">
+                      (per topic)
+                    </span>
+                  }
+                </div>
+              }
+              <button
+                [class]="`flex items-center w-12 p-1 rounded-full border-[1px] border-outline-variant transition-all duration-100 
+                ${ext.enabled ? 'bg-primary justify-end' : 'bg-surface-container-low justify-start'}`"
+                (click)="ext.enabled = !ext.enabled"
+              >
+                <div [class]="`rounded-full h-4 w-4 ${ext.enabled ? 'bg-white' : 'bg-on-surface-variant'}`"></div>
+              </button>
+            </div>
           </div>
 
           @if (ext.enabled && (ext.upperLimit || ext.options)) {
@@ -63,7 +76,7 @@
                     >
                       <span>
                         @if (ext.types) {
-                          {{ ext.types.length - (ext.name == 'cells' ? 1 : 0) }} selected
+                          {{ ext.types.length - (ext.name == 'cells' ? 0 : 0) }} selected
                         } @else {
                           Select types
                         }

@@ -32,6 +32,7 @@ import {
 } from '../../../core/models/extension-settings.model';
 import { ExtensionModel } from '../../../core/models/api-response.model';
 import { SubjectStatus, SubscriptionStatus } from '../../../core/models';
+import { CreditService } from '../../../core/services/credit.service';
 
 @Component({
   selector: 'app-lesson-generation',
@@ -55,15 +56,51 @@ export class LessonGeneration implements OnInit {
   private notify = inject(NotificationService);
   private subjectService = inject(SubjectsService);
   private subscriptionService = inject(SubscriptionService);
+  private creditService = inject(CreditService)
   private onboardingService = inject(OnboardingService);
 
   filesOverlay = false;
   configOverlay = false;
   showPromptSuggestions = false;
+  overchargeExplanationPopup = signal(false);
   loading = signal(false);
   learningStyle = '';
   subjectId = '';
   subjectStatus = '';
+  word_count : number | null = 0;
+  words_soft_limit : number | null = 0;
+  costSettings : any = {};
+  overcharge_rate = 0
+  currentCosts = {
+    total: {
+      value: 0,
+      overcharge: 0
+    },
+    lesson: {
+      value: 0,
+      overcharge: 0
+    },
+    cells: {
+      value: 0,
+      overcharge: 0
+    },
+    exercise: {
+      value: 0,
+      overcharge: 0
+    },
+    exam: {
+      value: 0,
+      overcharge: 0
+    },
+    flashcards: {
+      value: 0,
+      overcharge: 0
+    },
+    glossary: {
+      value: 0,
+      overcharge: 0
+    },
+  }
 
   topicList = viewChild<ElementRef>('topicList');
   textInput = viewChild<ElementRef>('textInput');
@@ -163,6 +200,7 @@ export class LessonGeneration implements OnInit {
       }
       return topic;
     });
+    this.computeCreditCosts()
   }
 
   drop(event: CdkDragDrop<GenerationTopic[]>) {
@@ -183,14 +221,115 @@ export class LessonGeneration implements OnInit {
       this.notify.show('info', 'Extensions have already been configured and cannot be changed');
     } else {
       this.extensionSettings = config;
+      this.computeCreditCosts()
     }
     this.toggleConfigOverlay();
   }
 
+  computeCreditCosts() {
+    // Reset Costs
+    this.overcharge_rate = 0
+    this.currentCosts = {
+      total: {
+        value: 0,
+        overcharge: 0
+      },
+      lesson: {
+        value: 0,
+        overcharge: 0
+      },
+      cells: {
+        value: 0,
+        overcharge: 0
+      },
+      exercise: {
+        value: 0,
+        overcharge: 0
+      },
+      exam: {
+        value: 0,
+        overcharge: 0
+      },
+      flashcards: {
+        value: 0,
+        overcharge: 0
+      },
+      glossary: {
+        value: 0,
+        overcharge: 0
+      },
+    }
+
+    if ((this.word_count && this.words_soft_limit) && (this.word_count > this.words_soft_limit)) {
+      this.overcharge_rate = this.costSettings.overcharge.rate * (this.word_count - this.words_soft_limit)
+    }
+
+    // Lesson Cost
+    this.currentCosts.lesson.value = this.costSettings.lesson.cells.text * this.selectedTopics.length
+    // this.currentCosts.lesson.overcharge = Math.ceil(this.overcharge_rate * this.selectedTopics.length) // Overcharge fee for each extension
+    this.currentCosts.lesson.overcharge = this.overcharge_rate * this.selectedTopics.length // Overcharge fee for each extension
+
+    // Cells Cost
+    if (this.extensionSettings.cells.enabled) {
+      for (let type of this.extensionSettings.cells.types) {
+        this.currentCosts.cells.value = this.costSettings.lesson.cells[type] * this.selectedTopics.length
+        // this.currentCosts.cells.overcharge = Math.ceil(this.overcharge_rate * this.selectedTopics.length)
+        this.currentCosts.cells.overcharge = this.overcharge_rate * this.selectedTopics.length
+      }
+    }
+
+    // Exercise Cost
+    if (this.extensionSettings.exercise.enabled) {
+      this.currentCosts.exercise.value = this.costSettings.exercise.per_amount * this.extensionSettings.exercise.amount * this.selectedTopics.length
+      // this.currentCosts.exercise.overcharge = Math.ceil(this.overcharge_rate * this.selectedTopics.length)
+      this.currentCosts.exercise.overcharge = this.overcharge_rate * this.selectedTopics.length
+    }
+
+    // Exam Cost
+    if (this.extensionSettings.exam.enabled) {
+      this.currentCosts.exam.value = this.costSettings.exam.per_amount * this.extensionSettings.exam.amount
+      // this.currentCosts.exam.overcharge = Math.ceil(this.overcharge_rate * this.selectedTopics.length)
+      this.currentCosts.exam.overcharge = this.overcharge_rate * this.selectedTopics.length
+    }
+
+    // Flashcards Cost
+    if (this.extensionSettings.flashcards.enabled) {
+      this.currentCosts.flashcards.value = this.costSettings.flashcards.per_amount * this.extensionSettings.flashcards.amount * this.selectedTopics.length
+      // this.currentCosts.flashcards.overcharge = Math.ceil(this.overcharge_rate * this.selectedTopics.length)
+      this.currentCosts.flashcards.overcharge = this.overcharge_rate * this.selectedTopics.length
+    }
+
+    // Glossary Cost
+    if (this.extensionSettings.glossary.enabled) {
+      this.currentCosts.glossary.value = this.costSettings.glossary.cost * this.selectedTopics.length
+      // this.currentCosts.glossary.overcharge = Math.ceil(this.overcharge_rate * this.selectedTopics.length)
+      this.currentCosts.glossary.overcharge = this.overcharge_rate * this.selectedTopics.length
+    }
+
+    this.currentCosts.total.value = 0
+      + this.currentCosts.lesson.value
+      + this.currentCosts.cells.value
+      + this.currentCosts.exercise.value
+      + this.currentCosts.exam.value
+      + this.currentCosts.flashcards.value
+      + this.currentCosts.glossary.value
+
+    this.currentCosts.total.overcharge = 0
+      + this.currentCosts.lesson.overcharge
+      + this.currentCosts.cells.overcharge
+      + this.currentCosts.exercise.overcharge
+      + this.currentCosts.exam.overcharge
+      + this.currentCosts.flashcards.overcharge
+      + this.currentCosts.glossary.overcharge
+  }
+
+  getCost(name: keyof typeof this.currentCosts) {
+    return this.currentCosts[name]
+  }
+
   validateSettings(): ValidationResult {
     // Check if any topics have been selected
-    const selectedTopics = this.topics.filter((topic) => topic.selected);
-    if (selectedTopics.length === 0) {
+    if (this.selectedTopics.length === 0) {
       return {
         status: false,
         message: 'Please select at least one topic.'
@@ -308,14 +447,21 @@ export class LessonGeneration implements OnInit {
     this.route.paramMap.subscribe((params) => {
       this.subjectId = params.get('sessionId') ?? '';
       this.loadSubjectDetails();
+      this.creditService.getCostSettings().subscribe({
+        next: (response) => {
+          this.costSettings = response.settings
+          this.computeCreditCosts()
+        }
+      })
     });
+
   }
 
   configureLoadedExtensions(extensions: ExtensionModel[]) {
     for (const ext of extensions) {
-      if (ext.type === 'lesson' && ext.configuration?.cell_types && ext.configuration.cell_types.length > 0) {
+      if (ext.type === 'lesson' && ext.configuration?.cell_types && ext.configuration.cell_types.length > 1) {
         this.extensionSettings.cells.enabled = true;
-        this.extensionSettings.cells.types = ext.configuration.cell_types;
+        this.extensionSettings.cells.types = ext.configuration.cell_types.filter((type) => type !== 'text');
       }
       if (ext.type === 'exercise' && ext.configuration) {
         this.extensionSettings.exercise.enabled = true;
@@ -349,6 +495,7 @@ export class LessonGeneration implements OnInit {
         }
         this.topics = response.topics;
         this.learningStyle = response.session.user_preference || '';
+        this.word_count = response.session.word_count;
         this.configureLoadedExtensions(response.extensions)
 
         this.subscriptionService.getSubscription().subscribe({
@@ -357,6 +504,7 @@ export class LessonGeneration implements OnInit {
             if (subscriptionData && subscriptionData.plan) {
               this.extensionSettings.exercise.upperLimit = subscriptionData.plan.exercise_question_count || 10;
               this.extensionSettings.exam.upperLimit = subscriptionData.plan.exam_question_count || 60;
+              this.words_soft_limit = subscriptionData.plan.word_soft_limit;
             }
           },
           error: (res) => {
@@ -427,5 +575,9 @@ export class LessonGeneration implements OnInit {
   getOptionLabel(extension: ExtensionConfig, value: string): string {
     const option = extension.options?.find((opt) => opt.value === value);
     return option ? option.label : value;
+  }
+
+  toggleOverchargeExplanation() {
+    this.overchargeExplanationPopup.set(!this.overchargeExplanationPopup())
   }
 }

@@ -221,16 +221,11 @@ export class FileUploadOverlay implements OnInit {
       this.subjectService.ingestDocuments(this.subjectId, this.files).pipe(
         switchMap((res: DocumentIngestResponse) => {
           if (res.warning) {
-            // Fix lowDocs mapping
-            const lowDocs = res.documents
-              .filter((doc: IngestedDocument) => doc.belowThreshold)
-              .map((doc: IngestedDocument) => `"${doc.document.name}${doc.document.extension}"`);
-
             // Show confirmation modal and return Observable<boolean>
             return this.confirmation.open({
-              title: "Scanned Documents Detected",
-              message: `The following have been identified as scanned documents: ${lowDocs.join(", ")}.
-              Don't worry, everything will still work fine, this is just a placehoder warning for an upcoming update.`,
+              title: "Word Count Limit Exceeded!",
+              message: `The total word count of all uploaded documents exceed your subscription plan's soft limit by ${res.word_excess} words.
+              If you choose to proceed with lesson generation, overcharge fees will be incurred on base lesson and all extensions. Do you wish to continue?`,
               okText: "Proceed",
               cancelText: "Go back"
             });
