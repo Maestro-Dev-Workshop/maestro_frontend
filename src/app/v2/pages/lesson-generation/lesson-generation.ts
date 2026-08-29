@@ -221,8 +221,8 @@ export class LessonGeneration implements OnInit {
       this.notify.show('info', 'Extensions have already been configured and cannot be changed');
     } else {
       this.extensionSettings = config;
-      this.computeCreditCosts()
     }
+    this.computeCreditCosts()
     this.toggleConfigOverlay();
   }
 
@@ -272,10 +272,10 @@ export class LessonGeneration implements OnInit {
     // Cells Cost
     if (this.extensionSettings.cells.enabled) {
       for (let type of this.extensionSettings.cells.types) {
-        this.currentCosts.cells.value = this.costSettings.lesson.cells[type] * this.selectedTopics.length
-        // this.currentCosts.cells.overcharge = Math.ceil(this.overcharge_rate * this.selectedTopics.length)
-        this.currentCosts.cells.overcharge = this.overcharge_rate * this.selectedTopics.length
+        this.currentCosts.cells.value += this.costSettings.lesson.cells[type] * this.selectedTopics.length
       }
+      // this.currentCosts.cells.overcharge = Math.ceil(this.overcharge_rate * this.selectedTopics.length)
+      this.currentCosts.cells.overcharge = this.overcharge_rate * this.selectedTopics.length
     }
 
     // Exercise Cost
@@ -447,14 +447,7 @@ export class LessonGeneration implements OnInit {
     this.route.paramMap.subscribe((params) => {
       this.subjectId = params.get('sessionId') ?? '';
       this.loadSubjectDetails();
-      this.creditService.getCostSettings().subscribe({
-        next: (response) => {
-          this.costSettings = response.settings
-          this.computeCreditCosts()
-        }
-      })
     });
-
   }
 
   configureLoadedExtensions(extensions: ExtensionModel[]) {
@@ -520,8 +513,14 @@ export class LessonGeneration implements OnInit {
         this.cdr.detectChanges();
       },
       complete: () => {
-        this.loading.set(false)
-        this.cdr.detectChanges();
+        this.creditService.getCostSettings().subscribe({
+          next: (response) => {
+            this.costSettings = response.settings
+            this.computeCreditCosts()
+            this.loading.set(false)
+            this.cdr.detectChanges();
+          }
+        })
       }
     })
   }

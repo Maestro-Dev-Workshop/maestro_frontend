@@ -30,7 +30,7 @@ export class Header implements OnInit {
     this.creditService.getBalance().subscribe({
       next: (response) => {
         this.credits.set(
-          response.balance.membership_credits + response.balance.topup_credits
+          Number(response.balance.membership_credits) + Number(response.balance.topup_credits)
         );
       }
     })
