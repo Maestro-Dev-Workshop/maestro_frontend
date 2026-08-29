@@ -15,6 +15,7 @@ import { DEFAULT_EXTENSION_CONFIG, ExtensionConfig, ExtensionSettings } from '..
 export class ExtensionConfigOverlay {
   config: ExtensionSettings = DEFAULT_EXTENSION_CONFIG;
   configuration = input.required<ExtensionSettings>();
+  costSettings = input<any>();
   close = output<ExtensionSettings>();
 
   constructor() {
@@ -37,6 +38,25 @@ export class ExtensionConfigOverlay {
 
   toggleExtension(extension: ExtensionConfig) {
     extension.enabled = !extension.enabled;
+  }
+
+  costPerTopic(extensionType: string){
+    const type = (extensionType == 'cells') ? 'lesson' : extensionType 
+    return this.costSettings()[type].per_topic
+  }
+
+  getCost(extensionType: string, extension: any) {
+    let cost = 0
+    if (extensionType == "cells") {
+      for (let type of extension.types) {
+        cost += this.costSettings().lesson.cells[type]
+      }
+    } else if (extensionType == "glossary") {
+      cost = this.costSettings().glossary.cost
+    } else {
+      cost = this.costSettings()[extensionType].per_amount * extension.amount
+    }
+    return cost
   }
 
   get extensions() {

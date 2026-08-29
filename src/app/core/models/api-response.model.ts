@@ -65,6 +65,7 @@ export interface SubjectDetailsResponse extends ApiResponse {
 export interface DocumentIngestResponse extends ApiResponse {
   documents: IngestedDocument[];
   warning: boolean;
+  word_excess: number;
 }
 
 export interface IngestedDocument {

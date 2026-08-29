@@ -10,7 +10,7 @@
       <!-- Topic List -->
       <div 
         #topicList
-        class="flex-1 flex flex-wrap gap-2 w-full overflow-y-auto custom-scrollbar" 
+        class="flex-1 flex flex-wrap items-start content-start gap-x-2 gap-y-4 w-full overflow-y-auto custom-scrollbar" 
         cdkDropList 
         (cdkDropListDropped)="drop($event)" 
         cdkDropListOrientation="mixed"
@@ -28,7 +28,7 @@
             [cdkDragDisabled]="loading()"
           >
             @if (topic.selected) {
-              <app-theme-icon name="check-on-primary" className=""></app-theme-icon>
+              <app-theme-icon name="check-on-primary" className="h-5"></app-theme-icon>
             }
             {{topic.title}}
           </button>
@@ -36,7 +36,12 @@
       </div>
 
       <div class="flex items-center justify-center gap-2 font-medium text-lg">
-        Base Lesson Cost: <app-theme-icon name="credits-icon"></app-theme-icon> {{ 10 }}
+        Base Lesson Cost: 
+        <app-theme-icon name="credits-icon"></app-theme-icon> 
+        {{ getCost('lesson').value }}
+        <!-- @if (overcharge_rate > 0) {
+        +  {{ getCost('lesson').overcharge }}
+        } -->
       </div>
     </div>
 
@@ -67,8 +72,28 @@
           </button>
         </div>
 
-        <div class="flex items-center justify-center gap-2 font-medium text-lg">
-          Total Cost: <app-theme-icon name="credits-icon"></app-theme-icon> {{ 35 }}
+        <div class="relative flex items-center justify-center gap-2 font-medium text-lg">
+          Total Cost: 
+          <app-theme-icon name="credits-icon"></app-theme-icon> 
+          {{ getCost('total').value }}
+          @if (overcharge_rate > 0) {
+          <span 
+            class="text-base text-primary md:hover:opacity-60 cursor-pointer"
+            (click)="toggleOverchargeExplanation()"
+          >
+            +  {{ getCost('total').overcharge }}
+          </span>
+          }
+
+          @if (overchargeExplanationPopup()) {
+            <div class="absolute right-0 top-8 z-10 bg-surface-container border border-outline rounded-lg p-2 font-normal text-sm w-max">
+              <span>Overcharge Costs Breakdown</span> <br>
+              Base Lesson: {{ getCost('lesson').overcharge }} <br>
+              @for (extension of selectedExtensions; track $index) {
+                {{ extension.displayName }}: {{ getCost(extension.name).overcharge }} <br>
+              }
+            </div>
+          }
         </div>
       </div>
 
@@ -78,7 +103,7 @@
           Extensions ({{ selectedExtensions.length }})
         </span>
         @if (selectedExtensions.length > 0) {
-          <div class="flex flex-wrap justify-between gap-10 p-2">
+          <div class="flex flex-wrap gap-6 p-2">
             @for (extension of selectedExtensions; track $index) {
               <div
                 [style.--extension-colour]="extension.colour"
@@ -94,7 +119,11 @@
                   </div>
                   <span class="font-medium text-lg text-center hidden lg:block">{{ extension.displayName }}</span>
                   <div class="flex items-center justify-center gap-2 font-medium">
-                    <app-theme-icon name="credits-icon"></app-theme-icon> {{ 5 }}
+                    <app-theme-icon name="credits-icon"></app-theme-icon> 
+                    {{ getCost(extension.name).value }}
+                    <!-- @if (overcharge_rate > 0) {
+                    +  {{ getCost(extension.name).overcharge }}
+                    } -->
                   </div>
                 </div>
 
@@ -231,6 +260,7 @@
 @if (configOverlay) {
   <app-extension-config-overlay
     [configuration]="extensionSettings"
+    [costSettings]="costSettings"
     (close)="saveConfig($event)"
   ></app-extension-config-overlay>
 }
