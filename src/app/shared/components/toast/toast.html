@@ -1,8 +1,14 @@
-@if(msg()) {
-  <div class="z-50 fixed top-4 w-full flex items-center justify-center">
-    <div [ngClass]="classes()">
-      <span class="flex">{{ msg() }}</span>
-      <button (click)="close()" class="font-bold">✕</button>
-    </div>
-  </div>
-}
+<div 
+  class="z-50 fixed top-24 right-4 w-96 px-4 py-6 rounded-xl border-b-8 flex items-center gap-4 bg-surface-container-highest transition-all duration-200" 
+  [class.translate-x-0]="!!showToast()"
+  [class.translate-x-[40rem]]="!showToast()"
+  [ngClass]="classes()"
+>
+  @if (showToast()) {
+    <app-theme-icon [name]="icon()" className="w-8"></app-theme-icon>
+  }
+  <span class="flex">{{ msg() }}</span>
+  <button (click)="close()" class="font-bold text-xs text-on-surface absolute top-4 right-4">✕</button>
+</div>
+
+

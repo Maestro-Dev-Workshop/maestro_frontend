@@ -1,8 +1,8 @@
 <div class="w-screen h-screen flex flex-col">
   <app-header></app-header>
-  <div class="relative w-full flex flex-row flex-1">
-    <app-dashboard-sidebar class="absolute md:relative h-full" currentPage="Lessons"></app-dashboard-sidebar>
-    <section class="flex-1 overflow-y-auto p-8">
+  <div class="relative w-full flex flex-row flex-1 overflow-hidden">
+    <app-dashboard-sidebar class="absolute md:relative h-full flex-shrink-0 z-20" currentPage="Lessons"></app-dashboard-sidebar>
+    <section class="flex-1 overflow-y-auto p-8 z-10 custom-scrollbar">
       
       <div class="flex justify-between items-center mb-8">
         <h1 class="text-3xl font-medium text-on-surface">Lessons</h1>

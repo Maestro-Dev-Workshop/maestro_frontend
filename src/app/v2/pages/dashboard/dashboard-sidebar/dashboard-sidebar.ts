@@ -48,7 +48,7 @@ export class DashboardSidebar implements OnInit {
       page.selected = (page.title === this.currentPage());
     });
 
-    const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
     if (isMobile) {
       this.expanded.set(false)
     }

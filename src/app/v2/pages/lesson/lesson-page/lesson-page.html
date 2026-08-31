@@ -23,7 +23,7 @@
     <!-- Main View Container -->
   <div
     #contentContainer
-    [class]="`overflow-hidden flex flex-grow`"
+    [class]="`overflow-hidden flex flex-grow z-10`"
   >
     @if (currentView().type === 'subtopic') {
       <app-subtopic
@@ -61,21 +61,22 @@
       ></app-glossary>
     }
 
-    <!-- Chatbot Container -->
-    <app-chatbot
-      [class]="`w-[24rem] md:w-[32rem] absolute z-30 right-0 top-0 h-full
-      ${(
-          !chatOpen() ||
-          (isExerciseOrExam  && (score == null)) ||
-          (currentView().type === 'glossary') ||
-          (currentView().type === 'flashcards')
-        ) ? 'hidden' : ''}`"
-      [chatHistory]="chatHistory()"
-      [subjectId]="subjectId()"
-      [metadata]="chatMetadata()"
-      (closeChat)="toggleChatPopup()"
-    ></app-chatbot>
   </div>
+  
+  <!-- Chatbot Container -->
+  <app-chatbot
+    [class]="`w-[24rem] md:w-[32rem] absolute z-30 right-0 top-0 h-full
+    ${(
+        !chatOpen() ||
+        (isExerciseOrExam  && (score == null)) ||
+        (currentView().type === 'glossary') ||
+        (currentView().type === 'flashcards')
+      ) ? 'hidden' : ''}`"
+    [chatHistory]="chatHistory()"
+    [subjectId]="subjectId()"
+    [metadata]="chatMetadata()"
+    (closeChat)="toggleChatPopup()"
+  ></app-chatbot>
 </div>
 
 <!-- Chatbot Popup -->

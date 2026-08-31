@@ -239,10 +239,13 @@ export class FileUploadOverlay implements OnInit {
     ingestDocumentsIfNeeded$()
       .pipe(
         switchMap(() => this.subjectService.labelDocuments(this.subjectId)),
-        tap(() => {
-          this.notify.showSuccess('Topics successfully identified.');
-          // Close popup
-          this.closeOverlay();
+        tap({
+          next: () => {
+            this.notify.showSuccess('Topics successfully identified.');
+          },
+          complete: () => {
+            this.closeOverlay();
+          },
         }),
         catchError((res) => {
           this.notify.showError(res.error?.message || 'Something went wrong.');
@@ -250,7 +253,6 @@ export class FileUploadOverlay implements OnInit {
         }),
         finalize(() => {
           this.loading.set(false);
-          this.closeOverlay();
         }),
       )
       .subscribe();

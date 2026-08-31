@@ -8,6 +8,7 @@ import {
   viewChild,
   computed,
   signal,
+  DestroyRef,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -58,12 +59,16 @@ export class LessonGeneration implements OnInit {
   private subscriptionService = inject(SubscriptionService);
   private creditService = inject(CreditService)
   private onboardingService = inject(OnboardingService);
+  private readonly destroyRef = inject(DestroyRef);
 
   filesOverlay = false;
   configOverlay = false;
   showPromptSuggestions = false;
   overchargeExplanationPopup = signal(false);
+  showTopics = signal(true)
   loading = signal(false);
+  isMobile = signal(false)
+
   learningStyle = '';
   subjectId = '';
   subjectStatus = '';
@@ -185,6 +190,28 @@ export class LessonGeneration implements OnInit {
     }
   }
 
+  private setupResponsiveListener(): void {
+    const mediaQuery = window.matchMedia('(max-width: 768px)');
+    
+    // Set initial value safely on the client
+    this.isMobile.set(mediaQuery.matches);
+    if (this.isMobile()) {
+      this.showTopics.set(false)
+    }
+
+    
+    const handler = (e: MediaQueryListEvent) => {
+      this.isMobile.set(e.matches);
+    };
+
+    mediaQuery.addEventListener('change', handler);
+    
+    // Clean up event listener when component unmounts to prevent memory leaks
+    this.destroyRef.onDestroy(() => {
+      mediaQuery.removeEventListener('change', handler);
+    });
+  }
+
   adjustInputHeight() {
     const ta = this.textInput()?.nativeElement;
     if (!ta) return;
@@ -212,6 +239,10 @@ export class LessonGeneration implements OnInit {
     this.showPromptSuggestions = !this.showPromptSuggestions;
   }
 
+  toggleTopicView() {
+    this.showTopics.set(!this.showTopics())
+  }
+
   toggleConfigOverlay() {
     this.configOverlay = !this.configOverlay;
   }
@@ -224,6 +255,12 @@ export class LessonGeneration implements OnInit {
     }
     this.computeCreditCosts()
     this.toggleConfigOverlay();
+  }
+
+  addPrompt(prompt: string) {
+    this.learningStyle = prompt
+    this.adjustInputHeight()
+    if (this.isMobile()) this.togglePromptSuggestions()
   }
 
   computeCreditCosts() {
@@ -448,6 +485,7 @@ export class LessonGeneration implements OnInit {
       this.subjectId = params.get('sessionId') ?? '';
       this.loadSubjectDetails();
     });
+    this.setupResponsiveListener();
   }
 
   configureLoadedExtensions(extensions: ExtensionModel[]) {
