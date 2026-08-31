@@ -1,15 +1,15 @@
+<!-- Sidebar Toggle -->
+<button
+  [class]="`${expanded() ? 'hidden' : ''} md:hidden absolute z-20 top-4 right-10 rounded-r-full p-3 bg-primary-container`"
+  (click)="toggleSidebar()"
+>
+  <app-theme-icon name="open-sidebar-icon" className="w-5"></app-theme-icon>
+</button>
+
 <div 
   [class]="`${expanded() ? 'w-80' : 'md:w-max -translate-x-20 md:translate-x-0'} p-3 md:p-4 gap-2 md:gap-4 relative 
     h-full overflow-auto custom-scrollbar bg-surface-container-low flex flex-col items-center`"
 >
-  <!-- Sidebar Toggle -->
-  <button
-    [class]="`${expanded() ? 'hidden' : ''} md:hidden absolute z-20 top-4 -right-10 rounded-r-full p-3 bg-primary-container`"
-    (click)="toggleSidebar()"
-  >
-    <app-theme-icon name="open-sidebar-icon" className="w-5"></app-theme-icon>
-  </button>
-
   <div [class]="`w-${expanded() ? 'full' : 'max'} text-sm md:text-base flex items-center justify-between p-4 border-b-[1px] border-outline`">
     @if (expanded()) {
       <span>Menu</span>

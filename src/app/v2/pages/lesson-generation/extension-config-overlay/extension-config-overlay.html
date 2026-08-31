@@ -1,39 +1,39 @@
 <app-base-overlay> 
-  <div class="flex flex-col gap-6 p-4 pt-12">
+  <div class="flex flex-col gap-6 p-4 pt-12 w-full max-w-[520px]">
     <!-- Top Section -->
-    <div>
-      <h1 class="text-3xl font-medium">
+    <div class="w-full">
+      <h1 class="text-2xl md:text-3xl font-medium">
         Learning Extensions
       </h1>
-      <span class="pt-1 text-sm text-on-surface-variant block max-w-[480px]">
+      <span class="pt-1 text-xs md:text-sm text-on-surface-variant block">
         Enhance your learning experience by selecting extensions that align with your interests.
       </span>
     </div>
 
     <!-- Extension Configurations -->
-    <div class="flex flex-col gap-2">
+    <div class="flex flex-col gap-2 w-full">
       @for (ext of extensions; track $index) {
-        <div class="p-4 border-[1px] rounded-lg border-outline-variant flex flex-col gap-4 w-[480px]">
+        <div class="p-2 md:p-4 border-[1px] rounded-lg border-outline-variant flex flex-col gap-4 w-full">
           <div class="flex items-center justify-between">
             <!-- Extension Name and Description -->
             <div class="flex items-center gap-4">
-              <div class="rounded-lg p-2" [style.background-color]="ext.desaturatedColour">
-                <img class="w-6 h-6" [src]="`images/${ext.icon}.svg`" [alt]="ext.name">
+              <div class="rounded-lg p-2 shrink-0" [style.background-color]="ext.desaturatedColour">
+                <img class="w-4 h-4 md:w-6 md:h-6" [src]="`images/${ext.icon}.svg`" [alt]="ext.name">
               </div>
               <div class="flex flex-col">
-                <span class="font-medium">{{ext.displayName}}</span>
-                <span class="text-xs text-on-surface-variant">{{ext.shortDescription}}</span>
+                <span class="font-medium text-sm md:text-base">{{ext.displayName}}</span>
+                <span class="text-[0.65rem] md:text-xs text-on-surface-variant">{{ext.shortDescription}}</span>
               </div>
             </div>
 
             <!-- Toggle Switch -->
             <div class="flex items-center gap-1">
               @if (ext.enabled) {
-                <div class="flex items-center justify-center gap-1 font-medium text-sm">
-                  <app-theme-icon name="credits-icon" className="w-4"></app-theme-icon> 
+                <div class="flex items-center justify-center gap-1 font-medium text-xs md:text-sm">
+                  <app-theme-icon name="credits-icon" className="w-3 md:w-4"></app-theme-icon> 
                   {{ getCost(ext.name, ext) }}
                   @if (costPerTopic(ext.name)) {
-                    <span class="text-xs text-on-surface-variant">
+                    <span class="text-[0.5rem] md:text-xs text-on-surface-variant">
                       (per topic)
                     </span>
                   }
@@ -53,10 +53,10 @@
             <div class="flex items-center gap-2">
               @if (ext.upperLimit) {
                 <div class="w-1/2 flex flex-col items-start gap-2">
-                  <span class="text-sm text-on-surface-variant">Amount</span>
+                  <span class="text-xs md:text-sm text-on-surface-variant">Amount</span>
                   <input
                     type="number"
-                    class="w-full p-2 rounded-lg bg-surface-container-high border-[1px] border-outline-variant text-sm text-on-surface-variant
+                    class="w-full p-2 rounded-lg bg-surface-container-high border-[1px] border-outline-variant text-xs md:text-sm text-on-surface-variant
                       [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                     [(ngModel)]="ext.amount"
                     min="1"
@@ -66,12 +66,13 @@
               }
               @if (ext.options && ext.types) {
                 <div class="w-1/2 flex flex-col items-start gap-2">
-                  <span class="text-sm text-on-surface-variant">Types</span>
+                  <span class="text-xs md:text-sm text-on-surface-variant">Types</span>
                   <div class="relative w-full">
                     <!-- Trigger -->
                     <button
                       type="button"
-                      class="w-full p-2 rounded-lg bg-surface-container-high border border-outline-variant text-sm text-on-surface-variant flex items-center justify-between"
+                      class="w-full p-2 rounded-lg bg-surface-container-high border border-outline-variant 
+                      text-xs md:text-sm text-on-surface-variant flex items-center justify-between"
                       (click)="ext.typesOpen = !ext.typesOpen"
                     >
                       <span>
@@ -89,14 +90,14 @@
                     @if (ext.typesOpen) {
                       <div class="absolute z-50 mt-1 w-full rounded-lg border border-outline-variant bg-surface-container-high shadow-lg overflow-hidden">
                         @for (option of ext.options; track $index) {
-                          <label class="flex items-center gap-3 px-3 py-2 cursor-pointer hover:bg-surface-container">
+                          <label class="flex items-center gap-2 md:gap-3 p-2 cursor-pointer hover:bg-surface-container">
                             <input
                               type="checkbox"
                               [checked]="ext.types.includes(option.value)"
                               (change)="$event.target.checked ? ext.types.push(option.value) : ext.types.splice(ext.types.indexOf(option.value), 1)"
                               class="h-4 w-4 accent-primary cursor-pointer"
                             />
-                            <span class="text-sm text-on-surface-variant">
+                            <span class="text-xs md:text-sm text-on-surface-variant">
                               {{ option.label }}
                             </span>
                           </label>
@@ -114,7 +115,7 @@
 
     <!-- Bottom Section -->
     <button
-      class="self-end w-max text-base font-medium text-on-primary bg-primary px-6 py-3 rounded-lg 
+      class="self-end w-max text-sm md:text-base font-medium text-on-primary bg-primary px-6 py-3 rounded-lg 
       md:hover:brightness-150 disabled:opacity-60 md:hover:disabled:brightness-100 transition duration-100" 
       (click)="save()"
     >

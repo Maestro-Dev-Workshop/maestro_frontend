@@ -1,10 +1,11 @@
 import { ChangeDetectorRef, Component, EventEmitter, input, OnInit, Output } from '@angular/core';
 import { ConfirmOptions, ConfirmService } from '../../../core/services/confirm';
 import { Subject } from 'rxjs';
+import { ThemeIconComponent } from "../theme-icon/theme-icon";
 
 @Component({
   selector: 'app-confirmation',
-  imports: [],
+  imports: [ThemeIconComponent],
   templateUrl: './confirmation.html',
   styleUrl: './confirmation.css',
 })

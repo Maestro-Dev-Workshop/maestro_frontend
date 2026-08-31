@@ -1,62 +1,73 @@
 <div class="w-screen h-screen flex flex-col">
   <app-header></app-header>
-  <div class="flex-1 w-full flex overflow-hidden">
+  <div class="relative flex-1 w-full flex overflow-hidden">
     <!-- Topic Selection -->
-    <div class="w-[360px] h-full flex flex-col gap-4 bg-surface-container p-4">
-      <span class="block p-2 text-2xl font-medium border-b-[1px] border-outline-variant">
-        Topics ({{ selectedTopics.length }}/{{ topics.length }})
-      </span>
-
-      <!-- Topic List -->
-      <div 
-        #topicList
-        class="flex-1 flex flex-wrap items-start content-start gap-x-2 gap-y-4 w-full overflow-y-auto custom-scrollbar" 
-        cdkDropList 
-        (cdkDropListDropped)="drop($event)" 
-        cdkDropListOrientation="mixed"
-      >
-        @for (topic of topics; track topic.id) {
-          <button
-            class="flex items-center text-left gap-2 rounded-full py-2 px-3 text-sm w-max"
-            [class.bg-primary]="topic.selected"
-            [class.text-on-primary]="topic.selected"
-            [class.bg-primary-container]="!topic.selected"
-            [class.text-on-primary-container]="!topic.selected"
-            (click)="toggleTopicSelection(topic.id)"
-            [disabled]="loading() || (subjectStatus !== 'pending_topic_selection')"
-            cdkDrag
-            [cdkDragDisabled]="loading()"
-          >
-            @if (topic.selected) {
-              <app-theme-icon name="check-on-primary" className="h-5"></app-theme-icon>
-            }
-            {{topic.title}}
-          </button>
-        }
+    @if (showTopics() || !isMobile()) {
+      <div class="absolute md:relative z-20 w-[360px] h-full flex flex-col gap-4 bg-surface-container p-4">
+        <span class="block p-2 text-xl md:text-2xl font-medium border-b-[1px] border-outline-variant flex items-center justify-between">
+          Topics ({{ selectedTopics.length }}/{{ topics.length }})
+  
+          <app-theme-icon 
+            name="close-sidebar-icon"
+            class="md:hidden cursor-pointer md:hover:opacity-60"
+            (click)="toggleTopicView()"
+          ></app-theme-icon>
+        </span>
+  
+        <!-- Topic List -->
+        <div 
+          #topicList
+          class="flex-1 flex flex-wrap items-start content-start gap-2 w-full overflow-y-auto custom-scrollbar" 
+          cdkDropList 
+          (cdkDropListDropped)="drop($event)" 
+          cdkDropListOrientation="mixed"
+        >
+          @for (topic of topics; track topic.id) {
+            <button
+              class="flex items-center text-left gap-2 rounded-full py-2 px-3 text-xs md:text-sm w-max"
+              [class.bg-primary]="topic.selected"
+              [class.text-on-primary]="topic.selected"
+              [class.bg-primary-container]="!topic.selected"
+              [class.text-on-primary-container]="!topic.selected"
+              (click)="toggleTopicSelection(topic.id)"
+              [disabled]="loading() || (subjectStatus !== 'pending_topic_selection')"
+              cdkDrag
+              [cdkDragDisabled]="loading()"
+            >
+              @if (topic.selected) {
+                <app-theme-icon name="check-on-primary" className="h-4 md:h-5"></app-theme-icon>
+              }
+              {{topic.title}}
+            </button>
+          }
+        </div>
+  
+        <div class="flex items-center justify-center gap-1 md:gap-2 font-medium text-md md:text-lg">
+          Base Lesson Cost: 
+          <app-theme-icon name="credits-icon" className="w-4 md:w-6"></app-theme-icon> 
+          {{ getCost('lesson').value }}
+          <!-- @if (overcharge_rate > 0) {
+          +  {{ getCost('lesson').overcharge }}
+          } -->
+        </div>
       </div>
-
-      <div class="flex items-center justify-center gap-2 font-medium text-lg">
-        Base Lesson Cost: 
-        <app-theme-icon name="credits-icon"></app-theme-icon> 
-        {{ getCost('lesson').value }}
-        <!-- @if (overcharge_rate > 0) {
-        +  {{ getCost('lesson').overcharge }}
-        } -->
-      </div>
-    </div>
+    }
 
     <!-- Main Content -->
-    <div class="flex-1 h-full flex flex-col gap-2 p-4">
+    <div class="relative z-0 flex-1 h-full flex flex-col gap-2 p-4">
       <!-- Lesson Name -->
-      <div class="flex flex-row items-center justify-between p-4 border-b-[1px] border-outline-variant">
-        <div class="flex items-center">
+      <div class="flex flex-row items-center justify-between p-2 md:p-4 border-b-[1px] border-outline-variant">
+        <div class="flex items-center gap-2">
+          <button class="md:hover:opacity-60" (click)="saveLessonName()">
+            <app-theme-icon name="save-primary" className="w-5 md:w-6"></app-theme-icon>
+          </button>
           <input
             type="text"
             name="subject-name"
             placeholder="Lesson Name"
             [(ngModel)]="subjectName"
             [size]="(subjectName.length || 10) + 1"
-            class="font-medium text-2xl max-w-lg bg-transparent border-b border-transparent focus:outline-none focus:border-outline"
+            class="font-medium text-xl md:text-2xl max-w-[12rem] md:max-w-lg bg-transparent border-b border-transparent focus:outline-none focus:border-outline"
           >
           <!-- <input
             #subjectInput
@@ -67,18 +78,15 @@
             [style.width.px]="subjectInput.scrollWidth"
             class="font-medium text-2xl max-w-lg bg-transparent border-b border-transparent focus:outline-none focus:border-outline"
           > -->
-          <button class="md:hover:opacity-60" (click)="saveLessonName()">
-            <app-theme-icon name="save-primary" className="w-6"></app-theme-icon>
-          </button>
         </div>
 
-        <div class="relative flex items-center justify-center gap-2 font-medium text-lg">
+        <div class="relative flex items-center justify-center gap-1 md:gap-2 font-medium text-md md:text-lg">
           Total Cost: 
-          <app-theme-icon name="credits-icon"></app-theme-icon> 
+          <app-theme-icon name="credits-icon" className="w-4 md:w-6"></app-theme-icon> 
           {{ getCost('total').value }}
           @if (overcharge_rate > 0) {
           <span 
-            class="text-base text-primary md:hover:opacity-60 cursor-pointer"
+            class="text-sm md:text-base text-primary md:hover:opacity-60 cursor-pointer"
             (click)="toggleOverchargeExplanation()"
           >
             +  {{ getCost('total').overcharge }}
@@ -86,7 +94,7 @@
           }
 
           @if (overchargeExplanationPopup()) {
-            <div class="absolute right-0 top-8 z-10 bg-surface-container border border-outline rounded-lg p-2 font-normal text-sm w-max">
+            <div class="absolute right-0 top-8 z-10 bg-surface-container border border-outline rounded-lg p-2 font-normal text-xs md:text-sm w-max">
               <span>Overcharge Costs Breakdown</span> <br>
               Base Lesson: {{ getCost('lesson').overcharge }} <br>
               @for (extension of selectedExtensions; track $index) {
@@ -96,10 +104,23 @@
           }
         </div>
       </div>
+      
+      <!-- Mobile View Topic Toggle -->
+      <span class="md:hidden block p-2 text-xl md:text-2xl font-medium gap-4 flex items-center">
+        Topics ({{ selectedTopics.length }}/{{ topics.length }})
 
+        <app-theme-icon 
+          name="gear-icon"
+          className="w-5"
+          class="md:hidden cursor-pointer md:hover:opacity-60"
+          (click)="toggleTopicView()"
+        ></app-theme-icon>
+      </span>
+      
       <!-- Extensions -->
-      <div class="flex-1 w-full flex flex-col p-2 overflow-y-auto custom-scrollbar">
-        <span class="block p-2 text-2xl font-medium">
+      <div class="flex-1 w-full flex flex-col gap-2 md:p-2 overflow-y-auto custom-scrollbar">
+
+        <span class="block md:py-2 px-2 text-xl md:text-2xl font-medium">
           Extensions ({{ selectedExtensions.length }})
         </span>
         @if (selectedExtensions.length > 0) {
@@ -117,7 +138,7 @@
                   <div class="rounded-lg p-2" [style.background-color]="extension.desaturatedColour">
                     <img class="w-6 h-6" [src]="`images/${extension.icon}.svg`" [alt]="extension.name">
                   </div>
-                  <span class="font-medium text-lg text-center hidden lg:block">{{ extension.displayName }}</span>
+                  <span class="font-medium text-lg text-center block">{{ extension.displayName }}</span>
                   <div class="flex items-center justify-center gap-2 font-medium">
                     <app-theme-icon name="credits-icon"></app-theme-icon> 
                     {{ getCost(extension.name).value }}
@@ -180,8 +201,8 @@
               (click)="toggleConfigOverlay()"
             >
               <app-theme-icon name="add-extension-icon"></app-theme-icon>
-              <span class="group-hover:underline text-lg">Click here to add an extension</span>
-              <span class="text-sm absolute bottom-4 italic">No Extension currently selected</span>
+              <span class="group-hover:underline text-md md:text-lg">Click here to add an extension</span>
+              <span class="text-xs md:text-sm absolute bottom-4 italic">No Extension currently selected</span>
             </div>
           </div>
         }
@@ -189,12 +210,12 @@
 
 
       <!-- Preference Form -->
-      <form #form="ngForm" class="flex flex-col gap-3 p-4 rounded-2xl bg-surface-container border border-outline">
+      <form #form="ngForm" class="flex flex-col gap-2 md:gap-3 p-3 md:p-4 rounded-2xl bg-surface-container border border-outline">
         <textarea 
           type="text" 
           name="learningStyle" 
           placeholder="Type your preferences for the lesson here..." 
-          class="w-full max-h-[30vh] bg-transparent p-2 text-sm  rounded-xl resize-none overflow-y-auto custom-scrollbar 
+          class="w-full max-h-[30vh] bg-transparent p-2 text-xs md:text-sm rounded-xl resize-none overflow-y-auto custom-scrollbar 
           border-b-[1px] border-outline-variant focus:border-primary focus:outline-none" 
           rows="1"
           cols="1"
@@ -207,8 +228,8 @@
         >
         </textarea>
         <div class="flex items-center justify-between ">
-          <button class="flex items-center gap-2 text-primary md:hover:opacity-60" (click)="togglePromptSuggestions()">
-            <app-theme-icon name="magic-wand-primary"></app-theme-icon>
+          <button class="flex items-center gap-2 text-primary md:hover:opacity-60 text-sm md:text-base" (click)="togglePromptSuggestions()">
+            <app-theme-icon name="magic-wand-primary" className="w-5 md:w-6"></app-theme-icon>
             Prompt Suggestions
           </button>
 
@@ -218,7 +239,7 @@
             }
             <button
               #submitButton
-              class="flex items-center justify-center w-8 h-8 rounded-full lg:hover:opacity-60 disabled:opacity-60"
+              class="flex items-center justify-center w-6 md:w-8 h-6 md:h-8 rounded-full lg:hover:opacity-60 disabled:opacity-60"
               (click)="go()"
               [disabled]="loading()"
             >
@@ -231,23 +252,28 @@
 
     <!-- Prompt Suggestions -->
     @if (showPromptSuggestions) {
-      <div class="w-[360px] h-full relative flex flex-col gap-4 bg-surface-container p-4 overflow-y-auto custom-scrollbar">
-        <span class="block p-2 text-2xl font-medium border-b-[1px] border-outline-variant flex items-center gap-2">
+      <div class="absolute right-0 md:relative z-10 w-[360px] h-full flex flex-col gap-4 bg-surface-container p-4 overflow-y-auto custom-scrollbar">
+        <span class="block p-2 text-xl md:text-2xl font-medium border-b-[1px] border-outline-variant flex items-center gap-2">
           Prompt Suggestions <app-theme-icon name="magic-wand" class="h-full flex items-center"></app-theme-icon>
+          <app-theme-icon
+            name="x-icon"
+            class="ml-auto md:hover:opacity-60"
+            (click)="togglePromptSuggestions()"
+          ></app-theme-icon>
         </span>
   
         @for (prompt of promptSuggestions; track $index) {
           <div class="group">
-            <div class="flex items-center justify-between text-lg font-medium">
+            <div class="flex items-center justify-between text-md md:text-lg font-medium">
               {{ prompt.title }}
               <button 
                 class="md:opacity-0 md:group-hover:opacity-100 md:hover:brightness-150"
-                (click)="learningStyle = prompt.content; adjustInputHeight()"
+                (click)="addPrompt(prompt.content)"
               >
-                <app-theme-icon name="enter-primary-icon"></app-theme-icon>
+                <app-theme-icon name="enter-primary-icon" className="w-5 md:w-6"></app-theme-icon>
               </button>
             </div>
-            <div class="text-sm text-on-surface-variant">
+            <div class="text-xs md:text-sm text-on-surface-variant">
               {{ prompt.content }}
             </div>
           </div>

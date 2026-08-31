@@ -14,6 +14,7 @@
     inset 0 0 0 2px var(--primary-bright-stable),
     8px 8px 16px 8px
       color-mix(in srgb, var(--primary-bright-stable) 25%, transparent);
+  translate: 0rem -1rem;
 }
 .membership-header {
   background: linear-gradient(

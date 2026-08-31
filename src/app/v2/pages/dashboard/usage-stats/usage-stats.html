@@ -3,68 +3,74 @@
 
   <div class="relative w-full flex flex-row flex-1 overflow-hidden">
     <app-dashboard-sidebar
-      class="absolute md:relative h-full flex-shrink-0"
+      class="absolute md:relative h-full flex-shrink-0 z-20"
       currentPage="Membership & Usage"
     ></app-dashboard-sidebar>
 
-    <section class="flex-1 overflow-y-auto overflow-x-hidden p-8">
+    <section class="flex-1 overflow-y-auto overflow-x-hidden p-8 z-10 custom-scrollbar">
       <div class="w-full">
         <!-- HEADER -->
         <div class="flex justify-between items-center mb-8">
-          <div class="flex items-center gap-3">
-            <h1 class="text-4xl font-medium text-on-surface">Membership</h1>
+          <div class="flex items-center gap-2 md:gap-4">
+            <h1 class="text-3xl md:text-4xl font-medium">Membership</h1>
             <app-theme-icon
               name="member-icon"
-              className="w-8 h-8 text-on-surface"
+              className="w-8 md:w-10 h-8 md:h-10"
             ></app-theme-icon>
-          </div>
-          <div class="flex gap-2">
-            <button
-              class="bg-primary text-on-primary px-4 py-2 rounded-md text-sm hover:opacity-90 transition-opacity shadow-[inset_0_6px_12px_-2px_rgba(255,255,255,0.25)]"
-            >
-              Upgrade Plan
-            </button>
-            <button
-              class="bg-primary-container text-on-primary-container px-4 py-2 rounded-md text-sm hover:opacity-90 transition-opacity"
-            >
-              Cancel Plan
-            </button>
           </div>
         </div>
 
-        <!-- Free Tier Box -->
-        <div class="bg-surface-container rounded-xl p-6 mb-8">
-          <h2 class="text-xl font-semibold text-on-surface">Free Tier</h2>
+        <!-- Membership Details Box -->
+        <div class="bg-surface-container rounded-xl p-6 mb-8 flex flex-col items-start gap-4">
+          <div class="flex items-center justify-between w-full">
+            <h2 class="text-2xl md:text-3xl font-medium text-on-surface">Free Tier</h2>
+            <div class="flex gap-2">
+              <button
+                class="bg-primary text-on-primary px-4 py-2 rounded-md text-xs md:text-sm 
+                hover:opacity-60 transition-opacity shadow-[inset_0_6px_12px_-2px_rgba(255,255,255,0.25)]"
+                [routerLink]="['/v2/store']"
+              >
+                Upgrade Plan
+              </button>
+              <button
+                class="bg-primary-container text-on-primary-container px-4 py-2 text-xs md:text-sm  
+                hover:opacity-60 transition-opacity shadow-[inset_0_6px_12px_-2px_rgba(255,255,255,0.25)]"
+              >
+                Cancel Plan
+              </button>
+            </div>
+          </div>
 
           <button
-            class="text-xs text-primary mt-1 mb-6 hover:opacity-80 transition-opacity"
+            class="text-xs md:text-sm text-primary md:hover:opacity-60 transition-opacity"
             (click)="showDetails.set(!showDetails())"
           >
             {{ showDetails() ? "Hide details" : "Show details" }}
           </button>
+
           @if (showDetails()) {
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="w-full md:px-16 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
               @for (
                 feature of membershipFeatures();
                 track feature.title;
                 let i = $index
               ) {
                 <div
-                  class="rounded-xl p-5 bg-surface-container-lowest border border-outline-variant"
+                  class="rounded-xl p-5 bg-surface-container-lowest border border-outline-variant flex flex-col gap-3"
                   [class.card-shadow]="feature.enabled"
                   [class.opacity-60]="!feature.enabled"
                   [class.lg:col-start-2]="i === 6"
                 >
-                  <div class="flex items-center gap-2 mb-3">
+                  <div class="flex items-center gap-2">
                     <app-theme-icon
                       [name]="feature.icon"
-                      className="w-5 h-5 text-on-surface-variant"
+                      className="w-6 md:w-8 h-6 md:h-8 text-on-surface-variant"
                     ></app-theme-icon>
-                    <h3 class="text-sm font-semibold text-on-surface">
+                    <h3 class="text-lg md:text-xl font-medium text-on-surface">
                       {{ feature.title }}
                     </h3>
                   </div>
-                  <p class="text-xs text-on-surface-variant leading-relaxed">
+                  <p class="text-sm md:text-md text-on-surface-variant leading-relaxed">
                     {{ feature.desc }}
                   </p>
                 </div>
@@ -74,74 +80,72 @@
         </div>
 
         <!-- CREDIT BALANCE -->
-        <div class="mt-12 mb-8">
-          <div class="flex justify-between items-center mb-8">
-            <div class="flex items-center gap-3">
-              <h2 class="text-3xl font-medium text-on-surface">
+        <div class="mt-12 md:mt-20 flex flex-col gap-6">
+          <div class="flex justify-between items-center">
+            <div class="flex items-center gap-2 md:gap-4">
+              <h2 class="text-2xl md:text-4xl font-medium">
                 Credit Balance
               </h2>
               <app-theme-icon
                 name="credits-icon"
-                className="w-7 h-7 text-on-surface"
+                className="w-6 md:w-10 h-6 md:h-10"
               ></app-theme-icon>
             </div>
             <button
-              class="bg-primary text-on-primary px-4 py-2 rounded-md text-sm hover:opacity-90 transition-opacity shadow-[inset_0_6px_12px_-2px_rgba(255,255,255,0.25)]"
+              class="bg-primary text-on-primary px-4 py-2 rounded-md text-xs md:text-sm 
+              hover:opacity-90 transition-opacity shadow-[inset_0_6px_12px_-2px_rgba(255,255,255,0.25)]"
+              [routerLink]="['/v2/store']"
             >
               Get More Credits
             </button>
           </div>
 
-          <div class="bg-surface-container-lowest rounded-xl p-6">
-            <div class="flex items-center gap-8">
-              @for (box of creditBalance(); track box.title; let i = $index) {
-                @if (i > 0) {
-                  <span class="text-4xl text-on-surface font-light">{{
-                    i === 1 ? "+" : "="
-                  }}</span>
-                }
-
-                <div
-                  class="flex-1 bg-surface-container-high rounded-2xl p-8 text-center border-t-8 border-t-primary"
-                >
-                  <h3
-                    class="text-lg font-medium mb-14"
-                    [ngClass]="i === 2 ? 'text-primary' : 'text-on-surface'"
-                  >
-                    {{ box.title }}
-                  </h3>
-                  <p
-                    class="text-5xl  mb-14"
-                    [ngClass]="i === 2 ? 'text-primary' : 'text-on-surface'"
-                  >
-                    {{ box.value }}
-                  </p>
-                  <p class="text-xs text-on-surface-variant mt-8">
-                    {{ box.desc }}
-                  </p>
-                </div>
+          <div class="flex flex-col md:flex-row items-center gap-4 md:gap-8">
+            @for (box of creditBalance(); track box.title; let i = $index) {
+              @if (i > 0) {
+                <span class="text-6xl text-on-surface font-light">{{
+                  i === 1 ? "+" : "="
+                }}</span>
               }
-            </div>
+
+              <div class="flex-1 flex flex-col items-center gap-8 md:gap-12 bg-surface-container-high rounded-2xl p-6 text-center border-t-8 border-t-primary">
+                <h3
+                  class="text-md md:text-lg font-medium"
+                  [ngClass]="i === 2 ? 'text-primary' : 'text-on-surface'"
+                >
+                  {{ box.title }}
+                </h3>
+                <p
+                  class="text-5xl md:text-7xl"
+                  [ngClass]="i === 2 ? 'text-primary' : 'text-on-surface'"
+                >
+                  {{ box.value }}
+                </p>
+                <p class="text-sm md:text-base text-on-surface-variant">
+                  {{ box.desc }}
+                </p>
+              </div>
+            }
           </div>
         </div>
 
         <!-- CREDIT HISTORY -->
-        <div class="mt-12 mb-8">
-          <div class="flex items-center gap-3 mb-4">
-            <h2 class="text-3xl font-medium text-on-surface">Credit History</h2>
+        <div class="mt-12 md:mt-20 mb-8 flex flex-col gap-6">
+          <div class="flex items-center gap-2 md:gap-4">
+            <h2 class="text-2xl md:text-4xl font-medium">Credit History</h2>
             <app-theme-icon
               name="clock-icon"
-              className="w-7 h-7 text-on-surface"
+              className="w-6 md:w-10 h-6 md:h-10"
             ></app-theme-icon>
           </div>
 
           <div class="bg-surface-container-low rounded-xl overflow-hidden">
             <div
-              class="grid grid-cols-3 bg-outline-variant border-b border-outline p-4 text-sm font-medium text-on-surface"
+              class="grid grid-cols-4 gap-2 bg-outline-variant border-b border-outline p-4 text-sm md:text-base font-bold text-on-surface"
             >
               <div>Date</div>
               <div>Amount</div>
-              <div>Context</div>
+              <div class="col-span-2">Context</div>
             </div>
 
             @for (
@@ -150,7 +154,7 @@
               let i = $index
             ) {
               <div
-                class="grid grid-cols-3 p-4 text-sm text-on-surface"
+                class="grid grid-cols-4 gap-2 p-4 text-sm md:text-base text-on-surface"
                 [ngClass]="
                   i % 2 === 0
                     ? 'bg-surface-container-low'
@@ -167,7 +171,7 @@
                 >
                   {{ history.amount > 0 ? "+" : "" }}{{ history.amount }}
                 </div>
-                <div class="font-bold">{{ history.context }}</div>
+                <div class="col-span-2">{{ history.context }}</div>
               </div>
             }
           </div>

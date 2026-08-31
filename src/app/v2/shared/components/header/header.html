@@ -8,17 +8,20 @@
     <div class="text-xs md:text-base leading-[0.5rem] md:leading-3 p-[0.35rem] md:p-2 flex items-center gap-2 rounded-full bg-surface-container-highest font-semibold">
       <app-theme-icon name="credits-icon" class="w-4 md:w-max"></app-theme-icon>
       {{ credits() }}
-      <button class="text-md md:text-lg leading-[0.5rem] md:leading-3 p-[0.35rem] md:p-2 bg-primary text-on-primary block rounded-full">+</button>
+      <button 
+        class="text-md md:text-lg leading-[0.5rem] md:leading-3 p-[0.35rem] md:p-2 bg-primary text-on-primary block rounded-full 
+        md:hover:bg-primary-container md:hover:text-on-primary-container"
+      >+</button>
     </div>
 
     <div class="flex items-center gap-2 md:gap-4">
-      <button class="rounded-lg md:rounded-xl border border-outline-variant p-1" (click)="toggleTheme()">
+      <button class="rounded-lg md:rounded-xl border border-outline-variant p-1 transition-all duration-200 md:hover:border-primary" (click)="toggleTheme()">
         <app-theme-icon name="theme-switch-icon" className="w-4 md:w-7"></app-theme-icon>
       </button>
-      <button class="rounded-lg md:rounded-xl border border-outline-variant p-1">
+      <button class="rounded-lg md:rounded-xl border border-outline-variant p-1 opacity-60" [disabled]="true">
         <app-theme-icon name="help-circle-icon" className="w-4 md:w-7"></app-theme-icon>
       </button>
-      <button class="rounded-lg md:rounded-xl border border-outline-variant p-1">
+      <button class="rounded-lg md:rounded-xl border border-outline-variant p-1 opacity-60" [disabled]="true">
         <app-theme-icon name="inbox-icon" className="w-4 md:w-7"></app-theme-icon>
       </button>
     </div>

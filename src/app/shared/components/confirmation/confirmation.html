@@ -4,23 +4,26 @@
     (click)="confirm(false)"
   >
     <div
-      class="bg-[var(--bg-page)] rounded-lg p-6 max-w-sm w-full shadow-lg"
+      class="bg-surface-container rounded-2xl p-6 max-w-sm md:max-w-md w-full shadow-lg flex flex-col items-center gap-4"
       (click)="$event.stopPropagation()"
     >
-      <h3 class="text-xl font-semibold mb-2">{{options.title}}</h3>
-      <p class="text-[var(--text-secondary)] mb-4">{{options.message}}</p>
-      <div class="flex justify-end space-x-3">
+      <app-theme-icon name="help-circle-icon" className="w-14" class="mb-4"></app-theme-icon>
+      <h3 class="text-3xl font-medium text-on-surface">{{options.title}}</h3>
+      <p class="text-on-surface-variant">{{options.message}}</p>
+      <div class="flex justify-end w-full items-center gap-2">
         <button
-          class="px-4 py-2 rounded bg-[var(--bg-card)] lg:hover:bg-[var(--bg-card-hover)]"
-          (click)="confirm(false)"
-        >
-          {{options.cancelText}}
-        </button>
-        <button
-          class="px-4 py-2 bg-prussian-blue-700 text-white rounded lg:hover:bg-prussian-blue-400"
+          class="bg-primary text-on-primary px-4 py-2 rounded-md flex items-center gap-2 hover:opacity-60 
+          transition-opacity shadow-[inset_0_6px_12px_-2px_rgba(255,255,255,0.25)]"
           (click)="confirm(true)"
         >
           {{options.okText}}
+        </button>
+        <button
+          class="bg-primary-container text-on-primary-container px-4 py-2 rounded-md flex items-center gap-2 hover:opacity-60 
+          transition-opacity shadow-[inset_0_6px_12px_-2px_rgba(255,255,255,0.25)]"
+          (click)="confirm(false)"
+        >
+          {{options.cancelText}}
         </button>
       </div>
     </div>
