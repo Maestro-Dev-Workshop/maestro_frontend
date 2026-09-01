@@ -88,10 +88,10 @@ export class Subscription implements OnInit {
       next: (response) => {
         this.status.set(response.subscription);
 
-        this.generatedLessons = this.status()?.subjects_created_this_month || 0
-        this.generatedLimit = this.status()?.plan?.monthly_subject_creations || 0
-        this.savedLessons = this.status()?.total_subjects_created || 0
-        this.savedLimit = this.status()?.plan?.subject_capacity || 0
+        this.generatedLessons = 2
+        this.generatedLimit = 3
+        this.savedLessons = 3
+        this.savedLimit = 5
 
         this.calculateUsage();
         this.pageLoading = false;

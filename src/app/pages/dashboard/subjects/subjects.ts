@@ -297,8 +297,7 @@ export class Subjects implements OnInit, OnDestroy {
     const subscription = this.subscriptionData();
 
     if (
-      (subscription?.subjects_created_this_month ?? 0) >=
-      (subscription?.plan?.monthly_subject_creations ?? Infinity)
+      2 >= 3
     ) {
       this.notify.showError(
         'You have reached the monthly subject creation limit.',
@@ -308,8 +307,7 @@ export class Subjects implements OnInit, OnDestroy {
     }
 
     if (
-      this.subjects().length >=
-      (subscription?.plan?.subject_capacity ?? Infinity)
+      this.subjects().length >= 5
     ) {
       this.notify.showError('You have reached the total subject limit.');
       this.loadingAction.set(false);

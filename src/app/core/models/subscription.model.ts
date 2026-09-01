@@ -9,16 +9,14 @@ export interface Plan {
   country_code: string | null;
   currency: string | null;
 
-  monthly_subject_creations: number;
-  subject_capacity: number | null;
-  single_file_size: number | null;
-  subject_total_files_size: number | null;
-  subject_file_count: number | null;
-  exercise_question_count: number | null;
-  exam_question_count: number | null;
-  chatbot_token_count: number | null;
-  membership_credits: number | null;
+  lesson_capacity: number | null;
+  lesson_cummulative_file_size: number | null;
+  lesson_file_count: number | null;
   word_soft_limit: number | null;
+  chatbot_messages: number | null;
+  membership_credits: number | null;
+  cells_allowed: any;
+  topup_discount: number | null;
 }
 
 export interface SubscriptionStatus {
@@ -35,9 +33,6 @@ export interface SubscriptionStatus {
 
   start_date: Date | null;   // or Date if you prefer: Date | null
   end_date: Date | null;     // or Date if you prefer: Date | null
-
-  subjects_created_this_month: number;
-  total_subjects_created: number;
 
   plan: Plan;
 }

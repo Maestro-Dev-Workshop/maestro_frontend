@@ -14,6 +14,7 @@ import { EssayEvaluationResponse } from '../../../../core/models/api-response.mo
 import { MarkdownPipe } from '../../../../shared/pipes/markdown-pipe';
 import { ThemeIconComponent } from '../../../../shared/components/theme-icon/theme-icon';
 import { QuestionChangeEvent } from '../../../../core/models/lesson-content.model';
+import { StandardBtn } from '../../../shared/components/standard-btn/standard-btn';
 
 /** View data with questions for practice mode */
 interface PracticeViewData {
@@ -24,7 +25,7 @@ interface PracticeViewData {
 
 @Component({
   selector: 'app-practice',
-  imports: [FormsModule, MarkdownPipe, ThemeIconComponent],
+  imports: [FormsModule, MarkdownPipe, ThemeIconComponent, StandardBtn],
   templateUrl: './practice.html',
   styleUrl: './practice.css'
 })

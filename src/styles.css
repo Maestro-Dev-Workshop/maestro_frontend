@@ -406,6 +406,10 @@ body {
   color: var(--on-surface);
 }
 
+* {
+  transition: all, 0.2s ease-in-out;
+}
+
 .gradient-border-purple {
   border: 1px solid;
   border-image-slice: 1;

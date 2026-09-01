@@ -8,6 +8,7 @@ import { Plan, SubscriptionStatus } from './subscription.model';
 import { ChatMessage } from './chat-message.model';
 import { CodeExecutionOutput } from './code-execution.model';
 import { SubjectStatus } from './subject-status.model';
+import { CreditBalance, CreditCostSettings, CreditHistory } from './credit.model';
 
 // Base API response structure
 // Note: Not all backend responses include 'message', so it's optional
@@ -216,6 +217,21 @@ export interface SinglePlanResponse extends ApiResponse {
 export interface SubscriptionResponse extends ApiResponse {
   subscription: SubscriptionStatus;
 }
+
+// GET /credit/balance - returns { success, message, balance }
+export interface CreditBalanceResponse extends ApiResponse {
+  balance: CreditBalance
+}
+
+// GET /credit/history - returns { success, message, history }
+export interface CreditHistoryResponse extends ApiResponse {
+  history: CreditHistory[];
+}
+
+export interface CreditCostSettingsResponse extends ApiResponse {
+  settings: CreditCostSettings;
+}
+
 
 // POST /subscriptions - returns { success, message, transaction }
 export interface TransactionInitResponse extends ApiResponse {

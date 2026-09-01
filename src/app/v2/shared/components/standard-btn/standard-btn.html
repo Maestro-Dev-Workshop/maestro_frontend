@@ -1,0 +1,28 @@
+<button
+  class="text-xs md:text-base px-4 py-2 rounded-md flex items-center gap-2 md:hover:opacity-60 disabled:opacity-60 shadow-[inset_0_6px_12px_-2px_rgba(255,255,255,0.25)]"
+  [ngClass]="[
+    flavour() === 'main'
+      ? 'bg-primary text-on-primary'
+      : 'bg-primary-container text-on-primary-container',
+    className()
+  ]"
+  [disabled]="disabled()"
+>
+  @if (leftIcon()) {
+    <app-theme-icon
+      [name]="leftIcon()"
+      class="w-4 h-4 md:w-5 md:h-5"
+      [invert]="invertLeftIcon()"
+    ></app-theme-icon>
+  }
+
+  <ng-content></ng-content>
+
+  @if (rightIcon()) {
+    <app-theme-icon
+      [name]="rightIcon()"
+      class="w-4 h-4 md:w-5 md:h-5"
+      [invert]="invertRightIcon()"
+    ></app-theme-icon>
+  }
+</button>

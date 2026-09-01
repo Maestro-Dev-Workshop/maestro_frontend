@@ -373,8 +373,8 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
           next: (response) => {
             const subscriptionData: SubscriptionStatus | null = response.subscription;
             if (subscriptionData && subscriptionData.plan) {
-              this.constraints.exercise.maxAmount = subscriptionData.plan.exercise_question_count || 3;
-              this.constraints.exam.maxAmount = subscriptionData.plan.exam_question_count || 10;
+              this.constraints.exercise.maxAmount = 3;
+              this.constraints.exam.maxAmount = 10;
             }
           },
           error: (res) => {

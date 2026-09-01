@@ -2,26 +2,26 @@
   <app-header></app-header>
   <div class="relative w-full flex flex-row flex-1 overflow-hidden">
     <app-dashboard-sidebar class="absolute md:relative h-full flex-shrink-0 z-20" currentPage="Lessons"></app-dashboard-sidebar>
-    <section class="flex-1 overflow-y-auto p-8 z-10 custom-scrollbar">
+    <section class="flex-1 overflow-y-auto p-8 z-10 h-full flex flex-col custom-scrollbar">
       
       <div class="flex justify-between items-center mb-8">
         <h1 class="text-3xl font-medium text-on-surface">Lessons</h1>
-        <button 
-          class="bg-primary text-on-primary px-4 py-2 rounded-md text-sm flex items-center gap-2 hover:opacity-90 transition-opacity shadow-[inset_0_6px_12px_-2px_rgba(255,255,255,0.25)]" 
-          (click)="createNewLesson()">
+        <app-standard-btn 
+          (click)="createNewLesson()"
+        >
           <span class="text-xl leading-none">+</span> New
-        </button>
+        </app-standard-btn>
       </div>
 
       @if (loadingLessons()) {
-        <div class="flex justify-center items-center h-[80vh]">
-          <img src="images/spinner.gif" class="w-12 h-12" alt="Loading..." />
+        <div class="flex justify-center items-center gap-2 flex-1 text-3xl">
+          <img src="images/spinner.gif" class="w-12 h-12" alt="Loading..." /> Loading Lessons...
         </div>
       } @else if (lessons().length == 0) {
-        <div class="flex flex-col items-center justify-center h-[80vh] text-center">
+        <div class="flex flex-col items-center justify-center flex-1 text-center">
           <app-theme-icon name="book-icon" className="w-16 h-16 text-secondary-main mb-4"></app-theme-icon>
-          <h2 class="text-2xl font-medium text-on-surface">Build your first lesson</h2>
-          <p class="text-on-surface-variant mt-2 max-w-md">
+          <h2 class="text-2xl md:text-4xl font-medium text-on-surface">Build your first lesson</h2>
+          <p class="text-sm md:text-base text-on-surface-variant mt-2 max-w-md">
             Turn your materials into structured lessons, practice questions, and exams. Start with one subject, Maestro handles the rest.
           </p>
         </div>
@@ -50,10 +50,14 @@
                 </div>
 
                 <div class="flex gap-2">
-                  @for (tag of lesson.tags; track tag) {
-                    <span class="bg-surface-container-highest text-on-surface px-2 py-1 rounded-full text-xs">{{ tag }}</span>
+                  @for (tag of lesson.tags.slice(0, 3); track tag) {
+                    <span class="bg-surface-container-highest text-on-surface px-2 py-1 rounded-full text-xs capitalize">{{ tag }}</span>
                   }
-                  <span class="bg-surface-container-highest text-on-surface px-2 py-1 rounded-full text-xs">+3</span>
+                  @if (lesson.tags.length > 3) {
+                    <span class="bg-surface-container-highest text-on-surface px-2 py-1 rounded-full text-xs">
+                      +{{ lesson.tags.length - 3 }}
+                    </span>
+                  }
                 </div>
 
                 <div class="flex items-center gap-4">
@@ -63,11 +67,12 @@
                     </div>
                     <span class="text-xs text-on-surface-variant whitespace-nowrap">{{ lesson.completion }}% Complete</span>
                   </div>
-                  <button 
-                    class="bg-primary text-on-primary px-4 py-2 rounded-md text-xs font-medium hover:opacity-90 transition-opacity shadow-[inset_0_3.6px_7.2px_-1.2px_rgba(255,255,255,0.25)]"
-                    (click)="goToLesson(lesson)">
+                  <app-standard-btn 
+                    className="!text-xs"
+                    (click)="goToLesson(lesson)"
+                  >
                     Continue
-                  </button>
+                  </app-standard-btn>
                 </div>
               </div>
             </div>

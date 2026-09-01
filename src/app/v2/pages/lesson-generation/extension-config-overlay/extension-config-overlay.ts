@@ -5,10 +5,11 @@ import { BaseOverlay } from '../../../shared/components/base-overlay/base-overla
 import { ThemeIconComponent } from '../../../../shared/components/theme-icon/theme-icon';
 
 import { DEFAULT_EXTENSION_CONFIG, ExtensionConfig, ExtensionSettings } from '../../../../core/models';
+import { StandardBtn } from '../../../shared/components/standard-btn/standard-btn';
 
 @Component({
   selector: 'app-extension-config-overlay',
-  imports: [BaseOverlay, FormsModule, ThemeIconComponent],
+  imports: [BaseOverlay, FormsModule, ThemeIconComponent, StandardBtn],
   templateUrl: './extension-config-overlay.html',
   styleUrl: './extension-config-overlay.css',
 })

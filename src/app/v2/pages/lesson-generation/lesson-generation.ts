@@ -533,8 +533,7 @@ export class LessonGeneration implements OnInit {
           next: (response) => {
             const subscriptionData: SubscriptionStatus | null = response.subscription;
             if (subscriptionData && subscriptionData.plan) {
-              this.extensionSettings.exercise.upperLimit = subscriptionData.plan.exercise_question_count || 10;
-              this.extensionSettings.exam.upperLimit = subscriptionData.plan.exam_question_count || 60;
+              // Update allowed cells
               this.words_soft_limit = subscriptionData.plan.word_soft_limit;
             }
           },

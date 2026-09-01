@@ -23,21 +23,18 @@
         <!-- Membership Details Box -->
         <div class="bg-surface-container rounded-xl p-6 mb-8 flex flex-col items-start gap-4">
           <div class="flex items-center justify-between w-full">
-            <h2 class="text-2xl md:text-3xl font-medium text-on-surface">Free Tier</h2>
+            <h2 class="text-2xl md:text-3xl font-medium text-on-surface">{{ membershipData()?.name }} Tier</h2>
             <div class="flex gap-2">
-              <button
-                class="bg-primary text-on-primary px-4 py-2 rounded-md text-xs md:text-sm 
-                hover:opacity-60 transition-opacity shadow-[inset_0_6px_12px_-2px_rgba(255,255,255,0.25)]"
+              <app-standard-btn
                 [routerLink]="['/v2/store']"
               >
                 Upgrade Plan
-              </button>
-              <button
-                class="bg-primary-container text-on-primary-container px-4 py-2 text-xs md:text-sm  
-                hover:opacity-60 transition-opacity shadow-[inset_0_6px_12px_-2px_rgba(255,255,255,0.25)]"
+              </app-standard-btn>
+              <app-standard-btn
+                flavour="alt"
               >
                 Cancel Plan
-              </button>
+              </app-standard-btn>
             </div>
           </div>
 
@@ -91,37 +88,40 @@
                 className="w-6 md:w-10 h-6 md:h-10"
               ></app-theme-icon>
             </div>
-            <button
-              class="bg-primary text-on-primary px-4 py-2 rounded-md text-xs md:text-sm 
-              hover:opacity-90 transition-opacity shadow-[inset_0_6px_12px_-2px_rgba(255,255,255,0.25)]"
+            <app-standard-btn
               [routerLink]="['/v2/store']"
             >
               Get More Credits
-            </button>
+            </app-standard-btn>
           </div>
 
-          <div class="flex flex-col md:flex-row items-center gap-4 md:gap-8">
+          <div class="flex flex-row items-center items-stretch gap-2 md:gap-8">
             @for (box of creditBalance(); track box.title; let i = $index) {
               @if (i > 0) {
-                <span class="text-6xl text-on-surface font-light">{{
-                  i === 1 ? "+" : "="
-                }}</span>
+                <div class="flex items-center justify-center ">
+                  <span class="text-3xl md:text-6xl text-on-surface font-light">
+                    {{ i === 1 ? "+" : "=" }}
+                  </span>
+                </div>
               }
 
-              <div class="flex-1 flex flex-col items-center gap-8 md:gap-12 bg-surface-container-high rounded-2xl p-6 text-center border-t-8 border-t-primary">
+              <div 
+                class="flex-1 flex flex-col items-center justify-between gap-6 md:gap-12 p-3 md:p-6
+                bg-surface-container-high rounded-2xl text-center border-t-8 border-t-primary"
+              >
                 <h3
-                  class="text-md md:text-lg font-medium"
+                  class="text-xs md:text-lg font-medium"
                   [ngClass]="i === 2 ? 'text-primary' : 'text-on-surface'"
                 >
                   {{ box.title }}
                 </h3>
                 <p
-                  class="text-5xl md:text-7xl"
+                  class="text-3xl md:text-7xl"
                   [ngClass]="i === 2 ? 'text-primary' : 'text-on-surface'"
                 >
                   {{ box.value }}
                 </p>
-                <p class="text-sm md:text-base text-on-surface-variant">
+                <p class="text-[0.6rem] leading-tight md:text-base text-on-surface-variant">
                   {{ box.desc }}
                 </p>
               </div>

@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpBaseService } from './http-base.service';
+import { CreditBalanceResponse, CreditCostSettingsResponse, CreditHistoryResponse } from '../models';
 
 @Injectable({
   providedIn: 'root'
@@ -8,15 +9,15 @@ import { HttpBaseService } from './http-base.service';
 export class CreditService {
   private http = inject(HttpBaseService);
 
-  getCostSettings(): Observable<any> {
-    return this.http.get<any>('credit/settings')
+  getCostSettings(): Observable<CreditCostSettingsResponse> {
+    return this.http.get<CreditCostSettingsResponse>('credit/settings')
   }
 
-  getBalance(): Observable<any> {
-    return this.http.get<any>('credit/balance')
+  getBalance(): Observable<CreditBalanceResponse> {
+    return this.http.get<CreditBalanceResponse>('credit/balance')
   }
 
-  getHistory(): Observable<any> {
-    return this.http.get<any>('credit/history')
+  getHistory(): Observable<CreditHistoryResponse> {
+    return this.http.get<CreditHistoryResponse>('credit/history')
   }
 }

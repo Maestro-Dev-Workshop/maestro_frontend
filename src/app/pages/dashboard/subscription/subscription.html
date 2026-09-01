@@ -159,7 +159,7 @@
     
               <hr class="mt-4 border-t border-gray-600" />
     
-              <ul [class]="`mt-6 space-y-3 text-sm ${status()?.plan_code == plan.code ? '' : 'text-gray-100'} flex-1`">
+              <!-- <ul [class]="`mt-6 space-y-3 text-sm ${status()?.plan_code == plan.code ? '' : 'text-gray-100'} flex-1`">
                 <li class="flex"><img [src]="`images/${status()?.plan_code == plan.code ? 'check' : 'whitecheck'}.svg`" class="w-4 mr-2">{{plan.monthly_subject_creations}} lessons / month</li>
                 <li class="flex"><img [src]="`images/${status()?.plan_code == plan.code ? 'check' : 'whitecheck'}.svg`" class="w-4 mr-2">Store {{plan.subject_capacity}} lessons</li>
                 <li class="flex"><img [src]="`images/${status()?.plan_code == plan.code ? 'check' : 'whitecheck'}.svg`" class="w-4 mr-2">Upload {{plan.single_file_size}}MB files</li>
@@ -176,7 +176,7 @@
                     Extensive Chatbot Interactions
                   }
                 </li>
-              </ul>
+              </ul> -->
     
               @if (status()?.plan_code !== plan.code) {
                 <button class="mt-6 w-full py-2 bg-white text-black rounded-md lg:hover:bg-gray-300" (click)="switchPlan(plan.code)">Switch to {{plan.name}}</button>
