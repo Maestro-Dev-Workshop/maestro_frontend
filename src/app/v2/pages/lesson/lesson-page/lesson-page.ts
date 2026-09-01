@@ -87,7 +87,6 @@ export class LessonPage implements OnInit {
   @ViewChild('contentContainer') private contentContainer!: ElementRef<HTMLDivElement>;
 
   ngOnInit(): void {
-    this.notify.showInfo("Testing")
     // Get subjectId from route params
     this.route.paramMap.subscribe((params) => {
       const id = params.get('subjectId');

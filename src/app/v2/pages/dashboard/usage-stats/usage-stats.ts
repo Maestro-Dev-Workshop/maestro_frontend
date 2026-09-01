@@ -4,10 +4,11 @@ import { Header } from '../../../shared/components/header/header';
 import { DashboardSidebar } from '../dashboard-sidebar/dashboard-sidebar';
 import { ThemeIconComponent } from '../../../../shared/components/theme-icon/theme-icon';
 import { Router, RouterLink } from '@angular/router';
+import { StandardBtn } from '../../../shared/components/standard-btn/standard-btn';
 
 @Component({
   selector: 'app-usage-stats',
-  imports: [CommonModule, Header, DashboardSidebar, ThemeIconComponent, RouterLink],
+  imports: [CommonModule, Header, DashboardSidebar, ThemeIconComponent, RouterLink, StandardBtn],
   templateUrl: './usage-stats.html',
   styleUrl: './usage-stats.css',
 })
@@ -71,7 +72,7 @@ export class UsageStats {
       desc: 'Credits from membership plan. Refreshes on June 1.',
     },
     {
-      title: 'Total Credits',
+      title: 'Total Credit Balance',
       value: 245,
       desc: 'Membership Credits are consumed before Top-up Credits.',
     },

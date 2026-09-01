@@ -2,10 +2,11 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { ThemeIconComponent } from '../../../../shared/components/theme-icon/theme-icon';
 import { ThemeService } from '../../../../core/services/theme.service';
 import { CreditService } from '../../../../core/services/credit.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-header',
-  imports: [ThemeIconComponent],
+  imports: [ThemeIconComponent, RouterLink],
   templateUrl: './header.html',
   styleUrl: './header.css',
 })

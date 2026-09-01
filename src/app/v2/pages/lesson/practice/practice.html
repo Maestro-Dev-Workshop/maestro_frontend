@@ -169,18 +169,16 @@
   </div>
 
   <!-- Submission Button -->
-  <div class="flex items-center">
-    <button 
-      class="self-start w-max text-base font-medium text-on-primary bg-primary m-4 px-12 py-3 rounded-lg 
-      md:hover:brightness-150 disabled:opacity-60 md:hover:disabled:brightness-100 transition duration-100" 
-      (click)="openSubmit()"
-      [disabled]="loading || !(currentView().content.score == null)"
-    >
-      Submit
-    </button>
+  <div class="flex items-center justify-end gap-2">
     <div [class]="`flex items-center ${loading ? '' : 'hidden'}`">
       <img src="images/spinner.gif" alt="" class="w-8 h-8 mx-2">
       loading...
     </div>
+    <app-standard-btn
+      (click)="openSubmit()"
+      [disabled]="loading || !(currentView().content.score == null)"
+    >
+      Submit Answers
+    </app-standard-btn>
   </div>
 </div>

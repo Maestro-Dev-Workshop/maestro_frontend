@@ -12,10 +12,11 @@ import { SubjectsService } from '../../../../core/services/subjects.service';
 import { SubscriptionService } from '../../../../core/services/subscription.service';
 import { NotificationService } from '../../../../core/services/notification.service';
 import { ConfirmService } from '../../../../core/services/confirm';
+import { StandardBtn } from '../../../shared/components/standard-btn/standard-btn';
 
 @Component({
   selector: 'app-file-upload-overlay',
-  imports: [BaseOverlay, FormsModule, ThemeIconComponent],
+  imports: [BaseOverlay, FormsModule, ThemeIconComponent, StandardBtn],
   templateUrl: './file-upload-overlay.html',
   styleUrl: './file-upload-overlay.css',
 })

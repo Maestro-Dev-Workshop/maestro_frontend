@@ -6,11 +6,11 @@
       
       <div class="flex justify-between items-center mb-8">
         <h1 class="text-3xl font-medium text-on-surface">Lessons</h1>
-        <button 
-          class="bg-primary text-on-primary px-4 py-2 rounded-md text-sm flex items-center gap-2 hover:opacity-90 transition-opacity shadow-[inset_0_6px_12px_-2px_rgba(255,255,255,0.25)]" 
-          (click)="createNewLesson()">
+        <app-standard-btn 
+          (click)="createNewLesson()"
+        >
           <span class="text-xl leading-none">+</span> New
-        </button>
+        </app-standard-btn>
       </div>
 
       @if (loadingLessons()) {
@@ -63,11 +63,12 @@
                     </div>
                     <span class="text-xs text-on-surface-variant whitespace-nowrap">{{ lesson.completion }}% Complete</span>
                   </div>
-                  <button 
-                    class="bg-primary text-on-primary px-4 py-2 rounded-md text-xs font-medium hover:opacity-90 transition-opacity shadow-[inset_0_3.6px_7.2px_-1.2px_rgba(255,255,255,0.25)]"
-                    (click)="goToLesson(lesson)">
+                  <app-standard-btn 
+                    className="!text-xs"
+                    (click)="goToLesson(lesson)"
+                  >
                     Continue
-                  </button>
+                  </app-standard-btn>
                 </div>
               </div>
             </div>

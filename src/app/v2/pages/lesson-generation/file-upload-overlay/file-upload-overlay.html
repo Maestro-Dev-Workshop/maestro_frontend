@@ -87,14 +87,12 @@
         <img src="images/spinner.gif" class="w-6 h-6" />
       }
 
-      <button
-        class="w-max text-sm md:text-base font-medium text-on-primary bg-primary px-6 py-3 rounded-lg 
-        md:hover:brightness-150 disabled:opacity-60 md:hover:disabled:brightness-100 transition duration-100" 
+      <app-standard-btn
         [disabled]="loading() || !documents.length"
         (click)="onSubmit()"
       >
         {{ (uploadedDocs() ? "Process" : "Upload") }}
-      </button>
+      </app-standard-btn>
     </div>
   </div>
 </app-base-overlay>

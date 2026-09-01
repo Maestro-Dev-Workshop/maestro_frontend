@@ -10,6 +10,7 @@ import { ConfirmService } from '../../../../core/services/confirm';
 import { SubjectsService } from '../../../../core/services/subjects.service';
 import { SubscriptionService } from '../../../../core/services/subscription.service';
 import { SubjectStatus } from '../../../../core/models/subject-status.model';
+import { StandardBtn } from '../../../shared/components/standard-btn/standard-btn';
 
 @Component({
   selector: 'app-lessons',
@@ -19,6 +20,7 @@ import { SubjectStatus } from '../../../../core/models/subject-status.model';
     DashboardSidebar,
     ThemeIconComponent,
     RatingModal,
+    StandardBtn
   ],
   templateUrl: './lessons.html',
   styleUrl: './lessons.css',

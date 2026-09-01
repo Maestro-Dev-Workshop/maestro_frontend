@@ -23,6 +23,7 @@
             <span class="text-primary font-medium">test@example.com</span>
           </p>
 
+          <!-- Name Settings -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
             <div>
               <div class="flex justify-between items-center mb-2">
@@ -70,19 +71,18 @@
 
           @if (isEditingName()) {
             <div class="flex justify-start gap-2 mb-8">
-              <button
-                class="bg-primary text-on-primary px-4 py-2 rounded-md text-sm hover:opacity-90 transition-opacity shadow-[inset_0_6px_12px_-2px_rgba(255,255,255,0.25)]"
+              <app-standard-btn
                 [disabled]="!canSaveName()"
                 (click)="savePersonalInfo()"
               >
                 Save
-              </button>
-              <button
-                class="bg-primary-container text-on-primary-container px-4 py-2 rounded-md text-sm hover:opacity-90 transition-opacity shadow-[inset_0_6px_12px_-2px_rgba(255,255,255,0.25)]"
+              </app-standard-btn>
+              <app-standard-btn
+                flavour="alt"
                 (click)="cancelNameEdit()"
               >
                 Cancel
-              </button>
+              </app-standard-btn>
             </div>
           }
 
@@ -95,6 +95,7 @@
             Change Password
           </button>
 
+          <!-- Password Settings -->
           @if (showPasswordFields()) {
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
               <div>
@@ -121,38 +122,36 @@
               </div>
             </div>
 
-            <div class="mb-4">
-              <label class="block text-sm md:text-base font-medium text-on-surface mb-2"
-                >Confirm New Password</label
-              >
-              <input
-                type="password"
-                [(ngModel)]="confirmPassword"
-                placeholder="New Password"
-                class="w-full p-3 rounded-lg border border-outline bg-surface text-sm placeholder-on-surface-variant focus:outline-none focus:border-primary"
-              />
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4 items-end">
+              <div>
+                <label class="block text-sm md:text-base font-medium text-on-surface mb-2"
+                  >Confirm New Password</label
+                >
+                <input
+                  type="password"
+                  [(ngModel)]="confirmPassword"
+                  placeholder="New Password"
+                  class="w-full p-3 rounded-lg border border-outline bg-surface text-sm placeholder-on-surface-variant focus:outline-none focus:border-primary"
+                />
+              </div>
+              <div class="flex justify-end gap-2">
+                <app-standard-btn (click)="savePassword()">
+                  Save
+                </app-standard-btn>
+                <app-standard-btn 
+                  flavour="alt"
+                  (click)="currentPassword = ''; newPassword = ''; confirmPassword = ''; togglePasswordFields()"
+                >
+                  Cancel
+                </app-standard-btn>
+              </div>
             </div>
 
-            <div class="flex justify-end gap-2">
-              <button
-                class="bg-primary text-on-primary px-4 py-2 rounded-md text-sm hover:opacity-90 transition-opacity shadow-[inset_0_6px_12px_-2px_rgba(255,255,255,0.25)]"
-                (click)="savePassword()"
-              >
-                Save
-              </button>
-              <button
-                class="bg-primary-container text-on-primary-container px-4 py-2 rounded-md text-sm hover:opacity-90 transition-opacity shadow-[inset_0_6px_12px_-2px_rgba(255,255,255,0.25)]"
-                (click)="
-                  currentPassword = ''; newPassword = ''; confirmPassword = ''
-                "
-              >
-                Cancel
-              </button>
-            </div>
           }
         </div>
 
         <div class="bg-surface-container-high rounded-xl p-6 mb-6">
+          <!-- Theme Settings -->
           <div class="flex justify-between items-center mb-6">
             <div class="flex items-center gap-2">
               <span class="md:text-xl font-medium text-on-surface">Theme: </span>
@@ -198,26 +197,20 @@
             <span class="md:text-xl font-medium text-on-surface"
               >Membership: {{ membershipTier }}</span
             >
-            <button
-              class="bg-primary text-on-primary px-4 py-2 rounded-md text-sm hover:opacity-90 transition-opacity shadow-[inset_0_6px_12px_-2px_rgba(255,255,255,0.25)]"
-              (click)="viewDetails()"
-            >
+            <app-standard-btn (click)="viewDetails()">
               View Details
-            </button>
+            </app-standard-btn>
           </div>
         </div>
 
         <div class="flex justify-end">
-          <button
-            class="bg-error-container text-on-error-container px-4 py-2 rounded-md text-sm font-medium flex items-center gap-2 hover:opacity-90 transition-opacity"
+          <app-standard-btn
+            className="!bg-error-container !text-on-error-container"
+            leftIcon="logout-icon"
             (click)="logout()"
           >
-            <app-theme-icon
-              name="logout-icon"
-              className="w-4 h-4"
-            ></app-theme-icon>
             Logout
-          </button>
+          </app-standard-btn>
         </div>
       </div>
     </section>

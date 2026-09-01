@@ -8,6 +8,7 @@ import { ThemeIconComponent } from '../../../../shared/components/theme-icon/the
 import { ThemeService } from '../../../../core/services/theme.service';
 import { AuthService } from '../../../../core/services/auth.service';
 import { NotificationService } from '../../../../core/services/notification.service';
+import { StandardBtn } from '../../../shared/components/standard-btn/standard-btn';
 
 @Component({
   selector: 'app-settings',
@@ -17,6 +18,7 @@ import { NotificationService } from '../../../../core/services/notification.serv
     ThemeIconComponent,
     CommonModule,
     FormsModule,
+    StandardBtn
   ],
   templateUrl: './settings.html',
   styleUrl: './settings.css',
