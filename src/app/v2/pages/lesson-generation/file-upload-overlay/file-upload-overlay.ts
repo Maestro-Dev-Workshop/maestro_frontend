@@ -31,7 +31,6 @@ export class FileUploadOverlay implements OnInit {
   loading = signal(false);
   close = output<void>();
 
-  single_file_size = 3;
   total_files_size = 10;
   max_file_count = 5;
 
@@ -56,10 +55,8 @@ export class FileUploadOverlay implements OnInit {
           response.subscription;
 
         if (subscriptionData?.plan) {
-          this.single_file_size = subscriptionData.plan.single_file_size || 3;
-          this.total_files_size =
-            subscriptionData.plan.subject_total_files_size || 10;
-          this.max_file_count = subscriptionData.plan.subject_file_count || 5;
+          this.total_files_size = subscriptionData.plan.lesson_cummulative_file_size || 100;
+          this.max_file_count = subscriptionData.plan.lesson_file_count || 5;
         }
       },
       error: (res) => {
@@ -137,8 +134,6 @@ export class FileUploadOverlay implements OnInit {
         invalidFiles.push(file.name);
       } else if (this.files.some((f) => f.name === file.name)) {
         duplicateFiles.push(file.name);
-      } else if (file.size > this.single_file_size * 1024 ** 2) {
-        largeFiles.push(file.name);
       } else if (totalFilesCount === this.max_file_count) {
         this.notify.showError(
           `You can upload a maximum of ${this.max_file_count} files.`,

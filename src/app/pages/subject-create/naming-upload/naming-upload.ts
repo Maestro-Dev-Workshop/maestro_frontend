@@ -131,10 +131,9 @@ export class NamingUpload implements OnInit {
           response.subscription;
 
         if (subscriptionData?.plan) {
-          this.single_file_size = subscriptionData.plan.single_file_size || 3;
-          this.total_files_size =
-            subscriptionData.plan.subject_total_files_size || 10;
-          this.max_file_count = subscriptionData.plan.subject_file_count || 5;
+          this.single_file_size = 3;
+          this.total_files_size = 10;
+          this.max_file_count = 5;
         }
 
         this.cdr.detectChanges();

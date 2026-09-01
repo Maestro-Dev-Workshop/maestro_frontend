@@ -50,10 +50,14 @@
                 </div>
 
                 <div class="flex gap-2">
-                  @for (tag of lesson.tags; track tag) {
-                    <span class="bg-surface-container-highest text-on-surface px-2 py-1 rounded-full text-xs">{{ tag }}</span>
+                  @for (tag of lesson.tags.slice(0, 3); track tag) {
+                    <span class="bg-surface-container-highest text-on-surface px-2 py-1 rounded-full text-xs capitalize">{{ tag }}</span>
                   }
-                  <span class="bg-surface-container-highest text-on-surface px-2 py-1 rounded-full text-xs">+3</span>
+                  @if (lesson.tags.length > 3) {
+                    <span class="bg-surface-container-highest text-on-surface px-2 py-1 rounded-full text-xs">
+                      +{{ lesson.tags.length - 3 }}
+                    </span>
+                  }
                 </div>
 
                 <div class="flex items-center gap-4">

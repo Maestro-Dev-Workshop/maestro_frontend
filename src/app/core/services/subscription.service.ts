@@ -28,6 +28,7 @@ export class SubscriptionService {
   }
 
   verifyTransaction(reference: string): Observable<TransactionVerifyResponse> {
+    
     return this.http.post<TransactionVerifyResponse>('subscriptions/verify', { reference });
   }
 

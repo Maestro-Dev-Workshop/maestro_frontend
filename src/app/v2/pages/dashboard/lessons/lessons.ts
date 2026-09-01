@@ -66,7 +66,9 @@ export class Lessons implements OnInit {
           id: s.session.id,
           title: s.session.name ?? '',
           completion: this.normalizeCompletion(s.session.completion),
-          tags: ['Design', 'Development'],
+          tags: s.extensions.map((ext: any) => ext.type == 'lesson' 
+            ? (ext.configuration.cell_types.length > 1 ? 'Content Cells' : '')
+            : ext.type).filter((tag: string) => tag),
           status: s.session.status ?? SubjectStatus.PENDING_NAMING,
         }));
         this.lessons.set(mapped);
@@ -89,26 +91,6 @@ export class Lessons implements OnInit {
 
   createNewLesson(): void {
     this.loadingAction.set(true);
-    const subscription = this.subscriptionData();
-    if (
-      (subscription?.subjects_created_this_month ?? 0) >=
-      (subscription?.plan?.monthly_subject_creations ?? Infinity)
-    ) {
-      this.notify.showError(
-        'You have reached the monthly subject creation limit.',
-      );
-      this.loadingAction.set(false);
-      return;
-    }
-    if (
-      this.lessons().length >=
-      (subscription?.plan?.subject_capacity ?? Infinity)
-    ) {
-      this.notify.showError('You have reached the total subject limit.');
-      this.loadingAction.set(false);
-      return;
-    }
-
     this.subjectsService.createSubject().subscribe({
       next: (response: any) => {
         const newSubjectId = response.session.id;

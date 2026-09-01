@@ -55,10 +55,10 @@ export class Header implements OnInit {
     this.subscriptionService.getSubscription().subscribe({
       next: (response) => {
         this.subjectsCreated.set(
-          response.subscription.subjects_created_this_month
+          2
         );
         this.subjectsTotal.set(
-          response.subscription.plan.monthly_subject_creations
+          10
         );
         this.planName.set(response.subscription.plan.name);
         this.cdr.detectChanges();
