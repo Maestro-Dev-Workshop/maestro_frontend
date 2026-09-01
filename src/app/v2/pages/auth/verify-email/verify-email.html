@@ -1,0 +1,25 @@
+<!-- 1. Background Layer: Force it to stay strictly in the deep background -->
+<div class="fixed inset-0 z-0">
+  <app-auth-background></app-auth-background>
+</div>
+
+<!-- 2. Overlay Container Layer: Full screen invisible window that perfectly handles layout centering -->
+<div class="fixed inset-0 z-10 flex items-center justify-center p-4 overflow-y-auto">
+  
+  <!-- 3. The Card Content Layer: Give this explicit constraints so it cannot expand past standard sizing -->
+  <div class="w-full max-w-[577px] bg-[var(--background)] rounded-2xl shadow-xl py-16 px-8 flex flex-col">
+     <!-- Header -->
+     <img
+        src="{{ logoSrc() }}"
+        alt="Maestro Logo"
+        class="w-12 mr-2"
+    />
+
+    <h1 class="mt-6 mb-4 text-2xl text-[var(--on-background)]">
+      Verify your email
+    </h1>
+
+    <p class="text-[var(--on-surface-variant)] mb-6">Just a moment. Almost there...</p>
+
+  </div>
+</div>
