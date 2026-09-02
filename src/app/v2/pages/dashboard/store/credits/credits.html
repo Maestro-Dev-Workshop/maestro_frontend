@@ -1,5 +1,5 @@
 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-  @for (pack of creditPacks; track pack) {
+  @for (pack of creditPacks(); track pack) {
     <div class="pack-card p-4">
       <div class="flex justify-between items-start relative z-10">
         <div class="flex items-center gap-2">
@@ -10,25 +10,29 @@
           }
         </div>
         <div class="text-right flex items-baseline justify-end gap-1">
-          @if (pack.oldPrice) {
-            <span class="text-xs text-on-surface-variant line-through">{{ pack.oldPrice }}</span>
+          @if (pack.discount) {
+            <span class="text-xs text-on-surface-variant line-through">{{ countryCode() | currencyLocalizer}}{{ pack.oldPrice | number:'1.0-0' }}</span>
           }
-          <span class="text-xl font-bold text-on-surface">{{ pack.price }}</span>
+          <span class="text-xl font-bold text-on-surface">{{ countryCode() | currencyLocalizer}}{{ pack.price | number:'1.0-0' }}</span>
         </div>
       </div>
       <p class="text-sm text-on-surface-variant mt-2 mb-10 relative z-10">{{ pack.desc }}</p>
 
       <div class="pack-gradient">
-        @if (pack.bonus) {
-          <span class="absolute bottom-4 left-4 text-xs font-semibold bg-primary-container text-on-primary-container px-2 py-1 rounded">Bonus Credits</span>
+        @if (pack.bonusCredits) {
+          <span class="absolute bottom-4 left-4 text-xs font-semibold bg-primary-container text-on-primary-container px-2 py-1 rounded">
+            Bonus Credits
+          </span>
         }
         @if (pack.discount) {
-          <span class="absolute bottom-4 left-4 text-xs font-semibold bg-primary-container text-on-primary-container px-2 py-1 rounded">{{ pack.discount }}</span>
+          <span class="absolute bottom-4 left-4 text-xs font-semibold bg-primary-container text-on-primary-container px-2 py-1 rounded">
+            {{ pack.discount }}% Discount
+          </span>
         }
       </div>
 
       <div class="relative z-10 flex justify-end pl-4 pt-4">
-        <app-shiny-btn>Purchase</app-shiny-btn>
+        <app-shiny-btn (click)="purchaseCreditPack(pack.id)">Purchase</app-shiny-btn>
       </div>
     </div>
   }

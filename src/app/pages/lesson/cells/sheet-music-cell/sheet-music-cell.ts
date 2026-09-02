@@ -31,8 +31,6 @@ export class SheetMusicCell implements AfterViewInit {
       if (!d) return;
 
       this.musicXML = d.content;
-      // console.log(d.metadata.title)
-      // console.log(this.musicXML)
 
       // Only render if OSMD is initialized
       if (this.isReady) {

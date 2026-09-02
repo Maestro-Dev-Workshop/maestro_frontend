@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpBaseService } from './http-base.service';
 import { LoginResponse } from '../models/auth-payload.model';
-import { ApiResponse, RefreshTokenResponseData, SignupResponseData } from '../models/api-response.model';
+import { ApiResponse, RefreshTokenResponseData, SignupResponseData, UserDetailsResponse } from '../models/api-response.model';
 
 export interface SignupPayload {
   first_name: string;
@@ -36,6 +36,10 @@ export interface RefreshTokenApiResponse extends ApiResponse {
 })
 export class AuthService {
   private http = inject(HttpBaseService);
+
+  getUserDetails(): Observable<UserDetailsResponse> {
+    return this.http.get<UserDetailsResponse>('auth/me');
+  }
 
   signup(data: SignupPayload): Observable<SignupApiResponse> {
     return this.http.post<SignupApiResponse>('auth/sign-up', data);

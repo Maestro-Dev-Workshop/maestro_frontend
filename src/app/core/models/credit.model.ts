@@ -26,3 +26,17 @@ export interface CreditCostSettings {
   glossary: any;
   overcharge: any;
 }
+
+export interface CreditPack {
+  id: string;
+  name: string;
+  description: string;
+  credits: number;
+  price: number;
+  display_price: number;
+  active: boolean;
+  country_code: string;
+  currency: string;
+  discount: number | null;
+  bonus_credits: number | null;
+}
