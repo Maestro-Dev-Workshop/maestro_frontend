@@ -1,19 +1,23 @@
-<div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-  @for (membership of memberships; track membership.title) {
-    <div class="membership-card flex flex-col">
+<div class="flex flex-wrap items-center justify-center gap-8 max-w-4xl mx-auto">
+  @for (membership of memberships(); track membership.title) {
+    <div class="membership-card flex flex-col w-[360px]">
       <div class="membership-header p-6 text-on-primary rounded-3xl flex flex-col gap-4">
         <h3 class="text-xl">{{ membership.title }}</h3>
         <div class="mt-2 flex items-baseline">
-          <span class="text-4xl font-bold">{{ membership.price }}</span>
+          <span class="text-4xl font-bold">{{ countryCode() | currencyLocalizer}}{{ membership.price | number:'1.0-0' }}</span>
           <span class="text-sm opacity-80 ml-1">/ month</span>
         </div>
       </div>
-      <div class="p-6 flex flex-col flex-1">
-        <p class="text-on-surface mb-6 text-sm">{{ membership.subtitle }}</p>
-        <div class="mb-6 w-full">
-          <app-shiny-btn class="w-full">Join Membership</app-shiny-btn>
+      <div class="p-6 flex flex-col flex-1 gap-6">
+        <p class="text-on-surface text-sm mb-auto">{{ membership.subtitle }}</p>
+        <div class="w-full">
+          @if (membership.code == subscription()?.plan_code) {
+            <app-standard-btn class="w-full h-full" className="w-full !p-3" [disabled]="true">Current Plan</app-standard-btn>
+          } @else {
+            <app-shiny-btn class="w-full" (click)="changeMembership(membership.code)">Join Membership</app-shiny-btn>
+          }
         </div>
-        <div class="border-t border-outline pt-4 mt-auto">
+        <div class="border-t border-outline pt-4">
           <h4 class="text-sm font-semibold text-on-surface mb-3">Features</h4>
           <ul class="space-y-2">
             @for (feature of membership.features; track feature.value; let i = $index) {

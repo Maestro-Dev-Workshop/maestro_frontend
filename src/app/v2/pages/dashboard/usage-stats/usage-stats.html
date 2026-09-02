@@ -27,14 +27,18 @@
             <div class="flex gap-2">
               <app-standard-btn
                 [routerLink]="['/v2/store']"
+                [queryParams]="{ showMembership: true }"
               >
                 Upgrade Plan
               </app-standard-btn>
-              <app-standard-btn
-                flavour="alt"
-              >
-                Cancel Plan
-              </app-standard-btn>
+              @if (!uncancellableSubscription) {
+                <app-standard-btn
+                  flavour="alt"
+                  (click)="cancelSubscription()"
+                >
+                  Cancel Plan
+                </app-standard-btn>
+              }
             </div>
           </div>
 
@@ -150,7 +154,7 @@
 
             @for (
               history of creditHistory();
-              track history.date;
+              track $index;
               let i = $index
             ) {
               <div

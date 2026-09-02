@@ -31,6 +31,7 @@ export class UsageStats {
     subscription: signal(true),
     balance: signal(true),
     history: signal(true),
+    subscriptionCancel: signal(false),
   }
 
   showDetails = signal(true);
@@ -187,9 +188,13 @@ export class UsageStats {
 
         case 'lesson_capacity':
           if (plan.lesson_capacity) {
-            feature.enabled = plan.lesson_capacity > 0;
-            feature.desc = `Keep up to a maximum of ${plan.lesson_capacity} lessons within Maestro.`;
-            feature.title = `${plan.lesson_capacity} Max Lesson Capacity`;
+            feature.enabled = true;
+            feature.desc = (plan.lesson_capacity <= 0) 
+            ? 'Keep an unlimited number of lessons within Maestro.'
+            : `Keep up to a maximum of ${plan.lesson_capacity} lessons within Maestro.`
+            feature.title = (plan.lesson_capacity <= 0)
+            ? 'Unlimited Lesson Capacity'
+            : `${plan.lesson_capacity} Max Lesson Capacity`
           }
           break;
 
@@ -254,5 +259,26 @@ export class UsageStats {
       context: item.description || item.reference || '-',
     })))
     this.loading.history.set(false);
+  }
+
+  cancelSubscription() {
+    this.loading.subscriptionCancel.set(true);
+    this.subscriptionService.cancel().subscribe({
+      next: (response) => {
+        this.notify.showSuccess("Subscription cancelled successfully.");
+        this.loading.subscriptionCancel.set(false);
+        window.location.reload();
+      },
+      error: (err) => {
+        this.notify.showError(err.error.message || "Failed to cancel subscription. Please try again later.");
+      },
+      complete: () => {
+        this.loading.subscriptionCancel.set(false);
+      }
+    });
+  }
+
+  get uncancellableSubscription() {
+    return ['beta', 'free2play'].includes(this.membershipData()?.code || '')
   }
 }

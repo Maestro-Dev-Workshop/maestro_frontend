@@ -29,7 +29,6 @@ export class MapCell implements AfterViewInit, OnDestroy  {
   private geoLayer?: L.GeoJSON;
 
   private updateOnInputChange = effect(() => {
-    // console.log(this.data())
     this.geoJson = this.data()?.metadata
     this.renderGeoJson();
   })
