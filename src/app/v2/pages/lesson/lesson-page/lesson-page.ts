@@ -79,10 +79,12 @@ export class LessonPage implements OnInit {
     content: null,
   });
   chatHistory = signal<ChatMessage[]>([]);
+  chatMessageLimit = signal(false);
   chatOpen = signal(false);
   sidebarOpen = signal(false);
   subjectLoading = signal(true);
   chatMetadata = signal<ChatMetadata>({});
+  headerReloadTrigger = signal(0);
 
   @ViewChild('contentContainer') private contentContainer!: ElementRef<HTMLDivElement>;
 
@@ -104,6 +106,7 @@ export class LessonPage implements OnInit {
     this.chatbotService.getChatHistory(subjectId).subscribe({
       next: (response) => {
         this.chatHistory.set(response.history);
+        this.chatMessageLimit.set(response.limit_warning);
       },
       error: (res) => {
         this.notify.showError(res.error?.message || 'Failed to load chat history.');
@@ -481,6 +484,10 @@ export class LessonPage implements OnInit {
 
   reorderTopics(topicIds: string[]): void {
     this.subjectService.reorderSubjectTopics(this.subjectId(), topicIds).subscribe();
+  }
+
+  reloadHeader() {
+    this.headerReloadTrigger.update(v => v + 1);
   }
 
   get isExerciseOrExam(): boolean {

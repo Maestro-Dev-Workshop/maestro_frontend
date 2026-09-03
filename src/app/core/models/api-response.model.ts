@@ -190,11 +190,13 @@ export interface CodeExecutionResponse extends ApiResponse {
 // GET /chatbot/:id/history - returns { success, history }
 export interface ChatHistoryResponse extends ApiResponse {
   history: ChatMessage[];
+  limit_warning: boolean;
 }
 
 // POST /chatbot/:id/messages - returns { success, response }
 export interface ChatMessageResponse extends ApiResponse {
   response: string;
+  limit_warning: boolean;
 }
 
 // POST /chatbot/questions/evaluate - returns { success, ...result }
