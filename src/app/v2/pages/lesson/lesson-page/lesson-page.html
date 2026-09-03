@@ -1,5 +1,5 @@
 <div class="flex flex-col w-full h-full">
-  <app-header></app-header>
+  <app-header [reloadTrigger]="headerReloadTrigger()"></app-header>
   
   <div class="flex-grow w-full flex flex-row flex-grow overflow-hidden relative">
     <!-- Sidebar Toggle -->
@@ -73,9 +73,11 @@
         (currentView().type === 'flashcards')
       ) ? 'hidden' : ''}`"
     [chatHistory]="chatHistory()"
+    [showLimitWarning]="chatMessageLimit()"
     [subjectId]="subjectId()"
     [metadata]="chatMetadata()"
     (closeChat)="toggleChatPopup()"
+    (triggerReload)="reloadHeader()"
   ></app-chatbot>
 </div>
 

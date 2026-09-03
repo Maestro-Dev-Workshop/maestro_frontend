@@ -24,6 +24,7 @@ export interface CreditCostSettings {
   exam: any;
   flashcards: any;
   glossary: any;
+  chatbot: any;
   overcharge: any;
 }
 
