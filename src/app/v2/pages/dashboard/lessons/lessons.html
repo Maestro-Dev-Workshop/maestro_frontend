@@ -35,16 +35,17 @@
               <div class="bg-surface-container-low rounded-2xl p-3 h-full flex flex-col justify-between">
                 <div class="flex justify-between items-start gap-4">
                   <h3 class="font-medium text-on-surface leading-tight">{{ lesson.title }}</h3>
-                  <div class="flex items-center gap-2 text-on-surface-variant">
+                  <div class="flex items-center gap-1 text-on-surface-variant">
                     
                     <!-- Heart Icon (Rating) -->
-                    <button (click)="openRateModal(lesson)" class="rounded hover:bg-surface-container-high transition-colors" aria-label="Rate lesson">
-                      <app-theme-icon name="heart-icon" className="w-5 h-5 cursor-pointer hover:text-primary"></app-theme-icon>
+                    <button (click)="openRateModal(lesson)" class="rounded-full p-[0.5rem] bg-surface-container-high 
+                    md:hover:bg-surface-container-highest transition-colors" aria-label="Rate lesson">
+                      <app-theme-icon name="star-primary" className="w-3 h-3 cursor-pointer"></app-theme-icon>
                     </button>
                     
                     <!-- Info Icon (Delete only) -->
-                    <button (click)="deleteLesson(lesson)" class="rounded hover:bg-surface-container-high transition-colors" aria-label="Delete lesson">
-                      <app-theme-icon name="info-icon" className="w-6 h-6 cursor-pointer hover:text-primary"></app-theme-icon>
+                    <button (click)="deleteLesson(lesson)" class="rounded-full md:hover:bg-surface-container-highest transition-colors" aria-label="Delete lesson">
+                      <app-theme-icon name="info-icon" className="w-7 h-7 cursor-pointer"></app-theme-icon>
                     </button>
                   </div>
                 </div>

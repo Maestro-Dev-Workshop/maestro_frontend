@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import { Router } from '@angular/router';
@@ -23,13 +23,14 @@ import { StandardBtn } from '../../../shared/components/standard-btn/standard-bt
   templateUrl: './settings.html',
   styleUrl: './settings.css',
 })
-export class Settings {
+export class Settings implements OnInit {
   private router = inject(Router);
   private authService = inject(AuthService);
   themeService = inject(ThemeService);
   notify = inject(NotificationService)
 
   // Mock data for functionality
+  email = 'john.doe@gmail.com'
   firstName = 'John';
   lastName = 'Doe';
   currntFirstName = ''
@@ -43,6 +44,24 @@ export class Settings {
   // UI State
   isEditingName = signal(false);
   showPasswordFields = signal(false);
+
+  constructor (
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  ngOnInit() {
+    this.authService.getUserDetails().subscribe({
+      next: (response) => {
+        this.firstName = response.user.first_name;
+        this.lastName = response.user.last_name;
+        this.email = response.user.email;
+        this.cdr.detectChanges()
+      },
+      error: (err) => {
+        console.error('Error fetching user details:', err);
+      }
+    })
+  }
 
   logout() {
     this.authService.logout();

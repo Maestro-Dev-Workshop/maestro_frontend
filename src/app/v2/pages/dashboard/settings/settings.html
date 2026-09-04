@@ -20,7 +20,7 @@
         <div class="bg-surface-container-high rounded-xl p-6 mb-6">
           <p class="text-sm md:text-base mb-6">
             <span class="text-on-surface">Signed in as </span>
-            <span class="text-primary font-medium">test@example.com</span>
+            <span class="text-primary font-medium">{{ email }}</span>
           </p>
 
           <!-- Name Settings -->
@@ -89,7 +89,7 @@
           <div class="border-t border-outline-variant mb-6"></div>
 
           <button
-            class="text-sm font-semibold text-primary underline mb-4"
+            class="text-sm md:text-base font-semibold text-primary md:hover:underline mb-4"
             (click)="togglePasswordFields()"
           >
             Change Password

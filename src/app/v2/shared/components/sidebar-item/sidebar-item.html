@@ -2,6 +2,7 @@
   [class]="`text-sm md:text-base w-full flex items-center gap-4 p-4 rounded-lg 
     ${selected() ? 'bg-primary' : 'bg-surface-container-low md:hover:bg-surface-container-highest'}`"
   (click)="buttonClicked()"
+  [ngClass]="className()"
 >
   @if (icon()) {
     <app-theme-icon [name]="icon()" [invert]="selected()" className="w-5 md:w-6"></app-theme-icon>

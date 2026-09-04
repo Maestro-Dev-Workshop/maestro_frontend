@@ -33,7 +33,7 @@
 
   <button class="mt-auto mb-2 md:mb-4 flex items-center gap-4 w-full hover:bg-surface-container-high p-2 rounded-lg" (click)="navigateToSettings()">
     <div class="p-3 md:p-5 text-md md:text-xl rounded-full bg-primary-container text-on-primary-container leading-none font-medium">
-      {{ initials() }}
+      {{ initials().toLocaleUpperCase() }}
     </div>
     @if (expanded()) {
       <div class="flex flex-col items-start">
