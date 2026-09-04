@@ -1,7 +1,8 @@
-import { Component, input, OnInit, signal } from '@angular/core';
+import { Component, inject, input, OnInit, signal } from '@angular/core';
 import { SidebarItem, SidebarItemModel } from '../../../shared/components/sidebar-item/sidebar-item';
 import { ThemeIconComponent } from '../../../../shared/components/theme-icon/theme-icon';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-dashboard-sidebar',
@@ -33,10 +34,12 @@ export class DashboardSidebar implements OnInit {
 
   currentPage = input<string>("")
 
-  initials = signal<string>("EE")
-  fullName = signal<string>("Emmanuel Ewuoso")
-  email = signal<string>("ewuoso03@gmail.com")
+  initials = signal<string>("JD")
+  fullName = signal<string>("John Doe")
+  email = signal<string>("john.doe@gmail.com")
   expanded = signal<boolean>(true)
+
+  authService = inject(AuthService)
 
   constructor(
     private router: Router
@@ -52,6 +55,17 @@ export class DashboardSidebar implements OnInit {
     if (isMobile) {
       this.expanded.set(false)
     }
+
+    this.authService.getUserDetails().subscribe({
+      next: (response) => {
+        this.initials.set(response.user.first_name.slice(0,1) + response.user.last_name.slice(0,1));
+        this.fullName.set(response.user.first_name + ' ' + response.user.last_name);
+        this.email.set(response.user.email);
+      },
+      error: (err) => {
+        console.error('Error fetching user details:', err);
+      }
+    })
   }
 
   toggleSidebar() {
