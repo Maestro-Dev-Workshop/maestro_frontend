@@ -298,7 +298,7 @@ export class LessonGeneration implements OnInit {
     }
 
     if ((this.word_count && this.words_soft_limit) && (this.word_count > this.words_soft_limit)) {
-      this.overcharge_rate = this.costSettings.overcharge.rate * (this.word_count - this.words_soft_limit)
+      this.overcharge_rate = Math.round(this.costSettings.overcharge.rate * (this.word_count - this.words_soft_limit))
     }
 
     // Lesson Cost
@@ -578,20 +578,20 @@ export class LessonGeneration implements OnInit {
 
   saveLessonName() {
     if (!this.subjectName || this.subjectName.trim() === '') {
-      this.notify.showError('Subject name cannot be empty.');
+      this.notify.showError('Lesson name cannot be empty.');
       return;
     }
     if (this.subjectName.length > 30) {
-      this.notify.showError('Subject name cannot exceed 40 characters.');
+      this.notify.showError('Lesson name cannot exceed 40 characters.');
       return;
     }
 
     this.subjectService.nameSubject(this.subjectId, this.subjectName).subscribe({
       next: (response) => {
-        this.notify.showSuccess('Subject name updated successfully.');
+        this.notify.showSuccess('Lesson name updated successfully.');
       },
       error: (res) => {
-        this.notify.showError(res.error.message || 'Failed to update subject name. Please try again later.');
+        this.notify.showError(res.error.message || 'Failed to update lesson name. Please try again later.');
       }
     });
   }

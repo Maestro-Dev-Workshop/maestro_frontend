@@ -1,7 +1,7 @@
 import { Component, computed, effect, ElementRef, inject, input, OnInit, output, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { catchError, EMPTY, finalize, iif, of, switchMap, tap } from 'rxjs';
+import { catchError, EMPTY, filter, finalize, iif, of, switchMap, tap } from 'rxjs';
 
 import { BaseOverlay } from '../../../shared/components/base-overlay/base-overlay';
 import { ThemeIconComponent } from '../../../../shared/components/theme-icon/theme-icon';
@@ -200,59 +200,66 @@ export class FileUploadOverlay implements OnInit {
     return file.name.split('.').pop()?.toLowerCase() || '';
   }
 
+
   onSubmit() {
     if (this.loading()) return;
-    this.loading.set(true);
 
     if (this.files.length === 0 && !this.uploadedDocs()) {
       this.notify.showError('At least one file must be uploaded.');
-      this.loading.set(false);
       return;
     }
 
+    this.loading.set(true);
+
     const ingestDocumentsIfNeeded$ = () =>
-    iif(
-      () => this.uploadedDocs(),
-      of(true), // Documents already uploaded, skip
-      this.subjectService.ingestDocuments(this.subjectId, this.files).pipe(
-        switchMap((res: DocumentIngestResponse) => {
-          if (res.warning) {
-            // Show confirmation modal and return Observable<boolean>
+      iif(
+        () => this.uploadedDocs(),
+        of(true), // Documents already uploaded, skip ingestion
+        this.subjectService.ingestDocuments(this.subjectId, this.files).pipe(
+          switchMap((res: DocumentIngestResponse) => {
+            if (!res.warning) {
+              return of(true);
+            }
+
             return this.confirmation.open({
-              title: "Word Count Limit Exceeded!",
-              message: `The total word count of all uploaded documents exceed your subscription plan's soft limit by ${res.word_excess} words.
+              title: 'Word Count Limit Exceeded!',
+              message: `The total word count of all uploaded documents exceed your subscription plan's soft limit by ${res.word_excess} words. 
               If you choose to proceed with lesson generation, overcharge fees will be incurred on base lesson and all extensions. Do you wish to continue?`,
-              okText: "Proceed",
-              cancelText: "Go back"
+              okText: 'Proceed',
+              cancelText: 'Go back',
             });
-          } else {
-            return of(true); // No warning, proceed
-          }
-        })
-      )
-    );
+          })
+        )
+      );
 
     ingestDocumentsIfNeeded$()
       .pipe(
-        switchMap(() => this.subjectService.labelDocuments(this.subjectId)),
-        tap({
-          next: () => {
-            this.notify.showSuccess('Topics successfully identified.');
-          },
-          complete: () => {
-            this.closeOverlay();
-          },
+        // Only continue if the user chose "Proceed"
+        filter((proceed) => proceed),
+
+        switchMap(() =>
+          this.subjectService.labelDocuments(this.subjectId)
+        ),
+
+        tap(() => {
+          this.notify.showSuccess('Topics successfully identified.');
+          this.closeOverlay();
         }),
+
         catchError((res) => {
-          this.notify.showError(res.error?.message || 'Something went wrong.');
+          this.notify.showError(
+            res.error?.message || 'Something went wrong.'
+          );
           return EMPTY;
         }),
+
         finalize(() => {
           this.loading.set(false);
         }),
       )
       .subscribe();
   }
+
 
   closeOverlay() {
     if (this.loading()) return;

@@ -263,12 +263,14 @@
         </span>
   
         @for (prompt of promptSuggestions; track $index) {
-          <div class="group">
+          <div 
+            class="group md:hover:bg-surface-container-highest p-1 cursor-pointer"
+            (click)="addPrompt(prompt.content)"
+          >
             <div class="flex items-center justify-between text-md md:text-lg font-medium">
               {{ prompt.title }}
               <button 
-                class="md:opacity-0 md:group-hover:opacity-100 md:hover:brightness-150"
-                (click)="addPrompt(prompt.content)"
+                class="md:hidden"
               >
                 <app-theme-icon name="enter-primary-icon" className="w-5 md:w-6"></app-theme-icon>
               </button>
