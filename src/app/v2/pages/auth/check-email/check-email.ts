@@ -18,7 +18,7 @@ export class CheckEmail implements OnInit {
 
   private readonly themeService = inject(ThemeService);
   logoSrc = computed(() => `images/${this.themeService.effectiveTheme()}/maestro-logo.svg`);
-
+  
   email: string | null = '';
   resendTimer = 0;
   loading = false;
@@ -66,7 +66,7 @@ export class CheckEmail implements OnInit {
       return;
     }
     this.authService.resendVerificationEmail(this.email || '').subscribe({
-      next: (response) => {
+      next: () => {
         this.notify.showSuccess('Verification email resent! Please check your inbox.');
         this.startResendTimer();
         this.loading = false;
