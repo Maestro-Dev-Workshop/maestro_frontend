@@ -262,7 +262,6 @@ export class FileUploadOverlay implements OnInit {
 
 
   closeOverlay() {
-    if (this.loading()) return;
     this.close.emit();
   }
 

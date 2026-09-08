@@ -244,6 +244,7 @@ export class LessonGeneration implements OnInit {
   }
 
   toggleConfigOverlay() {
+    if (this.loading() || (this.subjectStatus === 'pending_lesson_generation')) return
     this.configOverlay = !this.configOverlay;
   }
 
@@ -258,6 +259,7 @@ export class LessonGeneration implements OnInit {
   }
 
   addPrompt(prompt: string) {
+    if (this.loading() || (this.subjectStatus === 'pending_lesson_generation')) return
     this.learningStyle = prompt
     this.adjustInputHeight()
     if (this.isMobile()) this.togglePromptSuggestions()

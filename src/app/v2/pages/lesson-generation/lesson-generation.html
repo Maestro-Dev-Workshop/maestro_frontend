@@ -133,6 +133,7 @@
                   md:hover:border-[var(--extension-colour)] md:hover:shadow-[0_0_8px_6px_color-mix(in_srgb,var(--extension-colour)_70%,transparent)]
                   transition-all duration-300 ease-in-out cursor-pointer overflow-y-auto scrollbar-none"
                 (click)="toggleConfigOverlay()"
+                [class.cursor-default]="loading() || (subjectStatus === 'pending_lesson_generation')"
               >
                 <div class="flex items-center justify-between">
                   <div class="rounded-lg p-2" [style.background-color]="extension.desaturatedColour">
@@ -187,6 +188,7 @@
                 class="h-[220px] w-[340px] flex flex-col gap-2 items-center justify-center rounded-xl border border-outline-variant border-dashed
                 bg-surface-container-low cursor-pointer transition-all duration-150 ease-in-out md:hover:border-primary group"
                 (click)="toggleConfigOverlay()"
+                [class.cursor-default]="loading() || (subjectStatus === 'pending_lesson_generation')"
               >
                 <app-theme-icon name="add-extension-icon"></app-theme-icon>
                 <span class="group-hover:underline">Add Extension</span>
@@ -199,6 +201,7 @@
               class="w-full h-full flex flex-col gap-2 items-center justify-center rounded-xl border border-outline-variant border-dashed
               relative bg-surface-container-low cursor-pointer transition-all duration-150 ease-in-out md:hover:border-primary group"
               (click)="toggleConfigOverlay()"
+              [class.cursor-default]="loading() || (subjectStatus === 'pending_lesson_generation')"
             >
               <app-theme-icon name="add-extension-icon"></app-theme-icon>
               <span class="group-hover:underline text-md md:text-lg">Click here to add an extension</span>
@@ -266,6 +269,7 @@
           <div 
             class="group md:hover:bg-surface-container-highest p-1 cursor-pointer"
             (click)="addPrompt(prompt.content)"
+            [class.cursor-default]="loading() || (subjectStatus === 'pending_lesson_generation')"
           >
             <div class="flex items-center justify-between text-md md:text-lg font-medium">
               {{ prompt.title }}

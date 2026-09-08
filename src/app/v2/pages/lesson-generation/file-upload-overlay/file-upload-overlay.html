@@ -65,7 +65,11 @@
           <div class="flex gap-[0.4rem] items-center text-sm md:text-base">
             <app-theme-icon name="folder-primary" className="w-4 md:w-6"></app-theme-icon>
             Drop your files here or 
-            <label for="fileInput" class="inline text-primary md:hover:underline cursor-pointer" #fileUploadIcon>choose files</label>
+            <label 
+              #fileUploadIcon
+              for="fileInput" 
+              class="inline text-primary md:hover:underline cursor-pointer" 
+            >choose files</label>
           </div>
           
   
@@ -76,6 +80,7 @@
             class="hidden"
             multiple
             [accept]="acceptString"
+            [disabled]="loading()"
           />
         </div>
       </div>
