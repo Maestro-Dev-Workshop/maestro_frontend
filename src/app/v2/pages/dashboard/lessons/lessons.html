@@ -81,11 +81,11 @@
         </div>
       }
 
-      <app-rating-modal
-        [visible]="showRateModal()"
-        (close)="closeRateModal()"
-        (submit)="onRatingSubmit($event)"
-      />
     </section>
   </div>
 </div>
+<app-rating-modal
+  [visible]="showRateModal()"
+  (close)="closeRateModal()"
+  (submit)="onRatingSubmit($event)"
+/>
