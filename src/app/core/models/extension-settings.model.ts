@@ -94,6 +94,7 @@ export interface ExtensionSettings {
 export interface Option {
   value: string;
   label: string;
+  disabled: boolean;
 }
 
 /**
@@ -130,15 +131,15 @@ export const DEFAULT_EXTENSION_CONFIG: ExtensionSettings = {
     types: [],
     typesOpen: false,
     options: [
-      { value: 'graph', label: 'Charts' },
-      { value: 'audio_snippet', label: 'Audio Snippets' },
-      { value: 'executable_code', label: 'Code Blocks' },
-      { value: 'diagram', label: 'Diagrams' },
-      { value: 'music_sheet', label: 'Sheet Music' },
-      { value: 'image', label: 'Images' },
-      { value: 'flashcard', label: 'Flashcards' },
-      { value: 'quote', label: 'Quotes' },
-      { value: 'maps', label: 'Maps' },
+      { value: 'graph', label: 'Charts', disabled: false },
+      { value: 'audio_snippet', label: 'Audio Snippets', disabled: false },
+      { value: 'image', label: 'Images', disabled: false },
+      { value: 'quote', label: 'Quotes', disabled: false },
+      { value: 'diagram', label: 'Diagrams', disabled: false },   // exclude
+      { value: 'executable_code', label: 'Code Blocks', disabled: false },   // exclude
+      { value: 'music_sheet', label: 'Sheet Music', disabled: false },   // exclude
+      { value: 'flashcard', label: 'Flashcards', disabled: false },   // exclude
+      { value: 'maps', label: 'Maps', disabled: false },   // exclude
     ],
   },
   exercise: {
@@ -156,9 +157,9 @@ export const DEFAULT_EXTENSION_CONFIG: ExtensionSettings = {
     upperLimit: 10,
     typesOpen: false,
     options: [
-      { value: 'multiple choice', label: 'Single Choice' },
-      { value: 'multiple selection', label: 'Multiple Choice' },
-      { value: 'essay', label: 'Essay/Theory' },
+      { value: 'multiple choice', label: 'Single Choice', disabled: false },
+      { value: 'multiple selection', label: 'Multiple Choice', disabled: false },
+      { value: 'essay', label: 'Essay/Theory', disabled: false },
     ],
   },
   exam: {
@@ -177,9 +178,9 @@ export const DEFAULT_EXTENSION_CONFIG: ExtensionSettings = {
     upperLimit: 60,
     typesOpen: false,
     options: [
-      { value: 'multiple choice', label: 'Single Choice' },
-      { value: 'multiple selection', label: 'Multiple Choice' },
-      { value: 'essay', label: 'Essay/Theory' },
+      { value: 'multiple choice', label: 'Single Choice', disabled: false },
+      { value: 'multiple selection', label: 'Multiple Choice', disabled: false },
+      { value: 'essay', label: 'Essay/Theory', disabled: false },
     ],
   },
   flashcards: {
@@ -197,8 +198,8 @@ export const DEFAULT_EXTENSION_CONFIG: ExtensionSettings = {
     upperLimit: 20,
     typesOpen: false,
     options: [
-      { value: 'basic', label: 'Basic' },
-      { value: 'basic reversed', label: 'Basic (Reversed)' },
+      { value: 'basic', label: 'Basic', disabled: false },
+      { value: 'basic reversed', label: 'Basic (Reversed)', disabled: false },
     ],
   },
   glossary: {

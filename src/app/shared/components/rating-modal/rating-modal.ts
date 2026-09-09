@@ -1,11 +1,12 @@
 import { Component, input, output, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { StandardBtn } from '../../../v2/shared/components/standard-btn/standard-btn';
 
 @Component({
   selector: 'app-rating-modal',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, StandardBtn],
   templateUrl: './rating-modal.html',
 })
 export class RatingModal {

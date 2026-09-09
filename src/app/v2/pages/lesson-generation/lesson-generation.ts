@@ -535,8 +535,12 @@ export class LessonGeneration implements OnInit {
           next: (response) => {
             const subscriptionData: SubscriptionStatus | null = response.subscription;
             if (subscriptionData && subscriptionData.plan) {
-              // Update allowed cells
               this.words_soft_limit = subscriptionData.plan.word_soft_limit;
+              // Update allowed cells
+              this.extensionSettings.cells.options.map((option) => {
+                option.disabled = !subscriptionData.plan.cells_allowed.available_cells.includes(option.value)
+                return option
+              })
             }
           },
           error: (res) => {

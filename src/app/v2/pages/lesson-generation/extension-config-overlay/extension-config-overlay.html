@@ -90,14 +90,23 @@
                     @if (ext.typesOpen) {
                       <div class="absolute z-50 mt-1 w-full rounded-lg border border-outline-variant bg-surface-container-high shadow-lg overflow-hidden">
                         @for (option of ext.options; track $index) {
-                          <label class="flex items-center gap-2 md:gap-3 p-2 cursor-pointer hover:bg-surface-container">
+                          <label 
+                            class="flex items-center gap-2 md:gap-3 p-2"
+                            [class.cursor-pointer]="!option.disabled"
+                            [class.cursor-default]="option.disabled"
+                            [class.md:hover:bg-surface-container]="!option.disabled"
+                          >
                             <input
                               type="checkbox"
                               [checked]="ext.types.includes(option.value)"
                               (change)="$event.target.checked ? ext.types.push(option.value) : ext.types.splice(ext.types.indexOf(option.value), 1)"
-                              class="h-4 w-4 accent-primary cursor-pointer"
+                              class="h-4 w-4 accent-primary"
+                              [disabled]="option.disabled"
                             />
-                            <span class="text-xs md:text-sm text-on-surface-variant">
+                            <span 
+                              class="text-xs md:text-sm text-on-surface-variant"
+                              [class.opacity-60]="option.disabled"
+                            >
                               {{ option.label }}
                             </span>
                           </label>
