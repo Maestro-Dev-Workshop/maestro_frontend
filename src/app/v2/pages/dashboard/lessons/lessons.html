@@ -6,11 +6,13 @@
       
       <div class="flex justify-between items-center mb-8">
         <h1 class="text-3xl font-medium text-on-surface">Lessons</h1>
-        <app-standard-btn 
-          (click)="createNewLesson()"
-        >
-          <span class="text-xl leading-none">+</span> New
-        </app-standard-btn>
+        <div #createLessonButton>
+          <app-standard-btn 
+            (click)="createNewLesson()"
+          >
+            <span class="text-xl leading-none">+</span> New
+          </app-standard-btn>
+        </div>
       </div>
 
       @if (loadingLessons()) {
@@ -84,8 +86,24 @@
     </section>
   </div>
 </div>
+
 <app-rating-modal
   [visible]="showRateModal()"
   (close)="closeRateModal()"
   (submit)="onRatingSubmit($event)"
 />
+
+@if (
+  currentOnboardingStepIndex() >= 0 &&
+  currentOnboardingStepIndex() < onboardingSteps.length
+) {
+  <app-tutorial-element
+    [objectDimensions]="getTutorialObjectPosition()"
+    [title]="currentOnboardingStep().title"
+    [text]="currentOnboardingStep().text"
+    [tipPosition]="currentOnboardingStep().tipPosition"
+    [tipAlignment]="currentOnboardingStep().tipAlignment"
+    (next)="cycleOnboarding()"
+    class="z-50"
+  ></app-tutorial-element>
+}

@@ -9,6 +9,7 @@ import {
   OnInit,
   viewChild,
   computed,
+  signal,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -72,7 +73,7 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
   submitButton = viewChild<ElementRef>('submitButton');
   onboardingSteps: OnboardingStep[] = [];
   beginner = false;
-  currentOnboardingStep = computed(() => this.onboardingService.currentStepIndex());
+  currentOnboardingStep = signal(-1);
   
   subjectName = '';
   topics: GenerationTopic[] = [];
@@ -98,6 +99,7 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
         object: this.topicList,
         tipPosition: 'top',
         tipAlignment: 'start',
+        stepName: '',
       },
       {
         title: 'Enhance Your Lesson',
@@ -105,6 +107,7 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
         object: this.enableExtensionsButton,
         tipPosition: 'top',
         tipAlignment: 'start',
+        stepName: '',
       },
       {
         title: 'Configure',
@@ -112,6 +115,7 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
         object: this.configureExtensionsButton,
         tipPosition: 'top',
         tipAlignment: 'start',
+        stepName: '',
       },
       {
         title: 'Lesson Preferences',
@@ -119,6 +123,7 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
         object: this.textInput,
         tipPosition: 'bottom',
         tipAlignment: 'start',
+        stepName: '',
       },
       {
         title: 'Generate Lesson',
@@ -126,14 +131,12 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
         object: this.submitButton,
         tipPosition: 'top',
         tipAlignment: 'end',
+        stepName: '',
       },
     ];
 
     const nav = this.router.currentNavigation();
     this.beginner = nav?.extras?.state?.['beginner'] ?? false;
-    if (this.beginner) {
-      this.onboardingService.startOnboarding();
-    }
   }
 
   adjustInputHeight() {
@@ -432,6 +435,5 @@ export class LessonGeneration implements OnInit, AfterViewInit, OnDestroy {
   }
 
   cycleOnboarding(): void {
-    this.onboardingService.nextStep();
   }
 }

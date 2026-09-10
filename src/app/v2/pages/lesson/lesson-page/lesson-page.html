@@ -3,22 +3,27 @@
   
   <div class="flex-grow w-full flex flex-row flex-grow overflow-hidden relative">
     <!-- Sidebar Toggle -->
-    <button
-      [class]="`${sidebarOpen() ? 'hidden' : ''} md:hidden absolute z-20 top-4 left-0 rounded-r-full p-3 bg-primary-container`"
-      (click)="toggleSidebar()"
-    >
-      <app-theme-icon name="open-sidebar-icon" className="w-5"></app-theme-icon>
-    </button>
+    @if (isMobile()) {
+      <button
+        #lessonSidebar
+        [class]="`${sidebarOpen() ? 'hidden' : ''} md:hidden absolute z-20 top-4 left-0 rounded-r-full p-3 bg-primary-container`"
+        (click)="toggleSidebar()"
+      >
+        <app-theme-icon name="open-sidebar-icon" className="w-5"></app-theme-icon>
+      </button>
+    }
 
     <!-- Sidebar -->
-    <app-lesson-sidebar
-      [class]="`${sidebarOpen() ? '' : 'hidden'} z-20 md:block h-full absolute md:relative`"
-      [content]="subjectContent()"
-      [currentView]="currentView()"
-      (updateView)="updateCurrentView($event)"
-      (closeSidebar)="toggleSidebar()"
-      (reorderTopicEvent)="reorderTopics($event)"
-    ></app-lesson-sidebar>
+    <div #lessonSidebar>
+      <app-lesson-sidebar
+        [class]="`${sidebarOpen() ? '' : 'hidden'} z-20 md:block h-full absolute md:relative`"
+        [content]="subjectContent()"
+        [currentView]="currentView()"
+        (updateView)="updateCurrentView($event)"
+        (closeSidebar)="toggleSidebar()"
+        (reorderTopicEvent)="reorderTopics($event)"
+      ></app-lesson-sidebar>
+    </div>
 
     <!-- Main View Container -->
   <div
@@ -94,5 +99,20 @@
   [disabled]="(currentView().type !== 'subtopic' && (score == null))"
   #chatPopupButton
 >
-  <img src="images/Chat-Button.png" alt="Chat" class="w-16 lg:w-20">
+  <img src="images/Chat-Button.png" alt="Chat" class="w-16 md:w-20">
 </button>
+
+@if (
+  currentOnboardingStepIndex() >= 0 &&
+  currentOnboardingStepIndex() < onboardingSteps.length
+) {
+  <app-tutorial-element
+    [objectDimensions]="getTutorialObjectPosition()"
+    [title]="currentOnboardingStep().title"
+    [text]="currentOnboardingStep().text"
+    [tipPosition]="currentOnboardingStep().tipPosition"
+    [tipAlignment]="currentOnboardingStep().tipAlignment"
+    (next)="cycleOnboarding()"
+    class="z-50"
+  ></app-tutorial-element>
+}

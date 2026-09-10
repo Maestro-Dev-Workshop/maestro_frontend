@@ -5,6 +5,7 @@ import { catchError, EMPTY, filter, finalize, iif, of, switchMap, tap } from 'rx
 
 import { BaseOverlay } from '../../../shared/components/base-overlay/base-overlay';
 import { ThemeIconComponent } from '../../../../shared/components/theme-icon/theme-icon';
+import { TutorialElement } from '../../../../shared/components/tutorial-element/tutorial-element';
 
 import { DocumentIngestResponse, DocumentModel, IngestedDocument, SubjectModel, SubjectStatus, SubscriptionStatus } from '../../../../core/models';
 
@@ -13,10 +14,11 @@ import { SubscriptionService } from '../../../../core/services/subscription.serv
 import { NotificationService } from '../../../../core/services/notification.service';
 import { ConfirmService } from '../../../../core/services/confirm';
 import { StandardBtn } from '../../../shared/components/standard-btn/standard-btn';
+import { OnboardingService, OnboardingStep } from '../../../../core/services/onboarding.service';
 
 @Component({
   selector: 'app-file-upload-overlay',
-  imports: [BaseOverlay, FormsModule, ThemeIconComponent, StandardBtn],
+  imports: [BaseOverlay, FormsModule, ThemeIconComponent, StandardBtn, TutorialElement],
   templateUrl: './file-upload-overlay.html',
   styleUrl: './file-upload-overlay.css',
 })
@@ -42,6 +44,29 @@ export class FileUploadOverlay implements OnInit {
   private notify = inject(NotificationService);
   private subscriptionService = inject(SubscriptionService);
   private confirmation = inject(ConfirmService);
+  private onboardingService = inject(OnboardingService)
+
+  // Onboarding
+  uploadElement = viewChild<ElementRef>('fileUpload');
+  onboardingFlow = 'file_overlay.first_lesson_creation'
+  onboardingSteps: OnboardingStep[] = [];
+  currentOnboardingStepIndex = signal(-1);
+  currentOnboardingStep = computed(() =>
+    this.onboardingSteps[this.currentOnboardingStepIndex()],
+  );
+
+  constructor() {
+    this.onboardingSteps = [
+      {
+        title: 'Step Title',
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.',
+        object: this.uploadElement,
+        tipPosition: 'top',
+        tipAlignment: 'start',
+        stepName: 'file_upload'
+      },
+    ];
+  }
 
   ngOnInit(): void {
     // Get subjectId from route params
@@ -83,6 +108,21 @@ export class FileUploadOverlay implements OnInit {
         );
       },
     });
+
+    this.loadOnboardingStatus();
+  }
+
+  private loadOnboardingStatus() {
+    this.onboardingService.checkOnboardingStatus(this.onboardingFlow).subscribe({
+      next: (response) => {
+        if (!response.completed) {
+          this.currentOnboardingStepIndex.set(response.current_step)
+        }
+      },
+      error: (res) => {
+        this.notify.showError(res.error?.message || 'Failed to load onboarding status.')
+      }
+    })
   }
 
   onFileDrop(event: DragEvent) {
@@ -267,5 +307,21 @@ export class FileUploadOverlay implements OnInit {
 
   get documents() {
     return this.uploadedDocs() ? this.storedDocs() : this.files;
+  }
+
+  // Onboarding helpers
+  getTutorialObjectPosition() {
+    if (!this.currentOnboardingStep()) return { top: 0, left: 0, bottom: 0, right: 0 };
+    return this.onboardingService.getObjectPosition(this.currentOnboardingStep());
+  }
+
+  cycleOnboarding(): void {
+    this.onboardingService.updateOnboardingStatus(this.onboardingFlow, this.currentOnboardingStep().stepName).subscribe({
+      next: (response) => {},
+      error: (res) => {
+        this.notify.showError(res.error?.message || 'Failed to update onboarding status.')
+      }
+    })
+    this.currentOnboardingStepIndex.update((num) => num + 1)
   }
 }

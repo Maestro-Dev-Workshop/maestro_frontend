@@ -3,7 +3,10 @@
   <div class="relative flex-1 w-full flex overflow-hidden">
     <!-- Topic Selection -->
     @if (showTopics() || !isMobile()) {
-      <div class="absolute md:relative z-20 w-[360px] h-full flex flex-col gap-4 bg-surface-container p-4">
+      <div 
+        #topicList
+        class="absolute md:relative z-20 w-[360px] h-full flex flex-col gap-4 bg-surface-container p-4" 
+      >
         <span class="block p-2 text-xl md:text-2xl font-medium border-b-[1px] border-outline-variant flex items-center justify-between">
           Topics ({{ selectedTopics.length }}/{{ topics.length }})
   
@@ -16,7 +19,6 @@
   
         <!-- Topic List -->
         <div 
-          #topicList
           class="flex-1 flex flex-wrap items-start content-start gap-2 w-full overflow-y-auto custom-scrollbar" 
           cdkDropList 
           (cdkDropListDropped)="drop($event)" 
@@ -57,7 +59,10 @@
     <div class="relative z-0 flex-1 h-full flex flex-col gap-2 p-4">
       <!-- Lesson Name -->
       <div class="flex flex-row items-center justify-between p-2 md:p-4 border-b-[1px] border-outline-variant">
-        <div class="flex items-center gap-2">
+        <div 
+          #lessonName
+          class="flex items-center gap-2" 
+        >
           <button class="md:hover:opacity-60" (click)="saveLessonName()">
             <app-theme-icon name="save-primary" className="w-5 md:w-6"></app-theme-icon>
           </button>
@@ -80,7 +85,10 @@
           > -->
         </div>
 
-        <div class="relative flex items-center justify-center gap-1 md:gap-2 font-medium text-md md:text-lg">
+        <div 
+          #creditCost
+          class="relative flex items-center justify-center gap-1 md:gap-2 font-medium text-md md:text-lg" 
+        >
           Total Cost: 
           <app-theme-icon name="credits-icon" className="w-4 md:w-6"></app-theme-icon> 
           {{ getCost('total').value }}
@@ -106,7 +114,7 @@
       </div>
       
       <!-- Mobile View Topic Toggle -->
-      <span class="md:hidden block p-2 text-xl md:text-2xl font-medium gap-4 flex items-center">
+      <span class="md:hidden block p-2 text-xl md:text-2xl font-medium gap-4 flex items-center" #topicList>
         Topics ({{ selectedTopics.length }}/{{ topics.length }})
 
         <app-theme-icon 
@@ -115,7 +123,7 @@
           class="md:hidden cursor-pointer md:hover:opacity-60"
           (click)="toggleTopicView()"
         ></app-theme-icon>
-      </span>
+      </span> 
       
       <!-- Extensions -->
       <div class="flex-1 w-full flex flex-col gap-2 md:p-2 overflow-y-auto custom-scrollbar">
@@ -198,6 +206,7 @@
         } @else {
           <div class="w-full flex-1 p-3 pb-8">
             <div 
+              #extensionGrid
               class="w-full h-full flex flex-col gap-2 items-center justify-center rounded-xl border border-outline-variant border-dashed
               relative bg-surface-container-low cursor-pointer transition-all duration-150 ease-in-out md:hover:border-primary group"
               (click)="toggleConfigOverlay()"
@@ -215,6 +224,7 @@
       <!-- Preference Form -->
       <form #form="ngForm" class="flex flex-col gap-2 md:gap-3 p-3 md:p-4 rounded-2xl bg-surface-container border border-outline">
         <textarea 
+          #textInput
           type="text" 
           name="learningStyle" 
           placeholder="Type your preferences for the lesson here..." 
@@ -222,7 +232,6 @@
           border-b-[1px] border-outline-variant focus:border-primary focus:outline-none" 
           rows="1"
           cols="1"
-          #textInput
           (input)="adjustInputHeight()"
           (mousemove)="adjustInputHeight()"
           [(ngModel)]="learningStyle"
@@ -231,7 +240,11 @@
         >
         </textarea>
         <div class="flex items-center justify-between ">
-          <button class="flex items-center gap-2 text-primary md:hover:opacity-60 text-sm md:text-base" (click)="togglePromptSuggestions()">
+          <button
+            #promptButton 
+            class="flex items-center gap-2 text-primary md:hover:opacity-60 text-sm md:text-base" 
+            (click)="togglePromptSuggestions()"
+          >
             <app-theme-icon name="magic-wand-primary" className="w-5 md:w-6"></app-theme-icon>
             Prompt Suggestions
           </button>
@@ -254,7 +267,7 @@
     </div>
 
     <!-- Prompt Suggestions -->
-    @if (showPromptSuggestions) {
+    @if (showPromptSuggestions()) {
       <div class="absolute right-0 md:relative z-10 w-[360px] h-full flex flex-col gap-4 bg-surface-container p-4 overflow-y-auto custom-scrollbar">
         <span class="block p-2 text-xl md:text-2xl font-medium border-b-[1px] border-outline-variant flex items-center gap-2">
           Prompt Suggestions <app-theme-icon name="magic-wand" class="h-full flex items-center"></app-theme-icon>
@@ -289,7 +302,7 @@
   </div>
 </div>
 
-@if (configOverlay) {
+@if (configOverlay()) {
   <app-extension-config-overlay
     [configuration]="extensionSettings"
     [costSettings]="costSettings"
@@ -297,8 +310,23 @@
   ></app-extension-config-overlay>
 }
 
-@if (filesOverlay) {
+@if (filesOverlay()) {
   <app-file-upload-overlay
     (close)="closeFileOverlay()"
   ></app-file-upload-overlay>
+}
+
+@if (
+  currentOnboardingStepIndex() >= 0 &&
+  currentOnboardingStepIndex() < onboardingSteps.length &&
+  !filesOverlay() && !configOverlay()
+) {
+  <app-tutorial-element
+    [objectDimensions]="getTutorialObjectPosition()"
+    [title]="currentOnboardingStep().title"
+    [text]="currentOnboardingStep().text"
+    [tipPosition]="currentOnboardingStep().tipPosition"
+    [tipAlignment]="currentOnboardingStep().tipAlignment"
+    (next)="cycleOnboarding()"
+  ></app-tutorial-element>
 }

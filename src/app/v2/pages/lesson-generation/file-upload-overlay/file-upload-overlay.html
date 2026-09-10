@@ -55,6 +55,7 @@
     @if (!uploadedDocs()) {
       <div>
         <div
+          #fileUpload
           class="flex flex-col items-center justify-center w-full border-2 border-dashed border-outline-variant rounded-2xl my-2 p-4 md:p-6 
           cursor-pointer transition-all md:hover:border-primary bg-surface-container-high"
           (drop)="onFileDrop($event)"
@@ -101,3 +102,17 @@
     </div>
   </div>
 </app-base-overlay>
+
+@if (
+  currentOnboardingStepIndex() >= 0 &&
+  currentOnboardingStepIndex() < onboardingSteps.length
+) {
+  <app-tutorial-element
+    [objectDimensions]="getTutorialObjectPosition()"
+    [title]="currentOnboardingStep().title"
+    [text]="currentOnboardingStep().text"
+    [tipPosition]="currentOnboardingStep().tipPosition"
+    [tipAlignment]="currentOnboardingStep().tipAlignment"
+    (next)="cycleOnboarding()"
+  ></app-tutorial-element>
+}

@@ -7,6 +7,7 @@ import {
   viewChild,
   ViewChild,
   computed,
+  DestroyRef,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin, map, of, switchMap } from 'rxjs';
@@ -46,10 +47,12 @@ import {
   GlossaryResponse,
 } from '../../../../core/models/api-response.model';
 import { ThemeIconComponent } from "../../../../shared/components/theme-icon/theme-icon";
+import { OnboardingService, OnboardingStep } from '../../../../core/services/onboarding.service';
+import { TutorialElement } from '../../../../shared/components/tutorial-element/tutorial-element';
 
 @Component({
   selector: 'app-lesson-page',
-  imports: [Header, LessonSidebar, ThemeIconComponent, Glossary, Practice, Subtopic, Chatbot, LessonFlashcards],
+  imports: [Header, LessonSidebar, ThemeIconComponent, Glossary, Practice, Subtopic, Chatbot, LessonFlashcards, TutorialElement],
   templateUrl: './lesson-page.html',
   styleUrl: './lesson-page.css',
 })
@@ -61,6 +64,8 @@ export class LessonPage implements OnInit {
   private lessonService = inject(LessonService);
   private chatbotService = inject(ChatbotService);
   private notify = inject(NotificationService);
+  private onboardingService = inject(OnboardingService)
+  private readonly destroyRef = inject(DestroyRef);
 
   // Route params
   subjectId = signal('');
@@ -85,8 +90,40 @@ export class LessonPage implements OnInit {
   subjectLoading = signal(true);
   chatMetadata = signal<ChatMetadata>({});
   headerReloadTrigger = signal(0);
+  isMobile = signal(false)
 
   @ViewChild('contentContainer') private contentContainer!: ElementRef<HTMLDivElement>;
+
+  // Onboarding
+  chatbotPopup = viewChild<ElementRef>('chatPopupButton');
+  lessonSidebar = viewChild<ElementRef>('lessonSidebar');
+  onboardingFlow = 'lesson.first_lesson_creation'
+  onboardingSteps: OnboardingStep[] = [];
+  currentOnboardingStepIndex = signal(-1);
+  currentOnboardingStep = computed(() =>
+    this.onboardingSteps[this.currentOnboardingStepIndex()],
+  );
+
+  constructor() {
+    this.onboardingSteps = [
+      {
+        title: 'Step Title',
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.',
+        object: this.lessonSidebar,
+        tipPosition: 'right',
+        tipAlignment: 'start',
+        stepName: 'sidebar'
+      },
+      {
+        title: 'Step Title',
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.',
+        object: this.chatbotPopup,
+        tipPosition: 'top',
+        tipAlignment: 'end',
+        stepName: 'chatbot'
+      },
+    ];
+  }
 
   ngOnInit(): void {
     // Get subjectId from route params
@@ -97,6 +134,7 @@ export class LessonPage implements OnInit {
         this.loadLessonData();
       }
     });
+    this.setupResponsiveListener()
   }
 
   private loadLessonData(): void {
@@ -220,6 +258,7 @@ export class LessonPage implements OnInit {
         next: () => {
           this.setInitialView();
           this.subjectLoading.set(false);
+          this.loadOnboardingStatus();
         },
         error: (res) => {
           this.notify.showError(res.error?.message || 'Failed to load lesson content.');
@@ -249,6 +288,19 @@ export class LessonPage implements OnInit {
     } else if (content.topics[0]?.subtopics.length > 0) {
       this.updateCurrentView({ id: content.topics[0].subtopics[0].id, type: 'subtopic' });
     }
+  }
+
+  private loadOnboardingStatus() {
+    this.onboardingService.checkOnboardingStatus(this.onboardingFlow).subscribe({
+      next: (response) => {
+        if (!response.completed) {
+          this.currentOnboardingStepIndex.set(response.current_step)
+        }
+      },
+      error: (res) => {
+        this.notify.showError(res.error?.message || 'Failed to load onboarding status.')
+      }
+    })
   }
 
   updateCurrentView(event: ViewChangeEvent): void {
@@ -502,5 +554,39 @@ export class LessonPage implements OnInit {
       }
     }
     return null;
+  }
+
+  // Onboarding helpers
+  getTutorialObjectPosition() {
+    if (!this.currentOnboardingStep()) return { top: 0, left: 0, bottom: 0, right: 0 };
+    return this.onboardingService.getObjectPosition(this.currentOnboardingStep());
+  }
+
+  cycleOnboarding(): void {
+    this.onboardingService.updateOnboardingStatus(this.onboardingFlow, this.currentOnboardingStep().stepName).subscribe({
+      next: (response) => {},
+      error: (res) => {
+        this.notify.showError(res.error?.message || 'Failed to update onboarding status.')
+      }
+    })
+    this.currentOnboardingStepIndex.update((num) => num + 1)
+  }
+
+  private setupResponsiveListener(): void {
+    const mediaQuery = window.matchMedia('(max-width: 768px)');
+    
+    // Set initial value safely on the client
+    this.isMobile.set(mediaQuery.matches);
+    
+    const handler = (e: MediaQueryListEvent) => {
+      this.isMobile.set(e.matches);
+    };
+
+    mediaQuery.addEventListener('change', handler);
+    
+    // Clean up event listener when component unmounts to prevent memory leaks
+    this.destroyRef.onDestroy(() => {
+      mediaQuery.removeEventListener('change', handler);
+    });
   }
 }

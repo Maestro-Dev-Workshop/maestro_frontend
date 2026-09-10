@@ -18,6 +18,7 @@ import { Header } from '../../shared/components/header/header';
 import { FileUploadOverlay } from './file-upload-overlay/file-upload-overlay';
 import { ExtensionConfigOverlay } from './extension-config-overlay/extension-config-overlay';
 import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-icon';
+import { TutorialElement } from '../../../shared/components/tutorial-element/tutorial-element';
 
 import { SubjectsService } from '../../../core/services/subjects.service';
 import { NotificationService } from '../../../core/services/notification.service';
@@ -45,6 +46,7 @@ import { CreditService } from '../../../core/services/credit.service';
     CdkDrag, 
     CdkDropList, 
     FormsModule, 
+    TutorialElement
   ],
   schemas: [NO_ERRORS_SCHEMA],
   templateUrl: './lesson-generation.html',
@@ -61,9 +63,9 @@ export class LessonGeneration implements OnInit {
   private onboardingService = inject(OnboardingService);
   private readonly destroyRef = inject(DestroyRef);
 
-  filesOverlay = false;
-  configOverlay = false;
-  showPromptSuggestions = false;
+  filesOverlay = signal(false);
+  configOverlay = signal(false);
+  showPromptSuggestions = signal(false);
   overchargeExplanationPopup = signal(false);
   showTopics = signal(true)
   loading = signal(false);
@@ -106,15 +108,6 @@ export class LessonGeneration implements OnInit {
       overcharge: 0
     },
   }
-
-  topicList = viewChild<ElementRef>('topicList');
-  textInput = viewChild<ElementRef>('textInput');
-  submitButton = viewChild<ElementRef>('submitButton');
-
-  // Onboarding elements
-  onboardingSteps: OnboardingStep[] = [];
-  beginner = false;
-  currentOnboardingStep = computed(() => this.onboardingService.currentStepIndex());
   
   subjectName = '';
   topics: GenerationTopic[] = [];
@@ -143,51 +136,82 @@ export class LessonGeneration implements OnInit {
     },
   ]
 
+  lessonName = viewChild<ElementRef>('lessonName');
+  topicList = viewChild<ElementRef>('topicList');
+  extensionGrid = viewChild<ElementRef>('extensionGrid');
+  textInput = viewChild<ElementRef>('textInput');
+  promptButton = viewChild<ElementRef>('promptButton');
+  creditCost = viewChild<ElementRef>('creditCost');
+  submitButton = viewChild<ElementRef>('submitButton');
+
+  // Onboarding elements
+  onboardingFlow = 'lesson_generation.first_lesson_creation'
+  onboardingSteps: OnboardingStep[] = [];
+  currentOnboardingStepIndex = signal(-1);
+  currentOnboardingStep = computed(() =>
+    this.onboardingSteps[this.currentOnboardingStepIndex()],
+  );
+  
   constructor() {
     // Initialize onboarding steps
     this.onboardingSteps = [
-      // {
-      //   title: 'Select Topics',
-      //   text: 'Choose the specific concepts you want to focus on for this lesson.',
-      //   object: this.topicList,
-      //   tipPosition: 'top',
-      //   tipAlignment: 'start',
-      // },
-      // {
-      //   title: 'Enhance Your Lesson',
-      //   text: 'Select additional extensions to enhance the quality of your generated lesson.',
-      //   object: this.enableExtensionsButton,
-      //   tipPosition: 'top',
-      //   tipAlignment: 'start',
-      // },
-      // {
-      //   title: 'Configure',
-      //   text: 'Click here to customize your extensions.',
-      //   object: this.configureExtensionsButton,
-      //   tipPosition: 'top',
-      //   tipAlignment: 'start',
-      // },
-      // {
-      //   title: 'Lesson Preferences',
-      //   text: 'Provide any specific preferences or instructions for your lesson generation.',
-      //   object: this.textInput,
-      //   tipPosition: 'bottom',
-      //   tipAlignment: 'start',
-      // },
-      // {
-      //   title: 'Generate Lesson',
-      //   text: 'Ready? Click the send button to build your personalised lesson.',
-      //   object: this.submitButton,
-      //   tipPosition: 'top',
-      //   tipAlignment: 'end',
-      // },
+      {
+        title: 'Step Title',
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.',
+        object: this.lessonName,
+        tipPosition: 'bottom',
+        tipAlignment: 'start',
+        stepName: 'lesson_naming'
+      },
+      {
+        title: 'Step Title',
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.',
+        object: this.topicList,
+        tipPosition: 'right',
+        tipAlignment: 'start',
+        stepName: 'topic_selection'
+      },
+      {
+        title: 'Step Title',
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.',
+        object: this.extensionGrid,
+        tipPosition: 'top',
+        tipAlignment: 'end',
+        stepName: 'extension_enabling'
+      },
+      {
+        title: 'Step Title',
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.',
+        object: this.creditCost,
+        tipPosition: 'bottom',
+        tipAlignment: 'end',
+        stepName: 'credit_cost'
+      },
+      {
+        title: 'Step Title',
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.',
+        object: this.textInput,
+        tipPosition: 'top',
+        tipAlignment: 'start',
+        stepName: 'preference_prompt'
+      },
+      {
+        title: 'Step Title',
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.',
+        object: this.promptButton,
+        tipPosition: 'top',
+        tipAlignment: 'start',
+        stepName: 'prompt_suggestions'
+      },
+      {
+        title: 'Step Title',
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.',
+        object: this.submitButton,
+        tipPosition: 'top',
+        tipAlignment: 'end',
+        stepName: 'generate_lesson'
+      },
     ];
-
-    const nav = this.router.currentNavigation();
-    this.beginner = nav?.extras?.state?.['beginner'] ?? false;
-    if (this.beginner) {
-      this.onboardingService.startOnboarding();
-    }
   }
 
   private setupResponsiveListener(): void {
@@ -236,7 +260,7 @@ export class LessonGeneration implements OnInit {
   }
 
   togglePromptSuggestions() {
-    this.showPromptSuggestions = !this.showPromptSuggestions;
+    this.showPromptSuggestions.set(!this.showPromptSuggestions());
   }
 
   toggleTopicView() {
@@ -245,7 +269,7 @@ export class LessonGeneration implements OnInit {
 
   toggleConfigOverlay() {
     if (this.loading() || (this.subjectStatus === 'pending_lesson_generation')) return
-    this.configOverlay = !this.configOverlay;
+    this.configOverlay.set(!this.configOverlay());
   }
 
   saveConfig(config: ExtensionSettings) {
@@ -467,7 +491,7 @@ export class LessonGeneration implements OnInit {
     this.subjectService.generateFullLesson(this.subjectId, selectedTopicIds, this.learningStyle, this.extensionSettings).subscribe({
       next: (response) => {
         this.notify.showSuccess("Successfully generated lesson.")
-        this.router.navigateByUrl(`/v2/lesson/${this.subjectId}`, { state: { beginner: this.beginner } })
+        this.router.navigateByUrl(`/v2/lesson/${this.subjectId}`)
       },
       error: (res) => {
         this.notify.showError(res.error.message || "Failed to generate lesson. Please try again later.");
@@ -488,6 +512,7 @@ export class LessonGeneration implements OnInit {
       this.loadSubjectDetails();
     });
     this.setupResponsiveListener();
+    this.loadOnboardingStatus()
   }
 
   configureLoadedExtensions(extensions: ExtensionModel[]) {
@@ -524,7 +549,7 @@ export class LessonGeneration implements OnInit {
         this.subjectName = response.session.name || 'Untitled';
         this.subjectStatus = response.session.status || '';
         if ((this.subjectStatus == SubjectStatus.PENDING_DOCUMENT_UPLOAD) || (this.subjectStatus == SubjectStatus.PENDING_TOPIC_LABELLING)) {
-          this.filesOverlay = true;
+          this.filesOverlay.set(true);
         }
         this.topics = response.topics;
         this.learningStyle = response.session.user_preference || '';
@@ -568,18 +593,21 @@ export class LessonGeneration implements OnInit {
     })
   }
 
+  private loadOnboardingStatus() {
+    this.onboardingService.checkOnboardingStatus(this.onboardingFlow).subscribe({
+      next: (response) => {
+        if (!response.completed) {
+          this.currentOnboardingStepIndex.set(response.current_step)
+        }
+      },
+      error: (res) => {
+        this.notify.showError(res.error?.message || 'Failed to load onboarding status.')
+      }
+    })
+  }
+
   closeFileOverlay() {
     window.location.reload();
-  }
-
-  getTutorialObjectPosition(stepIndex: number) {
-    const step = this.onboardingSteps[stepIndex];
-    if (!step) return { top: 0, left: 0, bottom: 0, right: 0 };
-    return this.onboardingService.getObjectPosition(step);
-  }
-
-  cycleOnboarding(): void {
-    this.onboardingService.nextStep();
   }
 
   saveLessonName() {
@@ -621,5 +649,21 @@ export class LessonGeneration implements OnInit {
 
   toggleOverchargeExplanation() {
     this.overchargeExplanationPopup.set(!this.overchargeExplanationPopup())
+  }
+
+  // Onboarding helpers
+  getTutorialObjectPosition() {
+    if (!this.currentOnboardingStep()) return { top: 0, left: 0, bottom: 0, right: 0 };
+    return this.onboardingService.getObjectPosition(this.currentOnboardingStep());
+  }
+
+  cycleOnboarding(): void {
+    this.onboardingService.updateOnboardingStatus(this.onboardingFlow, this.currentOnboardingStep().stepName).subscribe({
+      next: (response) => {},
+      error: (res) => {
+        this.notify.showError(res.error?.message || 'Failed to update onboarding status.')
+      }
+    })
+    this.currentOnboardingStepIndex.update((num) => num + 1)
   }
 }
