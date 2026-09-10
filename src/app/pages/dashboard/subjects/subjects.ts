@@ -135,9 +135,7 @@ export class Subjects implements OnInit, OnDestroy {
   // Onboarding
   createButton = viewChild<ElementRef>('createSubjectButton');
   onboardingSteps: OnboardingStep[] = [];
-  currentOnboardingStep = computed(() =>
-    this.onboardingService.currentStepIndex(),
-  );
+  currentOnboardingStep = signal(-1);
 
   private globalClickHandler = () => {
     if (this.rightClickSubject()) {
@@ -153,6 +151,7 @@ export class Subjects implements OnInit, OnDestroy {
         object: this.createButton,
         tipPosition: 'bottom',
         tipAlignment: 'start',
+        stepName: ''
       },
     ];
   }
@@ -233,10 +232,6 @@ export class Subjects implements OnInit, OnDestroy {
           }),
         );
         this.subjects.set(mapped);
-
-        if (mapped.length === 0) {
-          this.onboardingService.startOnboarding();
-        }
         this.loadingSubjects.set(false);
       },
       error: (res) => {
@@ -555,6 +550,5 @@ export class Subjects implements OnInit, OnDestroy {
   }
 
   cycleOnboarding(): void {
-    this.onboardingService.nextStep();
   }
 }

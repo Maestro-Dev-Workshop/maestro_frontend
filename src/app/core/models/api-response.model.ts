@@ -359,3 +359,9 @@ export interface ExtensionSettingsPayload {
     name: string;
   };
 }
+
+
+export interface OnboardingStatusResponse extends ApiResponse {
+  completed: boolean
+  current_step: number
+}

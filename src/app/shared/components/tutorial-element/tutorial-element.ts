@@ -37,6 +37,8 @@ export class TutorialElement {
 
   // ===== Visibility =====
   next = output();
+  tipWidth = 300
+  tipHeight = 150
 
   // ===== Screen tracking =====
   screenWidth = signal(window.innerWidth);
@@ -79,15 +81,13 @@ export class TutorialElement {
   // ===== Tooltip style =====
   tooltipStyle = computed(() => {
     const obj = this.objectDimensions();
-    const width = 220;
-    const height = 110;
 
     const coords = this.calculateCoords(
       this.resolvedPosition(),
       this.resolvedAlignment(),
       obj,
-      width,
-      height
+      this.tipWidth,
+      this.tipHeight
     );
 
     return {
@@ -106,9 +106,6 @@ export class TutorialElement {
       this.screenWidth();
       this.screenHeight();
 
-      const width = 220;
-      const height = 110;
-
       let position = preferredPosition;
       let attempts = 0;
 
@@ -126,11 +123,11 @@ export class TutorialElement {
             position,
             alignment,
             obj,
-            width,
-            height
+            this.tipWidth,
+            this.tipHeight
             );
 
-          if (this.fitsOnScreen(coords.top, coords.left, width, height)) {
+          if (this.fitsOnScreen(coords.top, coords.left, this.tipWidth, this.tipHeight)) {
             this.resolvedPosition.set(position);
             this.resolvedAlignment.set(alignment);
             return;

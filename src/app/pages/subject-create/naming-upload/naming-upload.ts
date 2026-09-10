@@ -8,6 +8,7 @@ import {
   viewChild,
   ViewChild,
   computed,
+  signal,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule, NgModel } from '@angular/forms';
@@ -84,7 +85,7 @@ export class NamingUpload implements OnInit {
   fileUploadIcon = viewChild<ElementRef>('fileUploadIcon');
   submitButton = viewChild<ElementRef>('submitButton');
   onboardingSteps: OnboardingStep[] = [];
-  currentOnboardingStep = computed(() => this.onboardingService.currentStepIndex());
+  currentOnboardingStep = signal(-1);
 
   constructor() {
     // Initialize onboarding steps
@@ -95,6 +96,7 @@ export class NamingUpload implements OnInit {
         object: this.subjectNameInput,
         tipPosition: 'right',
         tipAlignment: 'start',
+        stepName: '',
       },
       {
         title: 'Upload Documents',
@@ -102,6 +104,7 @@ export class NamingUpload implements OnInit {
         object: this.fileUploadIcon,
         tipPosition: 'bottom',
         tipAlignment: 'start',
+        stepName: '',
       },
       {
         title: 'Finalize Setup',
@@ -109,14 +112,13 @@ export class NamingUpload implements OnInit {
         object: this.submitButton,
         tipPosition: 'right',
         tipAlignment: 'start',
+        stepName: '',
       },
     ];
 
     const nav = this.router.currentNavigation();
     this.beginner = nav?.extras?.state?.['beginner'] ?? false;
-    if (this.beginner) {
-      this.onboardingService.startOnboarding();
-    }
+    
   }
 
   ngOnInit(): void {
@@ -362,6 +364,6 @@ export class NamingUpload implements OnInit {
   }
 
   cycleOnboarding(): void {
-    this.onboardingService.nextStep();
+    
   }
 }
