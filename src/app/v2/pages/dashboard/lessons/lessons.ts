@@ -1,4 +1,12 @@
-import { Component, inject, signal, OnInit, viewChild, ElementRef, computed } from '@angular/core';
+import {
+  Component,
+  inject,
+  signal,
+  OnInit, 
+  viewChild,
+  ElementRef,
+  computed,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
@@ -7,13 +15,21 @@ import { Header } from '../../../shared/components/header/header';
 import { StandardBtn } from '../../../shared/components/standard-btn/standard-btn';
 import { ThemeIconComponent } from '../../../../shared/components/theme-icon/theme-icon';
 import { RatingModal } from '../../../../shared/components/rating-modal/rating-modal';
+import {
+  ContextMenu,
+  ContextMenuItem,
+} from '../../../../shared/components/context-menu/context-menu';
 import { TutorialElement } from '../../../../shared/components/tutorial-element/tutorial-element';
+
 
 import { NotificationService } from '../../../../core/services/notification.service';
 import { ConfirmService } from '../../../../core/services/confirm';
 import { SubjectsService } from '../../../../core/services/subjects.service';
 import { SubscriptionService } from '../../../../core/services/subscription.service';
-import { OnboardingService, OnboardingStep } from '../../../../core/services/onboarding.service';
+import {
+  OnboardingService,
+  OnboardingStep,
+} from '../../../../core/services/onboarding.service';
 
 import { SubjectStatus } from '../../../../core/models/subject-status.model';
 
@@ -26,7 +42,8 @@ import { SubjectStatus } from '../../../../core/models/subject-status.model';
     ThemeIconComponent,
     RatingModal,
     StandardBtn,
-    TutorialElement
+    TutorialElement,
+    ContextMenu,
   ],
   templateUrl: './lessons.html',
   styleUrl: './lessons.css',
@@ -37,23 +54,30 @@ export class Lessons implements OnInit {
   private confirmation = inject(ConfirmService);
   private subjectsService = inject(SubjectsService);
   private subscriptionService = inject(SubscriptionService);
-  private onboardingService = inject(OnboardingService)
+  private onboardingService = inject(OnboardingService);
 
   loadingLessons = signal(true);
   loadingAction = signal(false);
   lessons = signal<any[]>([]);
   subscriptionData = signal<any | null>(null);
+  rightClickLesson = signal<any | null>(null);
+  popup = signal({ x: 0, y: 0 });
+
+  readonly contextMenuItems: ContextMenuItem[] = [
+    { id: 'rename', label: 'Rename', icon: 'rename-icon' },
+    { id: 'delete', label: 'Delete', icon: 'delete-icon' },
+  ];
 
   showRateModal = signal(false);
   selectedLesson = signal<any | null>(null);
 
   // Onboarding
   createButton = viewChild<ElementRef>('createLessonButton');
-  onboardingFlow = 'lessons_page.first_lesson_creation'
+  onboardingFlow = 'lessons_page.first_lesson_creation';
   onboardingSteps: OnboardingStep[] = [];
   currentOnboardingStepIndex = signal(-1);
-  currentOnboardingStep = computed(() =>
-    this.onboardingSteps[this.currentOnboardingStepIndex()],
+  currentOnboardingStep = computed(
+    () => this.onboardingSteps[this.currentOnboardingStepIndex()],
   );
 
   constructor() {
@@ -64,7 +88,7 @@ export class Lessons implements OnInit {
         object: this.createButton,
         tipPosition: 'bottom',
         tipAlignment: 'start',
-        stepName: 'create_button'
+        stepName: 'create_button',
       },
     ];
   }
@@ -96,9 +120,15 @@ export class Lessons implements OnInit {
           id: s.session.id,
           title: s.session.name ?? '',
           completion: this.normalizeCompletion(s.session.completion),
-          tags: s.extensions.map((ext: any) => ext.type == 'lesson' 
-            ? (ext.configuration.cell_types.length > 1 ? 'Content Cells' : '')
-            : ext.type).filter((tag: string) => tag),
+          tags: s.extensions
+            .map((ext: any) =>
+              ext.type == 'lesson'
+                ? ext.configuration.cell_types.length > 1
+                  ? 'Content Cells'
+                  : ''
+                : ext.type,
+            )
+            .filter((tag: string) => tag),
           status: s.session.status ?? SubjectStatus.PENDING_NAMING,
         }));
         this.lessons.set(mapped);
@@ -112,16 +142,20 @@ export class Lessons implements OnInit {
   }
 
   private loadOnboardingStatus() {
-    this.onboardingService.checkOnboardingStatus(this.onboardingFlow).subscribe({
-      next: (response) => {
-        if (!response.completed) {
-          this.currentOnboardingStepIndex.set(response.current_step)
-        }
-      },
-      error: (res) => {
-        this.notify.showError(res.error?.message || 'Failed to load onboarding status.')
-      }
-    })
+    this.onboardingService
+      .checkOnboardingStatus(this.onboardingFlow)
+      .subscribe({
+        next: (response) => {
+          if (!response.completed) {
+            this.currentOnboardingStepIndex.set(response.current_step);
+          }
+        },
+        error: (res) => {
+          this.notify.showError(
+            res.error?.message || 'Failed to load onboarding status.',
+          );
+        },
+      });
   }
 
   normalizeCompletion(value: any): number {
@@ -165,14 +199,78 @@ export class Lessons implements OnInit {
               this.lessons.update((list) =>
                 list.filter((l) => l.id !== lesson.id),
               );
+              this.rightClickLesson.set(null);
             },
             error: (res) =>
               this.notify.showError(
                 res.error?.message || 'Failed to delete lesson.',
               ),
           });
+        } else {
+          this.rightClickLesson.set(null);
         }
       });
+  }
+
+  openContextMenu(lesson: any, event: MouseEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.rightClickLesson.set(lesson);
+
+    const padding = 8;
+    const viewportW = window.innerWidth;
+    const viewportH = window.innerHeight;
+    let x = event.clientX;
+    let y = event.clientY;
+
+    // Prevent menu from going off screen
+    const estimatedWidth = 200;
+    const estimatedHeight = 120;
+    if (x + estimatedWidth + padding > viewportW) {
+      x = Math.max(padding, viewportW - estimatedWidth - padding);
+    }
+    if (y + estimatedHeight + padding > viewportH) {
+      y = Math.max(padding, viewportH - estimatedHeight - padding);
+    }
+
+    this.popup.set({ x, y });
+  }
+
+  // Handle context menu item clicks
+  onContextMenuItemClick(itemId: string): void {
+    const lesson = this.rightClickLesson();
+    if (!lesson) return;
+
+    if (itemId === 'rename') {
+      this.renameLesson(lesson);
+    } else if (itemId === 'delete') {
+      this.deleteLesson(lesson);
+    }
+  }
+
+  // Rename handler (uses a prompt — swap for a modal if you have one)
+  renameLesson(lesson: any): void {
+    const newName = prompt('Enter new lesson name:', lesson.title);
+    if (!newName || newName.trim() === '' || newName === lesson.title) {
+      this.rightClickLesson.set(null);
+      return;
+    }
+
+    this.subjectsService.nameSubject(lesson.id, newName.trim()).subscribe({
+      next: () => {
+        this.notify.showSuccess('Lesson renamed successfully.');
+        this.lessons.update((list) =>
+          list.map((l) =>
+            l.id === lesson.id ? { ...l, title: newName.trim() } : l,
+          ),
+        );
+        this.rightClickLesson.set(null);
+      },
+      error: (res) => {
+        this.notify.showError(res.error?.message || 'Failed to rename lesson.');
+        this.rightClickLesson.set(null);
+      },
+    });
   }
 
   goToLesson(lesson: any): void {
@@ -216,17 +314,27 @@ export class Lessons implements OnInit {
 
   // Onboarding helpers
   getTutorialObjectPosition() {
-    if (!this.currentOnboardingStep()) return { top: 0, left: 0, bottom: 0, right: 0 };
-    return this.onboardingService.getObjectPosition(this.currentOnboardingStep());
+    if (!this.currentOnboardingStep())
+      return { top: 0, left: 0, bottom: 0, right: 0 };
+    return this.onboardingService.getObjectPosition(
+      this.currentOnboardingStep(),
+    );
   }
 
   cycleOnboarding(): void {
-    this.onboardingService.updateOnboardingStatus(this.onboardingFlow, this.currentOnboardingStep().stepName).subscribe({
-      next: (response) => {},
-      error: (res) => {
-        this.notify.showError(res.error?.message || 'Failed to update onboarding status.')
-      }
-    })
-    this.currentOnboardingStepIndex.update((num) => num + 1)
+    this.onboardingService
+      .updateOnboardingStatus(
+        this.onboardingFlow,
+        this.currentOnboardingStep().stepName,
+      )
+      .subscribe({
+        next: (response) => {},
+        error: (res) => {
+          this.notify.showError(
+            res.error?.message || 'Failed to update onboarding status.',
+          );
+        },
+      });
+    this.currentOnboardingStepIndex.update((num) => num + 1);
   }
 }
