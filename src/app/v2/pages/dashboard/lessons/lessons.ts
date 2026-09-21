@@ -42,8 +42,6 @@ import { SubjectStatus } from '../../../../core/models/subject-status.model';
     ThemeIconComponent,
     RatingModal,
     StandardBtn,
-    TutorialElement
-    StandardBtn,
     TutorialElement,
     ContextMenu,
   ],
@@ -56,7 +54,7 @@ export class Lessons implements OnInit {
   private confirmation = inject(ConfirmService);
   private subjectsService = inject(SubjectsService);
   private subscriptionService = inject(SubscriptionService);
-  private onboardingService = inject(OnboardingService)
+  private onboardingService = inject(OnboardingService);
 
   loadingLessons = signal(true);
   loadingAction = signal(false);
@@ -91,28 +89,6 @@ export class Lessons implements OnInit {
         tipPosition: 'bottom',
         tipAlignment: 'start',
         stepName: 'create_button',
-      },
-    ];
-  }
-
-  // Onboarding
-  createButton = viewChild<ElementRef>('createLessonButton');
-  onboardingFlow = 'lessons_page.first_lesson_creation'
-  onboardingSteps: OnboardingStep[] = [];
-  currentOnboardingStepIndex = signal(-1);
-  currentOnboardingStep = computed(() =>
-    this.onboardingSteps[this.currentOnboardingStepIndex()],
-  );
-
-  constructor() {
-    this.onboardingSteps = [
-      {
-        title: 'Step Title',
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.',
-        object: this.createButton,
-        tipPosition: 'bottom',
-        tipAlignment: 'start',
-        stepName: 'create_button'
       },
     ];
   }
@@ -153,9 +129,6 @@ export class Lessons implements OnInit {
                 : ext.type,
             )
             .filter((tag: string) => tag),
-          tags: s.extensions.map((ext: any) => ext.type == 'lesson' 
-            ? (ext.configuration.cell_types.length > 1 ? 'Content Cells' : '')
-            : ext.type).filter((tag: string) => tag),
           status: s.session.status ?? SubjectStatus.PENDING_NAMING,
         }));
         this.lessons.set(mapped);
@@ -183,36 +156,6 @@ export class Lessons implements OnInit {
           );
         },
       });
-  }
-
-  private loadOnboardingStatus() {
-    this.onboardingService
-      .checkOnboardingStatus(this.onboardingFlow)
-      .subscribe({
-        next: (response) => {
-          if (!response.completed) {
-            this.currentOnboardingStepIndex.set(response.current_step);
-          }
-        },
-        error: (res) => {
-          this.notify.showError(
-            res.error?.message || 'Failed to load onboarding status.',
-          );
-        },
-      });
-  }
-
-  private loadOnboardingStatus() {
-    this.onboardingService.checkOnboardingStatus(this.onboardingFlow).subscribe({
-      next: (response) => {
-        if (!response.completed) {
-          this.currentOnboardingStepIndex.set(response.current_step)
-        }
-      },
-      error: (res) => {
-        this.notify.showError(res.error?.message || 'Failed to load onboarding status.')
-      }
-    })
   }
 
   normalizeCompletion(value: any): number {
@@ -313,15 +256,21 @@ export class Lessons implements OnInit {
       return;
     }
 
-    // Replace this with the actual rename API call
-    // this.subjectsService.renameSubject(lesson.id, newName).subscribe({ ... });
-    this.lessons.update((list) =>
-      list.map((l) =>
-        l.id === lesson.id ? { ...l, title: newName.trim() } : l,
-      ),
-    );
-    this.notify.showSuccess('Lesson renamed successfully.');
-    this.rightClickLesson.set(null);
+    this.subjectsService.nameSubject(lesson.id, newName.trim()).subscribe({
+      next: () => {
+        this.notify.showSuccess('Lesson renamed successfully.');
+        this.lessons.update((list) =>
+          list.map((l) =>
+            l.id === lesson.id ? { ...l, title: newName.trim() } : l,
+          ),
+        );
+        this.rightClickLesson.set(null);
+      },
+      error: (res) => {
+        this.notify.showError(res.error?.message || 'Failed to rename lesson.');
+        this.rightClickLesson.set(null);
+      },
+    });
   }
 
   goToLesson(lesson: any): void {
