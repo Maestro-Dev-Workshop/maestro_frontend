@@ -1,10 +1,11 @@
 import { Component, computed, effect, ElementRef, inject, input, OnInit, output, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { catchError, EMPTY, finalize, iif, of, switchMap, tap } from 'rxjs';
+import { catchError, EMPTY, filter, finalize, iif, of, switchMap, tap } from 'rxjs';
 
 import { BaseOverlay } from '../../../shared/components/base-overlay/base-overlay';
 import { ThemeIconComponent } from '../../../../shared/components/theme-icon/theme-icon';
+import { TutorialElement } from '../../../../shared/components/tutorial-element/tutorial-element';
 
 import { DocumentIngestResponse, DocumentModel, IngestedDocument, SubjectModel, SubjectStatus, SubscriptionStatus } from '../../../../core/models';
 
@@ -12,10 +13,12 @@ import { SubjectsService } from '../../../../core/services/subjects.service';
 import { SubscriptionService } from '../../../../core/services/subscription.service';
 import { NotificationService } from '../../../../core/services/notification.service';
 import { ConfirmService } from '../../../../core/services/confirm';
+import { StandardBtn } from '../../../shared/components/standard-btn/standard-btn';
+import { OnboardingService, OnboardingStep } from '../../../../core/services/onboarding.service';
 
 @Component({
   selector: 'app-file-upload-overlay',
-  imports: [BaseOverlay, FormsModule, ThemeIconComponent],
+  imports: [BaseOverlay, FormsModule, ThemeIconComponent, StandardBtn, TutorialElement],
   templateUrl: './file-upload-overlay.html',
   styleUrl: './file-upload-overlay.css',
 })
@@ -30,7 +33,6 @@ export class FileUploadOverlay implements OnInit {
   loading = signal(false);
   close = output<void>();
 
-  single_file_size = 3;
   total_files_size = 10;
   max_file_count = 5;
 
@@ -42,6 +44,29 @@ export class FileUploadOverlay implements OnInit {
   private notify = inject(NotificationService);
   private subscriptionService = inject(SubscriptionService);
   private confirmation = inject(ConfirmService);
+  private onboardingService = inject(OnboardingService)
+
+  // Onboarding
+  uploadElement = viewChild<ElementRef>('fileUpload');
+  onboardingFlow = 'file_overlay.first_lesson_creation'
+  onboardingSteps: OnboardingStep[] = [];
+  currentOnboardingStepIndex = signal(-1);
+  currentOnboardingStep = computed(() =>
+    this.onboardingSteps[this.currentOnboardingStepIndex()],
+  );
+
+  constructor() {
+    this.onboardingSteps = [
+      {
+        title: 'Step Title',
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.',
+        object: this.uploadElement,
+        tipPosition: 'top',
+        tipAlignment: 'start',
+        stepName: 'file_upload'
+      },
+    ];
+  }
 
   ngOnInit(): void {
     // Get subjectId from route params
@@ -55,10 +80,8 @@ export class FileUploadOverlay implements OnInit {
           response.subscription;
 
         if (subscriptionData?.plan) {
-          this.single_file_size = subscriptionData.plan.single_file_size || 3;
-          this.total_files_size =
-            subscriptionData.plan.subject_total_files_size || 10;
-          this.max_file_count = subscriptionData.plan.subject_file_count || 5;
+          this.total_files_size = subscriptionData.plan.lesson_cummulative_file_size || 100;
+          this.max_file_count = subscriptionData.plan.lesson_file_count || 5;
         }
       },
       error: (res) => {
@@ -85,6 +108,21 @@ export class FileUploadOverlay implements OnInit {
         );
       },
     });
+
+    this.loadOnboardingStatus();
+  }
+
+  private loadOnboardingStatus() {
+    this.onboardingService.checkOnboardingStatus(this.onboardingFlow).subscribe({
+      next: (response) => {
+        if (!response.completed) {
+          this.currentOnboardingStepIndex.set(response.current_step)
+        }
+      },
+      error: (res) => {
+        this.notify.showError(res.error?.message || 'Failed to load onboarding status.')
+      }
+    })
   }
 
   onFileDrop(event: DragEvent) {
@@ -136,8 +174,6 @@ export class FileUploadOverlay implements OnInit {
         invalidFiles.push(file.name);
       } else if (this.files.some((f) => f.name === file.name)) {
         duplicateFiles.push(file.name);
-      } else if (file.size > this.single_file_size * 1024 ** 2) {
-        largeFiles.push(file.name);
       } else if (totalFilesCount === this.max_file_count) {
         this.notify.showError(
           `You can upload a maximum of ${this.max_file_count} files.`,
@@ -204,69 +240,88 @@ export class FileUploadOverlay implements OnInit {
     return file.name.split('.').pop()?.toLowerCase() || '';
   }
 
+
   onSubmit() {
     if (this.loading()) return;
-    this.loading.set(true);
 
     if (this.files.length === 0 && !this.uploadedDocs()) {
       this.notify.showError('At least one file must be uploaded.');
-      this.loading.set(false);
       return;
     }
 
-    const ingestDocumentsIfNeeded$ = () =>
-    iif(
-      () => this.uploadedDocs(),
-      of(true), // Documents already uploaded, skip
-      this.subjectService.ingestDocuments(this.subjectId, this.files).pipe(
-        switchMap((res: DocumentIngestResponse) => {
-          if (res.warning) {
-            // Fix lowDocs mapping
-            const lowDocs = res.documents
-              .filter((doc: IngestedDocument) => doc.belowThreshold)
-              .map((doc: IngestedDocument) => `"${doc.document.name}${doc.document.extension}"`);
+    this.loading.set(true);
 
-            // Show confirmation modal and return Observable<boolean>
+    const ingestDocumentsIfNeeded$ = () =>
+      iif(
+        () => this.uploadedDocs(),
+        of(true), // Documents already uploaded, skip ingestion
+        this.subjectService.ingestDocuments(this.subjectId, this.files).pipe(
+          switchMap((res: DocumentIngestResponse) => {
+            if (!res.warning) {
+              return of(true);
+            }
+
             return this.confirmation.open({
-              title: "Scanned Documents Detected",
-              message: `The following have been identified as scanned documents: ${lowDocs.join(", ")}.
-              Don't worry, everything will still work fine, this is just a placehoder warning for an upcoming update.`,
-              okText: "Proceed",
-              cancelText: "Go back"
+              title: 'Word Count Limit Exceeded!',
+              message: `The total word count of all uploaded documents exceed your subscription plan's soft limit by ${res.word_excess} words. 
+              If you choose to proceed with lesson generation, overcharge fees will be incurred on base lesson and all extensions. Do you wish to continue?`,
+              okText: 'Proceed',
+              cancelText: 'Go back',
             });
-          } else {
-            return of(true); // No warning, proceed
-          }
-        })
-      )
-    );
+          })
+        )
+      );
 
     ingestDocumentsIfNeeded$()
       .pipe(
-        switchMap(() => this.subjectService.labelDocuments(this.subjectId)),
+        // Only continue if the user chose "Proceed"
+        filter((proceed) => proceed),
+
+        switchMap(() =>
+          this.subjectService.labelDocuments(this.subjectId)
+        ),
+
         tap(() => {
           this.notify.showSuccess('Topics successfully identified.');
-          // Close popup
           this.closeOverlay();
         }),
+
         catchError((res) => {
-          this.notify.showError(res.error?.message || 'Something went wrong.');
+          this.notify.showError(
+            res.error?.message || 'Something went wrong.'
+          );
           return EMPTY;
         }),
+
         finalize(() => {
           this.loading.set(false);
-          this.closeOverlay();
         }),
       )
       .subscribe();
   }
 
+
   closeOverlay() {
-    if (this.loading()) return;
     this.close.emit();
   }
 
   get documents() {
     return this.uploadedDocs() ? this.storedDocs() : this.files;
+  }
+
+  // Onboarding helpers
+  getTutorialObjectPosition() {
+    if (!this.currentOnboardingStep()) return { top: 0, left: 0, bottom: 0, right: 0 };
+    return this.onboardingService.getObjectPosition(this.currentOnboardingStep());
+  }
+
+  cycleOnboarding(): void {
+    this.onboardingService.updateOnboardingStatus(this.onboardingFlow, this.currentOnboardingStep().stepName).subscribe({
+      next: (response) => {},
+      error: (res) => {
+        this.notify.showError(res.error?.message || 'Failed to update onboarding status.')
+      }
+    })
+    this.currentOnboardingStepIndex.update((num) => num + 1)
   }
 }

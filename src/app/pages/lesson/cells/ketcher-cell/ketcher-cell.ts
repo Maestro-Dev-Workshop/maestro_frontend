@@ -31,7 +31,6 @@ export class KetcherCell implements AfterViewInit, OnDestroy {
   private lastMol?: string;
 
   private syncInput = effect(() => {
-    // console.log(this.data())
     const mol = this.data()?.content;
     if (mol && this.rdkit) {
       void this.render(mol);

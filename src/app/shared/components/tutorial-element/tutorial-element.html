@@ -1,8 +1,8 @@
-<div class="absolute inset-0 z-20">
+<div class="absolute inset-0 z-20 overflow-hidden">
 
   <!-- Highlight -->
   <div
-    class="absolute border-2 border-white rounded-lg cursor-pointer"
+    class="absolute rounded-lg cursor-pointer"
     [ngStyle]="highlightStyle()"
     style="box-shadow: 0 0 0 9999px rgba(0,0,0,0.7);"
     (click)="close()"
@@ -10,15 +10,17 @@
 
   <!-- Tooltip -->
   <div
-    class="absolute flex flex-col bg-blue-500 text-white p-4 rounded-lg w-[220px] h-[110px] overflow-y-auto scrollbar-none"
+    class="absolute flex flex-col gap-2 bg-primary text-on-primary px-4 py-2 rounded-2xl overflow-y-auto scrollbar-none border-4 border-on-primary"
+    [style.width.px]="tipWidth"
+    [style.height.px]="tipHeight"
     [ngStyle]="tooltipStyle()"
     #tooltipEl
   >
-    <h3 class="font-semibold">{{ title() }}</h3>
+    <h3 class="font-medium text-lg">{{ title() }}</h3>
     <div class="text-xs">{{ text() }}</div>
 
     <button
-      class="text-xs font-semibold underline block mt-auto ml-auto"
+      class="text-xs font-medium block mt-auto ml-auto md:hover:text-primary-container"
       (click)="close()"
     >
       Next

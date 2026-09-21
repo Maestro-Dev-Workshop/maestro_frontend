@@ -23,6 +23,7 @@
             <app-sidebar-item 
               [title]="topic.title" 
               [expanded]="sidebarExpanded()"
+              [className]="!topic.completed ? 'font-bold' : ''"
               (clickedAction)="toggleExpandTopic(topic.id)"
             ></app-sidebar-item>
             <div class="flex flex-col pl-4 border-t-[1px] border-outline-variant">
@@ -32,6 +33,7 @@
                   [title]="subtopic.title" 
                   [expanded]="sidebarExpanded()"
                   [selected]="(subtopic.id === currentView().id && currentView().type === 'subtopic')"
+                  [className]="!subtopic.read ? 'font-bold' : ''"
                   (clickedAction)="selectView(subtopic.id, 'subtopic')"
                 ></app-sidebar-item>
                 
@@ -44,6 +46,7 @@
                   icon="exercise-icon"
                   [expanded]="sidebarExpanded()"
                   [selected]="(topic.exercise.id === currentView().id && currentView().type === 'exercise')"
+                  [className]="!topic.exercise.score ? 'font-bold' : ''"
                   (clickedAction)="selectView(topic.exercise.id, 'exercise')"
                 ></app-sidebar-item>
               }
@@ -53,6 +56,7 @@
           <app-sidebar-item 
             [title]="topic.title" 
             [expanded]="sidebarExpanded()"
+            [className]="!topic.completed ? 'font-bold' : ''"
             (clickedAction)="toggleExpandTopic(topic.id)"
             cdkDrag
           ></app-sidebar-item>
@@ -118,6 +122,7 @@
         icon="exam-icon"
         [expanded]="sidebarExpanded()"
         [selected]="(content().exam.id === currentView().id && currentView().type === 'exam')"
+        [className]="!content().exam.score ? 'font-bold' : ''"
         (clickedAction)="selectView(content().exam.id, 'exam')"
       ></app-sidebar-item>
     }

@@ -24,4 +24,6 @@ export interface SubjectModel {
   completion: number;
   /** Extensions configured for this subject */
   extensions: ExtensionModel[];
+
+  word_count: number | null;
 }

@@ -1,5 +1,6 @@
 import { Component, input, output } from '@angular/core';
 import { ThemeIconComponent } from '../../../../shared/components/theme-icon/theme-icon';
+import { CommonModule } from '@angular/common';
 
 export interface SidebarItemModel {
   title: string;
@@ -10,7 +11,7 @@ export interface SidebarItemModel {
 
 @Component({
   selector: 'app-sidebar-item',
-  imports: [ThemeIconComponent],
+  imports: [ThemeIconComponent, CommonModule],
   templateUrl: './sidebar-item.html',
   styleUrl: './sidebar-item.css',
 })
@@ -19,6 +20,7 @@ export class SidebarItem {
   icon = input<string>("");
   selected = input<boolean>(false);
   expanded = input<boolean>(true);
+  className = input<string>('')
   clickedAction = output<void>();
 
   buttonClicked() {

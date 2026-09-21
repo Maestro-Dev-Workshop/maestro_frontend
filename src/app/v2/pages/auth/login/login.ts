@@ -60,7 +60,7 @@ export class Login {
                 'Please verify your email to continue. We have sent you a new verification link.',
               );
               this.loading = false;
-              this.router.navigateByUrl('/check-email', {
+              this.router.navigateByUrl('/v2/check-email', {
                 state: { email: this.email.toLowerCase() },
               });
             } else {
@@ -70,7 +70,7 @@ export class Login {
               localStorage.setItem('userEmail', user?.email || '');
               sessionStorage.setItem('maestro_from_auth', 'true');
               this.loading = false;
-              this.router.navigateByUrl('/dashboard');
+              this.router.navigateByUrl('/v2/lessons');
             }
           },
           error: (error) => {
@@ -113,7 +113,7 @@ export class Login {
           sessionStorage.setItem('maestro_from_auth', 'true');
   
           this.loading = false;
-          this.router.navigateByUrl('/dashboard');
+          this.router.navigateByUrl('/v2/lessons');
         },
         error: (err) => {
           this.loading = false;

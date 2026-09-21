@@ -1,14 +1,14 @@
 @if (visible()) {
   <div
-    class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
     (click)="onBackdropClick()"
   >
     <div
-      class="w-full max-w-md bg-[var(--bg-page)] rounded-xl p-6 px-8 shadow-lg text-center"
+      class="w-full max-w-md bg-surface-container rounded-xl p-6 px-8 shadow-lg text-center"
       (click)="$event.stopPropagation()"
     >
       <h4 class="text-2xl mb-3">{{ title() }}</h4>
-      <p class="text-sm text-[var(--text-alt)] mb-4">{{ subtitle() }}</p>
+      <p class="text-sm text-on-surface-variant mb-4">{{ subtitle() }}</p>
 
       <!-- Star Rating -->
       <div class="flex flex-col items-center gap-2 mb-8">
@@ -36,12 +36,12 @@
             </button>
           }
         </div>
-        <span class="text-sm text-[var(--text-alt)] ml-2">{{ ratingDescription() }}</span>
+        <span class="text-sm text-on-surface-variant ml-2">{{ ratingDescription() }}</span>
       </div>
 
       <!-- Feedback -->
       <textarea
-        class="w-full bg-[var(--bg-page)] border border-[var(--text-primary)] rounded-md p-2 text-xs mb-4 focus:outline-none focus:ring-2 focus:ring-[var(--text-primary)]"
+        class="w-full bg-surface-container-low border border-outline rounded-md p-2 text-xs mb-4 focus:outline-none focus:border-primary"
         rows="4"
         placeholder="Anything you'd like to add? Your input is valuable to us"
         [ngModel]="feedback()"
@@ -49,18 +49,12 @@
       ></textarea>
 
       <div class="flex justify-end gap-2">
-        <button
-          class="px-4 py-2 rounded-md bg-[var(--bg-card)] lg:hover:bg-[var(--bg-card-hover)] transition-colors"
-          (click)="onCancel()"
-        >
-          Cancel
-        </button>
-        <button
-          class="px-4 py-2 rounded-md bg-prussian-blue-700 text-white hover:bg-prussian-blue-800 transition-colors"
-          (click)="onSubmit()"
-        >
+        <app-standard-btn (click)="onSubmit()">
           Submit
-        </button>
+        </app-standard-btn>
+        <app-standard-btn flavour="alt" (click)="onCancel()">
+          Cancel
+        </app-standard-btn>
       </div>
     </div>
   </div>

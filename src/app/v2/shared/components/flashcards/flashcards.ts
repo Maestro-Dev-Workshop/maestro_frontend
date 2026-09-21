@@ -30,6 +30,7 @@ import {
   keyframes
 } from '@angular/animations';
 import { FlashcardTemplate } from '../flashcard-template/flashcard-template';
+import { StandardBtn } from '../standard-btn/standard-btn';
 
 const slideAnimation = trigger('slide', [
   transition(':increment', [
@@ -94,7 +95,7 @@ const flipAnimation = trigger('flip', [
 @Component({
   selector: 'app-flashcards',
   standalone: true,
-  imports: [ThemeIconComponent, NgTemplateOutlet, FlashcardTemplate],
+  imports: [ThemeIconComponent, NgTemplateOutlet, FlashcardTemplate, StandardBtn],
   templateUrl: './flashcards.html',
   animations: [slideAnimation, flipAnimation, behindSlideAnimation],
   changeDetection: ChangeDetectionStrategy.OnPush

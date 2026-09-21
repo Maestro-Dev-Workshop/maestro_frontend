@@ -2,15 +2,17 @@ import {
   Component,
   inject,
   signal,
-  OnInit,
+  OnInit, 
   viewChild,
   ElementRef,
   computed,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { Header } from '../../../shared/components/header/header';
+
 import { DashboardSidebar } from '../dashboard-sidebar/dashboard-sidebar';
+import { Header } from '../../../shared/components/header/header';
+import { StandardBtn } from '../../../shared/components/standard-btn/standard-btn';
 import { ThemeIconComponent } from '../../../../shared/components/theme-icon/theme-icon';
 import { RatingModal } from '../../../../shared/components/rating-modal/rating-modal';
 import {
@@ -18,6 +20,7 @@ import {
   ContextMenuItem,
 } from '../../../../shared/components/context-menu/context-menu';
 import { TutorialElement } from '../../../../shared/components/tutorial-element/tutorial-element';
+
 
 import { NotificationService } from '../../../../core/services/notification.service';
 import { ConfirmService } from '../../../../core/services/confirm';
@@ -39,6 +42,8 @@ import { SubjectStatus } from '../../../../core/models/subject-status.model';
     ThemeIconComponent,
     RatingModal,
     StandardBtn,
+    TutorialElement
+    StandardBtn,
     TutorialElement,
     ContextMenu,
   ],
@@ -51,7 +56,7 @@ export class Lessons implements OnInit {
   private confirmation = inject(ConfirmService);
   private subjectsService = inject(SubjectsService);
   private subscriptionService = inject(SubscriptionService);
-  private onboardingService = inject(OnboardingService);
+  private onboardingService = inject(OnboardingService)
 
   loadingLessons = signal(true);
   loadingAction = signal(false);
@@ -90,9 +95,32 @@ export class Lessons implements OnInit {
     ];
   }
 
+  // Onboarding
+  createButton = viewChild<ElementRef>('createLessonButton');
+  onboardingFlow = 'lessons_page.first_lesson_creation'
+  onboardingSteps: OnboardingStep[] = [];
+  currentOnboardingStepIndex = signal(-1);
+  currentOnboardingStep = computed(() =>
+    this.onboardingSteps[this.currentOnboardingStepIndex()],
+  );
+
+  constructor() {
+    this.onboardingSteps = [
+      {
+        title: 'Step Title',
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.',
+        object: this.createButton,
+        tipPosition: 'bottom',
+        tipAlignment: 'start',
+        stepName: 'create_button'
+      },
+    ];
+  }
+
   ngOnInit() {
     this.loadSubscriptionData();
     this.loadLessons();
+    this.loadOnboardingStatus();
   }
 
   private loadSubscriptionData() {
@@ -125,6 +153,9 @@ export class Lessons implements OnInit {
                 : ext.type,
             )
             .filter((tag: string) => tag),
+          tags: s.extensions.map((ext: any) => ext.type == 'lesson' 
+            ? (ext.configuration.cell_types.length > 1 ? 'Content Cells' : '')
+            : ext.type).filter((tag: string) => tag),
           status: s.session.status ?? SubjectStatus.PENDING_NAMING,
         }));
         this.lessons.set(mapped);
@@ -154,6 +185,36 @@ export class Lessons implements OnInit {
       });
   }
 
+  private loadOnboardingStatus() {
+    this.onboardingService
+      .checkOnboardingStatus(this.onboardingFlow)
+      .subscribe({
+        next: (response) => {
+          if (!response.completed) {
+            this.currentOnboardingStepIndex.set(response.current_step);
+          }
+        },
+        error: (res) => {
+          this.notify.showError(
+            res.error?.message || 'Failed to load onboarding status.',
+          );
+        },
+      });
+  }
+
+  private loadOnboardingStatus() {
+    this.onboardingService.checkOnboardingStatus(this.onboardingFlow).subscribe({
+      next: (response) => {
+        if (!response.completed) {
+          this.currentOnboardingStepIndex.set(response.current_step)
+        }
+      },
+      error: (res) => {
+        this.notify.showError(res.error?.message || 'Failed to load onboarding status.')
+      }
+    })
+  }
+
   normalizeCompletion(value: any): number {
     if (value === null || value === undefined) return 0;
     const n = Number(value);
@@ -164,26 +225,6 @@ export class Lessons implements OnInit {
 
   createNewLesson(): void {
     this.loadingAction.set(true);
-    const subscription = this.subscriptionData();
-    if (
-      (subscription?.subjects_created_this_month ?? 0) >=
-      (subscription?.plan?.monthly_subject_creations ?? Infinity)
-    ) {
-      this.notify.showError(
-        'You have reached the monthly subject creation limit.',
-      );
-      this.loadingAction.set(false);
-      return;
-    }
-    if (
-      this.lessons().length >=
-      (subscription?.plan?.subject_capacity ?? Infinity)
-    ) {
-      this.notify.showError('You have reached the total subject limit.');
-      this.loadingAction.set(false);
-      return;
-    }
-
     this.subjectsService.createSubject().subscribe({
       next: (response: any) => {
         const newSubjectId = response.session.id;

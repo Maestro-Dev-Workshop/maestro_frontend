@@ -8,6 +8,7 @@ import { Plan, SubscriptionStatus } from './subscription.model';
 import { ChatMessage } from './chat-message.model';
 import { CodeExecutionOutput } from './code-execution.model';
 import { SubjectStatus } from './subject-status.model';
+import { CreditBalance, CreditCostSettings, CreditHistory, CreditPack } from './credit.model';
 
 // Base API response structure
 // Note: Not all backend responses include 'message', so it's optional
@@ -30,6 +31,10 @@ export interface SignupResponseData {
 
 export interface RefreshTokenResponseData {
   accessToken: string;
+}
+
+export interface UserDetailsResponse extends ApiResponse {
+  user: UserModel;
 }
 
 // Subject responses
@@ -65,6 +70,7 @@ export interface SubjectDetailsResponse extends ApiResponse {
 export interface DocumentIngestResponse extends ApiResponse {
   documents: IngestedDocument[];
   warning: boolean;
+  word_excess: number;
 }
 
 export interface IngestedDocument {
@@ -184,11 +190,13 @@ export interface CodeExecutionResponse extends ApiResponse {
 // GET /chatbot/:id/history - returns { success, history }
 export interface ChatHistoryResponse extends ApiResponse {
   history: ChatMessage[];
+  limit_warning: boolean;
 }
 
 // POST /chatbot/:id/messages - returns { success, response }
 export interface ChatMessageResponse extends ApiResponse {
   response: string;
+  limit_warning: boolean;
 }
 
 // POST /chatbot/questions/evaluate - returns { success, ...result }
@@ -215,6 +223,27 @@ export interface SinglePlanResponse extends ApiResponse {
 export interface SubscriptionResponse extends ApiResponse {
   subscription: SubscriptionStatus;
 }
+
+// GET /credit/balance - returns { success, message, balance }
+export interface CreditBalanceResponse extends ApiResponse {
+  balance: CreditBalance
+}
+
+// GET /credit/history - returns { success, message, history }
+export interface CreditHistoryResponse extends ApiResponse {
+  history: CreditHistory[];
+}
+
+// Get /credit/settings - returns { success, message, settings }
+export interface CreditCostSettingsResponse extends ApiResponse {
+  settings: CreditCostSettings;
+}
+
+export interface CreditPacksResponse extends ApiResponse {
+  packs: CreditPack[];
+  country_code: string;
+}
+
 
 // POST /subscriptions - returns { success, message, transaction }
 export interface TransactionInitResponse extends ApiResponse {
@@ -329,4 +358,10 @@ export interface ExtensionSettingsPayload {
     enabled: boolean;
     name: string;
   };
+}
+
+
+export interface OnboardingStatusResponse extends ApiResponse {
+  completed: boolean
+  current_step: number
 }

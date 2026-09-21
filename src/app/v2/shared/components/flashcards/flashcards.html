@@ -64,15 +64,14 @@
   <!-- CONTROLS -->
   <div class="flex flex-row w-[375px] md:w-[500px] items-start justify-between gap-4 relative z-10">
     <!-- PREV -->
-    <button
+    <app-standard-btn
       (click)="previousCard()"
       [disabled]="isFirst && !loop()"
       [class.invisible]="isFirst && !loop()"
-      class="flex items-center bg-primary text-on-primary gap-2 p-2 pr-4 rounded-lg md:rounded-xl text-xs md:text-sm md:hover:opacity-60"
     >
-      <app-theme-icon name="arrow-left" [invert]="true" className="w-4 md:w-6"/>
+      <app-theme-icon name="arrow-left" [invert]="true" className="w-4 md:w-5"/>
       Previous
-    </button>
+    </app-standard-btn>
 
     <!-- HINT -->
     @if (enableHint()) {
@@ -91,14 +90,13 @@
     }
 
     <!-- NEXT -->
-    <button
+    <app-standard-btn
       (click)="nextCard()"
       [disabled]="isLast && !loop()"
       [class.invisible]="isLast && !loop()"
-      class="flex items-center bg-primary text-on-primary gap-2 p-2 pl-4 rounded-lg md:rounded-xl text-xs md:text-sm md:hover:opacity-60"
     >
       Next
-      <app-theme-icon name="arrow-left" [invert]="true" className="w-4 md:w-6 rotate-180"/>
-    </button>
+      <app-theme-icon name="arrow-left" [invert]="true" className="w-4 md:w-5 rotate-180"/>
+    </app-standard-btn>
   </div>
 </div>

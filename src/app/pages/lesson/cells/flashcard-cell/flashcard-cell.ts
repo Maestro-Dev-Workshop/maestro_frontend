@@ -12,7 +12,6 @@ export class FlashcardCell {
   cards = signal<any[]>([]);
 
   private updateOnInputChange = effect(() => {
-    console.log(this.data())
     const content = this.data()?.metadata.cards || [];
     this.cards.set(content);
   })

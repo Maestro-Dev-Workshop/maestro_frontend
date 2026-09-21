@@ -8,6 +8,7 @@ import {
   viewChild,
   computed,
   signal,
+  DestroyRef,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -17,6 +18,7 @@ import { Header } from '../../shared/components/header/header';
 import { FileUploadOverlay } from './file-upload-overlay/file-upload-overlay';
 import { ExtensionConfigOverlay } from './extension-config-overlay/extension-config-overlay';
 import { ThemeIconComponent } from '../../../shared/components/theme-icon/theme-icon';
+import { TutorialElement } from '../../../shared/components/tutorial-element/tutorial-element';
 
 import { SubjectsService } from '../../../core/services/subjects.service';
 import { NotificationService } from '../../../core/services/notification.service';
@@ -32,6 +34,7 @@ import {
 } from '../../../core/models/extension-settings.model';
 import { ExtensionModel } from '../../../core/models/api-response.model';
 import { SubjectStatus, SubscriptionStatus } from '../../../core/models';
+import { CreditService } from '../../../core/services/credit.service';
 
 @Component({
   selector: 'app-lesson-generation',
@@ -43,6 +46,7 @@ import { SubjectStatus, SubscriptionStatus } from '../../../core/models';
     CdkDrag, 
     CdkDropList, 
     FormsModule, 
+    TutorialElement
   ],
   schemas: [NO_ERRORS_SCHEMA],
   templateUrl: './lesson-generation.html',
@@ -55,24 +59,55 @@ export class LessonGeneration implements OnInit {
   private notify = inject(NotificationService);
   private subjectService = inject(SubjectsService);
   private subscriptionService = inject(SubscriptionService);
+  private creditService = inject(CreditService)
   private onboardingService = inject(OnboardingService);
+  private readonly destroyRef = inject(DestroyRef);
 
-  filesOverlay = false;
-  configOverlay = false;
-  showPromptSuggestions = false;
+  filesOverlay = signal(false);
+  configOverlay = signal(false);
+  showPromptSuggestions = signal(false);
+  overchargeExplanationPopup = signal(false);
+  showTopics = signal(true)
   loading = signal(false);
+  isMobile = signal(false)
+
   learningStyle = '';
   subjectId = '';
   subjectStatus = '';
-
-  topicList = viewChild<ElementRef>('topicList');
-  textInput = viewChild<ElementRef>('textInput');
-  submitButton = viewChild<ElementRef>('submitButton');
-
-  // Onboarding elements
-  onboardingSteps: OnboardingStep[] = [];
-  beginner = false;
-  currentOnboardingStep = computed(() => this.onboardingService.currentStepIndex());
+  word_count : number | null = 0;
+  words_soft_limit : number | null = 0;
+  costSettings : any = {};
+  overcharge_rate = 0
+  currentCosts = {
+    total: {
+      value: 0,
+      overcharge: 0
+    },
+    lesson: {
+      value: 0,
+      overcharge: 0
+    },
+    cells: {
+      value: 0,
+      overcharge: 0
+    },
+    exercise: {
+      value: 0,
+      overcharge: 0
+    },
+    exam: {
+      value: 0,
+      overcharge: 0
+    },
+    flashcards: {
+      value: 0,
+      overcharge: 0
+    },
+    glossary: {
+      value: 0,
+      overcharge: 0
+    },
+  }
   
   subjectName = '';
   topics: GenerationTopic[] = [];
@@ -101,51 +136,104 @@ export class LessonGeneration implements OnInit {
     },
   ]
 
+  lessonName = viewChild<ElementRef>('lessonName');
+  topicList = viewChild<ElementRef>('topicList');
+  extensionGrid = viewChild<ElementRef>('extensionGrid');
+  textInput = viewChild<ElementRef>('textInput');
+  promptButton = viewChild<ElementRef>('promptButton');
+  creditCost = viewChild<ElementRef>('creditCost');
+  submitButton = viewChild<ElementRef>('submitButton');
+
+  // Onboarding elements
+  onboardingFlow = 'lesson_generation.first_lesson_creation'
+  onboardingSteps: OnboardingStep[] = [];
+  currentOnboardingStepIndex = signal(-1);
+  currentOnboardingStep = computed(() =>
+    this.onboardingSteps[this.currentOnboardingStepIndex()],
+  );
+  
   constructor() {
     // Initialize onboarding steps
     this.onboardingSteps = [
-      // {
-      //   title: 'Select Topics',
-      //   text: 'Choose the specific concepts you want to focus on for this lesson.',
-      //   object: this.topicList,
-      //   tipPosition: 'top',
-      //   tipAlignment: 'start',
-      // },
-      // {
-      //   title: 'Enhance Your Lesson',
-      //   text: 'Select additional extensions to enhance the quality of your generated lesson.',
-      //   object: this.enableExtensionsButton,
-      //   tipPosition: 'top',
-      //   tipAlignment: 'start',
-      // },
-      // {
-      //   title: 'Configure',
-      //   text: 'Click here to customize your extensions.',
-      //   object: this.configureExtensionsButton,
-      //   tipPosition: 'top',
-      //   tipAlignment: 'start',
-      // },
-      // {
-      //   title: 'Lesson Preferences',
-      //   text: 'Provide any specific preferences or instructions for your lesson generation.',
-      //   object: this.textInput,
-      //   tipPosition: 'bottom',
-      //   tipAlignment: 'start',
-      // },
-      // {
-      //   title: 'Generate Lesson',
-      //   text: 'Ready? Click the send button to build your personalised lesson.',
-      //   object: this.submitButton,
-      //   tipPosition: 'top',
-      //   tipAlignment: 'end',
-      // },
+      {
+        title: 'Step Title',
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.',
+        object: this.lessonName,
+        tipPosition: 'bottom',
+        tipAlignment: 'start',
+        stepName: 'lesson_naming'
+      },
+      {
+        title: 'Step Title',
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.',
+        object: this.topicList,
+        tipPosition: 'right',
+        tipAlignment: 'start',
+        stepName: 'topic_selection'
+      },
+      {
+        title: 'Step Title',
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.',
+        object: this.extensionGrid,
+        tipPosition: 'top',
+        tipAlignment: 'end',
+        stepName: 'extension_enabling'
+      },
+      {
+        title: 'Step Title',
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.',
+        object: this.creditCost,
+        tipPosition: 'bottom',
+        tipAlignment: 'end',
+        stepName: 'credit_cost'
+      },
+      {
+        title: 'Step Title',
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.',
+        object: this.textInput,
+        tipPosition: 'top',
+        tipAlignment: 'start',
+        stepName: 'preference_prompt'
+      },
+      {
+        title: 'Step Title',
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.',
+        object: this.promptButton,
+        tipPosition: 'top',
+        tipAlignment: 'start',
+        stepName: 'prompt_suggestions'
+      },
+      {
+        title: 'Step Title',
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.',
+        object: this.submitButton,
+        tipPosition: 'top',
+        tipAlignment: 'end',
+        stepName: 'generate_lesson'
+      },
     ];
+  }
 
-    const nav = this.router.currentNavigation();
-    this.beginner = nav?.extras?.state?.['beginner'] ?? false;
-    if (this.beginner) {
-      this.onboardingService.startOnboarding();
+  private setupResponsiveListener(): void {
+    const mediaQuery = window.matchMedia('(max-width: 768px)');
+    
+    // Set initial value safely on the client
+    this.isMobile.set(mediaQuery.matches);
+    if (this.isMobile()) {
+      this.showTopics.set(false)
     }
+
+    
+    const handler = (e: MediaQueryListEvent) => {
+      this.isMobile.set(e.matches);
+    };
+
+    mediaQuery.addEventListener('change', handler);
+    
+    // Clean up event listener when component unmounts to prevent memory leaks
+    this.destroyRef.onDestroy(() => {
+      mediaQuery.removeEventListener('change', handler);
+    });
   }
 
   adjustInputHeight() {
@@ -163,6 +251,7 @@ export class LessonGeneration implements OnInit {
       }
       return topic;
     });
+    this.computeCreditCosts()
   }
 
   drop(event: CdkDragDrop<GenerationTopic[]>) {
@@ -171,11 +260,16 @@ export class LessonGeneration implements OnInit {
   }
 
   togglePromptSuggestions() {
-    this.showPromptSuggestions = !this.showPromptSuggestions;
+    this.showPromptSuggestions.set(!this.showPromptSuggestions());
+  }
+
+  toggleTopicView() {
+    this.showTopics.set(!this.showTopics())
   }
 
   toggleConfigOverlay() {
-    this.configOverlay = !this.configOverlay;
+    if (this.loading() || (this.subjectStatus === 'pending_lesson_generation')) return
+    this.configOverlay.set(!this.configOverlay());
   }
 
   saveConfig(config: ExtensionSettings) {
@@ -184,13 +278,121 @@ export class LessonGeneration implements OnInit {
     } else {
       this.extensionSettings = config;
     }
+    this.computeCreditCosts()
     this.toggleConfigOverlay();
+  }
+
+  addPrompt(prompt: string) {
+    if (this.loading() || (this.subjectStatus === 'pending_lesson_generation')) return
+    this.learningStyle = prompt
+    this.adjustInputHeight()
+    if (this.isMobile()) this.togglePromptSuggestions()
+  }
+
+  computeCreditCosts() {
+    // Reset Costs
+    this.overcharge_rate = 0
+    this.currentCosts = {
+      total: {
+        value: 0,
+        overcharge: 0
+      },
+      lesson: {
+        value: 0,
+        overcharge: 0
+      },
+      cells: {
+        value: 0,
+        overcharge: 0
+      },
+      exercise: {
+        value: 0,
+        overcharge: 0
+      },
+      exam: {
+        value: 0,
+        overcharge: 0
+      },
+      flashcards: {
+        value: 0,
+        overcharge: 0
+      },
+      glossary: {
+        value: 0,
+        overcharge: 0
+      },
+    }
+
+    if ((this.word_count && this.words_soft_limit) && (this.word_count > this.words_soft_limit)) {
+      this.overcharge_rate = Math.round(this.costSettings.overcharge.rate * (this.word_count - this.words_soft_limit))
+    }
+
+    // Lesson Cost
+    this.currentCosts.lesson.value = this.costSettings.lesson.cells.text * this.selectedTopics.length
+    // this.currentCosts.lesson.overcharge = Math.ceil(this.overcharge_rate * this.selectedTopics.length) // Overcharge fee for each extension
+    this.currentCosts.lesson.overcharge = this.overcharge_rate * this.selectedTopics.length // Overcharge fee for each extension
+
+    // Cells Cost
+    if (this.extensionSettings.cells.enabled) {
+      for (let type of this.extensionSettings.cells.types) {
+        this.currentCosts.cells.value += this.costSettings.lesson.cells[type] * this.selectedTopics.length
+      }
+      // this.currentCosts.cells.overcharge = Math.ceil(this.overcharge_rate * this.selectedTopics.length)
+      this.currentCosts.cells.overcharge = this.overcharge_rate * this.selectedTopics.length
+    }
+
+    // Exercise Cost
+    if (this.extensionSettings.exercise.enabled) {
+      this.currentCosts.exercise.value = this.costSettings.exercise.per_amount * this.extensionSettings.exercise.amount * this.selectedTopics.length
+      // this.currentCosts.exercise.overcharge = Math.ceil(this.overcharge_rate * this.selectedTopics.length)
+      this.currentCosts.exercise.overcharge = this.overcharge_rate * this.selectedTopics.length
+    }
+
+    // Exam Cost
+    if (this.extensionSettings.exam.enabled) {
+      this.currentCosts.exam.value = this.costSettings.exam.per_amount * this.extensionSettings.exam.amount
+      // this.currentCosts.exam.overcharge = Math.ceil(this.overcharge_rate * this.selectedTopics.length)
+      this.currentCosts.exam.overcharge = this.overcharge_rate * this.selectedTopics.length
+    }
+
+    // Flashcards Cost
+    if (this.extensionSettings.flashcards.enabled) {
+      this.currentCosts.flashcards.value = this.costSettings.flashcards.per_amount * this.extensionSettings.flashcards.amount * this.selectedTopics.length
+      // this.currentCosts.flashcards.overcharge = Math.ceil(this.overcharge_rate * this.selectedTopics.length)
+      this.currentCosts.flashcards.overcharge = this.overcharge_rate * this.selectedTopics.length
+    }
+
+    // Glossary Cost
+    if (this.extensionSettings.glossary.enabled) {
+      this.currentCosts.glossary.value = this.costSettings.glossary.cost * this.selectedTopics.length
+      // this.currentCosts.glossary.overcharge = Math.ceil(this.overcharge_rate * this.selectedTopics.length)
+      this.currentCosts.glossary.overcharge = this.overcharge_rate * this.selectedTopics.length
+    }
+
+    this.currentCosts.total.value = 0
+      + this.currentCosts.lesson.value
+      + this.currentCosts.cells.value
+      + this.currentCosts.exercise.value
+      + this.currentCosts.exam.value
+      + this.currentCosts.flashcards.value
+      + this.currentCosts.glossary.value
+
+    this.currentCosts.total.overcharge = 0
+      + this.currentCosts.lesson.overcharge
+      + this.currentCosts.cells.overcharge
+      + this.currentCosts.exercise.overcharge
+      + this.currentCosts.exam.overcharge
+      + this.currentCosts.flashcards.overcharge
+      + this.currentCosts.glossary.overcharge
+  }
+
+  getCost(name: keyof typeof this.currentCosts) {
+    return this.currentCosts[name]
   }
 
   validateSettings(): ValidationResult {
     // Check if any topics have been selected
-    const selectedTopics = this.topics.filter((topic) => topic.selected);
-    if (selectedTopics.length === 0) {
+    if (this.selectedTopics.length === 0) {
       return {
         status: false,
         message: 'Please select at least one topic.'
@@ -289,7 +491,7 @@ export class LessonGeneration implements OnInit {
     this.subjectService.generateFullLesson(this.subjectId, selectedTopicIds, this.learningStyle, this.extensionSettings).subscribe({
       next: (response) => {
         this.notify.showSuccess("Successfully generated lesson.")
-        this.router.navigateByUrl(`/v2/lesson/${this.subjectId}`, { state: { beginner: this.beginner } })
+        this.router.navigateByUrl(`/v2/lesson/${this.subjectId}`)
       },
       error: (res) => {
         this.notify.showError(res.error.message || "Failed to generate lesson. Please try again later.");
@@ -309,13 +511,15 @@ export class LessonGeneration implements OnInit {
       this.subjectId = params.get('sessionId') ?? '';
       this.loadSubjectDetails();
     });
+    this.setupResponsiveListener();
+    this.loadOnboardingStatus()
   }
 
   configureLoadedExtensions(extensions: ExtensionModel[]) {
     for (const ext of extensions) {
-      if (ext.type === 'lesson' && ext.configuration?.cell_types && ext.configuration.cell_types.length > 0) {
+      if (ext.type === 'lesson' && ext.configuration?.cell_types && ext.configuration.cell_types.length > 1) {
         this.extensionSettings.cells.enabled = true;
-        this.extensionSettings.cells.types = ext.configuration.cell_types;
+        this.extensionSettings.cells.types = ext.configuration.cell_types.filter((type) => type !== 'text');
       }
       if (ext.type === 'exercise' && ext.configuration) {
         this.extensionSettings.exercise.enabled = true;
@@ -345,18 +549,23 @@ export class LessonGeneration implements OnInit {
         this.subjectName = response.session.name || 'Untitled';
         this.subjectStatus = response.session.status || '';
         if ((this.subjectStatus == SubjectStatus.PENDING_DOCUMENT_UPLOAD) || (this.subjectStatus == SubjectStatus.PENDING_TOPIC_LABELLING)) {
-          this.filesOverlay = true;
+          this.filesOverlay.set(true);
         }
         this.topics = response.topics;
         this.learningStyle = response.session.user_preference || '';
+        this.word_count = response.session.word_count;
         this.configureLoadedExtensions(response.extensions)
 
         this.subscriptionService.getSubscription().subscribe({
           next: (response) => {
             const subscriptionData: SubscriptionStatus | null = response.subscription;
             if (subscriptionData && subscriptionData.plan) {
-              this.extensionSettings.exercise.upperLimit = subscriptionData.plan.exercise_question_count || 10;
-              this.extensionSettings.exam.upperLimit = subscriptionData.plan.exam_question_count || 60;
+              this.words_soft_limit = subscriptionData.plan.word_soft_limit;
+              // Update allowed cells
+              this.extensionSettings.cells.options.map((option) => {
+                option.disabled = !subscriptionData.plan.cells_allowed.available_cells.includes(option.value)
+                return option
+              })
             }
           },
           error: (res) => {
@@ -372,8 +581,27 @@ export class LessonGeneration implements OnInit {
         this.cdr.detectChanges();
       },
       complete: () => {
-        this.loading.set(false)
-        this.cdr.detectChanges();
+        this.creditService.getCostSettings().subscribe({
+          next: (response) => {
+            this.costSettings = response.settings
+            this.computeCreditCosts()
+            this.loading.set(false)
+            this.cdr.detectChanges();
+          }
+        })
+      }
+    })
+  }
+
+  private loadOnboardingStatus() {
+    this.onboardingService.checkOnboardingStatus(this.onboardingFlow).subscribe({
+      next: (response) => {
+        if (!response.completed) {
+          this.currentOnboardingStepIndex.set(response.current_step)
+        }
+      },
+      error: (res) => {
+        this.notify.showError(res.error?.message || 'Failed to load onboarding status.')
       }
     })
   }
@@ -382,32 +610,22 @@ export class LessonGeneration implements OnInit {
     window.location.reload();
   }
 
-  getTutorialObjectPosition(stepIndex: number) {
-    const step = this.onboardingSteps[stepIndex];
-    if (!step) return { top: 0, left: 0, bottom: 0, right: 0 };
-    return this.onboardingService.getObjectPosition(step);
-  }
-
-  cycleOnboarding(): void {
-    this.onboardingService.nextStep();
-  }
-
   saveLessonName() {
     if (!this.subjectName || this.subjectName.trim() === '') {
-      this.notify.showError('Subject name cannot be empty.');
+      this.notify.showError('Lesson name cannot be empty.');
       return;
     }
     if (this.subjectName.length > 30) {
-      this.notify.showError('Subject name cannot exceed 40 characters.');
+      this.notify.showError('Lesson name cannot exceed 40 characters.');
       return;
     }
 
     this.subjectService.nameSubject(this.subjectId, this.subjectName).subscribe({
       next: (response) => {
-        this.notify.showSuccess('Subject name updated successfully.');
+        this.notify.showSuccess('Lesson name updated successfully.');
       },
       error: (res) => {
-        this.notify.showError(res.error.message || 'Failed to update subject name. Please try again later.');
+        this.notify.showError(res.error.message || 'Failed to update lesson name. Please try again later.');
       }
     });
   }
@@ -427,5 +645,25 @@ export class LessonGeneration implements OnInit {
   getOptionLabel(extension: ExtensionConfig, value: string): string {
     const option = extension.options?.find((opt) => opt.value === value);
     return option ? option.label : value;
+  }
+
+  toggleOverchargeExplanation() {
+    this.overchargeExplanationPopup.set(!this.overchargeExplanationPopup())
+  }
+
+  // Onboarding helpers
+  getTutorialObjectPosition() {
+    if (!this.currentOnboardingStep()) return { top: 0, left: 0, bottom: 0, right: 0 };
+    return this.onboardingService.getObjectPosition(this.currentOnboardingStep());
+  }
+
+  cycleOnboarding(): void {
+    this.onboardingService.updateOnboardingStatus(this.onboardingFlow, this.currentOnboardingStep().stepName).subscribe({
+      next: (response) => {},
+      error: (res) => {
+        this.notify.showError(res.error?.message || 'Failed to update onboarding status.')
+      }
+    })
+    this.currentOnboardingStepIndex.update((num) => num + 1)
   }
 }

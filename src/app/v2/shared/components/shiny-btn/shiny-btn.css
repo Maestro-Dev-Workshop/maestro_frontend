@@ -22,3 +22,31 @@ button::before {
     inset 0 2px 4px rgb(255 255 255 / 30%),
     inset 0 -2px 4px rgb(255 255 255 / 30%); */
 }
+
+
+/* Mouseover Glow */
+/* button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+
+  background: radial-gradient(
+    circle 80px at var(--glow-x) var(--glow-y),
+    color-mix(in srgb, var(--primary-bright) 50%, transparent),
+    color-mix(in srgb, var(--primary-bright) 10%, transparent) 60%,
+    transparent 80%
+  );
+
+  opacity: 0;
+  transition: opacity 250ms ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+button:hover::after {
+  opacity: 1;
+}
+
+button.glow-active::after {
+  opacity: 1;
+} */

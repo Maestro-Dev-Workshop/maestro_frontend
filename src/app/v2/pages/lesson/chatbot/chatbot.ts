@@ -13,6 +13,7 @@ import {
   ChangeDetectorRef,
   OnInit,
   OnDestroy,
+  signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -25,6 +26,8 @@ import { ChatMessage } from '../../../../core/models/chat-message.model';
 import { ChatMetadata } from '../../../../core/models/chat-metadata.model';
 
 import { ThemeIconComponent } from "../../../../shared/components/theme-icon/theme-icon";
+import { CreditCostSettings } from '../../../../core/models/credit.model';
+import { CreditService } from '../../../../core/services/credit.service';
 
 @Component({
   selector: 'app-chatbot',
@@ -35,13 +38,17 @@ import { ThemeIconComponent } from "../../../../shared/components/theme-icon/the
 })
 export class Chatbot implements OnInit, AfterViewInit, OnDestroy {
   chatHistory = model<ChatMessage[]>([]);
+  showLimitWarning = model<boolean>(false);
   subjectId = input.required<string>();
   metadata = input.required<ChatMetadata>();
   closeChat = output<any>();
+  triggerReload = output<void>();
   currentMessage: string = '';
-  loading = false;
+  loading = signal(false);
+  costSettings = signal<CreditCostSettings | null>(null)
 
   chatbotService = inject(ChatbotService);
+  creditService = inject(CreditService)
   notify = inject(NotificationService);
   private injector = inject(Injector);
   private viewReady = false;
@@ -64,6 +71,18 @@ export class Chatbot implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
     // initial scroll attempt
     this.scrollToBottom();
+
+    this.creditService.getCostSettings().subscribe({
+      next: (response) => {
+        this.costSettings.set(response.settings);
+      },
+      error: (res) => {
+        this.notify.showError(
+          res?.error?.message ||
+            'Failed to fetch credit cost settings. Please try again.'
+        );
+      },
+    });
   }
 
   ngAfterViewInit() {
@@ -113,30 +132,31 @@ export class Chatbot implements OnInit, AfterViewInit, OnDestroy {
     // reset composer
     this.currentMessage = '';
     this.adjustInputHeight();
-    this.loading = true;
-    this.cdr.detectChanges();
+    this.loading.set(true);
 
     // call backend
     this.chatbotService
       .sendMessage(this.subjectId(), text, this.metadata())
       .subscribe({
         next: (response) => {
+          this.showLimitWarning.set(response.limit_warning || false);
           const assistantMsg: ChatMessage = {
             sender: 'assistant',
             message: response.response,
             timestamp: new Date().toLocaleTimeString(),
           };
           this.chatHistory.update((h) => [...h, assistantMsg]);
-          this.loading = false;
-          this.cdr.detectChanges();
+          this.loading.set(false);
+          if (response.limit_warning) {
+            this.triggerReload.emit();
+          }
         },
         error: (res) => {
-          this.loading = false;
+          this.loading.set(false)
           this.notify.showError(
             res?.error?.message ||
               'Failed to send message. Please try again.'
           );
-          this.cdr.detectChanges();
         },
       });
 

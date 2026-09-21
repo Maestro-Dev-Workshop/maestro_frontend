@@ -14,8 +14,17 @@
 
   <!-- Header -->
   <div class="z-10 flex items-center justify-between p-4">
+    @if (showLimitWarning()) {
+      <div class="flex items-center gap-2 text-primary">
+        <app-theme-icon name="warning-primary" className="w-8 shrink-0"/>
+        <span class="text-xs md:text-sm">
+          You have reached the limit of free messages for this lesson.
+          Subsequent messages will cost {{ costSettings()?.chatbot.overcharge || 1 }} credit(s) each.
+        </span>
+      </div>
+    }
     <button
-      class="ml-auto p-2 flex items-center gap-2 text-primary rounded-full md:hover:opacity-60"
+      class="ml-auto p-2 shrink-0 flex items-center gap-2 text-primary rounded-full md:hover:opacity-60"
       (click)="onCloseChat()"
       aria-label="Close chat"
       title="Close"
@@ -61,7 +70,7 @@
     }
 
     <!-- Typing / Loading indicator -->
-    @if (loading) {
+    @if (loading()) {
       <div class="flex items-start gap-2">
         <app-theme-icon name="maestro-logo-alt" className="w-10 md:w-12"></app-theme-icon>
         <div class="bg-transparent text-gray-900 p-2 rounded-2xl rounded-bl-none">
@@ -84,7 +93,7 @@
         bg-surface-container-lowest text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-outline"
         rows="1"
         [(ngModel)]="currentMessage"
-        [disabled]="loading"
+        [disabled]="loading()"
         (keydown)="handleKeyDown($event)"
         (input)="adjustInputHeight()"
         (mousemove)="adjustInputHeight()"
@@ -95,7 +104,7 @@
       <button
         class="flex items-center justify-center w-8 h-8 rounded-full lg:hover:opacity-60 disabled:opacity-60"
         (click)="sendMessage()"
-        [disabled]="loading || !currentMessage.trim()"
+        [disabled]="loading() || !currentMessage.trim()"
         aria-label="Send message"
         title="Send"
       >
@@ -110,5 +119,5 @@
   </div>
 
   <!-- Floating spinner for global loading (keeps previous behavior) -->
-  <!-- <img src="images/spinner.gif" alt="loading" class="absolute bottom-3 right-3 h-8" [hidden]="!loading"> -->
+  <!-- <img src="images/spinner.gif" alt="loading" class="absolute bottom-3 right-3 h-8" [hidden]="!loading()"> -->
 </div>

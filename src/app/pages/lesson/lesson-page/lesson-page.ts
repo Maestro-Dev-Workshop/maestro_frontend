@@ -90,7 +90,7 @@ export class LessonPage implements OnInit {
   // Onboarding
   chatPopupButton = viewChild<ElementRef>('chatPopupButton');
   onboardingSteps: OnboardingStep[] = [];
-  currentOnboardingStep = computed(() => this.onboardingService.currentStepIndex());
+  currentOnboardingStep = signal(-1);
 
   constructor() {
     const nav = this.router.currentNavigation();
@@ -104,12 +104,9 @@ export class LessonPage implements OnInit {
         object: this.chatPopupButton,
         tipPosition: 'top',
         tipAlignment: 'end',
+        stepName: '',
       },
     ];
-
-    if (isBeginner) {
-      this.onboardingService.startOnboarding();
-    }
   }
 
   ngOnInit(): void {
@@ -493,7 +490,6 @@ export class LessonPage implements OnInit {
   }
 
   cycleOnboarding(): void {
-    this.onboardingService.nextStep();
   }
 
   get isExerciseOrExam(): boolean {
