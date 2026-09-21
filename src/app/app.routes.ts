@@ -33,7 +33,7 @@ export const routes: Routes = [
   { path: 'v2/verify-email', loadComponent: () => import('./v2/pages/auth/verify-email/verify-email').then(m => m.VerifyEmail) },
   { path: 'v2/check-email', loadComponent: () => import('./v2/pages/auth/check-email/check-email').then(m => m.CheckEmail) },
   { path: 'v2/password-reset', loadComponent: () => import('./v2/pages/auth/password-reset/password-reset').then(m => m.PasswordReset) },
-  { path: 'v2/', loadComponent: () => import('./v2/pages/auth/password-reset/password-reset').then(m => m.PasswordReset) },
+  { path: 'v2/change-password', loadComponent: () => import('./v2/pages/auth/change-password/change-password').then(m => m.ChangePassword) },
   
   
   // Dashboard Pages
