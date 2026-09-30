@@ -491,7 +491,7 @@ export class LessonGeneration implements OnInit {
     this.subjectService.generateFullLesson(this.subjectId, selectedTopicIds, this.learningStyle, this.extensionSettings).subscribe({
       next: (response) => {
         this.notify.showSuccess("Successfully generated lesson.")
-        this.router.navigateByUrl(`/v2/lesson/${this.subjectId}`)
+        this.router.navigateByUrl(`/lesson/${this.subjectId}`)
       },
       error: (res) => {
         this.notify.showError(res.error.message || "Failed to generate lesson. Please try again later.");

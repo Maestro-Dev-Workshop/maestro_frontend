@@ -73,7 +73,7 @@ export class Settings implements OnInit {
   }
 
   viewDetails() {
-    this.router.navigate(['/v2/usage-stats']);
+    this.router.navigate(['/usage-stats']);
   }
 
   toggleNameEdit() {
@@ -90,9 +90,16 @@ export class Settings implements OnInit {
 
   savePersonalInfo() {
     if (this.canSaveName()) {
-      // Mock save logic
-      console.log('Saving:', this.firstName, this.lastName);
-      this.isEditingName.set(false);
+      this.authService.changeName(this.firstName, this.lastName).subscribe({
+        next: (response) => {
+          this.notify.showSuccess("Name changed successfully")
+          this.isEditingName.set(false);
+        },
+        error: (err) => {
+          console.log(err)
+          this.notify.showError(err.error.message || "Error occured in changing name. Please try again")
+        }
+      })
     }
   }
 
@@ -123,11 +130,19 @@ export class Settings implements OnInit {
       this.notify.showError('Passwords do not match');
       return;
     }
-    // Mock API call
-    this.notify.showSuccess('Password changed successfully');
-    this.currentPassword = '';
-    this.newPassword = '';
-    this.confirmPassword = '';
-    this.showPasswordFields.set(false);
+    
+    this.authService.changePassword(this.currentPassword, this.newPassword, this.confirmPassword).subscribe({
+      next: (response) => {
+        this.notify.showSuccess("Password changed successfully")
+        this.currentPassword = '';
+        this.newPassword = '';
+        this.confirmPassword = '';
+        this.showPasswordFields.set(false);
+      },
+      error: (err) => {
+        console.log(err)
+        this.notify.showError(err.error.message || "Error occured in changing password. Please try again")
+      }
+    })
   }
 }

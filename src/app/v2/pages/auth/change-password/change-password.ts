@@ -74,7 +74,7 @@ export class ChangePassword {
     .subscribe({
       next: () => {
         this.notify.showSuccess('Password changed successfully. Redirecting to login...');
-        this.router.navigateByUrl('/v2/login');
+        this.router.navigateByUrl('/login');
       },
       error: (res: any) => {
         this.loading = false;

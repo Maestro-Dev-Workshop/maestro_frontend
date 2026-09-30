@@ -16,19 +16,19 @@ export class DashboardSidebar implements OnInit {
       title: "Lessons",
       icon: "lessons-menu-icon",
       selected: false,
-      route: "/v2/lessons"
+      route: "/lessons"
     },
     {
       title: "Credit Store",
       icon: "store-menu-icon",
       selected: false,
-      route: "/v2/store"
+      route: "/store"
     },
     {
       title: "Membership & Usage",
       icon: "usage-menu-icon",
       selected: false,
-      route: "/v2/usage-stats"
+      route: "/usage-stats"
     },
   ]
 
@@ -73,10 +73,10 @@ export class DashboardSidebar implements OnInit {
   }
 
   navigateToPage(route: string | undefined, index: number) {
-    this.router.navigateByUrl(route || '/v2/lessons');
+    this.router.navigateByUrl(route || '/lessons');
   }
 
   navigateToSettings() {
-    this.router.navigateByUrl('/v2/settings');
+    this.router.navigateByUrl('/settings');
   }
 }
