@@ -41,6 +41,10 @@ export class AuthService {
     return this.http.get<UserDetailsResponse>('auth/me');
   }
 
+  changeName(first_name: string, last_name: string): Observable<UserDetailsResponse> {
+    return this.http.post<UserDetailsResponse>('auth/me/name', { first_name, last_name });
+  }
+
   signup(data: SignupPayload): Observable<SignupApiResponse> {
     return this.http.post<SignupApiResponse>('auth/sign-up', data);
   }
@@ -71,6 +75,10 @@ export class AuthService {
 
   resetPassword(reset_token: string, new_password: string): Observable<ApiResponse> {
     return this.http.post<ApiResponse>('auth/reset-password', { reset_token, new_password });
+  }
+
+  changePassword(current_password: string, new_password: string, confirm_password: string): Observable<ApiResponse> {
+    return this.http.post<ApiResponse>('auth/change-password', { current_password, new_password, confirm_password });
   }
 
   logout(): void {
