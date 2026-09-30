@@ -73,7 +73,7 @@ export class Settings implements OnInit {
   }
 
   viewDetails() {
-    this.router.navigate(['/v2/usage-stats']);
+    this.router.navigate(['/usage-stats']);
   }
 
   toggleNameEdit() {

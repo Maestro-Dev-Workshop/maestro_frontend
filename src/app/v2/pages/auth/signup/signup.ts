@@ -90,14 +90,14 @@ export class Signup {
             this.notify.showSuccess(
               'Verification email sent. Please check your inbox.',
             );
-            this.router.navigateByUrl('/v2/check-email', {
+            this.router.navigateByUrl('/check-email', {
               state: { email: this.email.toLowerCase() },
             });
           } else {
             this.notify.showSuccess(
               'Signup successful. Redirecting to login...',
             );
-            this.router.navigateByUrl('/v2/login');
+            this.router.navigateByUrl('/login');
           }
         },
         error: (res: any) => {
@@ -139,7 +139,7 @@ export class Signup {
           sessionStorage.setItem('maestro_from_auth', 'true');
   
           this.loading = false;
-          this.router.navigateByUrl('/v2/lessons');
+          this.router.navigateByUrl('/lessons');
         },
         error: (err) => {
           this.loading = false;

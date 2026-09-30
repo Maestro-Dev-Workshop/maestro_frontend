@@ -72,6 +72,6 @@ export class LessonSidebar {
   }
 
   backToDashboard() {
-    this.router.navigateByUrl('/v2/lessons');
+    this.router.navigateByUrl('/lessons');
   }
 }
